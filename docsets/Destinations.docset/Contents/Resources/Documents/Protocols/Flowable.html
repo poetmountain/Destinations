@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Flowable Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/Flowable" class="dashAnchor"></a>
+
+    <a title="Flowable Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          Destinations Docs
+        </a>
+         (100% documented)
+      </p>
+    
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/poetmountain/Destinations">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">Destinations</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      <a class="breadcrumb" href="../Protocols.html">Protocols</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      Flowable Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ControllerDestination.html">ControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ControllerFlow.html">ControllerFlow</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationNavigator.html">DestinationNavigator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationPresentation.html">DestinationPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationSwiftUICoordinator.html">DestinationSwiftUICoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationsOptions.html">DestinationsOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationViewDestination.html">NavigationViewDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SheetPresentation.html">SheetPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SwiftUIAdapter.html">SwiftUIAdapter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SwiftUIContainerController.html">SwiftUIContainerController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SwiftUIContainerDestination.html">SwiftUIContainerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SwiftUIHostingState.html">SwiftUIHostingState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TabBarControllerDestination.html">TabBarControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TabModel.html">TabModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TabViewDestination.html">TabViewDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ViewDestination.html">ViewDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ViewFlow.html">ViewFlow</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ActionAssistantType.html">ActionAssistantType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DestinationActionType.html">DestinationActionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DestinationsError.html">DestinationsError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/NavigationPresentationType.html">NavigationPresentationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SheetPresentationType.html">SheetPresentationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SystemNavigationType.html">SystemNavigationType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/View.html">View</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ControllerDestinationProviding.html">ControllerDestinationProviding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ControllerFlowable.html">ControllerFlowable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DatasourceItemsProviderStatusDelegate.html">DatasourceItemsProviderStatusDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Datasourceable.html">Datasourceable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationConfigurationsContaining.html">DestinationConfigurationsContaining</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInterfaceCoordinating.html">DestinationInterfaceCoordinating</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInterfaceCoordinatorDelegate.html">DestinationInterfaceCoordinatorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInterfacing.html">DestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationProviding.html">DestinationProviding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationStateable.html">DestinationStateable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationSwiftUICoordinating.html">DestinationSwiftUICoordinating</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationUIKitCoordinating.html">DestinationUIKitCoordinating</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InteractorAssisting.html">InteractorAssisting</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations31InteractorRequestActionTypeableP">InteractorRequestActionTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InteractorRequestConfiguring.html">InteractorRequestConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InterfaceActionConfiguring.html">InterfaceActionConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigatingControllerDestinationable.html">NavigatingControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigatingDestinationInterfacing.html">NavigatingDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigatingViewDestinationable.html">NavigatingViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/RoutableDestinations.html">RoutableDestinations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SheetPresentationConfiguring.html">SheetPresentationConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SheetPresenting.html">SheetPresenting</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Sheetable.html">Sheetable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SwiftUIContainerInterfacing.html">SwiftUIContainerInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabBarControllerDestinationInterfacing.html">TabBarControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabBarViewDestinationInterfacing.html">TabBarViewDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ViewDestinationProviding.html">ViewDestinationProviding</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ViewDestinationable.html">ViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ViewFlowable.html">ViewFlowable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BackNavigationModifier.html">BackNavigationModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ContainerView.html">ContainerView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ControllerSheetPresentationOptions.html">ControllerSheetPresentationOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/CustomPresentation.html">CustomPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DestinationDisappearModifier.html">DestinationDisappearModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/InteractorConfiguration.html">InteractorConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/InterfaceAction.html">InterfaceAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/InterfaceActionData.html">InterfaceActionData</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Sheet.html">Sheet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SheetPresentationOptions.html">SheetPresentationOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SheetPresenter.html">SheetPresenter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SystemNavigationOptions.html">SystemNavigationOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ViewSheetPresentationOptions.html">ViewSheetPresentationOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ViewSheetPresentationOptions/PresentationMode.html">– PresentationMode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations35CustomControllerPresentationClosurea">CustomControllerPresentationClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25DatasourceResponseClosurea">DatasourceResponseClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24GroupChildRemovedClosurea">GroupChildRemovedClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24RemoveDestinationClosurea">RemoveDestinationClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations21SheetDismissalClosurea">SheetDismissalClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations47SheetPresentationControllerConfigurationClosurea">SheetPresentationControllerConfigurationClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations024TabBarControllerSelectedB14UpdatedClosurea">TabBarControllerSelectedTabUpdatedClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations40TabBarViewDestinationPresentationClosurea">TabBarViewDestinationPresentationClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations018TabBarViewSelectedB14UpdatedClosurea">TabBarViewSelectedTabUpdatedClosure</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>Flowable</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Flowable</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt">Observable</span></code></pre>
+
+                </div>
+              </div>
+            <p>This protocol represents Flow objects which coordinate routing, navigation, and the management of Destination objects as a user moves through an app&rsquo;s interface.</p>
+
+<p>Flows manage the creation, appearance, and removal of Destinations as a user navigates through the app. They are the single source of truth for what Destinations currently exist in the ecosystem. Typically you don&rsquo;t interact with them directly after they&rsquo;ve been configured. In most cases you can use one of the provided <code><a href="../Classes/ViewFlow.html">ViewFlow</a></code> or <code><a href="../Classes/ControllerFlow.html">ControllerFlow</a></code> classes for SwiftUI and UIKit apps respectively.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP15DestinationTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/DestinationType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP15DestinationTypeQa">DestinationType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An enum which defines all routable Destinations in the app.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">DestinationType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">DestinationType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP7TabTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/TabType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP7TabTypeQa">TabType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An enum which defines types of tabs in a tab bar.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">TabType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">TabType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP25PresentationConfigurationQa"></a>
+                    <a name="//apple_ref/swift/Alias/PresentationConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A model type which configures Destination presentations. Typically this is a <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP16PresentationTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/PresentationType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP16PresentationTypeQa">PresentationType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An enum which defines available Destination presentation types. Typically this is <code><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">PresentationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP11ContentTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/ContentType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP11ContentTypeQa">ContentType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An enum which defines the types of content that are able to be sent through Destinations.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">ContentType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP20InterfaceCoordinatorQa"></a>
+                    <a name="//apple_ref/swift/Alias/InterfaceCoordinator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP20InterfaceCoordinatorQa">InterfaceCoordinator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type of object that coordinates the presentation of a Destination within a UI framework.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">InterfaceCoordinator</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationInterfaceCoordinating.html">DestinationInterfaceCoordinating</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP18currentDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp"></a>
+                    <a name="//apple_ref/swift/Property/currentDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP18currentDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp">currentDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The currently presented Destination object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">currentDestination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP06activeA0SayAA15Destinationable_p25PresentationConfigurationQzAGRS_XPGvp"></a>
+                    <a name="//apple_ref/swift/Property/activeDestinations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP06activeA0SayAA15Destinationable_p25PresentationConfigurationQzAGRS_XPGvp">activeDestinations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An array of the active Destination objects. These are Destinations which have been presented and currently exist in the app&rsquo;s user interface, even if they are not currently visible on screen.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">activeDestinations</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP13uiCoordinator09InterfaceD0QzSgvp"></a>
+                    <a name="//apple_ref/swift/Property/uiCoordinator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP13uiCoordinator09InterfaceD0QzSgvp">uiCoordinator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code><a href="../Protocols/DestinationInterfaceCoordinating.html">DestinationInterfaceCoordinating</a></code> object which coordinates the presentation of new Destinations within the app&rsquo;s user interface.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">uiCoordinator</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP20InterfaceCoordinatorQa">InterfaceCoordinator</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP15rootDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp"></a>
+                    <a name="//apple_ref/swift/Property/rootDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP15rootDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp">rootDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The root Destination of the user interface this Flow manages.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">rootDestination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP16destinationQueueSay25PresentationConfigurationQzGvp"></a>
+                    <a name="//apple_ref/swift/Property/destinationQueue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP16destinationQueueSay25PresentationConfigurationQzGvp">destinationQueue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A queue of Destination presentations to be presented in serial order, used with the <code>presentDestinationPath</code> method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">destinationQueue</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP5startyyF"></a>
+                    <a name="//apple_ref/swift/Method/start()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP5startyyF">start()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Starts the presentation of the Destination defined by the <code>startingDestination</code> configuration object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">start</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP11destination3forAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg10Foundation4UUIDV_tF"></a>
+                    <a name="//apple_ref/swift/Method/destination(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP11destination3forAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg10Foundation4UUIDV_tF">destination(for:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the Destination object associated with an identifier.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">destination</span><span class="p">(</span><span class="k">for</span> <span class="nv">destinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code>UUID</code> identifier of the Destination to return.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code><a href="../Protocols/Destinationable.html">Destinationable</a></code> object, if one is found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP17updateDestination11destinationyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF"></a>
+                    <a name="//apple_ref/swift/Method/updateDestination(destination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP17updateDestination11destinationyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF">updateDestination(destination:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates a stored Destination with a new one matching its identifier.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">updateDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A <code><a href="../Protocols/Destinationable.html">Destinationable</a></code> object to replace the current one with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP24updateCurrentDestination11destinationyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF"></a>
+                    <a name="//apple_ref/swift/Method/updateCurrentDestination(destination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP24updateCurrentDestination11destinationyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF">updateCurrentDestination(destination:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates the currently presented Destination stored in <code><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP18currentDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp">currentDestination</a></code>.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">updateCurrentDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new current Destination.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP012updateActiveA04withyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF"></a>
+                    <a name="//apple_ref/swift/Method/updateActiveDestinations(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP012updateActiveA04withyAA15Destinationable_p25PresentationConfigurationQzAHRS_XP_tF">updateActiveDestinations(with:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a new Destination to the <code><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP06activeA0SayAA15Destinationable_p25PresentationConfigurationQzAGRS_XPGvp">activeDestinations</a></code> array.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">updateActiveDestinations</span><span class="p">(</span><span class="n">with</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/Destinationable.html">Destinationable</a></code> object to add.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP17removeDestination13destinationIDy10Foundation4UUIDV_tF"></a>
+                    <a name="//apple_ref/swift/Method/removeDestination(destinationID:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP17removeDestination13destinationIDy10Foundation4UUIDV_tF">removeDestination(destinationID:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a Destination and any of its children.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If this is the current Destination, <code><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP18currentDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp">currentDestination</a></code> will become nil.</p>
+
+</div>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeDestination</span><span class="p">(</span><span class="nv">destinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the Destination to remove.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP06removeA014destinationIDsySay10Foundation4UUIDVG_tF"></a>
+                    <a name="//apple_ref/swift/Method/removeDestinations(destinationIDs:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP06removeA014destinationIDsySay10Foundation4UUIDVG_tF">removeDestinations(destinationIDs:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes multiple Destinations and any of their children.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If one of these Destinations is the current one, <code><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP18currentDestinationAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgvp">currentDestination</a></code> will become nil.</p>
+
+</div>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeDestinations</span><span class="p">(</span><span class="nv">destinationIDs</span><span class="p">:</span> <span class="p">[</span><span class="kt">UUID</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinationIDs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of identifiers for the Destinations to remove.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP25activateCompletionClosure3for14presentationID11didComplete24isSystemNavigationActiony10Foundation4UUIDV_AKS2btF"></a>
+                    <a name="//apple_ref/swift/Method/activateCompletionClosure(for:presentationID:didComplete:isSystemNavigationAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP25activateCompletionClosure3for14presentationID11didComplete24isSystemNavigationActiony10Foundation4UUIDV_AKS2btF">activateCompletionClosure(for:<wbr>presentationID:<wbr>didComplete:<wbr>isSystemNavigationAction:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Activates a presentation completion closure corresponding to the specified Destination and presentation identifiers.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">activateCompletionClosure</span><span class="p">(</span><span class="k">for</span> <span class="nv">destinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">presentationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">didComplete</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">isSystemNavigationAction</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the Destination the closure is associated with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>presentationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the presentation configuration object the closure is associated with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>didComplete</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A Boolean indicating whether the presentation completed successfully.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isSystemNavigationAction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A Boolean indicating whether this is a system navigation action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP24defaultCompletionClosure13configuration11destinationySbcSg25PresentationConfigurationQz_AA15Destinationable_pA2IRS_XPtF"></a>
+                    <a name="//apple_ref/swift/Method/defaultCompletionClosure(configuration:destination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP24defaultCompletionClosure13configuration11destinationySbcSg25PresentationConfigurationQz_AA15Destinationable_pA2IRS_XPtF">defaultCompletionClosure(configuration:<wbr>destination:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the default completion closure that is activated when a Destination presentation has completed.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">defaultCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The presentation configuration object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/Destinationable.html">Destinationable</a></code> object which was presented.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A completion closure.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF"></a>
+                    <a name="//apple_ref/swift/Method/defaultSheetDismissalCompletionClosure(configuration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF">defaultSheetDismissalCompletionClosure(configuration:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the default completion closure that is activated when a currently presented UI sheet was dismissed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">defaultSheetDismissalCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The presentation configuration object associated with this action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A completion closure.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF"></a>
+                    <a name="//apple_ref/swift/Method/defaultNavigationBackCompletionClosure(configuration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF">defaultNavigationBackCompletionClosure(configuration:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the default completion closure that is activated when a UI navigation path has moved back to the previous Destination.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">defaultNavigationBackCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The presentation configuration object associated with this action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A completion closure.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP22presentDestinationPath4pathySay25PresentationConfigurationQzG_tF"></a>
+                    <a name="//apple_ref/swift/Method/presentDestinationPath(path:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP22presentDestinationPath4pathySay25PresentationConfigurationQzG_tF">presentDestinationPath(path:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Presents a nested path of Destination objects, displaying them serially within the user interface.</p>
+<h2 id='discussion' class='heading'>Discussion</h2>
+
+<p>This method can be used to provide deep links into an app&rsquo;s interface.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">presentDestinationPath</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>path</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of presentation configuration objects. The order of the configuration objects in the array determines the order in which their associated Destinations will be presented.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP29presentNextDestinationInQueueAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgyF"></a>
+                    <a name="//apple_ref/swift/Method/presentNextDestinationInQueue()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP29presentNextDestinationInQueueAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgyF">presentNextDestinationInQueue()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Presents the next Destination in the <code><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP16destinationQueueSay25PresentationConfigurationQzGvp">destinationQueue</a></code> array, if one exists.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The newly presented Destination, if any configuration objects were left in the queue.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP29presentationCompletionClosure3for11destinationySbcSg25PresentationConfigurationQz_AA15Destinationable_pAA011DestinationH0Cy0K4TypeQz07ContentL0Qz03TabL0QzGAIRS_XPSgtF"></a>
+                    <a name="//apple_ref/swift/Method/presentationCompletionClosure(for:destination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP29presentationCompletionClosure3for11destinationySbcSg25PresentationConfigurationQz_AA15Destinationable_pAA011DestinationH0Cy0K4TypeQz07ContentL0Qz03TabL0QzGAIRS_XPSgtF">presentationCompletionClosure(for:<wbr>destination:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a closure to run when a presentation has completed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">presentationCompletionClosure</span><span class="p">(</span><span class="k">for</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP7TabTypeQa">TabType</a></span><span class="o">&gt;&gt;</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A presentation configuration model to use with the closure.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Destination being presented. This is not used with system navigation events.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The presentation closure.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP23logDestinationPresented11destination13configurationyAA15Destinationable_p25PresentationConfigurationQzAIRS_XPSg_AItF"></a>
+                    <a name="//apple_ref/swift/Method/logDestinationPresented(destination:configuration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP23logDestinationPresented11destination13configurationyAA15Destinationable_p25PresentationConfigurationQzAIRS_XPSg_AItF">logDestinationPresented(destination:<wbr>configuration:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Logs the type of Destination presentation.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">logDestinationPresented</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Destination that was presented.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The presentation configuration model associated with this presentation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>
