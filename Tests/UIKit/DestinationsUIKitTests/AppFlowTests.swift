@@ -15,18 +15,12 @@ import Destinations
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
         
     let testDestinations = TestDestinations()
-    
-    
-    override func setUpWithError() throws {
 
-    }
-
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         sceneDelegate?.navigationController.setViewControllers([], animated: false)
         sceneDelegate?.navigationController = UINavigationController()
         sceneDelegate?.window?.rootViewController = sceneDelegate?.createRootViewController()
 
-        try super.tearDownWithError()
     }
 
 

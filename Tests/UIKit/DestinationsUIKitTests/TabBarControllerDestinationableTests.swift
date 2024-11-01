@@ -14,16 +14,15 @@ import UIKit
 @MainActor final class TabBarControllerDestinationableTests: XCTestCase, DestinationTypes {
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         DestinationsOptions.logger.options.maximumOutputLevel = .verbose
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         sceneDelegate?.navigationController.setViewControllers([], animated: false)
         sceneDelegate?.navigationController = UINavigationController()
         sceneDelegate?.window?.rootViewController = sceneDelegate?.createRootViewController()
 
-        try super.tearDownWithError()
     }
 
     func test_tab_for_destinationID() {

@@ -572,11 +572,11 @@ extension UIViewController {
 
 extension XCTestCase {
 
-    var appDelegate: AppDelegate {
+    @MainActor var appDelegate: AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
 
-    var sceneDelegate: SceneDelegate? {
+    @MainActor var sceneDelegate: SceneDelegate? {
         return UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
     }
 
