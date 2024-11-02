@@ -411,8 +411,6 @@
             
             <h1 id='destinations' class='heading'>Destinations</h1>
 
-<p><img src="https://img.shields.io/badge/Swift-5.10_%7C_6.0-005AA5.svg" alt="Static Badge"> <img src="https://img.shields.io/badge/Platforms-iOS-005AA5.svg" alt="Static Badge"> <img src="https://img.shields.io/badge/License-MIT-005AA5.svg" alt="License" title="License"></p>
-
 <p>Destinations is a Swift library for UIKit and SwiftUI that is designed to remove application and business logic from your interfaces, manage navigation flow, and abstract datasource interactions so that your user interfaces can focus again on the user. It is based on a philosophy that emphasizes clear separation of concerns, that each significant <code>View</code> or <code>UIViewController</code> in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change.</p>
 
 <ul>
@@ -423,93 +421,11 @@
 <li>A flexible and extensible, protocol-based system to fit your project&rsquo;s needs, including custom UI</li>
 <li>A similar API for both UIKit and SwiftUI, and generic enough to allow further platform support</li>
 <li>Comes with common framework implementations, but extensible enough to provide your own</li>
-<li>Full <a href="https://poetmountain.github.io/Destinations/">documentation</a></li>
 </ul>
-<h2 id='getting-started' class='heading'>Getting Started</h2>
-<h4 id='get-started-with-the-strong-a-href-guides-userguide-md-user-guide-a-strong-for-detailed-explanations-and-examples' class='heading'>Get started with the <strong><a href="Guides/UserGuide.md">user guide</a></strong> for detailed explanations and examples.</h4>
+<h5 id='check-out-destinations-on-strong-a-href-https-github-com-poetmountain-destinations-github-a-strong-for-more-detailed-explanations-and-examples' class='heading'>Check out Destinations on <strong><a href="https://github.com/poetmountain/Destinations">GitHub</a></strong> for more detailed explanations and examples!</h5>
 
-<p>Also check out the <a href="Examples">Examples projects</a> to see Destinations in action in UIKit and SwiftUI, or dive deep into the source <a href="https://poetmountain.github.io/Destinations/">Documentation</a>.</p>
-<h2 id='overview' class='heading'>Overview</h2>
-
-<p>Keeping application logic, tight couplings to datasources and system APIs, and knowledge of other views out of your views and view controllers can be a constant battle, compounded by often tight timelines to get a feature shipped. Destinations is a library designed from the ground up to address this problem.</p>
-
-<p>Destinations is designed to represent each significant interface element – typically one that would be presented as the active view on the screen – as an abstract object that conforms to the <code><a href="Protocols/Destinationable.html">Destinationable</a></code> protocol, but for shorthand I&rsquo;ll refer to as a Destination. A Destination&rsquo;s role in the ecosystem is to represent a discrete user interface screen and to manage user interaction events and Interactor requests on behalf of that interface. And what is an Interactor? Think of it as a black box you can attach to a Destination which handles logic, system APIs, or datasource requests. It could be as simple as a counter or as complex as a cloud syncing service. A Destination doesn&rsquo;t handle any UI directly though; that remains the responsibility of the interface. A Destination allows its interface to focus on that task. And then above the Destination is the Flow object, which as you might expect manages the flow from Destination to Destination as a user navigates through the app, presenting each Destination that is built using a Provider and using configuration models you have defined.</p>
-
-<p>Those configuration models, called <code><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></code>s and <code><a href="Structs/InteractorConfiguration.html">InteractorConfiguration</a></code>s, are where things get more interesting. Let&rsquo;s say you&rsquo;re making a UIKit app and create a <code><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></code> which will present a a detail screen in the currently active navigation controller. You would do something like this:</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">detailPresentation</span> <span class="o">=</span> <span class="kt">DestinationPresentation</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destinationType</span><span class="p">:</span> <span class="o">.</span><span class="n">detail</span><span class="p">,</span> <span class="nv">presentationType</span><span class="p">:</span> <span class="o">.</span><span class="nf">navigationController</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="n">present</span><span class="p">))</span>
-</code></pre>
-
-<p>Now we need to feed that into a Provider. Each Provider builds a specific Destination, and those Providers are used by the Flow each time a new Destination needs to be created. So the Provider we&rsquo;re going to use builds the Destination whose interface manages that navigation controller we&rsquo;re presenting the detail screen in. The <code>presentationsData</code> dictionary in the example below pairs user interaction types for that Destination with a presentation configuration model. So in this example, we&rsquo;re telling the Destination that when a user taps the <code>.detailButton</code> type, the <code>detailPresentation</code> action should be run, which will create the detail Destination and present it on-screen by pushing it onto the navigation controller.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">listProvider</span> <span class="o">=</span> <span class="kt">ListProvider</span><span class="p">(</span><span class="nv">presentationsData</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nv">detailButton</span><span class="p">:</span> <span class="n">detailPresentation</span><span class="p">])</span>
-</code></pre>
-
-<p>To enable that in your interface, all you need to do is pass that user interaction type to its Destination:</p>
-<pre class="highlight swift"><code><span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="n">handleThrowable</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="k">in</span>
-    <span class="k">try</span> <span class="k">self</span><span class="p">?</span><span class="o">.</span><span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="nf">performInterfaceAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="o">.</span><span class="n">detailButton</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>So we&rsquo;ve created an interaction where the <code>UIViewController</code> housing this button knows nothing about the detail screen or that it should be presented in its navigation controller. All of that presentation code and associated logic is handled by Destinations internally. We&rsquo;ve both strengthened the separation of concerns with this controller and also DRY&rsquo;d up the code. And creating an Interactor action and assigning it to a user interaction is similarly easy.</p>
-
-<p>Because of that pairing between user interaction type and presentation action, we&rsquo;ve also opened up the ability to quickly reconfigure how this button functions. Let&rsquo;s say the product team wants to have the button to present a a different view in a modal sheet instead. Modifying that button&rsquo;s behavior is as easy as creating a new <code><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></code> and assigning it to the <code>.detailButton</code> type instead. This flexibility makes it possible to quickly test new behaviors, conduct A/B tests, supply mock datasources for testing, and more.</p>
-
-<p>Here&rsquo;s a simple example of an initial Destinations configuration which sets up the initial interfaces for a SwiftUI app that should display a <code>TabView</code> with two tabs and their content <code>View</code>s. For simplicity&rsquo;s sake we&rsquo;re only defining one user action, a &ldquo;colorDetail&rdquo; interaction which displays a detail <code>View</code> when a color cell is tapped. In this code we create the starting Destination, create a presentation model to handle a user selecting a color, setup the providers for the Destinations and their associated user interfaces, and finally build a <code><a href="Classes/ViewFlow.html">ViewFlow</a></code> which will manage the flow of the app.</p>
-<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">buildFlow</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">ViewFlow</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span> <span class="p">{</span>
-
-    <span class="c1">// set up starting Destination</span>
-    <span class="k">let</span> <span class="nv">startingTabs</span><span class="p">:</span> <span class="p">[</span><span class="kt">TabType</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">colors</span><span class="p">,</span> <span class="o">.</span><span class="n">home</span><span class="p">]</span>
-    <span class="k">let</span> <span class="nv">startingType</span><span class="p">:</span> <span class="kt">DestinationType</span> <span class="o">=</span> <span class="o">.</span><span class="nf">tabBar</span><span class="p">(</span><span class="nv">tabs</span><span class="p">:</span> <span class="n">startingTabs</span><span class="p">)</span>
-    <span class="k">let</span> <span class="nv">startingDestination</span> <span class="o">=</span> <span class="kt">DestinationPresentation</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destinationType</span><span class="p">:</span> <span class="n">startingType</span><span class="p">,</span> <span class="nv">presentationType</span><span class="p">:</span> <span class="o">.</span><span class="n">replaceCurrent</span><span class="p">)</span>
-
-    <span class="c1">// set up a presentation for user selecting a color</span>
-    <span class="k">let</span> <span class="nv">colorSelection</span> <span class="o">=</span> <span class="kt">DestinationPresentation</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destinationType</span><span class="p">:</span> <span class="o">.</span><span class="n">colorDetail</span><span class="p">,</span> <span class="nv">presentationType</span><span class="p">:</span> <span class="o">.</span><span class="nf">navigationController</span><span class="p">(</span><span class="nv">type</span><span class="p">:</span> <span class="o">.</span><span class="n">present</span><span class="p">))</span>
-
-    <span class="c1">// create the Destination providers</span>
-    <span class="k">let</span> <span class="nv">colorsListProvider</span> <span class="o">=</span> <span class="kt">ColorsListProvider</span><span class="p">(</span><span class="nv">presentationsData</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nf">color</span><span class="p">(</span><span class="nv">model</span><span class="p">:</span> <span class="kc">nil</span><span class="p">):</span> <span class="n">colorSelection</span><span class="p">])</span>
-    <span class="k">let</span> <span class="nv">homeProvider</span> <span class="o">=</span> <span class="kt">HomeProvider</span><span class="p">()</span>
-    <span class="k">let</span> <span class="nv">tabBarProvider</span> <span class="o">=</span> <span class="kt">TabBarProvider</span><span class="p">()</span>
-
-    <span class="k">let</span> <span class="nv">providers</span><span class="p">:</span> <span class="p">[</span><span class="kt">DestinationType</span><span class="p">:</span> <span class="kd">any</span> <span class="kt">ViewDestinationProviding</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="o">.</span><span class="nv">colorsList</span><span class="p">:</span> <span class="n">colorsListProvider</span><span class="p">,</span>
-        <span class="o">.</span><span class="nv">home</span><span class="p">:</span> <span class="n">homeProvider</span><span class="p">,</span>
-        <span class="o">.</span><span class="nf">tabBar</span><span class="p">(</span><span class="nv">tabs</span><span class="p">:</span> <span class="n">startingTabs</span><span class="p">):</span> <span class="n">tabBarProvider</span>
-    <span class="p">]</span>
-
-    <span class="k">return</span> <span class="kt">ViewFlow</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destinationProviders</span><span class="p">:</span> <span class="n">providers</span><span class="p">,</span> <span class="nv">startingDestination</span><span class="p">:</span> <span class="n">startingDestination</span><span class="p">)</span>
-
-<span class="p">}</span>
-</code></pre>
-
-<p>And here we use that <code><a href="Classes/ViewFlow.html">ViewFlow</a></code> to display its initial UI within a SwiftUI App file.</p>
-<pre class="highlight swift"><code><span class="kd">@State</span> <span class="k">var</span> <span class="nv">appFlow</span><span class="p">:</span> <span class="kt">ViewFlow</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">?</span>
-
-<span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">Scene</span> <span class="p">{</span>
-    <span class="kt">WindowGroup</span> <span class="p">{</span>
-        <span class="kt">ZStack</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="n">hasStartedAppFlow</span> <span class="p">{</span>
-                <span class="n">appFlow</span><span class="p">?</span><span class="o">.</span><span class="nf">startingDestinationView</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="o">.</span><span class="nf">onAppear</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">hasStartedAppFlow</span> <span class="o">==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">self</span><span class="o">.</span><span class="n">appFlow</span> <span class="o">=</span> <span class="nf">buildAppFlow</span><span class="p">()</span>
-                <span class="k">self</span><span class="o">.</span><span class="n">appFlow</span><span class="p">?</span><span class="o">.</span><span class="nf">start</span><span class="p">()</span>
-                <span class="n">hasStartedAppFlow</span> <span class="o">=</span> <span class="kc">true</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-<h3 id='installation' class='heading'>Installation</h3>
-
-<p>You can add Destinations to an Xcode project by adding it as a Swift package dependency.</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">product</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"Destinations"</span><span class="p">,</span> <span class="nv">package</span><span class="p">:</span> <span class="s">"Destinations"</span><span class="p">)</span>
-</code></pre>
-<h3 id='license' class='heading'>License</h3>
-
-<p>This library is released under the MIT license. See <a href="LICENSE.md">LICENSE</a> for details.</p>
-
-<p>I&rsquo;d love to know if you use Destinations in your projects!</p>
+<p>Created by <a href="https://mastodon.social/@petsound">Brett Walker</a>.<br>
+© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
 
           </div>
         </section>
