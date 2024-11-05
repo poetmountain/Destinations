@@ -47,6 +47,7 @@ public typealias TabBarControllerSelectedTabUpdatedClosure<TabType: TabTypeable>
     ///   - destination: A UIKit-based Destination to be presented.
     ///   - tab: The tab type to present this Destination in.
     ///   - shouldUpdateSelectedTab: Determines whether the selected tab should be updated.
+    ///   - presentationOptions: A model which provides options for presenting this Destination in the `UINavigationController` within the tab, including determining whether the presentation should be animated.
     func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?) throws
     
     /// Registers the specified `UINavigationControllerDelegate` with the `UINavigationController` root objects in each tab.

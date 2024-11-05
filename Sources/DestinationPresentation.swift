@@ -188,7 +188,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 if let tabBarDestination, let currentDestination {
                     do {
                         if let destinationToPresent {
-                            try tabBarDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true)
+                            try tabBarDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true, presentationOptions: navigationStackOptions)
                         } else {
                             // there's no specified Destination so we should just switch tabs
                             try tabBarDestination.updateSelectedTab(type: tab)

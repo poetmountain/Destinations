@@ -75,7 +75,8 @@ public typealias TabBarViewSelectedTabUpdatedClosure<TabType: TabTypeable> = (_ 
     ///   - destination: A SwiftUI-based Destination to be presented.
     ///   - tab: The tab type to present this Destination in.
     ///   - shouldUpdateSelectedTab: Determines whether the selected tab should be updated.
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool) throws
+    ///   - presentationOptions: A model which provides options for presenting this Destination within the tab when this tab includes a `NavigationStack`, including determining whether the presentation should be animated.
+    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?) throws
     
     /// Assigns a presentation closure to be run when a Destination is presented in a tab.
     /// - Parameter closure: The closure to run.
@@ -159,7 +160,7 @@ public extension TabBarViewDestinationable {
         selectedTabUpdatedClosure = closure
     }
     
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true) throws {
+    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil) throws {
         DestinationsOptions.logger.log("Presenting tab view \(destination.type) in tab \(tab).")
        let currentTabDestination = rootDestination(for: tab)
         
@@ -172,7 +173,8 @@ public extension TabBarViewDestinationable {
         // Otherwise replace the current View with the new one
         if let navDestination = currentTabDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
             addChild(childDestination: destination)
-            navDestination.addChild(childDestination: destination)
+            let shouldAnimate = presentationOptions?.shouldAnimate ?? true
+            navDestination.addChild(childDestination: destination, shouldAnimate: shouldAnimate)
             
         } else if let currentTabDestination {
             replaceChild(currentID: currentTabDestination.id, with: destination)

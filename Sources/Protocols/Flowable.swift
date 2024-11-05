@@ -113,7 +113,6 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// This method can be used to provide deep links into an app's interface.
     ///
     /// - Parameter path: An array of presentation configuration objects. The order of the configuration objects in the array determines the order in which their associated Destinations will be presented.
-    /// > Important: In a SwiftUI-based app, if the path contains a `DestinationPresentation` with a `tabBar` presentation type, which pushes a new Destination onto a SwiftUI `NavigationStack` within that tab, first switch to that tab by using a `DestinationPresentation` with a `presentationType` of `tabBar` and no `destinationType` before you present new Destinations in the `NavigationStack`. If you do not do this, the new `View`s may not appear.
     func presentDestinationPath(path: [PresentationConfiguration])
     
     /// Presents the next Destination in the ``destinationQueue`` array, if one exists.
