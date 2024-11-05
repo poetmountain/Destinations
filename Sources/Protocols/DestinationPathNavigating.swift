@@ -23,7 +23,8 @@ public protocol DestinationPathNavigating: AnyObject {
     
     /// Adds a Destination to the path.
     /// - Parameter item: A Destination identifier to be added to the path.
-    func addPathElement(item: UUID)
+    /// - Parameter shouldAnimate: Determines whether this path element should be animated when presented.
+    func addPathElement(item: UUID, shouldAnimate: Bool?)
     
     /// Returns the current path element. Typically this would be the identifier associated with a ``Destinationable`` object.
     /// - Returns: A `UUID` identifier of the associated element.
@@ -43,7 +44,7 @@ public protocol DestinationPathNavigating: AnyObject {
 
 public extension DestinationPathNavigating {
     
-    func addPathElement(item: UUID) {
+    func addPathElement(item: UUID, shouldAnimate: Bool = true) {
         navigationPath.append(item)
 
     }

@@ -31,8 +31,9 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
         let homepath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .magenta, name: "magenta")), assistantType: .basic)
+            PresentationConfiguration(presentationType: .tabBar(tab: .palettes), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .magenta, name: "magenta")), assistantType: .basic)
         ]
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))

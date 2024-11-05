@@ -163,6 +163,11 @@ public extension TabBarViewDestinationable {
         DestinationsOptions.logger.log("Presenting tab view \(destination.type) in tab \(tab).")
        let currentTabDestination = rootDestination(for: tab)
         
+        if shouldUpdateSelectedTab {
+            currentChildDestination = destination
+            try updateSelectedTab(type: tab)
+        }
+        
         // If the current Destination is a NavigationStack, add the presented Destination to it
         // Otherwise replace the current View with the new one
         if let navDestination = currentTabDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
@@ -179,10 +184,7 @@ public extension TabBarViewDestinationable {
             registerNavigationClosures(for: navDestination)
         }
         
-        if shouldUpdateSelectedTab {
-            currentChildDestination = destination
-            try updateSelectedTab(type: tab)
-        }
+
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {

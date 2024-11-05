@@ -23,7 +23,7 @@ public extension NavigatingControllerDestinationable {
         return false
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true) {
+    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         DestinationsOptions.logger.log("Adding \(childDestination.type) as a child of navigation controller \(self.type).", level: .verbose)
         childDestination.parentDestinationID = id
         childDestinations.append(childDestination)
@@ -31,7 +31,8 @@ public extension NavigatingControllerDestinationable {
         currentChildDestination = childDestination
 
         if let newDestination = childDestination as? any ControllerDestinationable, let newController = newDestination.currentController() {
-            controller?.pushViewController(newController, animated: true)
+            let shouldAnimate = shouldAnimate ?? true
+            controller?.pushViewController(newController, animated: shouldAnimate)
         }
     }
     

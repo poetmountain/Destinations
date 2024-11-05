@@ -27,16 +27,16 @@ public extension NavigatingViewDestinationable {
         return false
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true) {
+    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         DestinationsOptions.logger.log("Adding child \(childDestination.type) to NavigationStack \(childDestination.id)", level: .verbose)
         
-        view?.navigator.addPathElement(item: childDestination.id)
+        view?.navigator.addPathElement(item: childDestination.id, shouldAnimate: shouldAnimate)
         childDestinations.append(childDestination)
         // shouldSetDestinationAsCurrent is ignored for NavigationStacks because a new Destination should always become the current one
         currentChildDestination = childDestination
         
         childDestination.parentDestinationID = id
-
+        
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {

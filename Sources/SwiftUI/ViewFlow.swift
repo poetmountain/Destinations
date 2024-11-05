@@ -173,9 +173,8 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 closure = self.defaultSheetDismissalCompletionClosure(configuration: configuration)
                 
             default:
-                if let destination {
-                    closure = self.defaultCompletionClosure(configuration: configuration, destination: destination)
-                }
+                closure = self.defaultCompletionClosure(configuration: configuration, destination: destination)
+                
         }
         
         return closure

@@ -63,7 +63,8 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// Adds a child Destination to this group.
     /// - Parameter childDestination: A ``Destinationable`` object to add.
     /// - Parameter shouldSetDestinationAsCurrent: A Boolean which determines whether this Destination should become the current one.
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool?)
+    /// - Parameter shouldAnimate: A Boolean which determines whether this Destination should be animated when presented in the Group.
+    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool?, shouldAnimate: Bool?)
     
     /// Removes a child Destination.
     /// - Parameter destinationIdentifier: The identifier of the Destination to remove.
@@ -107,7 +108,7 @@ public extension GroupedDestinationable {
         currentDestinationChangedClosure = closure
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true) {
+    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         childDestinations.append(childDestination)
         childDestination.parentDestinationID = id
     }
