@@ -61,7 +61,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     /// The ``DestinationPathNavigating`` object associated with the Destination to be presented.
     public var navigator: (any DestinationPathNavigating)?
     
-    /// An options model that configures how a Destination is presented within a navigation stack. Currently this only applies to UIKit navigation controller presentations.
+    /// An options model that configures how a Destination is presented within a navigation stack, either for SwiftUI's `NavigationStack` or UIKit's `UINavigationController`. This includes the ability to disable the system animation when the Destination is presented.
     public var navigationStackOptions: NavigationStackPresentationOptions?
 
     /// A reference to a ``TabBarViewDestinationable`` object, should one currently exist in the UI hierarchy.
@@ -69,7 +69,6 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
        
     /// A reference to a ``TabBarControllerDestinationable`` object, should one currently exist in the UI hierarchy.
     public weak var tabBarControllerDestination: (any TabBarControllerDestinationable<DestinationPresentation, TabType>)?
-    
     
     /// A Boolean which determines whether the activation of the presentation's completion closure, referenced in the ``completionClosure`` property, should be delayed. The default value of this property is `false`.
     public var shouldDelayCompletionActivation: Bool = false
