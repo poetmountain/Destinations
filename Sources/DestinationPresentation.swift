@@ -61,12 +61,14 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     /// The ``DestinationPathNavigating`` object associated with the Destination to be presented.
     public var navigator: (any DestinationPathNavigating)?
     
+    /// An options model that configures how a Destination is presented within a navigation stack, either for SwiftUI's `NavigationStack` or UIKit's `UINavigationController`. This includes the ability to disable the system animation when the Destination is presented.
+    public var navigationStackOptions: NavigationStackPresentationOptions?
+
     /// A reference to a ``TabBarViewDestinationable`` object, should one currently exist in the UI hierarchy.
     public weak var tabBarDestination: (any TabBarViewDestinationable<DestinationPresentation, TabType>)?
        
     /// A reference to a ``TabBarControllerDestinationable`` object, should one currently exist in the UI hierarchy.
     public weak var tabBarControllerDestination: (any TabBarControllerDestinationable<DestinationPresentation, TabType>)?
-    
     
     /// A Boolean which determines whether the activation of the presentation's completion closure, referenced in the ``completionClosure`` property, should be delayed. The default value of this property is `false`.
     public var shouldDelayCompletionActivation: Bool = false
@@ -77,7 +79,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     ///
     /// - Important: Setting this property to `false` can have side effects on the presentation of future Destinations within `GroupedDestinationable` objects whose placement depends on the location of a previous Destination. For example, if you present a Destination in a non-active child of a  `GroupedDestinationable` object with this property set to `false`, then present another Destination with a `presentationType` of `navigationController`, depending on how you handle this property the Destination may not be put into the same child of the group because the active child will be different than if this property had been `true`. To overcome this, you would need to use a `presentationType` on the second presentation that targets the same child directly.
     public var shouldSetDestinationAsCurrent: Bool = true
-    
+        
     /// A completion closure which should be run upon completion of the presentation of the Destination.
     public var completionClosure: ((Bool) -> Void)?
     
@@ -94,7 +96,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     ///   - navigator: The ``DestinationPathNavigating`` object associated with the Destination to be presented.
     ///   - shouldDelayCompletionActivation: Determines whether the activation of the presentation's completion closure, referenced in the ``completionClosure`` property, should be delayed.
     ///   - completionClosure: A completion closure which should be run upon completion of the presentation of the Destination.
-    public init(destinationType: DestinationType? = nil, presentationType: PresentationType, contentType: ContentType? = nil, actionType: DestinationActionType = .presentation, actionTargetID: UUID? = nil, assistantType: ActionAssistantType, currentDestinationID: UUID? = nil, parentDestinationID: UUID? = nil, navigator: (any DestinationPathNavigating)? = nil, shouldDelayCompletionActivation: Bool? = false, completionClosure: ( (Bool) -> Void)? = nil) {
+    public init(destinationType: DestinationType? = nil, presentationType: PresentationType, contentType: ContentType? = nil, actionType: DestinationActionType = .presentation, actionTargetID: UUID? = nil, assistantType: ActionAssistantType, currentDestinationID: UUID? = nil, parentDestinationID: UUID? = nil, navigator: (any DestinationPathNavigating)? = nil, navigationStackOptions: NavigationStackPresentationOptions? = nil, shouldDelayCompletionActivation: Bool? = false, completionClosure: ( (Bool) -> Void)? = nil) {
         self.destinationType = destinationType
         self.presentationType = presentationType
         self.contentType = contentType
@@ -104,6 +106,8 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
         self.currentDestinationID = currentDestinationID
         self.parentDestinationID = parentDestinationID
         self.navigator = navigator
+        self.navigationStackOptions = navigationStackOptions
+        
         self.completionClosure = completionClosure
         
         if let shouldDelayCompletionActivation {
@@ -127,6 +131,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             currentDestinationID: self.currentDestinationID,
             parentDestinationID: self.parentDestinationID,
             navigator: self.navigator,
+            navigationStackOptions: self.navigationStackOptions,
             shouldDelayCompletionActivation: self.shouldDelayCompletionActivation,
             completionClosure: self.completionClosure)
     }
@@ -156,7 +161,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                     switch navigationType {
                         case .present:
                             if let destinationToPresent {
-                                navigationDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent)
+                                navigationDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                                 completionClosure?(true)
                             } else {
                                 completionClosure?(false)
@@ -182,7 +187,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 if let tabBarDestination, let currentDestination {
                     do {
                         if let destinationToPresent {
-                            try tabBarDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true)
+                            try tabBarDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true, presentationOptions: navigationStackOptions)
                         } else {
                             // there's no specified Destination so we should just switch tabs
                             try tabBarDestination.updateSelectedTab(type: tab)
@@ -273,20 +278,22 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 case .present:
                     if let destinationToPresent {
                         if let navController = currentDestination as? any NavigatingControllerDestinationable<DestinationPresentation> {
-                            navController.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent)
+                            navController.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             completionClosure?(true)
                             
                         } else if let navController = currentDestination?.currentController()?.navigationController, let newController = destinationToPresent.currentController() {
                             if let navController = navController as? any NavigationControllerDestinationInterfacing, let navDestination = navController.destination() as? any NavigatingControllerDestinationable<DestinationPresentation> {
-                                navDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent)
+                                navDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             } else {
-                                navController.pushViewController(newController, animated: true)
+                                let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
+                                navController.pushViewController(newController, animated: shouldAnimate)
                             }
                             
                             completionClosure?(true)
                             
                         } else if let navController = rootController as? UINavigationController, let newController = destinationToPresent.currentController() {
-                            navController.pushViewController(newController, animated: true)
+                            let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
+                            navController.pushViewController(newController, animated: shouldAnimate)
                             completionClosure?(true)
                             
                         } else {
@@ -306,7 +313,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             if let tabBarControllerDestination, let currentDestination {
                     do {
                         if let destinationToPresent {
-                            try tabBarControllerDestination.presentDestination(destination: destinationToPresent, in: tab)
+                            try tabBarControllerDestination.presentDestination(destination: destinationToPresent, in: tab, presentationOptions: navigationStackOptions)
                         } else {
                             // there's no specified Destination so we should just switch tabs
                             try tabBarControllerDestination.updateSelectedTab(type: tab)

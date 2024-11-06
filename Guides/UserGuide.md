@@ -127,6 +127,9 @@ Destinations has several built-in presentation types which `DestinationPresentat
 * `replaceCurrent` This presentation type replaces the currently-presented Destination with a new Destination in system UI components which allow that.
 * `sheet(type: SheetPresentationType, options: SheetPresentationOptions?)` This presentation type presents (or dismisses) a Destination in a sheet. The `options` parameter allows you to customize how the sheet is presented, configuring SwiftUI-specific options with a `ViewSheetPresentationOptions` model and UIKit-specific options with a `ControllerSheetPresentationOptions` model.
 * `destinationPath(path: [DestinationPresentation])` This presentation type presents a path of multiple Destination objects, useful for providing deep linking functionality or building complex state with one user interaction.
+
+  Note that the `destinationPath` presentation type will automatically disable the navigation stack presentation animations of all of its Destination presentations to better support deep linking use cases. This default behavior can be overriden by adding a `NavigationStackPresentationOptions` model with its `shouldAnimate` property set to true for each `DestinationPresentation` you want to change.
+  
 * `custom(presentation: CustomPresentation<DestinationPresentation>)` This presentation type enables you to present a custom presentation of a Destination. It can be used to support the presentation of custom UI, as well as system components which Destinations does not directly support. The `presentation` parameter allows you to use a `CustomPresentation` model with specialized closures to provide whatever functionality you need.
 
 ### Interactors

@@ -56,6 +56,9 @@ import Foundation
     var navigator: (any DestinationPathNavigating)? { get set }
 #endif
     
+    /// An options model that configures how a Destination is presented within a navigation stack. Currently this only applies to UIKit navigation controller presentations.
+    var navigationStackOptions: NavigationStackPresentationOptions? { get set }
+    
 #if canImport(SwiftUI)
     /// A reference to a ``TabBarViewDestinationable`` object, should one currently exist in the UI hierarchy.
     var tabBarDestination: (any TabBarViewDestinationable<Self, TabType>)? { get set }

@@ -95,7 +95,7 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     ///   - configuration: The presentation configuration object.
     ///   - destination: The ``Destinationable`` object which was presented.
     /// - Returns: A completion closure.
-    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: any Destinationable<PresentationConfiguration>) -> PresentationCompletionClosure?
+    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: (any Destinationable<PresentationConfiguration>)?) -> PresentationCompletionClosure?
     
     /// Returns the default completion closure that is activated when a currently presented UI sheet was dismissed.
     /// - Parameter configuration: The presentation configuration object associated with this action.
@@ -162,6 +162,14 @@ public extension Flowable {
         
         destinationQueue = path
         
+        // By default, navigation controller push animations are turned off for path presentations
+        for presentation in destinationQueue {
+            if presentation.navigationStackOptions == nil {
+                let navigationOptions = NavigationStackPresentationOptions(shouldAnimate: false)
+                presentation.navigationStackOptions = navigationOptions
+            }
+        }
+        
         let nextDestination = presentNextDestinationInQueue()
         
         if rootDestination == nil {
@@ -222,19 +230,21 @@ public extension Flowable {
         
     }
     
-    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: any Destinationable<PresentationConfiguration>) -> PresentationCompletionClosure? {
+    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: (any Destinationable<PresentationConfiguration>)? = nil) -> PresentationCompletionClosure? {
         
         return { [weak self, weak configuration, weak destination] didComplete in
             guard let strongSelf = self else { return }
-            guard let destination else { return }
+            //guard let destination else { return }
             guard let configuration else { return }
             
-            if didComplete {
+            if didComplete == true {
                 DestinationsOptions.logger.log("✌️ Default presentation completion closure", level: .verbose)
-      
-                strongSelf.updateActiveDestinations(with: destination)
-            
-                if let groupedDestination = destination as? any GroupedDestinationable<PresentationConfiguration> {
+                
+                if let destination {
+                    strongSelf.updateActiveDestinations(with: destination)
+                }
+                
+                if let destination, let groupedDestination = destination as? any GroupedDestinationable<PresentationConfiguration> {
                     let currentChildDestination = groupedDestination.currentChildDestination
                     
                     if let parentDestinationID = destination.parentDestinationID, let currentChildDestination, let parent = self?.destination(for: parentDestinationID) as? any GroupedDestinationable<PresentationConfiguration>, (configuration.shouldSetDestinationAsCurrent == true || parent.supportsIgnoringCurrentDestinationStatus == false) {
@@ -263,10 +273,11 @@ public extension Flowable {
                     strongSelf.presentNextDestinationInQueue()
                                         
                 } else {
-                    strongSelf.updateCurrentDestination(destination: destination)
-
-                    strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
-
+                    if let destination {
+                        strongSelf.updateCurrentDestination(destination: destination)
+                        strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
+                    }
+                    
                     strongSelf.uiCoordinator?.destinationToPresent = nil
 
                     strongSelf.presentNextDestinationInQueue()

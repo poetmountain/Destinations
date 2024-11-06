@@ -47,7 +47,8 @@ public typealias TabBarControllerSelectedTabUpdatedClosure<TabType: TabTypeable>
     ///   - destination: A UIKit-based Destination to be presented.
     ///   - tab: The tab type to present this Destination in.
     ///   - shouldUpdateSelectedTab: Determines whether the selected tab should be updated.
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool) throws
+    ///   - presentationOptions: A model which provides options for presenting this Destination in the `UINavigationController` within the tab, including determining whether the presentation should be animated.
+    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?) throws
     
     /// Registers the specified `UINavigationControllerDelegate` with the `UINavigationController` root objects in each tab.
     /// - Parameter coordinator: The `UINavigationControllerDelegate` coordinator object to register.
@@ -173,11 +174,12 @@ public extension TabBarControllerDestinationable {
         
     }
     
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true) throws {
+    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil) throws {
         DestinationsOptions.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
 
         if let navigationController = navControllersForTabs[tab], let controllerToPresent = destination.currentController() {
-            navigationController.pushViewController(controllerToPresent, animated: true)
+            let shouldAnimate = presentationOptions?.shouldAnimate ?? true
+            navigationController.pushViewController(controllerToPresent, animated: shouldAnimate)
             addChild(childDestination: destination)
             
             if shouldUpdateSelectedTab {

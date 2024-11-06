@@ -158,9 +158,8 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
                 closure = self.defaultSheetDismissalCompletionClosure(configuration: configuration)
                 
             default:
-                if let destination {
-                    closure = self.defaultCompletionClosure(configuration: configuration, destination: destination)
-                }
+                closure = self.defaultCompletionClosure(configuration: configuration, destination: destination)
+                
         }
         
         return closure

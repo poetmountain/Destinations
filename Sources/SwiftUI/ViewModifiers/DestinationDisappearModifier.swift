@@ -39,9 +39,10 @@ public struct DestinationDisappearModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .onDisappear {
-                DestinationsOptions.logger.log("Destination is disappearing \(destination?.description) :: isSystemNavigating? \(destination?.isSystemNavigating)", level: .verbose)
 
                 guard let destination, let presentationID, destination.isSystemNavigating == true else { return }
+                
+                DestinationsOptions.logger.log("Destination is disappearing \(destination.description)", level: .verbose)
                 
                 disappearanceAction?()
 

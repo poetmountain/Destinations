@@ -7,7 +7,7 @@
 //
 //  Licensed under MIT License. See LICENSE file in this repository.
 
-import Foundation
+import SwiftUI
 
 /// This class brings SwiftUI's `NavigationStack` into the Destinations ecosystem, handling the state of the stack.
 @Observable
@@ -30,4 +30,13 @@ public final class DestinationNavigator: DestinationPathNavigating {
         }
     }
     
+    public func addPathElement(item: UUID, shouldAnimate: Bool? = true) {
+        let shouldAnimate = shouldAnimate ?? true
+        
+        var transaction = Transaction()
+        transaction.disablesAnimations = !shouldAnimate
+        withTransaction(transaction) {
+            self.navigationPath.append(item)
+        }
+    }
 }
