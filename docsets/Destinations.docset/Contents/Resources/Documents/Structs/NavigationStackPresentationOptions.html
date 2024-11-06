@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DestinationInterfaceCoordinatorDelegate Protocol Reference</title>
+    <title>NavigationStackPresentationOptions Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/DestinationInterfaceCoordinatorDelegate" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/NavigationStackPresentationOptions" class="dashAnchor"></a>
 
-    <a title="DestinationInterfaceCoordinatorDelegate Protocol Reference"></a>
+    <a title="NavigationStackPresentationOptions Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -36,9 +36,9 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Destinations</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      <a class="breadcrumb" href="../Protocols.html">Protocols</a>
+      <a class="breadcrumb" href="../Structs.html">Structures</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      DestinationInterfaceCoordinatorDelegate Protocol Reference
+      NavigationStackPresentationOptions Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -416,15 +416,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>DestinationInterfaceCoordinatorDelegate</h1>
+            <h1>NavigationStackPresentationOptions</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInterfaceCoordinatorDelegate</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">NavigationStackPresentationOptions</span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol defines methods that an object should implement to receive updates from <code>DestinationInterfaceCoordinator</code> objects.</p>
+            <p>An options model that configures how a Destination is presented within a navigation stack, either within a <code>NavigationStack</code> in SwiftUI or a <code>UINavigationController</code> in UIKit.</p>
 
           </div>
         </section>
@@ -436,9 +436,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations39DestinationInterfaceCoordinatorDelegateP017didRequestCurrentB6Change03newB2IDy10Foundation4UUIDV_tF"></a>
-                    <a name="//apple_ref/swift/Method/didRequestCurrentDestinationChange(newDestinationID:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations39DestinationInterfaceCoordinatorDelegateP017didRequestCurrentB6Change03newB2IDy10Foundation4UUIDV_tF">didRequestCurrentDestinationChange(newDestinationID:<wbr>)</a>
+                    <a name="/s:12Destinations34NavigationStackPresentationOptionsV13shouldAnimateSbvp"></a>
+                    <a name="//apple_ref/swift/Property/shouldAnimate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations34NavigationStackPresentationOptionsV13shouldAnimateSbvp">shouldAnimate</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -446,14 +446,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Notifies the delegate object when the currently presented Destination was requested to change.</p>
+                        <p>Determines whether a Destination should be presented with an animation when added to a navigation stack. Setting this property to false will result in the default system animation not being shown when a Destination is added to a <code>NavigationStack</code> or <code>UINavigationController</code>.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didRequestCurrentDestinationChange</span><span class="p">(</span><span class="nv">newDestinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">shouldAnimate</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations34NavigationStackPresentationOptionsV13shouldAnimateACSbSg_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(shouldAnimate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations34NavigationStackPresentationOptionsV13shouldAnimateACSbSg_tcfc">init(shouldAnimate:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The initializer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">shouldAnimate</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -464,12 +491,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>newDestinationID</em>
+                                <em>shouldAnimate</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The identifier of a new Destination to present.</p>
+                                  <p>Determines whether a Destination should be presented with an animation when added to a navigation stack.</p>
                                 </div>
                               </td>
                             </tr>

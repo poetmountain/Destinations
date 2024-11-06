@@ -341,6 +341,9 @@
                 <a class="nav-group-task-link" href="../Structs/InterfaceActionData.html">InterfaceActionData</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/NavigationStackPresentationOptions.html">NavigationStackPresentationOptions</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Sheet.html">Sheet</a>
               </li>
               <li class="nav-group-task">
@@ -686,9 +689,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations31TabBarControllerDestinationableP18presentDestination11destination2in020shouldUpdateSelectedB0yAA0dE0_p25PresentationConfigurationQzAJRS_XP_0B4TypeQzSbtKF"></a>
-                    <a name="//apple_ref/swift/Method/presentDestination(destination:in:shouldUpdateSelectedTab:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP18presentDestination11destination2in020shouldUpdateSelectedB0yAA0dE0_p25PresentationConfigurationQzAJRS_XP_0B4TypeQzSbtKF">presentDestination(destination:<wbr>in:<wbr>shouldUpdateSelectedTab:<wbr>)</a>
+                    <a name="/s:12Destinations31TabBarControllerDestinationableP18presentDestination11destination2in020shouldUpdateSelectedB019presentationOptionsyAA0dE0_p25PresentationConfigurationQzAKRS_XP_0B4TypeQzSbAA015NavigationStackoN0VSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/presentDestination(destination:in:shouldUpdateSelectedTab:presentationOptions:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP18presentDestination11destination2in020shouldUpdateSelectedB019presentationOptionsyAA0dE0_p25PresentationConfigurationQzAKRS_XP_0B4TypeQzSbAA015NavigationStackoN0VSgtKF">presentDestination(destination:<wbr>in:<wbr>shouldUpdateSelectedTab:<wbr>presentationOptions:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -716,7 +719,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">in</span> <span class="nv">tab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">,</span> <span class="nv">shouldUpdateSelectedTab</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">in</span> <span class="nv">tab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">,</span> <span class="nv">shouldUpdateSelectedTab</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">presentationOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/NavigationStackPresentationOptions.html">NavigationStackPresentationOptions</a></span><span class="p">?)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -757,6 +760,18 @@
                               <td>
                                 <div>
                                   <p>Determines whether the selected tab should be updated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>presentationOptions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A model which provides options for presenting this Destination in the <code>UINavigationController</code> within the tab, including determining whether the presentation should be animated.</p>
                                 </div>
                               </td>
                             </tr>
