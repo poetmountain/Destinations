@@ -10,13 +10,13 @@
 import Foundation
 
 /// This protocol represents an Interactor configuration model which defines a request to perform an action.
-public protocol InteractorRequestConfiguring {
+public protocol InteractorRequestConfiguring: Sendable {
     
     /// An enum which defines types of actions for a particular Interactor.
     associatedtype ActionType: InteractorRequestActionTypeable
     
     /// The type of data that is returned from a datasource.
-    associatedtype ResultData: Hashable
+    associatedtype ResultData: Hashable, Sendable
     
     /// The type of action to request being performed.
     var action: ActionType { get set }

@@ -24,7 +24,7 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
     }
     
     /// The hosting controller for the SwiftUI `View`.
-    public var hostingController: UIHostingController<Content>
+    public var hostingController: UIHostingController<Content>?
     
     /// The initializer.
     /// - Parameters:
@@ -37,8 +37,12 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
 
     }
     
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupUI() {
-        if let parent = parentController {
+        if let parent = parentController, let hostingController {
             parent.attach(viewController: hostingController)
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
             
@@ -51,15 +55,11 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
         }
     }
     
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public func cleanupResources() {
+        print("cleaning up swiftui adapter")
+        hostingController?.removeFromParent()
+        hostingController?.didMove(toParent: nil)
     }
-    
-//    deinit {
-//        
-//        hostingController.removeFromParent()
-//        hostingController.didMove(toParent: nil)
-//    }
 
 }
 

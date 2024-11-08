@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// This class coordinates the presentation of a Destination within the SwiftUI framework.
-@MainActor public final class DestinationSwiftUICoordinator: NSObject, DestinationSwiftUICoordinating {
+public final class DestinationSwiftUICoordinator: NSObject, DestinationSwiftUICoordinating {
     
     /// A reference to the root `View` in a SwiftUI app.
     public var rootView: (any View)?

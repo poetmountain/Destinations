@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents a Destination navigator path object. It should be implemented to allow for system-level navigation stacks like SwiftUI's `NavigationStack` into the Destinations ecosystem, which the ``DestinationNavigator`` class implements.
-public protocol DestinationPathNavigating: AnyObject {
+@MainActor public protocol DestinationPathNavigating: AnyObject {
     
     /// An array of `UUID` identifiers representing Destinations in the associated navigation path.
     var navigationPath: [UUID] { get set }

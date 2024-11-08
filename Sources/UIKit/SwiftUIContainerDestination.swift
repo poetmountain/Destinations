@@ -63,5 +63,8 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
         self.systemNavigationConfigurations = navigationConfigurations
     }
 
+    public func cleanupResources() {
+        controller?.cleanupResources()
+    }
 }
 
