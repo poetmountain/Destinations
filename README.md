@@ -97,7 +97,8 @@ var body: some Scene {
 
 ### Requirements
 
-* iOS 17 or above
+* Xcode 16.0+
+* iOS 17+
 * Swift 5.10 or above. It has been tested against Swift 6 Strict Concurrency.
 
 ### Installation
