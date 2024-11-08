@@ -95,6 +95,11 @@ var body: some Scene {
 }
 ```
 
+### Requirements
+
+* iOS 17 or above
+* Swift 5.10 or above. It has been tested against Swift 6 Strict Concurrency.
+
 ### Installation
 
 You can add Destinations to an Xcode project by adding it as a Swift package dependency.
