@@ -258,6 +258,84 @@ import Destinations
         }
     }
     
+    
+    func test_replace_destination() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationController(type: .present), assistantType: .basic)
+
+        let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): replaceAction])
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let tabBarProvider = TestTabBarProvider()
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            startingType: tabBarProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignRoot(rootController: root)
+        }
+        appFlow.start()
+        
+        wait(timeout: 0.1)
+        
+        if let currentDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let controller = currentDestination.currentController() as? TestColorsViewController {
+            controller.prepareForFirstAppearance()
+            wait(timeout: 0.1)
+
+            let indexpath = IndexPath(item: 1, section: 0)
+            controller.selectCell(at: indexpath)
+            
+            wait(timeout: 0.7)
+
+            if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
+                XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
+                
+                wait(timeout: 0.7)
+                
+                if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
+                    if let newController = try? XCTUnwrap(newDestination.currentController() as? ColorDetailViewController, "couldn't find colorDetail") {
+                        
+                        newController.prepareForFirstAppearance()
+                        wait(timeout: 0.7)
+                        
+                        newController.handleDetailTap()
+                        wait(timeout: 1.0)
+                        
+                        let detailCount = appFlow.activeDestinations.count(where: { $0.type == .colorDetail })
+                        XCTAssertEqual(detailCount, 1, "Expected activeDestinationsn to contain one instance of type .colorDetail, but found \(detailCount)")
+                        
+                        // The remaining .colorDetail Destination should be the new Destination, not the old one
+                        let detail = appFlow.activeDestinations.first(where: { $0.type == .colorDetail })
+                        XCTAssertEqual(detail?.id, newDestination.id)
+                        
+                    }
+                }
+                
+
+            } else {
+                XCTFail("no tapped model found")
+            }
+        } else {
+            XCTFail("expected \(startingType) to be TestColorsViewController, found \(String(describing: appFlow.currentDestination?.type)) instead")
+        }
+    }
+    
+    
     func test_sheet_presentation() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")

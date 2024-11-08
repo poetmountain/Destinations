@@ -346,23 +346,24 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                     completionClosure?(false)
                     return
                 }
-                
-                if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
-                    let currentID = currentDestination.id
-                    groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent)
-                    removeDestinationClosure?(currentID)
-                    
-                } else if let currentDestination, let currentController = currentDestination.currentController() {
-                    let parent = currentController.parent
 
+                if let currentDestination, let currentController = currentDestination.currentController() {
+                    let parent = currentController.parent
+                    
                     if let navController = parent as? UINavigationController {
                         navController.replaceLastController(with: newController)
-
+                        removeDestinationClosure?(currentDestination.id)
+                        
                     } else {
                         currentController.removeFromParent()
                         parent?.attach(viewController: newController)
                         removeDestinationClosure?(currentDestination.id)
                     }
+                    
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                    let currentID = currentDestination.id
+                    groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent)
+                    removeDestinationClosure?(currentID)
                     
                 } else {
                     rootController.attach(viewController: newController)

@@ -24,7 +24,7 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
     }
     
     /// The hosting controller for the SwiftUI `View`.
-    public var hostingController: UIHostingController<Content>?
+    public var hostingController: UIHostingController<Content>
     
     /// The initializer.
     /// - Parameters:
@@ -42,7 +42,7 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
     }
     
     private func setupUI() {
-        if let parent = parentController, let hostingController {
+        if let parent = parentController {
             parent.attach(viewController: hostingController)
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
             
@@ -56,9 +56,8 @@ public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIA
     }
     
     public func cleanupResources() {
-        print("cleaning up swiftui adapter")
-        hostingController?.removeFromParent()
-        hostingController?.didMove(toParent: nil)
+        hostingController.removeFromParent()
+        hostingController.didMove(toParent: nil)
     }
 
 }

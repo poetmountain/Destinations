@@ -44,7 +44,7 @@ final class SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & S
         let view = self.viewSetup(destination, configuration.contentType)
         
         let adapter = SwiftUIAdapter<SwiftUIView>(content: { view })
-         adapter.hostingController?.sizingOptions = .intrinsicContentSize
+         adapter.hostingController.sizingOptions = .intrinsicContentSize
 
         let containerController = SwiftUIContainerController<SwiftUIView>(adapter: adapter)
        destination.assignAssociatedController(controller: containerController)

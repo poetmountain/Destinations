@@ -350,7 +350,8 @@ public extension Destinationable {
                 
                 
             } else {
-                let message = "No interactor assistant was found while constructing Interface action closure for type \(type.rawValue)"
+                let template = DestinationsOptions.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                let message = String(format: template, type.rawValue)
                 strongSelf.logError(error: DestinationsError.missingInterfaceActionAssistant(message: message))
             }
 
