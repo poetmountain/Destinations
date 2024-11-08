@@ -99,7 +99,7 @@ var body: some Scene {
 
 * Xcode 16.0+
 * iOS 17+
-* Swift 5.10 or above. It has been tested against Swift 6 Strict Concurrency.
+* Swift 5.10 or above. Swift 6 Strict Concurrency mode is currently unsupported but being worked on!
 
 ### Installation
 
