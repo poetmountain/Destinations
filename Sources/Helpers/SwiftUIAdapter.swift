@@ -11,7 +11,7 @@ import UIKit
 import SwiftUI
 
  /// Adapts a SwiftUI `View` for use inside a `UIViewController`, using a `UIHostingController` to present it within UIKit.
-@MainActor public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIAdaptable {
+public final class SwiftUIAdapter<Content: ViewDestinationInterfacing>: SwiftUIAdaptable {
     
     /// A SwiftUI `View` to display.
     public var view: Content
@@ -55,10 +55,11 @@ import SwiftUI
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        hostingController.removeFromParent()
-        hostingController.didMove(toParent: nil)
-    }
+//    deinit {
+//        
+//        hostingController.removeFromParent()
+//        hostingController.didMove(toParent: nil)
+//    }
 
 }
 

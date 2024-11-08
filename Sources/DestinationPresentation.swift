@@ -437,11 +437,11 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
 }
 
 extension DestinationPresentation: Hashable, Equatable {
-    public func hash(into hasher: inout Hasher) {
+    nonisolated public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    public static func == (lhs: DestinationPresentation, rhs: DestinationPresentation) -> Bool {
+    nonisolated public static func == (lhs: DestinationPresentation, rhs: DestinationPresentation) -> Bool {
         return (lhs.id == rhs.id)
     }
 }

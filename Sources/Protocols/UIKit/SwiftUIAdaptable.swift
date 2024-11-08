@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an object that adapts a SwiftUI `View` for use inside a `UIViewController`.
-public protocol SwiftUIAdaptable {
+@MainActor public protocol SwiftUIAdaptable {
     /// The type of SwiftUI `View` to adapt.
     associatedtype Content: ViewDestinationInterfacing
     

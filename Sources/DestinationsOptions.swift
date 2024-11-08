@@ -10,7 +10,7 @@
 import Foundation
 
 /// A singleton object which contains global options and an internal logger for Destinations. If you wish to interact with this class, please use the `shared` reference.
-public final class DestinationsOptions {
+@MainActor public final class DestinationsOptions {
     
     /// Logger used for Destinations debug log entries.
     public static let logger: PMLogger = PMLogger()

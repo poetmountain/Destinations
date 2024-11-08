@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -25,5 +25,6 @@ let package = Package(
             dependencies: ["Destinations"],
             path: "Tests/SwiftUI")
 
-    ]
+    ],
+    swiftLanguageModes: [.version("5.10"), .version("6.0")]
 )
