@@ -11,9 +11,9 @@ import Combine
 import Destinations
 
 @Observable
-public final class ColorViewModel: Hashable, Identifiable {
+public final class ColorViewModel: Hashable, Identifiable, Sendable {
     
-    public var id: UUID = UUID()
+    public let id: UUID
     let color: UIColor
     let name: String?
     

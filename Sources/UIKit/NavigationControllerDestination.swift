@@ -74,12 +74,12 @@ public final class NavigationControllerDestination<UserInteractionType: UserInte
 }
 
 extension NavigationControllerDestination: Equatable {
-    public static func == (lhs: NavigationControllerDestination, rhs: NavigationControllerDestination) -> Bool {
+    nonisolated public static func == (lhs: NavigationControllerDestination, rhs: NavigationControllerDestination) -> Bool {
         return (lhs.id == rhs.id)
     }
 }
 
-extension NavigationControllerDestination: CustomStringConvertible {
+extension NavigationControllerDestination: @preconcurrency CustomStringConvertible {
     public var description: String {
         return "\(Self.self) : \(type) : \(id)"
     }

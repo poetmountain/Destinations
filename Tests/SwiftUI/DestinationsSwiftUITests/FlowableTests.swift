@@ -123,6 +123,25 @@ import Destinations
     }
     
     
+    
+    func test_switch_tab() {
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+
+                
+        // switch tab to Home
+        appFlow.presentDestination(configuration: PresentationConfiguration(presentationType: .tabBar(tab: .home), assistantType: .basic))
+        
+        XCTAssertEqual(appFlow.currentDestination?.type, .home)
+        
+    }
+    
+    
+    
     func test_removeDestination() {
         let startingType: RouteDestinationType = .colorsList
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
@@ -149,6 +168,61 @@ import Destinations
         XCTAssertNil(appFlow.currentDestination, "Expected no currentDestination, but found \(String(describing: appFlow.currentDestination?.id))")
     }
     
+    
+    func test_replaceDestination_in_tabview() {
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+        
+        // switch tab to Home
+        appFlow.presentDestination(configuration: PresentationConfiguration(presentationType: .tabBar(tab: .home), assistantType: .basic))
+                
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+                            
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .colorDetail }), 1)
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .home }), 0)
+            
+    }
+    
+    func test_replaceDestination_in_navigation_stack() {
+        
+        let startingType: RouteDestinationType = .colorsList
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+        
+        guard let navDestination = appFlow.activeDestinations.first(where: { $0.type == .colorsList }) as? any NavigatingViewDestinationable<PresentationConfiguration>, let destination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic)) else {
+            
+            XCTFail("No nav destination found")
+            return
+        }
+        
+        let currentIndex = navDestination.childDestinations.firstIndex(where: { $0.id == destination.id })
+        
+        guard let newDestination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
+            XCTFail("New Destination not presented")
+            return
+        }
+                    
+        let newIndex = navDestination.childDestinations.firstIndex(where: { $0.id == newDestination.id })
+        
+        XCTAssertEqual(currentIndex, newIndex)
+        
+        guard let newDestination2 = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
+            XCTFail("New Destination 2 not presented")
+            return
+        }
+                    
+        let newIndex2 = navDestination.childDestinations.firstIndex(where: { $0.id == newDestination2.id })
+        
+        XCTAssertEqual(newIndex, newIndex2)
+            
+    }
     
     func test_presentDestinationPath() {
 

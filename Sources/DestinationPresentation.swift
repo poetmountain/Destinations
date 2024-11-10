@@ -207,7 +207,19 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 
                 
             case .replaceCurrent:
-                if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                
+                if let currentDestination, let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationPresentation> {
+                    
+                    if let destinationToPresent {
+                        navDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent)
+                        completionClosure?(true)
+                        removeDestinationClosure?(currentDestination.id)
+
+                    } else {
+                        completionClosure?(false)
+                    }
+                    
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
                     if let destinationToPresent {
                         groupedDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent)
                         removeDestinationClosure?(currentDestination.id)
@@ -346,23 +358,24 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                     completionClosure?(false)
                     return
                 }
-                
-                if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
-                    let currentID = currentDestination.id
-                    groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent)
-                    removeDestinationClosure?(currentID)
-                    
-                } else if let currentDestination, let currentController = currentDestination.currentController() {
-                    let parent = currentController.parent
 
+                if let currentDestination, let currentController = currentDestination.currentController() {
+                    let parent = currentController.parent
+                    
                     if let navController = parent as? UINavigationController {
                         navController.replaceLastController(with: newController)
-
+                        removeDestinationClosure?(currentDestination.id)
+                        
                     } else {
                         currentController.removeFromParent()
                         parent?.attach(viewController: newController)
                         removeDestinationClosure?(currentDestination.id)
                     }
+                    
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                    let currentID = currentDestination.id
+                    groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent)
+                    removeDestinationClosure?(currentID)
                     
                 } else {
                     rootController.attach(viewController: newController)
@@ -437,11 +450,11 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
 }
 
 extension DestinationPresentation: Hashable, Equatable {
-    public func hash(into hasher: inout Hasher) {
+    nonisolated public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    public static func == (lhs: DestinationPresentation, rhs: DestinationPresentation) -> Bool {
+    nonisolated public static func == (lhs: DestinationPresentation, rhs: DestinationPresentation) -> Bool {
         return (lhs.id == rhs.id)
     }
 }

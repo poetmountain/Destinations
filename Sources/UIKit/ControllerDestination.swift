@@ -66,12 +66,12 @@ public final class ControllerDestination<UserInteractionType: UserInteractionTyp
 }
 
 extension ControllerDestination: Equatable {
-    public static func == (lhs: ControllerDestination, rhs: ControllerDestination) -> Bool {
+    nonisolated public static func == (lhs: ControllerDestination, rhs: ControllerDestination) -> Bool {
         return (lhs.id == rhs.id)
     }
 }
 
-extension ControllerDestination: CustomStringConvertible {
+extension ControllerDestination: @preconcurrency CustomStringConvertible {
     public var description: String {
         return "\(Self.self) : \(type) : \(id)"
     }

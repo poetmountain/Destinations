@@ -133,7 +133,7 @@ public final class TabViewDestination<PresentationConfiguration: DestinationPres
     
 }
 
-extension TabViewDestination: CustomStringConvertible {
+extension TabViewDestination: @preconcurrency CustomStringConvertible {
     public var description: String {
         return "\(Self.self) : \(type) : \(id)"
     }

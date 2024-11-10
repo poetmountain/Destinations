@@ -209,6 +209,15 @@ public extension ControllerFlowable {
     
     func updateDestinationConfiguration(configuration: inout PresentationConfiguration, destination: inout some ControllerDestinationable<PresentationConfiguration>) {
                 
+        // subscribe to tab selection changes in order to update the current Destination
+        if let tabDestination = destination as? any TabBarControllerDestinationable<PresentationConfiguration, TabType> {
+            tabDestination.assignSelectedTabUpdatedClosure { [weak self, weak tabDestination] selectedTab in
+                if let selectedDestination = tabDestination?.currentDestination(for: selectedTab.type) {
+                    tabDestination?.updateCurrentDestination(destinationID: selectedDestination.id)
+                    self?.updateCurrentDestination(destination: selectedDestination)
+                }
+            }
+        }
         
         destination.buildInterfaceActions { [weak self] configuration in
             guard let strongSelf = self else { return }

@@ -13,7 +13,7 @@ import Foundation
 public typealias RemoveDestinationClosure = ((_ removalID: UUID) -> Void)
 
 /// This protocol defines methods that an object should implement to receive updates from ``DestinationInterfaceCoordinator`` objects.
-public protocol DestinationInterfaceCoordinatorDelegate: AnyObject {
+@MainActor public protocol DestinationInterfaceCoordinatorDelegate: AnyObject {
     
     /// Notifies the delegate object when the currently presented Destination was requested to change.
     /// - Parameter newDestinationID: The identifier of a new Destination to present.
@@ -21,7 +21,7 @@ public protocol DestinationInterfaceCoordinatorDelegate: AnyObject {
 }
 
 /// This abstract protocol represents an object that coordinates the presentation of a Destination within a UI framework.
-public protocol DestinationInterfaceCoordinating {
+@MainActor public protocol DestinationInterfaceCoordinating {
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
     var removeDestinationClosure: RemoveDestinationClosure? { get set }

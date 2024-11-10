@@ -52,26 +52,26 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
     /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
     case custom(presentation: CustomPresentation<PresentationConfiguration>)
     
-    public var rawValue: String {
+    nonisolated public var rawValue: String {
         switch self {
             case .navigationController(let type):
-                return "navigationController_\(type)"
+                return "navigationController"
             case .tabBar(let tab):
-                return "tabBar_\(tab.tabName)"
+                return "tabBar"
             case .addToCurrent:
                 return "addToCurrent"
             case .replaceCurrent:
                 return "replaceCurrent"
             case .sheet(let type):
-                return "sheet_\(type)"
+                return "sheet"
             case .destinationPath(path: let path):
-                return "destinationPath \(path.compactMap { $0.destinationType })"
+                return "destinationPath"
             case .custom:
                 return "custom"
         }
     }
     
-    public static func == (lhs: DestinationPresentationType<PresentationConfiguration>, rhs: DestinationPresentationType<PresentationConfiguration>) -> Bool {
+    nonisolated public static func == (lhs: DestinationPresentationType<PresentationConfiguration>, rhs: DestinationPresentationType<PresentationConfiguration>) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
 }

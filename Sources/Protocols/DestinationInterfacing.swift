@@ -34,6 +34,8 @@ import Foundation
     /// - Returns: The associated Destination.
     func destination() -> Destination
     
+    /// When this method is called, this interface's Destination is about to be removed from the Flow. Any resource references should be removed and in-progress tasks should be stopped.
+    func cleanupResources()
 }
 
 // optional method conformance
@@ -43,4 +45,6 @@ public extension DestinationInterfacing {
         return self.destinationState.destination
     }
 
+    func cleanupResources() {
+    }
 }

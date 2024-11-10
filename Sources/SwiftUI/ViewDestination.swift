@@ -79,12 +79,12 @@ public final class ViewDestination<UserInteractionType: UserInteractionTypeable,
 }
 
 extension ViewDestination: Equatable {
-    public static func == (lhs: ViewDestination, rhs: ViewDestination) -> Bool {
+    nonisolated public static func == (lhs: ViewDestination, rhs: ViewDestination) -> Bool {
         return (lhs.id == rhs.id)
     }
 }
 
-extension ViewDestination: CustomStringConvertible {
+extension ViewDestination: @preconcurrency CustomStringConvertible {
     public var description: String {
         return "\(Self.self) : \(type) : \(id)"
     }

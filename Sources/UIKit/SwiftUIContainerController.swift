@@ -54,4 +54,7 @@ public final class SwiftUIContainerController<Content: SwiftUIHostedInterfacing>
         fatalError("init(coder:) has not been implemented")
     }
 
+    public func cleanupResources() {
+        adapter.cleanupResources()
+    }
 }

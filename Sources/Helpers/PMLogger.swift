@@ -57,7 +57,7 @@ public protocol PMLoggerCategoryTypes: CaseIterable & RawRepresentable where Raw
 
 /// Wrapper for OSLog to provide easy logging.
 /// Based on WSLogger code: https://github.com/whitesmith/WSLogger
-public final class PMLogger {
+@MainActor public final class PMLogger {
 
     internal var outputable: PMLoggerOutputable
 
