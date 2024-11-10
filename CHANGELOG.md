@@ -1,3 +1,11 @@
+#### 1.0.2
+* Fixed Swift strict concurrency issues
+* Fixed `replaceCurrent` presentation type not removing Destinations on UIKit in navigation controllers
+* Fixed `ControllerFlow` not properly updating current Destination when presentation switches tabs
+* Fixed `replaceCurrent` presentation type for SwiftUI
+* Updated Package.swift to use 6.0 swift tools
+* Updated tests
+
 #### 1.0.1
 Added the ability to disable animations when presenting a Destination in a navigation stack, either for SwiftUI's `NavigationStack` or UIKit's `UINavigationController`. You can add navigation presentation options on a per-Destination basis by setting a `NavigationStackPresentationOptions` model on a `DestinationPresentation`'s `navigationStackOptions` property. 
 
