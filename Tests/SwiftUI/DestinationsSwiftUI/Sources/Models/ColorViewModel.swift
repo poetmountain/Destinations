@@ -11,16 +11,14 @@ import Combine
 import Destinations
 
 @Observable
-public final class ColorViewModel: Hashable, Identifiable {
+public final class ColorViewModel: Sendable, Hashable, Identifiable {
     
-    public var id: UUID = UUID()
+    public let id: UUID
     let color: UIColor
     let name: String?
     
     init(colorID: UUID? = nil, color: UIColor, name: String? = nil) {
-        if let colorID {
-            self.id = colorID
-        }
+        self.id = colorID ?? UUID()
         self.color = color
         self.name = name
     }

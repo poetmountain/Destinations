@@ -84,9 +84,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             } else if configuration.actionType == .systemNavigation, let activeDestination = activeDestinations.first(where: { $0.id == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
                 existingDestination = activeDestination
             }
-            
-        } else if configuration.presentationType == .replaceCurrent, let activeDestination = activeDestinations.first(where: { ($0 is any TabBarViewDestinationable) }) as? any TabBarViewDestinationable<PresentationConfiguration, TabType> {
-            existingDestination = activeDestination
+
         }
         
         if let destinationToReturn = existingDestination ?? buildDestination(for: configuration) {

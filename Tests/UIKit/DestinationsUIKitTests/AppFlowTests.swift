@@ -259,7 +259,95 @@ import Destinations
     }
     
     
-    func test_replace_destination() {
+    func test_switch_tab() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let tabBarProvider = TestTabBarProvider()
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            startingType: tabBarProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignRoot(rootController: root)
+        }
+        appFlow.start()
+        
+        wait(timeout: 0.3)
+        
+        // switch tab to Home
+        appFlow.presentDestination(configuration: PresentationConfiguration(presentationType: .tabBar(tab: .home), assistantType: .basic))
+        
+        XCTAssertEqual(appFlow.currentDestination?.type, .home)
+        
+    }
+    
+    
+    func test_replace_destination_in_tab_controller() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let tabBarProvider = TestTabBarProvider()
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            startingType: tabBarProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignRoot(rootController: root)
+        }
+        appFlow.start()
+        
+        wait(timeout: 0.3)
+        
+        // switch tab to Home
+        appFlow.presentDestination(configuration: PresentationConfiguration(presentationType: .tabBar(tab: .home), assistantType: .basic))
+                
+        wait(timeout: 0.3)
+
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+              
+        wait(timeout: 0.5)
+        
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .colorDetail }), 1)
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .home }), 0)
+        
+    }
+    
+    
+    func test_replace_destination_in_navigation_stack() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
             return

@@ -207,7 +207,19 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 
                 
             case .replaceCurrent:
-                if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                
+                if let currentDestination, let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationPresentation> {
+                    
+                    if let destinationToPresent {
+                        navDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent)
+                        completionClosure?(true)
+                        removeDestinationClosure?(currentDestination.id)
+
+                    } else {
+                        completionClosure?(false)
+                    }
+                    
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
                     if let destinationToPresent {
                         groupedDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent)
                         removeDestinationClosure?(currentDestination.id)

@@ -41,7 +41,12 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
     
     public var activeTabs: [TabModel<TabType>] = []
     
-    public var selectedTab: TabModel<TabType>
+    public var selectedTab: TabModel<TabType> {
+        didSet {
+            print("update selected tab")
+            selectedTabUpdatedClosure?(selectedTab)
+        }
+    }
     
     public var childDestinations: [any Destinationable<PresentationConfiguration>] = []
     public var currentChildDestination: (any Destinationable<PresentationConfiguration>)?

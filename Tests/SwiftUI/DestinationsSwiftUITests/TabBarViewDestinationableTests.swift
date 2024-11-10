@@ -12,15 +12,10 @@ import Destinations
 
 @MainActor final class TabBarViewDestinationableTests: XCTestCase, DestinationTypes {
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         DestinationsOptions.logger.options.maximumOutputLevel = .verbose
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    
     func test_tab_for_destinationID() {
         let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()

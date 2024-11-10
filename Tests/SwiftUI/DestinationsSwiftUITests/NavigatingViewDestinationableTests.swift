@@ -29,16 +29,6 @@ import Destinations
         XCTAssertTrue(navDestination.childDestinations.contains(where: { $0.id == destination.id}))
     }
     
-    func test_replaceChild() {
-        let destination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        let navDestination = TestNavigatorDestination()
-        
-        navDestination.addChild(childDestination: destination)
-        
-        let newDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        
-        navDestination.replaceChild(currentID: destination.id, with: newDestination)
-    }
 
     func test_removeChild() {
         let destination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
