@@ -26,5 +26,5 @@ let package = Package(
             path: "Tests/SwiftUI")
 
     ],
-    swiftLanguageModes: [.version("5.10"), .version("6.0")]
+    swiftLanguageModes: [.v6]
 )
