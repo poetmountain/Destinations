@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (100% documented)
+         (99% documented)
       </p>
     
     
@@ -75,16 +75,28 @@
                 <a class="nav-group-task-link" href="../Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DestinationsOptions.html">DestinationsOptions</a>
+                <a class="nav-group-task-link" href="../Classes/DestinationsSupport.html">DestinationsSupport</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationDestinationInterfaceState.html">NavigationDestinationInterfaceState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationSplitViewDestination.html">NavigationSplitViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationViewDestination.html">NavigationViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/SheetPresentation.html">SheetPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SplitViewController.html">SplitViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SplitViewControllerDestination.html">SplitViewControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/SwiftUIAdapter.html">SwiftUIAdapter</a>
@@ -258,6 +270,15 @@
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/RoutableDestinations.html">RoutableDestinations</a>
               </li>
               <li class="nav-group-task">
@@ -268,6 +289,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Sheetable.html">Sheetable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations41SplitViewControllerDestinationInterfacingP">SplitViewControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
@@ -320,6 +347,9 @@
                 <a class="nav-group-task-link" href="../Structs/BackNavigationModifier.html">BackNavigationModifier</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BindableContainerView.html">BindableContainerView</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ContainerView.html">ContainerView</a>
               </li>
               <li class="nav-group-task">
@@ -351,6 +381,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SheetPresenter.html">SheetPresenter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SplitViewColumn.html">SplitViewColumn</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SystemNavigationOptions.html">SystemNavigationOptions</a>
@@ -391,7 +424,7 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24RemoveDestinationClosurea">RemoveDestinationClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations21SheetDismissalClosurea">SheetDismissalClosure</a>
@@ -421,7 +454,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingDestinationInterfacing</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingDestinationInterfacing</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">DestinationState</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a></span></code></pre>
 
                 </div>
               </div>
@@ -434,34 +467,6 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations32NavigatingDestinationInterfacingP9navigatorAA0c4PathB0_pvp"></a>
-                    <a name="//apple_ref/swift/Property/navigator" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations32NavigatingDestinationInterfacingP9navigatorAA0c4PathB0_pvp">navigator</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The navigator object which handles the state of the <code>NavigationStack</code> associated with this user interface.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">navigator</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>

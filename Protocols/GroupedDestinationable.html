@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (100% documented)
+         (99% documented)
       </p>
     
     
@@ -75,16 +75,28 @@
                 <a class="nav-group-task-link" href="../Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DestinationsOptions.html">DestinationsOptions</a>
+                <a class="nav-group-task-link" href="../Classes/DestinationsSupport.html">DestinationsSupport</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationDestinationInterfaceState.html">NavigationDestinationInterfaceState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NavigationSplitViewDestination.html">NavigationSplitViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationViewDestination.html">NavigationViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/SheetPresentation.html">SheetPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SplitViewController.html">SplitViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SplitViewControllerDestination.html">SplitViewControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/SwiftUIAdapter.html">SwiftUIAdapter</a>
@@ -258,6 +270,15 @@
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/RoutableDestinations.html">RoutableDestinations</a>
               </li>
               <li class="nav-group-task">
@@ -268,6 +289,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Sheetable.html">Sheetable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations41SplitViewControllerDestinationInterfacingP">SplitViewControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
@@ -320,6 +347,9 @@
                 <a class="nav-group-task-link" href="../Structs/BackNavigationModifier.html">BackNavigationModifier</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BindableContainerView.html">BindableContainerView</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ContainerView.html">ContainerView</a>
               </li>
               <li class="nav-group-task">
@@ -351,6 +381,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SheetPresenter.html">SheetPresenter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SplitViewColumn.html">SplitViewColumn</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SystemNavigationOptions.html">SystemNavigationOptions</a>
@@ -391,7 +424,7 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24RemoveDestinationClosurea">RemoveDestinationClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations21SheetDismissalClosurea">SheetDismissalClosure</a>
@@ -753,7 +786,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Assigns a closure to be run when a child Destination is removed from this Group.</p>
+                        <p>Assigns a closure to be run when a child Destination is removed from this Group. This closure should be used by an associated Destination to respond to child removals that happened internally.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -807,7 +840,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Assigns a closure to be run when the current child Destination has changed.</p>
+                        <p>Assigns a closure to be run when the current child Destination has changed. This closure should be used by an associated Destination to respond to current Destination changes that happened internally.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -926,9 +959,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations22GroupedDestinationableP11removeChild10identifiery10Foundation4UUIDV_tF"></a>
-                    <a name="//apple_ref/swift/Method/removeChild(identifier:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP11removeChild10identifiery10Foundation4UUIDV_tF">removeChild(identifier:<wbr>)</a>
+                    <a name="/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/removeChild(identifier:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF">removeChild(identifier:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -951,7 +984,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">removeChild</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">removeChild</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -967,7 +1000,12 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The identifier of the Destination to remove.</p>
+                                  <p>The identifier of the Destination to remove.
+
+<ul>
+<li>removeDestinationClosure: A closure that notifies an external object when this Destination has removed one of its children.
+Typically this will be passed in when being called from a <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code> object, and handles the removal of the child Destination from the active Flow object. The identifier of the child that was removed should be passed in to the closure.</li>
+</ul></p>
                                 </div>
                               </td>
                             </tr>
@@ -1127,9 +1165,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4withy10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzALRS_XPtF"></a>
-                    <a name="//apple_ref/swift/Method/replaceChild(currentID:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4withy10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzALRS_XPtF">replaceChild(currentID:<wbr>with:<wbr>)</a>
+                    <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzAMRS_XPyAJcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/replaceChild(currentID:with:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzAMRS_XPyAJcSgtF">replaceChild(currentID:<wbr>with:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -1152,7 +1190,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/GroupedDestinationable.html#/s:12Destinations22GroupedDestinationableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/GroupedDestinationable.html#/s:12Destinations22GroupedDestinationableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -1181,6 +1219,19 @@
                               <td>
                                 <div>
                                   <p>A <code><a href="../Protocols/Destinationable.html">Destinationable</a></code> object to replace an existing child Destination.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>removeDestinationClosure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure that notifies an external object when this Destination has removed one of its children.
+Typically this will be passed in when being called from a <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code> object, and handles the removal of the child Destination from the active Flow object. The identifier of the child that was removed should be passed in to the closure.</p>
                                 </div>
                               </td>
                             </tr>

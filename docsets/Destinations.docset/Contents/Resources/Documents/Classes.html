@@ -20,7 +20,7 @@
         <a class="header-link" href="index.html">
           Destinations Docs
         </a>
-         (100% documented)
+         (99% documented)
       </p>
     
     
@@ -73,16 +73,28 @@
                 <a class="nav-group-task-link" href="Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DestinationsOptions.html">DestinationsOptions</a>
+                <a class="nav-group-task-link" href="Classes/DestinationsSupport.html">DestinationsSupport</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/NavigationDestinationInterfaceState.html">NavigationDestinationInterfaceState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/NavigationSplitViewDestination.html">NavigationSplitViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/NavigationViewDestination.html">NavigationViewDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/SheetPresentation.html">SheetPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SplitViewController.html">SplitViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SplitViewControllerDestination.html">SplitViewControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/SwiftUIAdapter.html">SwiftUIAdapter</a>
@@ -256,6 +268,15 @@
                 <a class="nav-group-task-link" href="Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/RoutableDestinations.html">RoutableDestinations</a>
               </li>
               <li class="nav-group-task">
@@ -266,6 +287,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/Sheetable.html">Sheetable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols.html#/s:12Destinations41SplitViewControllerDestinationInterfacingP">SplitViewControllerDestinationInterfacing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
@@ -318,6 +345,9 @@
                 <a class="nav-group-task-link" href="Structs/BackNavigationModifier.html">BackNavigationModifier</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BindableContainerView.html">BindableContainerView</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ContainerView.html">ContainerView</a>
               </li>
               <li class="nav-group-task">
@@ -349,6 +379,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/SheetPresenter.html">SheetPresenter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SplitViewColumn.html">SplitViewColumn</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/SystemNavigationOptions.html">SystemNavigationOptions</a>
@@ -389,7 +422,7 @@
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations24RemoveDestinationClosurea">RemoveDestinationClosure</a>
+                <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations21SheetDismissalClosurea">SheetDismissalClosure</a>
@@ -502,7 +535,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationInterfaceState</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationStateable.html">DestinationStateable</a></span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationInterfaceState</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationStateable.html">DestinationStateable</a></span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -529,6 +563,7 @@
 <ul>
 <li><code>navigationController(type: NavigationPresentationType)</code> This presentation type will add and present a Destination in a navigation stack such as a <code>UINavigationController</code> or SwiftUI&rsquo;s <code>NavigationStack</code>.</li>
 <li><code>tabBar(tab: TabType)</code> This presentation type will present a Destination in the specified tab of a tab bar component, such as a <code>UITabBarController</code> or SwiftUI&rsquo;s <code>TabView</code>. If no <code>destinationType</code> is present in the <code>DestinationPresentation</code> model, the specified tab will simply be selected, becoming the active tab within the interface.</li>
+<li><code>splitView(column: SplitViewColumn)</code> This presentation type will present a Destination in a column of a split view interface, such as a <code>UISplitViewController</code> or SwiftUI&rsquo;s <code>NavigationSplitView</code>.</li>
 <li><code>addToCurrent</code> This presentation type adds a Destination as a child of the currently-presented Destination. Note that this type only works with UIKit and utilizes <code>UIViewController</code>&lsquo;s <code>addChild</code> method.</li>
 <li><code>replaceCurrent</code> This presentation type replaces the currently-presented Destination with a new Destination in system UI components which allow that.</li>
 <li><code>sheet(type: SheetPresentationType, options: SheetPresentationOptions?)</code> This presentation type presents (or dismisses) a Destination in a sheet. The <code>options</code> parameter allows you to customize how the sheet is presented, configuring SwiftUI-specific options with a <code><a href="Structs/ViewSheetPresentationOptions.html">ViewSheetPresentationOptions</a></code> model and UIKit-specific options with a <code><a href="Structs/ControllerSheetPresentationOptions.html">ControllerSheetPresentationOptions</a></code> model.</li>
@@ -554,9 +589,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations0A7OptionsC"></a>
-                    <a name="//apple_ref/swift/Class/DestinationsOptions" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations0A7OptionsC">DestinationsOptions</a>
+                    <a name="/s:12Destinations0A7SupportC"></a>
+                    <a name="//apple_ref/swift/Class/DestinationsSupport" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations0A7SupportC">DestinationsSupport</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -566,13 +601,14 @@
                       <div class="abstract">
                         <p>A singleton object which contains global options and an internal logger for Destinations. If you wish to interact with this class, please use the <code>shared</code> reference.</p>
 
-                        <a href="Classes/DestinationsOptions.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/DestinationsSupport.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationsOptions</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationsSupport</span></code></pre>
 
                         </div>
                       </div>
@@ -582,9 +618,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations14SwiftUIAdapterC"></a>
-                    <a name="//apple_ref/swift/Class/SwiftUIAdapter" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14SwiftUIAdapterC">SwiftUIAdapter</a>
+                    <a name="/s:12Destinations35NavigationDestinationInterfaceStateC"></a>
+                    <a name="//apple_ref/swift/Class/NavigationDestinationInterfaceState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations35NavigationDestinationInterfaceStateC">NavigationDestinationInterfaceState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -592,16 +628,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adapts a SwiftUI <code>View</code> for use inside a <code>UIViewController</code>, using a <code>UIHostingController</code> to present it within UIKit.</p>
+                        <p>Manages state for a Destination&rsquo;s interface, holding a reference to its associated Destination and a navigator object which manages the state of the interface&rsquo;s navigation stack.</p>
 
-                        <a href="Classes/SwiftUIAdapter.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/NavigationDestinationInterfaceState.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIAdapter</span><span class="o">&lt;</span><span class="kt">Content</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NavigationDestinationInterfaceState</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a></span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -629,7 +665,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationNavigator</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationNavigator</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a></span></code></pre>
 
                         </div>
                       </div>
@@ -659,6 +696,49 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationSwiftUICoordinator</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/DestinationSwiftUICoordinating.html">DestinationSwiftUICoordinating</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations30NavigationSplitViewDestinationC"></a>
+                    <a name="//apple_ref/swift/Class/NavigationSplitViewDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations30NavigationSplitViewDestinationC">NavigationSplitViewDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Destination which represents a SwiftUI <code>View</code> that contains a <code>NavigationSplitView</code>.</p>
+
+<p>This is a generic Destination that can be used to represent <code>NavigationSplitView</code> implementations in a SwiftUI-based app.</p>
+
+<p>To implement the <code>NavigationSplitView</code> associated with this Destination and to enable dynamic updating of your <code>NavigationSplitView</code>&lsquo;s column, bind these properties from inside each column&rsquo;s closure using a <code><a href="Structs/BindableContainerView.html">BindableContainerView</a></code>.</p>
+
+<p>Example:</p>
+<pre class="highlight swift"><code><span class="kt">NavigationSplitView</span><span class="p">(</span><span class="nv">columnVisibility</span><span class="p">:</span> <span class="n">$columnVisibility</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">BindableContainerView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="n">$destinationState</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">currentSidebar</span><span class="p">)</span>
+<span class="p">}</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+    <span class="kt">BindableContainerView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="n">$destinationState</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">currentContent</span><span class="p">)</span>
+<span class="p">}</span> <span class="nv">detail</span><span class="p">:</span> <span class="p">{</span>
+    <span class="kt">BindableContainerView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="n">$destinationState</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">currentDetail</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+                        <a href="Classes/NavigationSplitViewDestination.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NavigationSplitViewDestination</span><span class="o">&lt;</span><span class="kt">PresentationConfigurationType</span><span class="p">,</span> <span class="kt">SplitViewType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a></span> <span class="k">where</span> <span class="kt">PresentationConfigurationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">SplitViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span><span class="o">.</span><span class="kt">DestinationType</span> <span class="o">==</span> <span class="kt">SplitViewType</span><span class="o">.</span><span class="kt">DestinationType</span></code></pre>
 
                         </div>
                       </div>
@@ -749,7 +829,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TabViewDestination</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">TabViewType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a></span> <span class="k">where</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">TabViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarViewDestinationInterfacing.html">TabBarViewDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">.</span><span class="kt">DestinationType</span> <span class="o">==</span> <span class="kt">TabViewType</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="kt">TabViewType</span><span class="o">.</span><span class="kt">TabType</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TabViewDestination</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TabViewDestination</span><span class="p">:</span> <span class="kd">@preconcurrency</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                         </div>
                       </div>
@@ -782,7 +862,7 @@
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ViewDestination</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">ViewDestinationType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">ViewDestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewDestination</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewDestination</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewDestination</span><span class="p">:</span> <span class="kd">@preconcurrency</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                         </div>
                       </div>
@@ -874,7 +954,7 @@
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ControllerDestination</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">ControllerDestinationType</span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">ControllerDestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ControllerDestination</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ControllerDestination</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ControllerDestination</span><span class="p">:</span> <span class="kd">@preconcurrency</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                         </div>
                       </div>
@@ -966,7 +1046,96 @@
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NavigationControllerDestination</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">ControllerDestinationType</span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigatingControllerDestinationable.html">NavigatingControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">ControllerDestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NavigationControllerDestination</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NavigationControllerDestination</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">NavigationControllerDestination</span><span class="p">:</span> <span class="kd">@preconcurrency</span> <span class="kt">CustomStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations19SplitViewControllerC"></a>
+                    <a name="//apple_ref/swift/Class/SplitViewController" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations19SplitViewControllerC">SplitViewController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code>UISplitViewController</code> subclass which can be used as an interface for a <code><a href="Classes/SplitViewControllerDestination.html">SplitViewControllerDestination</a></code>.</p>
+
+                        <a href="Classes/SplitViewController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SplitViewController</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">UISplitViewController</span><span class="p">,</span> <span class="kt"><a href="Protocols.html#/s:12Destinations41SplitViewControllerDestinationInterfacingP">SplitViewControllerDestinationInterfacing</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">PresentationConfigurationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations30SplitViewControllerDestinationC"></a>
+                    <a name="//apple_ref/swift/Class/SplitViewControllerDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations30SplitViewControllerDestinationC">SplitViewControllerDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A Destination which represents a UIKit <code>UISplitViewController</code>.</p>
+
+<p>This is a generic Destination that can be used to represent most <code>UISplitViewController</code>s in a UIKit-based app.</p>
+
+                        <a href="Classes/SplitViewControllerDestination.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SplitViewControllerDestination</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">SplitViewControllerType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span><span class="p">,</span> <span class="kt">SplitViewControllerType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations41SplitViewControllerDestinationInterfacingP">SplitViewControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">.</span><span class="kt">DestinationType</span> <span class="o">==</span> <span class="kt">SplitViewControllerType</span><span class="o">.</span><span class="kt">DestinationType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations14SwiftUIAdapterC"></a>
+                    <a name="//apple_ref/swift/Class/SwiftUIAdapter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations14SwiftUIAdapterC">SwiftUIAdapter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adapts a SwiftUI <code>View</code> for use inside a <code>UIViewController</code>, using a <code>UIHostingController</code> to present it within UIKit.</p>
+
+                        <a href="Classes/SwiftUIAdapter.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIAdapter</span><span class="o">&lt;</span><span class="kt">Content</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1052,7 +1221,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIHostingState</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationStateable.html">DestinationStateable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIHostingState</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationStateable.html">DestinationStateable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
 
                         </div>
                       </div>
