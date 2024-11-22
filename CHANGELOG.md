@@ -1,3 +1,16 @@
+#### 1.1.0
+* Destinations now supports split views: `UISplitViewController` on UIKit and `NavigationSplitView` on SwiftUI. You can present or target them with the new presentation type `splitView(column: SplitViewColumn)`.
+Example:
+```swift
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail,
+                                                       presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)),
+                                                       assistantType: .custom(ChooseColorFromListActionAssistant()))
+```
+* Moved the `navigator` property out of the `NavigatingDestinationInterfacing` protocol and into a new Destination state type `NavigationDestinationInterfaceState`, in order to reduce setup requirements of `NavigationStack`-containing `View`s. The `navigator` can now be accessed from the `View` through the `destinationState` state object.
+* Fixed Flow objects not removing Destinations that are children of `GroupedDestinationable` objects when they are removed internally by the group.
+* Renamed `DestinationsOptions` to `DestinationsSupport`.
+* Updated tests and example projects.
+
 #### 1.0.2
 * Fixed Swift strict concurrency issues
 * Fixed `replaceCurrent` presentation type not removing Destinations on UIKit in navigation controllers

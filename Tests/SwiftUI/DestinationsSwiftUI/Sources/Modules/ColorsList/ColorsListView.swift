@@ -13,24 +13,20 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
     
     typealias UserInteractionType = ColorsListDestination.UserInteractions
     typealias Destination = ColorsListDestination
-
-    @State public var navigator: any DestinationPathNavigating = DestinationNavigator()
     
-    @State public var destinationState: DestinationInterfaceState<Destination>
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
 
     @State var areDatasourcesSetup = false
         
     @State var selectedItem: ColorViewModel.ID?
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
-        navigator.navigatorDestinationID = destination.id
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
     }
-    
     
     public var body: some View {
         VStack {
-            NavigationStack(path: $navigator.navigationPath, root: {
+            NavigationStack(path: $destinationState.navigator.navigationPath, root: {
                 VStack {
                     Text("Colors List")
                     List(destinationState.destination.items, selection: $selectedItem) { item in

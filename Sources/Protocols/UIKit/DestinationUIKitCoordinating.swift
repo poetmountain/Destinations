@@ -13,7 +13,7 @@ import UIKit
 public protocol DestinationUIKitCoordinating: DestinationInterfaceCoordinating, UINavigationControllerDelegate {
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
-    var removeDestinationClosure: RemoveDestinationClosure? { get set }
+    var removeDestinationClosure: RemoveDestinationFromFlowClosure? { get set }
     
     /// A delegate protocol object which can subscribe to this object to receive updates about the status of destination presentations.
     var delegate: DestinationInterfaceCoordinatorDelegate? { get set }

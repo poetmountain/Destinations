@@ -10,10 +10,7 @@
 import SwiftUI
 
 /// A protocol representing a SwiftUI `View` that is associated with a Destination and contains a `NavigationStack`.
-@MainActor public protocol NavigatingDestinationInterfacing: ViewDestinationInterfacing {
-    
-    /// The navigator object which handles the state of the `NavigationStack` associated with this user interface.
-    var navigator: any DestinationPathNavigating { get set }
+@MainActor public protocol NavigatingDestinationInterfacing: ViewDestinationInterfacing where DestinationState: NavigationDestinationStateable<Destination> {
     
     /// Requests that this user interface's navigator move to the previous Destination in the navigation path.
     /// - Parameter currentDestination: The current Destination associated with the interface which is currently presented. This Destination will send the system navigation message.
@@ -25,7 +22,7 @@ public extension NavigatingDestinationInterfacing {
     func backToPreviousDestination(currentDestination: any ViewDestinationable) {
         
         var options: SystemNavigationOptions?
-        if let targetID = navigator.previousPathElement() {
+        if let targetID = destinationState.navigator.previousPathElement() {
             options = SystemNavigationOptions(targetID: targetID)
         } else if let parentID = currentDestination.parentDestinationID {
             options = SystemNavigationOptions(targetID: parentID)

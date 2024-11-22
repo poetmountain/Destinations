@@ -188,6 +188,22 @@ import Destinations
             
     }
     
+    func test_replaceDestination_in_splitview() {
+        
+        let startingType: RouteDestinationType = .splitView
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, splitViewContent: [.sidebar: .colorsList, .detail: .colorDetail])
+        appFlow.start()
+        
+        // replace Destination in detail column
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+                            
+        // SplitView started with one colorDetail, so presenting a new colorDetail in that column should replace it
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .colorDetail }), 1)
+            
+    }
+    
     func test_replaceDestination_in_navigation_stack() {
         
         let startingType: RouteDestinationType = .colorsList

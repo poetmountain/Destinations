@@ -19,13 +19,20 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
     ///
     /// - Parameter type: An enum representing the type of navigation action to be taken.
     case navigationController(type: NavigationPresentationType)
-    
-    /// Presents the specified tab of a tab bar such as a `UITabBarController` or SwiftUI's `TabView`.
+        
+    /// Presents a Destination in the specified tab of a tab bar such as a `UITabBarController` or SwiftUI's `TabView`.
     ///
     /// If a `destinationType` is specified along with this presentation type, the specified Destination will be presented in that tab, with the tab becoming active. However if no `destinationType` is present in the ``DestinationPresentation`` model, the specified tab will simply be selected, becoming the active tab within the interface.
     ///
-    /// - Parameter type: An enum representing the tab that the Destination should be presented in.
+    /// - Parameter tab: An enum representing the tab that the Destination should be presented in.
     case tabBar(tab: TabType)
+    
+    /// Presents a Destination in a column of a split view interface, such as a `UISplitViewController` or SwiftUI's `NavigationSplitView`.
+    ///
+    /// - Parameter column: A model representing a particular column in the split view interface.
+    ///
+    /// Please choose the appropriate framework property for the interface you're using (`UISplitViewController` or `NavigationSplitView`). Not providing the expected property will result in an error when the presenting a Destination with this presentation type.
+    case splitView(column: SplitViewColumn)
     
     /// Adds a Destination as a child of the currently presented Destination. Note that this type only works with UIKit and utilizes `UIViewController`'s `addChild` method.
     case addToCurrent
@@ -56,6 +63,8 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
         switch self {
             case .navigationController(let type):
                 return "navigationController"
+            case .splitView:
+                return "splitView"
             case .tabBar(let tab):
                 return "tabBar"
             case .addToCurrent:

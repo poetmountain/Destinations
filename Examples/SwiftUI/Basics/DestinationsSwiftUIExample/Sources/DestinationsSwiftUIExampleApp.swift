@@ -22,9 +22,9 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
     
     func buildAppFlow() -> ViewFlow<DestinationType, TabType, ContentType> {
         
-        DestinationsOptions.logger.options.maximumOutputLevel = .verbose
-        //DestinationsOptions.logger.shouldUseFileInfo = true
-        //DestinationsOptions.logger.shouldUseMethodInfo = true
+        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
+        //DestinationsSupport.logger.shouldUseFileInfo = true
+        //DestinationsSupport.logger.shouldUseMethodInfo = true
 
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
@@ -63,12 +63,12 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if hasStartedAppFlow && !isAppRunningTests() {
+                if hasStartedAppFlow {
                     appFlow?.startingDestinationView()
                 }
             }
             .onAppear(perform: {
-                if (hasStartedAppFlow == false && !self.isAppRunningTests()) {
+                if (hasStartedAppFlow == false) {
                     self.appFlow = buildAppFlow()
                     self.appFlow?.start()
                     hasStartedAppFlow = true
@@ -77,11 +77,7 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
             })
         }
     }
-    
-    func isAppRunningTests() -> Bool {
-        return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
 
-    }
 }
 
 

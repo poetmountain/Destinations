@@ -57,7 +57,7 @@ public extension DestinationPathNavigating {
         if navigationPath.count > 0 {
             currentPresentationID = previousPresentationID
             navigationPath.removeLast()
-            DestinationsOptions.logger.log("Removed last element \(navigationPath)", level: .verbose)
+            DestinationsSupport.logger.log("Removed last element \(navigationPath)", level: .verbose)
         }
     }
     
@@ -70,7 +70,7 @@ public extension DestinationPathNavigating {
         let previousIndex = (navigationPath.count - 1) - 1
 
         if previousIndex >= 0 {
-            DestinationsOptions.logger.log("Previous index \(previousIndex) :: id \(navigationPath[previousIndex])", level: .verbose)
+            DestinationsSupport.logger.log("Previous index \(previousIndex) :: id \(navigationPath[previousIndex])", level: .verbose)
             return navigationPath[previousIndex]
         }
         return nil

@@ -156,6 +156,8 @@ final class DestinationProvider<ControllerDestinationableType: ControllerDestina
                     return nil
                 }
 
+            case .splitView:
+                return nil
         }
         
     }

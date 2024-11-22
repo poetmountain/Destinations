@@ -1,9 +1,10 @@
 //
 //  Extensions.swift
-//  CompositionRootApp
 //
-//  Created by Brett Walker on 5/1/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
 

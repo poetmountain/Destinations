@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an interface's state object which holds a reference to its associated Destination.
-public protocol DestinationStateable<Destination>: AnyObject {
+@MainActor public protocol DestinationStateable<Destination>: AnyObject {
     
     /// The Destination type associated with this state model.
     associatedtype Destination: Destinationable

@@ -1,9 +1,10 @@
 //
 //  SceneDelegate.swift
-//  CompositionRootApp
 //
-//  Created by Brett Walker on 4/17/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
 import Destinations
@@ -28,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = createRootViewController()
         window?.makeKeyAndVisible()
 
-        DestinationsOptions.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
         
         Self.shared = self
     }

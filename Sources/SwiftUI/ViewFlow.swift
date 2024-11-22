@@ -61,7 +61,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
     public func start()  {
         if let startingDestination {
             let loggingStartingAction: String = startingDestination.destinationType != nil ? startingDestination.destinationType.debugDescription : "\(startingDestination.presentationType.rawValue)"
-            DestinationsOptions.logger.log("🏁 Starting Destinations flow with \(loggingStartingAction).")
+            DestinationsSupport.logger.log("🏁 Starting Destinations flow with \(loggingStartingAction).")
             
             rootDestination = presentDestination(configuration: startingDestination)
         
@@ -97,7 +97,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
     
     
     @discardableResult public func presentDestination(configuration: PresentationConfiguration) ->  (any ViewDestinationable<PresentationConfiguration>)? {
-        DestinationsOptions.logger.log("⤴️ Presenting destination \(String(describing: configuration.destinationType)) via \(configuration.presentationType)")
+        DestinationsSupport.logger.log("⤴️ Presenting destination \(String(describing: configuration.destinationType)) via \(configuration.presentationType)")
         
         if case DestinationPresentationType.destinationPath(path: let path) = configuration.presentationType {
             self.presentDestinationPath(path: path)
@@ -114,7 +114,19 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         
         let newDestination = self.destination(for: mutableConfiguration)
 
-        let currentViewDestination = currentDestination as? any ViewDestinationable<PresentationConfiguration>
+        var currentViewDestination = currentDestination as? any ViewDestinationable<PresentationConfiguration>
+        
+        if case .splitView(column: let column) = configuration.presentationType, let current = currentViewDestination {
+            guard column.swiftUI != nil else {
+                let template = DestinationsSupport.errorMessage(for: .undefinedSplitViewColumnType(message: ""))
+                let message = String(format: template, "uiKit")
+                DestinationsSupport.logError(error: DestinationsError.undefinedSplitViewColumnType(message: message))
+                
+                return nil
+            }
+            
+            currentViewDestination = findSplitViewInViewHierarchy(currentDestination: current)
+        }
         
         if var newDestination = newDestination {
             

@@ -39,14 +39,19 @@ import UIKit
     ///   - destination: A Destination to update.
     func updateDestinationConfiguration(configuration: inout PresentationConfiguration, destination: inout some ControllerDestinationable<PresentationConfiguration>)
     
+    /// Finds the closest Destination in the view hierarchy whose interface is a `UITabBarController`.
+    /// - Parameter currentDestination: The Destination to start searching at.
+    /// - Returns: Returns a Destination, if one was found.
+    func findTabBarInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any TabBarControllerDestinationable<PresentationConfiguration, TabType>)?
+
+    /// Finds the closest Destination in the view hierarchy whose interface is a `UISplitViewController`.
+    /// - Parameter currentDestination: The Destination to start searching at.
+    /// - Returns: Returns a Destination, if one was found.
+    func findSplitViewInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any SplitViewControllerDestinationable<PresentationConfiguration>)?
+    
     /// Finds the closest navigator in the view hierarchy to the provided Destination.
     /// - Parameter currentDestination: The Destination to start searching at.
     /// - Returns: Returns a navigator, if one was found.
-    func findTabBarInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any TabBarControllerDestinationable<PresentationConfiguration, TabType>)?
-    
-    /// Finds the closest Destination in the view hierarchy whose interface is a `UITabBarController`.
-    /// - Parameter currentDestination: The Destination to start searching at.
-    /// - Returns: Returns a `TabBar` Destination, if found.
     func findNearestNavigatorInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any NavigatingControllerDestinationable<PresentationConfiguration>)?
     
     /// Assigns a root controller to serve as the base controller of this Flow's Destinations.
@@ -82,6 +87,16 @@ public extension ControllerFlowable {
         return nil
     }
     
+    func findSplitViewInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any SplitViewControllerDestinationable<PresentationConfiguration>)? {
+        if let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<PresentationConfiguration> {
+            return splitViewDestination
+            
+        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
+            return findSplitViewInViewHierarchy(currentDestination: parent)
+        }
+        return nil
+    }
+    
     func findNearestNavigatorInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any NavigatingControllerDestinationable<PresentationConfiguration>)? {
         
         if let controllerDestination = currentDestination as? any NavigatingControllerDestinationable<PresentationConfiguration> {
@@ -102,7 +117,7 @@ public extension ControllerFlowable {
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
-                DestinationsOptions.logger.log("⏭️ Presenting next queue \(destinationType).")
+                DestinationsSupport.logger.log("⏭️ Presenting next queue \(destinationType).")
             }
             
             return presentDestination(configuration: nextPresentation)
@@ -118,7 +133,7 @@ public extension ControllerFlowable {
             guard let sheetID = configuration.actionTargetID ?? configuration.currentDestinationID, let sheetDestination = strongSelf.destination(for: sheetID) as? any ControllerDestinationable<PresentationConfiguration> else { return }
             
             if didComplete {
-                DestinationsOptions.logger.log("✌️ Default system sheet dismissal closure", level: .verbose)
+                DestinationsSupport.logger.log("✌️ Default system sheet dismissal closure", level: .verbose)
                 if let parentID = configuration.parentDestinationID, let targetDestination = strongSelf.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
                     strongSelf.updateCurrentDestination(destination: targetDestination)
                     
@@ -163,7 +178,7 @@ public extension ControllerFlowable {
             guard let strongSelf = self, let configuration else { return }
 
             if didComplete {
-                DestinationsOptions.logger.log("✌️ Default system navigating back closure", level: .verbose)
+                DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
 
                 if let oldID = configuration.currentDestinationID {
                     
@@ -178,6 +193,12 @@ public extension ControllerFlowable {
                     // We have to manually update the tab bar's current Destination here
                     if let tabBar = self?.findTabBarInViewHierarchy(currentDestination: targetDestination) {
                         tabBar.updateCurrentDestination(destinationID: targetDestination.id)
+                    }
+                    
+                    // Because SplitViewDestinationable objects currently use UISplitViewController to auto-create navigation controllers
+                    // We have to manually update the SplitViewDestination's current Destination here
+                    if let splitView = self?.findSplitViewInViewHierarchy(currentDestination: targetDestination) {
+                        splitView.updateCurrentDestination(destinationID: targetDestination.id)
                     }
                     
                     strongSelf.logDestinationPresented(configuration: configuration)

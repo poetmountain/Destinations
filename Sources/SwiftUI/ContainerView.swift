@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-/// Provides a wrapper for a SwiftUI `View`, useful for passing Views in models.
+/// Provides a wrapper for a SwiftUI `View`, useful for passing `View`s in models.
 @MainActor public struct ContainerView<Content: View>: View, Identifiable, Equatable {
 
     /// A unique identifier.
@@ -18,10 +18,16 @@ import SwiftUI
     /// The SwiftUI `View` to contain.
     @ViewBuilder public let content: Content
     
-    /// The initializer.
+    /// An initializer that takes a closure that contains a `View`.
     /// - Parameter content: The SwiftUI `View` to contain.
     public init(@ViewBuilder content: () -> Content) {
         self.content = content()
+    }
+    
+    /// An initializer that takes a `View` directly.
+    /// - Parameter view: The `View` to contain.
+    public init(view: Content) {
+        self.content = view
     }
     
     public var body: some View {
@@ -32,3 +38,5 @@ import SwiftUI
         lhs.id == rhs.id
     }
 }
+
+

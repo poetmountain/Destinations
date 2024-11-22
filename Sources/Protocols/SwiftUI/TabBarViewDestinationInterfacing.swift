@@ -54,7 +54,7 @@ public extension TabBarViewDestinationInterfacing {
     
     func replaceViews(in tab: TabType, with newDestinationID: UUID) {
         guard destination().activeTabs.map { $0.type }.contains(tab) else {
-            DestinationsOptions.logger.log("Active tabs doesn't contain tab \(tab)", category: .error)
+            DestinationsSupport.logger.log("Active tabs doesn't contain tab \(tab)", category: .error)
             return
         }
     

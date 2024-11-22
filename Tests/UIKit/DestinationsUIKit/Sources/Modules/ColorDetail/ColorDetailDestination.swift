@@ -69,24 +69,4 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
     }
     
 
-    public func performInterfaceAction(interactionType: UserInteractionType) {
-
-        if var closure = interfaceActions[interactionType] {
-
-            closure.data.parentID = self.id
-            
-            switch interactionType {
-                case .colorDetailButton(model: let model), .customDetailButton(model: let model):
-                    if let model, closure.data.contentType == nil {
-                        closure.data.contentType = .color(model: model)
-                    }
-                case .color:
-                    break
-            }
-            
-            closure()
-            
-        }
-    }
-
 }

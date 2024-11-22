@@ -1,9 +1,10 @@
 //
 //  ColorDetailViewController.swift
-//  CompositionRootApp
 //
-//  Created by Brett Walker on 4/17/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
 import Destinations
@@ -77,12 +78,16 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     
     func handleDetailTap() {
         guard let colorModel else { return }
-        destination().performInterfaceAction(interactionType: .colorDetailButton(model: colorModel))
+        destination().handleThrowable { [weak self] in
+            try self?.destination().performInterfaceAction(interactionType: .colorDetailButton(model: colorModel))
+        }
     }
     
     func handleCustomDetailTap() {
         guard let colorModel else { return }
-        destination().performInterfaceAction(interactionType: .customDetailButton(model: colorModel))
+        destination().handleThrowable { [weak self] in
+            try self?.destination().performInterfaceAction(interactionType: .customDetailButton(model: colorModel))
+        }
     }
 
 }

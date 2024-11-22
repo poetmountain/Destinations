@@ -13,7 +13,7 @@ import Destinations
 @MainActor final class TabBarViewDestinationableTests: XCTestCase, DestinationTypes {
 
     override func setUp() async throws {
-        DestinationsOptions.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
     }
 
     func test_tab_for_destinationID() {
@@ -59,7 +59,7 @@ import Destinations
     
     func test_updateSelectedTab_preserve_current_destination_in_nav_stack() {
         let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        let navigationStackDestination = TestNavigatorDestination()
+        let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         let childDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
@@ -136,7 +136,7 @@ import Destinations
     
     func test_presentDestination_in_navigationStack_tab() {
         let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        let navigationStackDestination = TestNavigatorDestination()
+        let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         
@@ -182,7 +182,7 @@ import Destinations
     
     func test_currentDestination_for_group_destination() {
         let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.home)
-        let navigationStackDestination = TestNavigatorDestination()
+        let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         
@@ -217,7 +217,7 @@ import Destinations
     
     func test_rootDestination_for_tab() {
         let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.home)
-        let navigationStackDestination = TestNavigatorDestination()
+        let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         

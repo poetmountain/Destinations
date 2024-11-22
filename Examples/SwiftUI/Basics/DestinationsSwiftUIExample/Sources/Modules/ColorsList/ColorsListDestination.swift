@@ -99,7 +99,7 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
             guard let strongSelf = self else { return }
             let items = current
             strongSelf.items = items
-            DestinationsOptions.logger.log("items received \(items)", category: .network)
+            DestinationsSupport.logger.log("items received \(items)", category: .network)
         })
         .store(in: &cancellables)
     }

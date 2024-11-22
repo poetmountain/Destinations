@@ -1,9 +1,10 @@
 //
 //  BaseViewController.swift
-//  CompositionRootApp
 //
-//  Created by Brett Walker on 6/13/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
 import SwiftUI
@@ -75,9 +76,9 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
             sheet.prefersGrabberVisible = true
         }))
-        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: options), assistantType: .basic)
+        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: options), assistantType: .custom(ColorDetailActionAssistant()))
         let customOptions = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .custom, transitionDelegate: transitionAnimator))
-        let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .basic)
+        let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .custom(ColorDetailActionAssistant()))
         
         
         let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<PresentationConfiguration>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in

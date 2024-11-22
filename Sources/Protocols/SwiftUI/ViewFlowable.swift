@@ -44,6 +44,11 @@ import SwiftUI
     /// - Returns: Returns a navigator, if one was found.
     func findNavigatorInViewHierarchy(searchDestination: any ViewDestinationable) -> (any DestinationPathNavigating)?
     
+    /// Finds the closest Destination in the view hierarchy whose interface is a `NavigationSplitView`.
+    /// - Parameter currentDestination: The Destination to start searching at.
+    /// - Returns: Returns a Destination, if one was found.
+    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<PresentationConfiguration>)?
+    
     /// Finds the closest Destination in the view hierarchy whose interface manages a `TabBar`.
     /// - Parameter currentDestination: The Destination to start searching at.
     /// - Returns: Returns a `TabBar` Destination, if found.
@@ -80,7 +85,7 @@ public extension ViewFlowable {
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
-                DestinationsOptions.logger.log("⏭️ Presenting next queue \(destinationType).")
+                DestinationsSupport.logger.log("⏭️ Presenting next queue \(destinationType).")
             }
             
             return presentDestination(configuration: nextPresentation)
@@ -123,7 +128,7 @@ public extension ViewFlowable {
             guard let strongSelf = self, let configuration else { return }
 
             if didComplete {
-                DestinationsOptions.logger.log("✌️ Default system navigating back closure", level: .verbose)
+                DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
 
                 if let oldID = configuration.currentDestinationID {
                     strongSelf.removeDestination(destinationID: oldID)
@@ -167,6 +172,16 @@ public extension ViewFlowable {
             
         } else if let parentID = searchDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
             return findNavigatorInViewHierarchy(searchDestination: parent)
+        }
+        return nil
+    }
+    
+    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<PresentationConfiguration>)? {
+        if let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<PresentationConfiguration> {
+            return splitViewDestination
+            
+        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
+            return findSplitViewInViewHierarchy(currentDestination: parent)
         }
         return nil
     }
@@ -238,8 +253,8 @@ public extension ViewFlowable {
                     configuration.navigator?.currentPresentationID = configuration.id
                 }
 
-            } else if let rootDestination = uiCoordinator?.rootView as? any NavigatingDestinationInterfacing {
-                configuration.navigator = rootDestination.navigator
+            } else if let rootView = uiCoordinator?.rootView as? any NavigatingDestinationInterfacing {
+                configuration.navigator = rootView.destinationState.navigator
                 if case PresentationType.sheet(type: .dismiss, options: _) = configuration.presentationType {
                     configuration.shouldDelayCompletionActivation = true
                     configuration.navigator?.currentPresentationID = configuration.id

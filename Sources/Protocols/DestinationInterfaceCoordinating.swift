@@ -9,8 +9,8 @@
 
 import Foundation
 
-/// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
-public typealias RemoveDestinationClosure = ((_ removalID: UUID) -> Void)
+/// A closure which is called when a Destination should be removed from the Flow object managing the ecosystem, typically after it's associated UI object is no longer being presented.
+public typealias RemoveDestinationFromFlowClosure = ((_ removalID: UUID) -> Void)
 
 /// This protocol defines methods that an object should implement to receive updates from ``DestinationInterfaceCoordinator`` objects.
 @MainActor public protocol DestinationInterfaceCoordinatorDelegate: AnyObject {
@@ -24,7 +24,7 @@ public typealias RemoveDestinationClosure = ((_ removalID: UUID) -> Void)
 @MainActor public protocol DestinationInterfaceCoordinating {
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
-    var removeDestinationClosure: RemoveDestinationClosure? { get set }
+    var removeDestinationClosure: RemoveDestinationFromFlowClosure? { get set }
     
     /// A delegate protocol object which can subscribe to this object to receive updates about the status of destination presentations.
     var delegate: DestinationInterfaceCoordinatorDelegate? { get set }

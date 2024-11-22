@@ -37,14 +37,24 @@ public enum DestinationsError: Error, Hashable {
     /// - Parameter message: A message to be sent with the error.
     case missingInterfaceAction(message: String)
     
-    /// An error type representing that an assistant for performing an ``InterfaceAction`` is missing.
+    /// An error type denoting that an assistant for performing an ``InterfaceAction`` is missing.
     ///
     /// - Parameter message: A message to be sent with the error.
     case missingInterfaceActionAssistant(message: String)
+    
+    /// An error type denoting that a column type for the UIKit or SwiftUI split view interface is undefined.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case undefinedSplitViewColumnType(message: String)
     
     /// An error type generated when a duplicate user interaction type is attempted to be used to add a ``InterfaceAction`` to a Destination.
     ///
     /// - Parameter message: A message to be sent with the error.
     case duplicateUserInteractionTypeUsed(message: String)
+    
+    /// An error type generated when an incompatible type was passed as a parameter, typically an incorrect sub-protocol.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case incompatibleType(message: String)
     
 }

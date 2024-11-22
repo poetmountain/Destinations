@@ -12,7 +12,7 @@ import SwiftUI
 struct DestinationsSwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Text("Hi!")
         }
     }
 }

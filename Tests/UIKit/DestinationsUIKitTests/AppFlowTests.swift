@@ -347,6 +347,49 @@ import Destinations
     }
     
     
+    func test_replace_destination_in_splitview_controller() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .splitView, presentationType: .addToCurrent, assistantType: .basic)
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+
+        let startProvider = StartProvider()
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorDetail])
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            .start: startProvider,
+            .splitView: splitViewProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignRoot(rootController: root)
+        }
+        appFlow.start()
+                
+        // replace Destination in detail column
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+                            
+        // SplitView started with one colorDetail, so presenting a new colorDetail in that column should add another to the nav controller
+        XCTAssertEqual(appFlow.activeDestinations.count(where: { $0.type == .colorDetail }), 2)
+        
+    }
+    
+    
     func test_replace_destination_in_navigation_stack() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
@@ -424,6 +467,65 @@ import Destinations
     }
     
     
+    func test_move_back_in_splitview_controller() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .splitView, presentationType: .addToCurrent, assistantType: .basic)
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+
+        let startProvider = StartProvider()
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorDetail])
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            .start: startProvider,
+            .splitView: splitViewProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignRoot(rootController: root)
+        }
+        appFlow.start()
+        
+
+        let home = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .home, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), assistantType: .basic))
+
+
+        // replace Destination in detail column
+        guard let newDestination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
+            XCTFail("Destination was not presented")
+            return
+        }
+                                    
+        newDestination.currentController()?.performSystemNavigationBack()
+
+        if let splitView = appFlow.findSplitViewInViewHierarchy(currentDestination: newDestination) {
+            // we moved back one in the navigation stack so there should only be 2 children now
+            let secondaryColumnController = splitView.currentController()?.viewController(for: .secondary)
+            XCTAssertEqual(secondaryColumnController?.navigationController?.children.count, 2)
+            
+            // the current child of the SplitViewDestination should now be the home Destination
+            XCTAssertEqual(splitView.currentChildDestination?.id, home?.id, "Expected currentChildDestination to be the previous Destination, but found \(String(describing: splitView.currentChildDestination?.type))")
+        } else {
+            XCTFail("Could not find split view in hierarchy")
+        }
+        
+    }
+    
     func test_sheet_presentation() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
@@ -436,7 +538,7 @@ import Destinations
         let startingType: RouteDestinationType = .colorDetail
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationController(type: .present), contentType: .color(model: detailColor), assistantType: .basic)
 
-        let colorButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .basic)
+        let colorButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
 
         let systemNavigationData = testDestinations.systemNavigationConfigurations()
 

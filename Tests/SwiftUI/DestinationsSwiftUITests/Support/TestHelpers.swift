@@ -31,7 +31,8 @@ public enum TestDestinationType: String, RoutableDestinations {
     case replacement
     case group
     case tabBar
- 
+    case splitView
+
 }
 
 @MainActor final class TestHelpers {
@@ -43,7 +44,9 @@ public enum TestDestinationType: String, RoutableDestinations {
     typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
     typealias ContentType = AppContentType
     
-    static func buildAppFlow(startingDestination: PresentationConfiguration, startingTabs: [AppTabType]? = nil) -> ViewFlow<DestinationType, TabType, ContentType> {
+    static func buildAppFlow(startingDestination: PresentationConfiguration, startingTabs: [AppTabType]? = nil, splitViewContent: [NavigationSplitViewColumn: RouteDestinationType]? = nil) -> ViewFlow<DestinationType, TabType, ContentType> {
+        
+        let splitViewColumns = splitViewContent ?? [.sidebar: .colorsList, .detail: .colorDetail]
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
         let sheetPresent = PresentationConfiguration(destinationType: .colorsList, presentationType: .sheet(type: .present), assistantType: .basic)
@@ -52,11 +55,13 @@ public enum TestDestinationType: String, RoutableDestinations {
         let colorDetailProvider = ColorDetailProvider(presentationsData: [:])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: sheetPresent])
         let tabBarProvider = TabBarProvider()
+        let splitViewProvider = SplitViewProvider(initialContent: splitViewColumns)
 
         var providers: [RouteDestinationType: any ViewDestinationProviding] = [
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
-            .home: homeProvider
+            .home: homeProvider,
+            .splitView: splitViewProvider
         ]
         
         if let startingTabs {
@@ -181,7 +186,7 @@ final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, D
 }
 
 
-final class TestNavigatorDestination: NavigatingViewDestinationable, DestinationTypes {
+final class TestNavigatorDestination<ViewType: NavigatingDestinationInterfacing>: NavigatingViewDestinationable, DestinationTypes {
     
     enum UserInteractions: String, UserInteractionTypeable {
         case test
@@ -194,7 +199,7 @@ final class TestNavigatorDestination: NavigatingViewDestinationable, Destination
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
     typealias Destination = ViewDestination<UserInteractionType, TestGroupView, PresentationConfiguration>
-    typealias ViewType = TestGroupView
+    //typealias ViewType = TestGroupView
     
     var type: TestDestinationType = .group
     
@@ -215,7 +220,7 @@ final class TestNavigatorDestination: NavigatingViewDestinationable, Destination
     var childWasRemovedClosure: Destinations.GroupChildRemovedClosure?
     var currentDestinationChangedClosure: Destinations.GroupCurrentDestinationChangedClosure?
     
-    var view: TestGroupView?
+    var view: ViewType?
 
     var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
     var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
@@ -231,25 +236,57 @@ struct TestGroupView: NavigatingDestinationInterfacing, DestinationTypes {
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias Destination = TestNavigatorDestination
+    typealias Destination = TestNavigatorDestination<Self>
     
-    @State var navigator: any DestinationPathNavigating = DestinationNavigator()
-
-    @State public var destinationState: DestinationInterfaceState<Destination>
-            
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
+           
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
     }
-    
+
     var body: some View {
-        VStack {
-            Button("Test") {
-                try? destination().performInterfaceAction(interactionType: .test)
+        NavigationStack(path: $destinationState.navigator.navigationPath, root: {
+            VStack {
+                Button("Test") {
+                    try? destination().performInterfaceAction(interactionType: .test)
+                }
             }
-        }
+        })
     }
 
 }
+
+
+struct TestGroupContainerView<Content: View>: NavigatingDestinationInterfacing, DestinationTypes {
+
+    typealias UserInteractionType = TestGroupDestination.UserInteractions
+    typealias DestinationType = TestDestinationType
+    typealias InteractorType = AppInteractorType
+    typealias TabType = TestTabType
+    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
+    typealias Destination = TestNavigatorDestination<Self>
+    
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
+           
+    @State public var content: Content?
+
+    init(destination: Destination, content: (() -> Content)? = nil) {
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+        if let content {
+            self.content = content()
+        }
+    }
+
+    var body: some View {
+        NavigationStack(path: $destinationState.navigator.navigationPath, root: {
+            VStack {
+                content
+            }
+        })
+    }
+
+}
+
 
 public enum TestTabType: String, TabTypeable {
  
@@ -281,10 +318,10 @@ struct TestView: ViewDestinationInterfacing, DestinationTypes {
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias Destination = ViewDestination<UserInteractionType, TestView, PresentationConfiguration>
     
-    @State public var destinationState: DestinationInterfaceState<Destination>
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
             
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
     }
     
     var body: some View {
@@ -312,11 +349,11 @@ struct TestTabView: TabBarViewDestinationInterfacing, DestinationTypes {
     typealias PresentationConfiguration = DestinationPresentation<TestDestinationType, AppContentType, TabType>
     typealias Destination = TabViewDestination<PresentationConfiguration, Self>
         
-    @State public var destinationState: DestinationInterfaceState<Destination>
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
 
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
     }
     
     
@@ -347,4 +384,42 @@ struct TestTabView: TabBarViewDestinationInterfacing, DestinationTypes {
 
 }
 
+struct TestSplitView: NavigationSplitViewDestinationInterfacing {
+    
+    enum UserInteractions: UserInteractionTypeable {
+        public var rawValue: String {
+            return ""
+        }
+    }
+    
+    typealias UserInteractionType = UserInteractions
+    typealias DestinationType = TestDestinationType
+    typealias InteractorType = AppInteractorType
+    typealias TabType = TestTabType
+    typealias PresentationConfiguration = DestinationPresentation<TestDestinationType, AppContentType, TabType>
+    typealias Destination = NavigationSplitViewDestination<PresentationConfiguration, Self>
+        
+    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
+
+    @State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
+            
+    init(destination: Destination) {
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+    }
+    
+    var body: some View {
+        VStack {
+            NavigationSplitView(columnVisibility: $columnVisibility) {
+                BindableContainerView(content: $destinationState.destination.currentSidebar)
+            } content: {
+                BindableContainerView(content: $destinationState.destination.currentContent)
+            } detail: {
+                BindableContainerView(content: $destinationState.destination.currentDetail)
+
+            }
+
+        }
+    }
+    
+}
 

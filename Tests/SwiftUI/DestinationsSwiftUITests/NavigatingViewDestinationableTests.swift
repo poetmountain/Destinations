@@ -32,7 +32,7 @@ import Destinations
 
     func test_removeChild() {
         let destination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        let navDestination = TestNavigatorDestination()
+        let navDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navDestination)
         navDestination.assignAssociatedView(view: navView)
         

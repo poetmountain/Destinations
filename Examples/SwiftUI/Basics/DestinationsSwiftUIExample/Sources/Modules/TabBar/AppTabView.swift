@@ -60,8 +60,9 @@ struct AppTabView: TabBarViewDestinationInterfacing, DestinationTypes {
     
     @ViewBuilder func buildView(for tab: TabModel<TabType>) -> (some View)? {
 
-        if let view = destination().rootDestination(for: tab.type)?.currentView() {
+        if let tabDestination = destination().rootDestination(for: tab.type), let view = tabDestination.currentView() {
             AnyView(view)
+            .id(tabDestination.id)
         }
 
     }

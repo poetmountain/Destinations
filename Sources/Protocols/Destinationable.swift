@@ -306,7 +306,7 @@ public extension Destinationable {
                 
                 presentationClosure(configuration)
             } else {
-                DestinationsOptions.logger.log("Interface action closure could not be built for type \(type)", category: .error)
+                DestinationsSupport.logger.log("Interface action closure could not be built for type \(type)", category: .error)
             }
 
         })
@@ -350,7 +350,7 @@ public extension Destinationable {
                 
                 
             } else {
-                let template = DestinationsOptions.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
                 let message = String(format: template, type.rawValue)
                 strongSelf.logError(error: DestinationsError.missingInterfaceActionAssistant(message: message))
             }
@@ -405,7 +405,7 @@ public extension Destinationable {
                 
                 presentationClosure(configuration)
             } else {
-                DestinationsOptions.logger.log("System navigation closure could not be built for type \(type)", category: .error)
+                DestinationsSupport.logger.log("System navigation closure could not be built for type \(type)", category: .error)
             }
 
 
@@ -423,7 +423,7 @@ public extension Destinationable {
     func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
         
         guard var interfaceAction = interfaceActions[interactionType] else {
-            let template = DestinationsOptions.errorMessage(for: .missingInterfaceAction(message: ""))
+            let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
             let message = String(format: template, interactionType.rawValue, type.rawValue)
             
             throw DestinationsError.missingInterfaceAction(message: message)
@@ -440,7 +440,7 @@ public extension Destinationable {
                     if let customAssistant = customAssistant as? any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType> {
                         assistant = customAssistant
                     } else {
-                        let template = DestinationsOptions.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                        let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
                         let message = String(format: template, self.type.rawValue)
                         throw DestinationsError.missingInterfaceActionAssistant(message: message)
                     }
@@ -466,7 +466,7 @@ public extension Destinationable {
             interfaceActions[type] = action
             
         } else {
-            let template = DestinationsOptions.errorMessage(for: .duplicateUserInteractionTypeUsed(message: ""))
+            let template = DestinationsSupport.errorMessage(for: .duplicateUserInteractionTypeUsed(message: ""))
             let message = String(format: template, type.rawValue)
             
             throw DestinationsError.duplicateUserInteractionTypeUsed(message: message)
@@ -524,7 +524,7 @@ public extension Destinationable {
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<[Request.ResultData], Error> {
         
         guard let interactor = interactors[interactor] as? any AsyncInteractable<Request, Request.ResultData> else {
-            let template = DestinationsOptions.errorMessage(for: .interactorNotFound(message: ""))
+            let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
             
             return .failure(DestinationsError.interactorNotFound(message: message))
@@ -538,7 +538,7 @@ public extension Destinationable {
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request, completionClosure: DatasourceResponseClosure<[Request.ResultData]>?) {
         
         guard let interactor = interactors[interactor] as? any Interactable<Request, Request.ResultData> else {
-            let template = DestinationsOptions.errorMessage(for: .interactorNotFound(message: ""))
+            let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
             
             completionClosure?(.failure(DestinationsError.interactorNotFound(message: message)))
@@ -570,16 +570,16 @@ public extension Destinationable {
                 DestinationsError.missingInterfaceActionAssistant(message: let message),
                 DestinationsError.duplicateUserInteractionTypeUsed(message: let message)
         {
-            DestinationsOptions.logger.log(message, category: .error)
+            DestinationsSupport.logger.log(message, category: .error)
             catchClosure?()
 
         } catch {
-            DestinationsOptions.logger.log("\(error.localizedDescription)", category: .error)
+            DestinationsSupport.logger.log("\(error.localizedDescription)", category: .error)
             catchClosure?()
         }
     }
     
     func logError(error: Error) {
-        DestinationsOptions.logError(error: error)
+        DestinationsSupport.logError(error: error)
     }
 }

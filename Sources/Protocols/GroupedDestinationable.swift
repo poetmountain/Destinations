@@ -52,11 +52,11 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure? { get set }
     
     
-    /// Assigns a closure to be run when a child Destination is removed from this Group.
+    /// Assigns a closure to be run when a child Destination is removed from this Group. This closure should be used by an associated Destination to respond to child removals that happened internally.
     /// - Parameter closure: A closure.
     func assignChildRemovedClosure(closure: @escaping GroupChildRemovedClosure)
     
-    /// Assigns a closure to be run when the current child Destination has changed.
+    /// Assigns a closure to be run when the current child Destination has changed. This closure should be used by an associated Destination to respond to current Destination changes that happened internally.
     /// - Parameter closure: A closure.
     func assignCurrentDestinationChangedClosure(closure: @escaping GroupCurrentDestinationChangedClosure)
 
@@ -68,7 +68,9 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     
     /// Removes a child Destination.
     /// - Parameter destinationIdentifier: The identifier of the Destination to remove.
-    func removeChild(identifier: UUID)
+    ///   - removeDestinationClosure: A closure that notifies an external object when this Destination has removed one of its children.
+    ///   Typically this will be passed in when being called from a `DestinationPresentation` object, and handles the removal of the child Destination from the active Flow object. The identifier of the child that was removed should be passed in to the closure.
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
     
     /// Removes all child Destinations from this group.
     func removeAllChildren()
@@ -86,7 +88,9 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// - Parameters:
     ///   - currentID: A `UUID` identifier matching the child Destination which should be replaced.
     ///   - newDestination: A ``Destinationable`` object to replace an existing child Destination.
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>)
+    ///   - removeDestinationClosure: A closure that notifies an external object when this Destination has removed one of its children.
+    ///   Typically this will be passed in when being called from a `DestinationPresentation` object, and handles the removal of the child Destination from the active Flow object. The identifier of the child that was removed should be passed in to the closure.
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
     
     /// Updates the currently active Destination with an identifier of another child.
     /// - Parameter destinationID: The Destination identifier to use. This Destination must be a current child.
@@ -122,7 +126,7 @@ public extension GroupedDestinationable {
         }
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }) else { return }
         
         if childDestinations.contains(where: { $0.id == newDestination.id}) == false {
@@ -134,23 +138,27 @@ public extension GroupedDestinationable {
             currentChildDestination = newDestination
         }
         
-        removeChild(identifier: currentID)
+        removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
 
     }
     
-    func removeChild(identifier: UUID) {
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let childIndex = childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = childDestinations[safe: childIndex] else { return }
 
         if let currentChildDestination, childDestination.id == currentChildDestination.id {
-            DestinationsOptions.logger.log("Removing current child \(identifier) from \(Self.self)", level: .verbose)
+            DestinationsSupport.logger.log("Removing current child \(identifier) from \(Self.self)", level: .verbose)
             self.currentChildDestination = nil
         }
         
-        DestinationsOptions.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
+        DestinationsSupport.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
 
         childDestinations.remove(at: childIndex)
     
+
         childWasRemovedClosure?(identifier)
+        
+        removeDestinationFromFlowClosure?(identifier)
+
     }
     
     func removeAllChildren() {

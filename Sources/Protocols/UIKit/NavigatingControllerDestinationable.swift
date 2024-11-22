@@ -24,7 +24,7 @@ public extension NavigatingControllerDestinationable {
     }
     
     func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
-        DestinationsOptions.logger.log("Adding \(childDestination.type) as a child of navigation controller \(self.type).", level: .verbose)
+        DestinationsSupport.logger.log("Adding \(childDestination.type) as a child of navigation controller \(self.type).", level: .verbose)
         childDestination.parentDestinationID = id
         childDestinations.append(childDestination)
         // shouldSetDestinationAsCurrent is ignored for NavigationControllers because a new Destination should always become the current one
@@ -51,7 +51,7 @@ public extension NavigatingControllerDestinationable {
         if let current = currentChildDestination {
             childDestinations.removeAll(where: { $0.id == current.id })
             currentChildDestination = nil
-            DestinationsOptions.logger.log("child dests \(childDestinations.map { $0.id })")
+            DestinationsSupport.logger.log("child dests \(childDestinations.map { $0.id })")
             
             // set new active child destination
             currentChildDestination = childDestinations.last

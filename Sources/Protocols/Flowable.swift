@@ -142,7 +142,7 @@ public extension Flowable {
     func updateCurrentDestination(destination: any Destinationable<PresentationConfiguration>) {
         uiCoordinator?.destinationToPresent = nil
         currentDestination = destination
-        DestinationsOptions.logger.log("🔄 Updated current destination to \(destination.type).")
+        DestinationsSupport.logger.log("🔄 Updated current destination to \(destination.type).")
     }
     
     func updateDestination(destination: any Destinationable<PresentationConfiguration>) {
@@ -154,7 +154,7 @@ public extension Flowable {
     func updateActiveDestinations(with destination: any Destinationable<PresentationConfiguration>) {
         guard self.destination(for: destination.id) == nil else { return }
         activeDestinations.append(destination)
-        DestinationsOptions.logger.log("Active destinations \(activeDestinations.map { $0.type }).", level: .verbose)
+        DestinationsSupport.logger.log("Active destinations \(activeDestinations.map { $0.type }).", level: .verbose)
 
     }
     
@@ -201,7 +201,7 @@ public extension Flowable {
 
         }
 
-        DestinationsOptions.logger.log("Active destinations (after removal) \(activeDestinations.map { $0.type }).", level: .verbose)
+        DestinationsSupport.logger.log("Active destinations (after removal) \(activeDestinations.map { $0.type }).", level: .verbose)
     }
     
     func removeDestinations(destinationIDs: [UUID]) {
@@ -238,7 +238,7 @@ public extension Flowable {
             guard let configuration else { return }
             
             if didComplete == true {
-                DestinationsOptions.logger.log("✌️ Default presentation completion closure", level: .verbose)
+                DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
                 
                 if let destination {
                     strongSelf.updateActiveDestinations(with: destination)
@@ -293,11 +293,11 @@ public extension Flowable {
 
     func logDestinationPresented(destination: (any Destinationable<PresentationConfiguration>)? = nil, configuration: PresentationConfiguration) {
         if let destinationType = destination?.type {
-            DestinationsOptions.logger.log("✅ New destination \(destinationType) was presented in \(configuration.presentationType).")
+            DestinationsSupport.logger.log("✅ New destination \(destinationType) was presented in \(configuration.presentationType).")
         } else if let currentDestination {
-            DestinationsOptions.logger.log("✅ Existing destination \(currentDestination.type) presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
+            DestinationsSupport.logger.log("✅ Existing destination \(currentDestination.type) presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
         } else {
-            DestinationsOptions.logger.log("✅ No destination presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
+            DestinationsSupport.logger.log("✅ No destination presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
         }
     }
     

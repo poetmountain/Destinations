@@ -111,7 +111,7 @@ public final class TabViewDestination<PresentationConfiguration: DestinationPres
         if let selectedModel {
             self.selectedTab = selectedModel
         } else {
-            DestinationsOptions.logger.log("The specified selectedTab type was not found in the supplied tabs array. Initialization of TabViewDestination failed.", category: .error)
+            DestinationsSupport.logger.log("The specified selectedTab type was not found in the supplied tabs array. Initialization of TabViewDestination failed.", category: .error)
             return nil
         }
         
@@ -124,7 +124,7 @@ public final class TabViewDestination<PresentationConfiguration: DestinationPres
                 do {
                     try presentDestination(destination: destination, in: tab, shouldUpdateSelectedTab: false)
                 } catch {
-                    DestinationsOptions.logger.log("Error presenting tab Destination \(error)", category: .error)
+                    DestinationsSupport.logger.log("Error presenting tab Destination \(error)", category: .error)
                 }
             }
         }

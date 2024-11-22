@@ -28,9 +28,9 @@ public extension NavigatingViewDestinationable {
     }
     
     func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
-        DestinationsOptions.logger.log("Adding child \(childDestination.type) to NavigationStack \(childDestination.id)", level: .verbose)
+        DestinationsSupport.logger.log("Adding child \(childDestination.type) to NavigationStack \(childDestination.id)", level: .verbose)
         
-        view?.navigator.addPathElement(item: childDestination.id, shouldAnimate: shouldAnimate)
+        navigator()?.addPathElement(item: childDestination.id, shouldAnimate: shouldAnimate)
         childDestinations.append(childDestination)
         // shouldSetDestinationAsCurrent is ignored for NavigationStacks because a new Destination should always become the current one
         currentChildDestination = childDestination
@@ -47,17 +47,17 @@ public extension NavigatingViewDestinationable {
     }
     
     func navigateBackInStack(previousPresentationID: UUID? = nil) {
-        view?.navigator.backToPreviousPathElement(previousPresentationID: previousPresentationID)
+        navigator()?.backToPreviousPathElement(previousPresentationID: previousPresentationID)
     }
     
     func navigator() -> (any DestinationPathNavigating)? {
-        return view?.navigator
+        return view?.destinationState.navigator
     }
     
     func removeChild(identifier: UUID) {
         guard let childIndex = childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = childDestinations[safe: childIndex] else { return }
         
-        DestinationsOptions.logger.log("Removing child \(childDestination.id) : \(childDestination.type)", level: .verbose)
+        DestinationsSupport.logger.log("Removing child \(childDestination.id) : \(childDestination.type)", level: .verbose)
         
         if let groupedChild = childDestination as? any GroupedDestinationable {
             groupedChild.removeAllChildren()

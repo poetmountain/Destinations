@@ -48,7 +48,7 @@ public typealias TabBarControllerSelectedTabUpdatedClosure<TabType: TabTypeable>
     ///   - tab: The tab type to present this Destination in.
     ///   - shouldUpdateSelectedTab: Determines whether the selected tab should be updated.
     ///   - presentationOptions: A model which provides options for presenting this Destination in the `UINavigationController` within the tab, including determining whether the presentation should be animated.
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?) throws
+    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) throws
     
     /// Registers the specified `UINavigationControllerDelegate` with the `UINavigationController` root objects in each tab.
     /// - Parameter coordinator: The `UINavigationControllerDelegate` coordinator object to register.
@@ -95,7 +95,7 @@ public extension TabBarControllerDestinationable {
                 controller?.selectedIndex = tabIndex
             }
         } else {
-            let template = DestinationsOptions.errorMessage(for: .tabNotFound(message: ""))
+            let template = DestinationsSupport.errorMessage(for: .tabNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             
             throw DestinationsError.tabNotFound(message: message)
@@ -147,7 +147,7 @@ public extension TabBarControllerDestinationable {
         return nil
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let controller, let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController() else { return }
   
         if childDestinations.contains(where: { $0.id == newDestination.id}) == false {
@@ -159,7 +159,7 @@ public extension TabBarControllerDestinationable {
             currentChildDestination = newDestination
         }
         
-        removeChild(identifier: currentID)
+        removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
         
         if let tab = self.tab(destinationID: currentID), let newDestination = newDestination as? any ControllerDestinationable {
             updateTabController(destinationID: newDestination.id, for: tab)
@@ -174,8 +174,8 @@ public extension TabBarControllerDestinationable {
         
     }
     
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil) throws {
-        DestinationsOptions.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
+    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
+        DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
 
         if let navigationController = navControllersForTabs[tab], let controllerToPresent = destination.currentController() {
             let shouldAnimate = presentationOptions?.shouldAnimate ?? true
@@ -188,7 +188,7 @@ public extension TabBarControllerDestinationable {
             }
             
         } else if let currentDestination = self.currentDestination(for: tab) {
-            replaceChild(currentID: currentDestination.id, with: destination)
+            replaceChild(currentID: currentDestination.id, with: destination, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
         }
     }
     
@@ -199,11 +199,9 @@ public extension TabBarControllerDestinationable {
     /// Adds the children Destination controllers to each tab's UINavigationController stack. This is used internally by Destinations.
     internal func addContentToNavigationController(tab: TabType) {
 
-       // for tab in activeTabs {
-            if let controllerID = destinationIDsForTabs[tab], let tabDestination = childDestinations.first(where: { $0.id == controllerID }) as? any ControllerDestinationable, let controller = tabDestination.currentController(), let navigationController = navControllersForTabs[tab] {
-                navigationController.setViewControllers([controller], animated: false)
-            }
-        //}
+        if let controllerID = destinationIDsForTabs[tab], let tabDestination = childDestinations.first(where: { $0.id == controllerID }) as? any ControllerDestinationable, let controller = tabDestination.currentController(), let navigationController = navControllersForTabs[tab] {
+            navigationController.setViewControllers([controller], animated: false)
+        }
     }
     
     /// Sets up the `UINavigationController` containers for each tab. These navigation controllers are transparent to the Destinations ecosystem, but facilitate pushing a Destination onto a tab. This is used internally by Destinations.

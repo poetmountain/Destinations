@@ -30,19 +30,16 @@ extension AppContentType: Equatable {
     }
 }
 
-public enum RouteDestinationType: RoutableDestinations, CaseIterable {
+public enum RouteDestinationType: RoutableDestinations {
 
     public var id: String { rawValue }
 
-    public static var allCases: [RouteDestinationType] {
-        return [.colorsList, .colorDetail, .home, .dynamic, .tabBar(tabs: [])]
-    }
-    
     case colorsList
     case colorDetail
     case home
     case dynamic
     case tabBar(tabs: [AppTabType])
+    case splitView
     
     public var rawValue: String {
         switch self {
@@ -56,6 +53,8 @@ public enum RouteDestinationType: RoutableDestinations, CaseIterable {
                 return "dynamic"
             case .tabBar(_):
                 return "tabBar"
+            case .splitView:
+                return "splitView"
         }
     }
 }

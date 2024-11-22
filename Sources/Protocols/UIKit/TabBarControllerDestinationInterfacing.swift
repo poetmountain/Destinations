@@ -9,7 +9,7 @@
 
 import UIKit
 
-/// A protocol represents a `UITabBarController` class which conforms to Destinations.
+/// A protocol representing a `UITabBarController` class which conforms to Destinations.
 @MainActor public protocol TabBarControllerDestinationInterfacing<TabType>: TabBarDestinationInterfacing, ControllerDestinationInterfacing, UITabBarController where Destination: TabBarControllerDestinationable<PresentationConfiguration, TabType> {
 
     /// Returns the currently presented controller in the specified tab.

@@ -1,9 +1,10 @@
 //
 //  ColorDetailDestination.swift
-//  CompositionRootApp
 //
-//  Created by Brett Walker on 9/24/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import Foundation
 import Destinations
@@ -66,26 +67,6 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
         self.destinationConfigurations = destinationConfigurations
         self.systemNavigationConfigurations = navigationConfigurations
     }
-    
 
-    public func performInterfaceAction(interactionType: UserInteractionType) {
-
-        if var closure = interfaceActions[interactionType] {
-
-            closure.data.parentID = self.id
-            
-            switch interactionType {
-                case .colorDetailButton(model: let model), .customDetailButton(model: let model):
-                    if let model, closure.data.contentType == nil {
-                        closure.data.contentType = .color(model: model)
-                    }
-                case .color:
-                    break
-            }
-            
-            closure()
-            
-        }
-    }
 
 }

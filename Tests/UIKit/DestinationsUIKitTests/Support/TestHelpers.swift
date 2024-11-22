@@ -47,7 +47,7 @@ struct TestColorsRequest: InteractorRequestConfiguring {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
 
         let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
-        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .basic)
+        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .custom(ColorDetailActionAssistant()))
         
         let startProvider = StartProvider()
         let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection])

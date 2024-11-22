@@ -14,13 +14,11 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
     
     typealias UserInteractionType = ColorDetailDestination.UserInteractions
     typealias Destination = ColorDetailDestination
-            
+        
     @State var destinationState: DestinationInterfaceState<Destination>
 
     @State var areDatasourcesSetup = false
-        
-    @State private var selectedItem: ColorViewModel.ID?
-    
+            
     @State private var colorModel: ColorViewModel?
     
     @State var sheetPresentation = SheetPresentation()
@@ -55,7 +53,7 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
                 guard let sheetView else { return }
                 
                 destination?.handleThrowable(closure: {
-                    try? destination?.performInterfaceAction(interactionType: .colorDetailButton, content: .dynamicView(view: sheetView))
+                    try destination?.performInterfaceAction(interactionType: .colorDetailButton, content: .dynamicView(view: sheetView))
                 })
                 
             }, label: {

@@ -16,7 +16,7 @@ public final class DestinationSwiftUICoordinator: NSObject, DestinationSwiftUICo
     public var rootView: (any View)?
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
-    public var removeDestinationClosure: RemoveDestinationClosure?
+    public var removeDestinationClosure: RemoveDestinationFromFlowClosure?
     
     /// The Destination that currently should be presented.
     public var destinationToPresent: (any Destinationable)?

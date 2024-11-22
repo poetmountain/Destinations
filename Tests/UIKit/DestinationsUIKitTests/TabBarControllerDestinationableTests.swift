@@ -15,7 +15,7 @@ import UIKit
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
     override func setUp() async throws {
-        DestinationsOptions.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
     }
 
     override func tearDown() async throws {

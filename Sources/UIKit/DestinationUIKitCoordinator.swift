@@ -16,7 +16,7 @@ import UIKit
     public var rootController: (any ControllerDestinationInterfacing)?
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
-    public var removeDestinationClosure: RemoveDestinationClosure?
+    public var removeDestinationClosure: RemoveDestinationFromFlowClosure?
         
     /// The Destination that currently should be presented.
     public var destinationToPresent: (any Destinationable)?
@@ -78,7 +78,7 @@ import UIKit
         
         let fromIndex = navController.viewControllers.firstIndex { $0 == fromVC }
         let toIndex = navController.viewControllers.firstIndex { $0 == toVC }
-        DestinationsOptions.logger.log("👋 handle movement from \(fromVC.self) - index \(fromIndex) to \(toVC.self) - index \(toIndex)", level: .verbose)
+        DestinationsSupport.logger.log("👋 handle movement from \(fromVC.self) - index \(fromIndex) to \(toVC.self) - index \(toIndex)", level: .verbose)
 
         var isDescending = false
         if let fromIndex = fromIndex, let toIndex = toIndex {

@@ -1,9 +1,10 @@
 //
-//  ColorDetailViewModel.swift
-//  CompositionRootApp
+//  ColorViewModel.swift
 //
-//  Created by Brett Walker on 4/17/24.
+//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  https://github.com/poetmountain
 //
+//  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
 import Destinations

@@ -90,7 +90,7 @@ import Foundation
     ///   - currentDestination: A ``ControllerDestinationable`` object, representing the currently presented Destination.
     ///   - parentOfCurrentDestination: A ``ControllerDestinationable`` object, representing the parent of the current Destination.
     ///   - removeDestinationClosure: An optional closure to the run when the Destination is removed from the UI hierarchy.
-    func handlePresentation(destinationToPresent: (any ControllerDestinationable<Self>)?, rootController: (any ControllerDestinationInterfacing)?, currentDestination: (any ControllerDestinationable)?, parentOfCurrentDestination: (any ControllerDestinationable)?, removeDestinationClosure: RemoveDestinationClosure?)
+    func handlePresentation(destinationToPresent: (any ControllerDestinationable<Self>)?, rootController: (any ControllerDestinationInterfacing)?, currentDestination: (any ControllerDestinationable)?, parentOfCurrentDestination: (any ControllerDestinationable)?, removeDestinationClosure: RemoveDestinationFromFlowClosure?)
 #endif
     
 #if canImport(SwiftUI)
@@ -101,7 +101,7 @@ import Foundation
     ///   - currentDestination: A ``ViewDestinationable`` object, representing the currently presented Destination.
     ///   - parentOfCurrentDestination: A ``ViewDestinationable`` object, representing the parent of the current Destination.
     ///   - removeDestinationClosure: An optional closure to the run when the Destination is removed from the UI hierarchy.
-    func handlePresentation(destinationToPresent: (any ViewDestinationable<Self>)?, currentDestination: (any ViewDestinationable<Self>)?, parentOfCurrentDestination: (any ViewDestinationable)?, removeDestinationClosure: RemoveDestinationClosure?)
+    func handlePresentation(destinationToPresent: (any ViewDestinationable<Self>)?, currentDestination: (any ViewDestinationable<Self>)?, parentOfCurrentDestination: (any ViewDestinationable)?, removeDestinationClosure: RemoveDestinationFromFlowClosure?)
 #endif
     
     /// Creates a copy of this object.

@@ -45,9 +45,9 @@ final class ColorsListProvider: ViewDestinationProviding, DestinationTypes {
             
             switch result {
                 case .success(let data):
-                    DestinationsOptions.logger.log("request more success! \(data)")
+                    DestinationsSupport.logger.log("request more success! \(data)")
                 case .failure(let error):
-                    DestinationsOptions.logger.log("error \(error.localizedDescription)", category: .error)
+                    DestinationsSupport.logger.log("error \(error.localizedDescription)", category: .error)
             }
         }
         

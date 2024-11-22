@@ -1,5 +1,5 @@
 //
-//  Color.swift
+//  ColorModel.swift
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain

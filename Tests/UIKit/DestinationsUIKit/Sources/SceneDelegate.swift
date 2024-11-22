@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = createRootViewController()
         window?.makeKeyAndVisible()
 
-        DestinationsOptions.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
         
         Self.shared = self
     }

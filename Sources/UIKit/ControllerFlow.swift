@@ -54,7 +54,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     public func start()  {
         if let startingDestination {
             let loggingStartingAction: String = startingDestination.destinationType != nil ? startingDestination.destinationType.debugDescription : "\(startingDestination.presentationType.rawValue)"
-            DestinationsOptions.logger.log("🏁 Starting Destinations flow with \(loggingStartingAction).")
+            DestinationsSupport.logger.log("🏁 Starting Destinations flow with \(loggingStartingAction).")
             
             if case DestinationPresentationType.destinationPath(path: let path) = startingDestination.presentationType {
                 self.presentDestinationPath(path: path)
@@ -107,11 +107,23 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         
         let destination = self.destination(for: mutableConfiguration)
                 
-        let currentDestination = currentDestination as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>
+        var currentDestination = currentDestination as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>
+        
+        if case .splitView(column: let column) = configuration.presentationType, let current = currentDestination {
+            guard column.uiKit != nil else {
+                let template = DestinationsSupport.errorMessage(for: .undefinedSplitViewColumnType(message: ""))
+                let message = String(format: template, "uiKit")
+                DestinationsSupport.logError(error: DestinationsError.undefinedSplitViewColumnType(message: message))
+                
+                return nil
+            }
+            
+            currentDestination = findSplitViewInViewHierarchy(currentDestination: current)
+        }
 
-        var tabController: (any TabBarControllerDestinationable<PresentationConfiguration, TabType>)?
+        var tabDestination: (any TabBarControllerDestinationable<PresentationConfiguration, TabType>)?
         if let currentDestination = currentDestination ?? rootDestination as? any ControllerDestinationable {
-            tabController = findTabBarInViewHierarchy(currentDestination: currentDestination)
+            tabDestination = findTabBarInViewHierarchy(currentDestination: currentDestination)
         }
         
         if var destination {
@@ -120,25 +132,25 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
                 tabController.delegate = self
             }
                         
-            if let current = currentDestination, let tabDestination = findTabBarInViewHierarchy(currentDestination: current) {
+            if let current = currentDestination, let tabDestination {
                 mutableConfiguration.tabBarControllerDestination = tabDestination
             }
             
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: destination)
             
-            uiCoordinator?.presentControllerDestination(destination: destination, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, tabBarDestinationInViewHiearchy: tabController, configuration: mutableConfiguration)
+            uiCoordinator?.presentControllerDestination(destination: destination, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, tabBarDestinationInViewHiearchy: tabDestination, configuration: mutableConfiguration)
             
             return destination
             
         } else {
             
-            if let current = currentDestination, let tabDestination = findTabBarInViewHierarchy(currentDestination: current) {
+            if let current = currentDestination, let tabDestination {
                 mutableConfiguration.tabBarControllerDestination = tabDestination
             }
             
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: nil)
             
-           uiCoordinator?.presentControllerDestination(destination: destination, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, tabBarDestinationInViewHiearchy: tabController, configuration: mutableConfiguration)
+           uiCoordinator?.presentControllerDestination(destination: destination, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, tabBarDestinationInViewHiearchy: tabDestination, configuration: mutableConfiguration)
             
         }
 

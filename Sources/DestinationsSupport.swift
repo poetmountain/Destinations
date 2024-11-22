@@ -1,5 +1,5 @@
 //
-//  DestinationsOptions.swift
+//  DestinationsSupport.swift
 //  Destinations
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
@@ -10,14 +10,14 @@
 import Foundation
 
 /// A singleton object which contains global options and an internal logger for Destinations. If you wish to interact with this class, please use the `shared` reference.
-@MainActor public final class DestinationsOptions {
+@MainActor public final class DestinationsSupport {
     
     /// Logger used for Destinations debug log entries.
     public static let logger: PMLogger = PMLogger()
     
     /// A singleton reference. Any interactions with this class should be through this instance.
-    public static var shared: DestinationsOptions {
-        return DestinationsOptions()
+    public static var shared: DestinationsSupport {
+        return DestinationsSupport()
     }
     
     /// Determines whether Destinations should output debug statements.
@@ -38,10 +38,10 @@ import Foundation
                 DestinationsError.missingInterfaceActionAssistant(message: let message),
                 DestinationsError.duplicateUserInteractionTypeUsed(message: let message):
                 
-                DestinationsOptions.logger.log(message, category: .error)
+                DestinationsSupport.logger.log(message, category: .error)
                 
             default:
-                DestinationsOptions.logger.log("\(error.localizedDescription)", category: .error)
+                DestinationsSupport.logger.log("\(error.localizedDescription)", category: .error)
         }
     }
     
@@ -70,8 +70,14 @@ import Foundation
             case .missingInterfaceActionAssistant(let message):
                 return "Error: No interactor assistant was found while constructing Interface action closure for type %@."
                 
+            case .undefinedSplitViewColumnType(message: let message):
+                return "Error: A column type for %@ was undefined in a SplitViewColumn model."
+                
             case .duplicateUserInteractionTypeUsed(message: let message):
                 return "Error: An existing InterfaceAction already exists for the \"%@\" user interaction type."
+                
+            case .incompatibleType(message: let message):
+                return "Error: An incompatible type %@ was passed in as a parameter."
         }
     }
 }

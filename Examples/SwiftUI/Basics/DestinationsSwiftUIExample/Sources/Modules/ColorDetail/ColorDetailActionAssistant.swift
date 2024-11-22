@@ -17,7 +17,7 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
         
         var contentType: ContentType?
 
-        closure.data.parentID = destination.parentDestinationID
+        closure.data.parentID = destination.id
 
         switch interactionType {
             case .color(model: let model):

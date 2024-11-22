@@ -33,7 +33,7 @@ import Foundation
 public extension SheetPresenting {
     
     func presentSheet(sheet: any Sheetable) {
-        DestinationsOptions.logger.log("Presenting sheet \(sheet.description)", level: .verbose)
+        DestinationsSupport.logger.log("Presenting sheet \(sheet.description)", level: .verbose)
 
         sheetPresentation.dismissalClosure = sheetDismissalClosure(destination: destination())
         sheetPresentation.updateSheet(sheet)

@@ -44,6 +44,7 @@ public enum RouteDestinationType: RoutableDestinations {
     case home
     case tabBar(tabs: [AppTabType])
     case sheet
+    case splitView
     
     public var rawValue: String {
         switch self {
@@ -59,6 +60,8 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "tabBar"
             case .sheet:
                 return "sheet"
+            case .splitView:
+                return "splitView"
         }
     }
     
