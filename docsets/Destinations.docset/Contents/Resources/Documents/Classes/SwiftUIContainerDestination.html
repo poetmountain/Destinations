@@ -300,6 +300,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SwiftUIContainerDestinationable.html">SwiftUIContainerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIContainerInterfacing.html">SwiftUIContainerInterfacing</a>
               </li>
               <li class="nav-group-task">
@@ -454,7 +457,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIContainerDestination</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIContainerDestination</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/SwiftUIContainerDestinationable.html">SwiftUIContainerDestinationable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
 
                 </div>
               </div>
@@ -777,7 +780,35 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="k">var</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations25ControllerDestinationableP0B4TypeQa">ControllerType</a></span><span class="p">?</span></code></pre>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerController.html">SwiftUIContainerController</a></span><span class="o">&lt;</span><span class="kt">Content</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations27SwiftUIContainerDestinationC8viewFlowAA04ViewF0Cy0D4TypeQy_03TabH0Qy_07ContentH0Qy_GSgvp"></a>
+                    <a name="//apple_ref/swift/Property/viewFlow" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations27SwiftUIContainerDestinationC8viewFlowAA04ViewF0Cy0D4TypeQy_03TabH0Qy_07ContentH0Qy_GSgvp">viewFlow</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This <code><a href="../Classes/ViewFlow.html">ViewFlow</a></code> object manages the SwiftUI <code>View</code> presented by this Destination.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">viewFlow</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFlow.html">ViewFlow</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1003,9 +1034,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27SwiftUIContainerDestinationC15destinationType0E14Configurations010navigationG006parentD0ACyxq_G0dF0Qy__AA03AppdG0Cy015UserInteractionF0Qzq_GSgALyAA016SystemNavigationF0Oq_GSg10Foundation4UUIDVSgtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(destinationType:destinationConfigurations:navigationConfigurations:parentDestination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27SwiftUIContainerDestinationC15destinationType0E14Configurations010navigationG006parentD0ACyxq_G0dF0Qy__AA03AppdG0Cy015UserInteractionF0Qzq_GSgALyAA016SystemNavigationF0Oq_GSg10Foundation4UUIDVSgtcfc">init(destinationType:<wbr>destinationConfigurations:<wbr>navigationConfigurations:<wbr>parentDestination:<wbr>)</a>
+                    <a name="/s:12Destinations27SwiftUIContainerDestinationC15destinationType4flow0E14Configurations010navigationH006parentD0ACyxq_G0dF0Qy__AA8ViewFlowCyAK03TabF0Qy_07ContentF0Qy_GSgAA03AppdH0Cy015UserInteractionF0Qzq_GSgAUyAA016SystemNavigationF0Oq_GSg10Foundation4UUIDVSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(destinationType:flow:destinationConfigurations:navigationConfigurations:parentDestination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations27SwiftUIContainerDestinationC15destinationType4flow0E14Configurations010navigationH006parentD0ACyxq_G0dF0Qy__AA8ViewFlowCyAK03TabF0Qy_07ContentF0Qy_GSgAA03AppdH0Cy015UserInteractionF0Qzq_GSgAUyAA016SystemNavigationF0Oq_GSg10Foundation4UUIDVSgtcfc">init(destinationType:<wbr>flow:<wbr>destinationConfigurations:<wbr>navigationConfigurations:<wbr>parentDestination:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1021,7 +1052,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">destinationType</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations27SwiftUIContainerDestinationC0D14Configurationsa">DestinationConfigurations</a></span><span class="p">?,</span> <span class="nv">navigationConfigurations</span><span class="p">:</span> <span class="kt">NavigationConfigurations</span><span class="p">?,</span> <span class="nv">parentDestination</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+<span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">destinationType</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="nv">flow</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFlow.html">ViewFlow</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations27SwiftUIContainerDestinationC0D14Configurationsa">DestinationConfigurations</a></span><span class="p">?,</span> <span class="nv">navigationConfigurations</span><span class="p">:</span> <span class="kt">NavigationConfigurations</span><span class="p">?,</span> <span class="nv">parentDestination</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1079,6 +1110,60 @@
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP21buildInterfaceActions19presentationClosureyy25PresentationConfigurationQzc_tF"></a>
+                    <a name="//apple_ref/swift/Method/buildInterfaceActions(presentationClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP21buildInterfaceActions19presentationClosureyy25PresentationConfigurationQzc_tF">buildInterfaceActions(presentationClosure:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">buildInterfaceActions</span><span class="p">(</span><span class="nv">presentationClosure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations31SwiftUIContainerDestinationableP18presentDestination12presentationyAA0F12PresentationCy0F4TypeQz07ContentI0Qz03TabI0QzG_tF"></a>
+                    <a name="//apple_ref/swift/Method/presentDestination(presentation:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31SwiftUIContainerDestinationableP18presentDestination12presentationyAA0F12PresentationCy0F4TypeQz07ContentI0Qz03TabI0QzG_tF">presentDestination(presentation:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">presentation</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/SwiftUIContainerDestination.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

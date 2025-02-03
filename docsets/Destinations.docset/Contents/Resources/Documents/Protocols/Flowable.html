@@ -300,6 +300,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SwiftUIContainerDestinationable.html">SwiftUIContainerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIContainerInterfacing.html">SwiftUIContainerInterfacing</a>
               </li>
               <li class="nav-group-task">
@@ -1402,9 +1405,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations8FlowableP22presentDestinationPath4pathySay25PresentationConfigurationQzG_tF"></a>
-                    <a name="//apple_ref/swift/Method/presentDestinationPath(path:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations8FlowableP22presentDestinationPath4pathySay25PresentationConfigurationQzG_tF">presentDestinationPath(path:<wbr>)</a>
+                    <a name="/s:12Destinations8FlowableP22presentDestinationPath4path13contentToPassySay25PresentationConfigurationQzG_11ContentTypeQzSgtF"></a>
+                    <a name="//apple_ref/swift/Method/presentDestinationPath(path:contentToPass:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP22presentDestinationPath4path13contentToPassySay25PresentationConfigurationQzG_11ContentTypeQzSgtF">presentDestinationPath(path:<wbr>contentToPass:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -1430,7 +1433,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentDestinationPath</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">])</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentDestinationPath</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">],</span> <span class="nv">contentToPass</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -1459,9 +1462,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations8FlowableP29presentNextDestinationInQueueAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgyF"></a>
-                    <a name="//apple_ref/swift/Method/presentNextDestinationInQueue()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations8FlowableP29presentNextDestinationInQueueAA15Destinationable_p25PresentationConfigurationQzAGRS_XPSgyF">presentNextDestinationInQueue()</a>
+                    <a name="/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg11ContentTypeQzSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/presentNextDestinationInQueue(contentToPass:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg11ContentTypeQzSg_tF">presentNextDestinationInQueue(contentToPass:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1478,7 +1481,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
 <span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">(</span><span class="nv">contentToPass</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Flowable.html#/s:12Destinations8FlowableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>

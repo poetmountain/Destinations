@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>InteractorRequestMethod Enumeration Reference</title>
+    <title>SwiftUIContainerDestinationable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/InteractorRequestMethod" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Protocol/SwiftUIContainerDestinationable" class="dashAnchor"></a>
 
-    <a title="InteractorRequestMethod Enumeration Reference"></a>
+    <a title="SwiftUIContainerDestinationable Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -36,9 +36,9 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Destinations</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      <a class="breadcrumb" href="../Enums.html">Enumerations</a>
+      <a class="breadcrumb" href="../Protocols.html">Protocols</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      InteractorRequestMethod Enumeration Reference
+      SwiftUIContainerDestinationable Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -452,15 +452,16 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>InteractorRequestMethod</h1>
+            <h1>SwiftUIContainerDestinationable</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">InteractorRequestMethod</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">SwiftUIContainerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span></code></pre>
 
                 </div>
               </div>
-            <p>A type that represents whether an interactor request should be made using concurrency or not.</p>
+            <p>This protocol represents the Destination of a UIKit controller which hosts SwiftUI content.</p>
 
           </div>
         </section>
@@ -472,9 +473,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations23InteractorRequestMethodO4syncyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/sync" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations23InteractorRequestMethodO4syncyA2CmF">sync</a>
+                    <a name="/s:12Destinations31SwiftUIContainerDestinationableP8viewFlowAA04ViewF0Cy15DestinationTypeQz03TabI0Qz07ContentI0QzGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/viewFlow" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31SwiftUIContainerDestinationableP8viewFlowAA04ViewF0Cy15DestinationTypeQz03TabI0Qz07ContentI0QzGSgvp">viewFlow</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -482,14 +483,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Represents an interactor request that should be made synchronously.</p>
+                        <p>The <code><a href="../Classes/ViewFlow.html">ViewFlow</a></code> which manages the <code>View</code> Destinations contained by the object conforming to this protocol.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">sync</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">viewFlow</span><span class="p">:</span> <span class="kt"><a href="../Classes/ViewFlow.html">ViewFlow</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -499,9 +501,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations23InteractorRequestMethodO5asyncyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/async" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations23InteractorRequestMethodO5asyncyA2CmF">async</a>
+                    <a name="/s:12Destinations31SwiftUIContainerDestinationableP18presentDestination12presentationyAA0F12PresentationCy0F4TypeQz07ContentI0Qz03TabI0QzG_tF"></a>
+                    <a name="//apple_ref/swift/Method/presentDestination(presentation:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31SwiftUIContainerDestinationableP18presentDestination12presentationyAA0F12PresentationCy0F4TypeQz07ContentI0Qz03TabI0QzG_tF">presentDestination(presentation:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -509,16 +511,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Represents an interactor request that should be made using concurrency.</p>
+                        <p>Presents a SwiftUI <code>View</code> Destination within this container.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This method is only called if the presentation&rsquo;s <code>presentationType</code> is a <code>navigationController()</code> or <code>splitView()</code> type. If the presentation&rsquo;s <code>presentationType</code> is a <code>splitView()</code>, this method will change it to a <code>.navigationController()</code> type before passing it on to the <code><a href="../Protocols/SwiftUIContainerDestinationable.html#/s:12Destinations31SwiftUIContainerDestinationableP8viewFlowAA04ViewF0Cy15DestinationTypeQz03TabI0Qz07ContentI0QzGSgvp">viewFlow</a></code>.</p>
+
+</div>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="k">async</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">presentation</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>presentation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Destination presentation representing the <code>View</code> to be presented.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
