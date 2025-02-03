@@ -112,12 +112,16 @@ public extension ControllerFlowable {
         
     }
 
-    @discardableResult func presentNextDestinationInQueue() -> (any Destinationable<PresentationConfiguration>)? {
+    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<PresentationConfiguration>)? {
         guard destinationQueue.count > 0 else { return nil }
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
                 DestinationsSupport.logger.log("⏭️ Presenting next queue \(destinationType).")
+            }
+            
+            if nextPresentation.contentType == nil {
+                nextPresentation.contentType = contentToPass
             }
             
             return presentDestination(configuration: nextPresentation)

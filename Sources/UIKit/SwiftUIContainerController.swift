@@ -53,6 +53,24 @@ public final class SwiftUIContainerController<Content: SwiftUIHostedInterfacing>
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
+    
+    func setupUI() {
+        self.attach(viewController: adapter.hostingController)
+
+        NSLayoutConstraint.activate([
+            adapter.hostingController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            adapter.hostingController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            adapter.hostingController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            adapter.hostingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+        
+        adapter.hostingController.sizingOptions = .intrinsicContentSize
+    }
 
     public func cleanupResources() {
         adapter.cleanupResources()

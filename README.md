@@ -1,5 +1,5 @@
 # Destinations
-![Static Badge](https://img.shields.io/badge/Swift-5.10_%7C_6.0-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
+![Static Badge](https://img.shields.io/badge/Swift-6.0-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
 
 Destinations is a Swift library for UIKit and SwiftUI that is designed to remove application and business logic from your interfaces, manage navigation flow, and abstract datasource interactions so that your user interfaces can focus again on the user. It is based on a philosophy that emphasizes clear separation of concerns, that each significant `View` or `UIViewController` in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change.
 
@@ -8,7 +8,7 @@ Destinations is a Swift library for UIKit and SwiftUI that is designed to remove
 * Provides easy deep linking capability
 * Provides the ability to display and test sections of your apps in isolation
 * A flexible and extensible, protocol-based system to fit your project's needs, including custom UI
-* A similar API for both UIKit and SwiftUI, and generic enough to allow further platform support
+* A similar API for both UIKit and SwiftUI, and generic enough to allow further platform support. Supports pure UIKit and SwiftUI apps, but also supports hybrid apps with SwiftUI content hosted within UIKit controllers.
 * Comes with common framework implementations, but extensible enough to provide your own
 * Full [documentation](https://poetmountain.github.io/Destinations/)
 
@@ -99,7 +99,7 @@ var body: some Scene {
 
 * Xcode 16.0+
 * iOS 17+
-* Swift 5.10 or above. It has been tested against Swift 6 Strict Concurrency.
+* Swift 6.0 or above. It has been tested against Swift 6 Strict Concurrency.
 
 ### Installation
 

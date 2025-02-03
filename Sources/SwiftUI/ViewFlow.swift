@@ -63,7 +63,9 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             let loggingStartingAction: String = startingDestination.destinationType != nil ? startingDestination.destinationType.debugDescription : "\(startingDestination.presentationType.rawValue)"
             DestinationsSupport.logger.log("🏁 Starting Destinations flow with \(loggingStartingAction).")
             
-            rootDestination = presentDestination(configuration: startingDestination)
+            if let newDestination = presentDestination(configuration: startingDestination) {
+                rootDestination = newDestination
+            }
         
         }
     }
@@ -100,7 +102,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         DestinationsSupport.logger.log("⤴️ Presenting destination \(String(describing: configuration.destinationType)) via \(configuration.presentationType)")
         
         if case DestinationPresentationType.destinationPath(path: let path) = configuration.presentationType {
-            self.presentDestinationPath(path: path)
+            self.presentDestinationPath(path: path, contentToPass: configuration.contentType)
             return nil
         }
         

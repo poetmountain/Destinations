@@ -37,7 +37,9 @@ public enum RouteDestinationType: RoutableDestinations {
 
     case start
     case splitView
+    case swiftUI
     case colorsList
+    case colorNav
     case colorDetail
     
     public var rawValue: String {
@@ -46,8 +48,12 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "start"
             case .splitView:
                 return "splitView"
+            case .swiftUI:
+                return "swiftUI"
             case .colorsList:
                 return "colorsList"
+            case .colorNav:
+                return "colorNav"
             case .colorDetail:
                 return "colorDetail"
         }

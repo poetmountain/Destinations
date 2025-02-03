@@ -47,8 +47,8 @@ public extension SplitViewControllerDestinationable {
     func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in column: UISplitViewController.Column, shouldUpdateSelectedColumn: Bool = true, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         DestinationsSupport.logger.log("Presenting controller \(destination.type) in splitview column \(column.rawValue).", level: .verbose)
 
-        guard let controllerToPresent = destination.currentController() else { return }
-        
+        let controllerToPresent = destination.currentController()
+                
         controller?.setViewController(controllerToPresent, for: column)
         addChild(childDestination: destination)
         

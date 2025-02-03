@@ -10,7 +10,7 @@
 import Foundation
 
 /// A Destination representing a ``SwiftUIContainerController`` instance which presents a SwiftUI `View` within UIKit.
-public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing, PresentationConfiguration: DestinationPresentationConfiguring>: ControllerDestinationable {
+public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing, PresentationConfiguration: DestinationPresentationConfiguring>: SwiftUIContainerDestinationable {
     
     enum UserInteractions: UserInteractionTypeable {
         var rawValue: String {
@@ -36,7 +36,10 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
     
     public let type: DestinationType
     
-    public var controller: ControllerType?
+    public var controller: SwiftUIContainerController<Content>?
+    
+    /// This `ViewFlow` object manages the SwiftUI `View` presented by this Destination.
+    public var viewFlow: ViewFlow<DestinationType, TabType, ContentType>?
 
     public var parentDestinationID: UUID?
     
@@ -56,11 +59,35 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
+    public init(destinationType: DestinationType, flow: ViewFlow<DestinationType, TabType, ContentType>? = nil, destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
         self.type = destinationType
+        if let flow {
+            self.viewFlow = flow
+        }
         self.parentDestinationID = parentDestination
         self.destinationConfigurations = destinationConfigurations
         self.systemNavigationConfigurations = navigationConfigurations
+    }
+    
+    public func buildInterfaceActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
+        guard let destinationConfigurations = destinationConfigurations else { return }
+
+        var containers: [InterfaceAction<UserInteractionType, DestinationType, PresentationConfiguration.ContentType>] = []
+        for (type, configuration) in destinationConfigurations.configurations {
+            let container = buildInterfaceAction(presentationClosure: presentationClosure, configuration: configuration, interactionType: type)
+            containers.append(container)
+        }
+        
+        updateInterfaceActions(actions: containers)
+        
+    }
+    
+    public func presentDestination(presentation: DestinationPresentation<DestinationType, ContentType, TabType>) {
+        let copiedPresentation = presentation.copy()
+        if case .splitView(column: let column) = presentation.presentationType {
+            copiedPresentation.presentationType = .navigationController(type: .present)
+        }
+        viewFlow?.presentDestination(configuration: copiedPresentation)
     }
 
     public func cleanupResources() {

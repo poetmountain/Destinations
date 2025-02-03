@@ -10,16 +10,18 @@
 import Foundation
 import Destinations
 
-final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
+final class ColorNavProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    public typealias InteractorType = ColorDetailDestination.InteractorType
+    public typealias UserInteractionType = ColorNavDestination.UserInteractions
+    public typealias InteractorType = ColorNavDestination.InteractorType
     
     public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
     
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    var containerDestination: SwiftUIContainerDestination<ColorNavView, ColorNavView.PresentationConfiguration>
+
+    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil, containerDestination: SwiftUIContainerDestination<ColorNavView, ColorNavView.PresentationConfiguration>) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -27,21 +29,17 @@ final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
             self.interactorsData = interactorsData
         }
         
+        self.containerDestination = containerDestination
     }
     
     public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> (any ViewDestinationable)? {
-        
-        var colorModel: ColorViewModel?
-        if let contentType = configuration.contentType, case let .color(model) = contentType {
-            colorModel = model
-        }
 
         let destinationPresentations = buildPresentations()
         let navigationPresentations = buildSystemPresentations()
         
-        let destination = ColorDetailDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = ColorNavDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let view = ColorDetailView(destination: destination, model: colorModel)
+        let view = ColorNavView(destination: destination, parentDestination: containerDestination)
         destination.assignAssociatedView(view: view)
         
         return destination

@@ -39,7 +39,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     public var destinationType: DestinationType?
     
     /// An enum type representing the way this Destination should be presented.
-    public let presentationType: DestinationPresentationType<DestinationPresentation>
+    public var presentationType: DestinationPresentationType<DestinationPresentation>
     
     /// An enum type representing the content to be used with this presentation.
     public var contentType: ContentType?
@@ -321,6 +321,13 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                         } else {
                             completionClosure?(false)
                         }
+                        
+                    } else if let swiftUIContainer = currentDestination as? any SwiftUIContainerDestinationable<DestinationType, ContentType, TabType> {
+                        swiftUIContainer.presentDestination(presentation: self)
+                        
+                    } else if let swiftUIContainer = parentOfCurrentDestination as? any SwiftUIContainerDestinationable<DestinationType, ContentType, TabType> {
+                        swiftUIContainer.presentDestination(presentation: self)
+                        
                     } else {
                         completionClosure?(false)
                     }
@@ -331,9 +338,26 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             
                 
         case .splitView(let columnModel):
-            if let destinationToPresent, let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<DestinationPresentation>, let column = columnModel.uiKit {
-                splitViewDestination.presentDestination(destination: destinationToPresent, in: column, removeDestinationFromFlowClosure: removeDestinationClosure)
-                completionClosure?(true)
+            if let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<DestinationPresentation>, let column = columnModel.uiKit {
+                
+                if let swiftUIContainer = splitViewDestination.currentDestination(for: column) as? any SwiftUIContainerDestinationable<DestinationType, ContentType, TabType> {
+                    // only pass the presentation to the SwiftUI container if it contains a NavigationStack
+                    if let currentViewDestination = swiftUIContainer.viewFlow?.activeDestinations.last as? any ViewDestinationable, let currentNavDestination = swiftUIContainer.viewFlow?.findNavigatorInViewHierarchy(searchDestination: currentViewDestination) {
+                        swiftUIContainer.presentDestination(presentation: self)
+                        completionClosure?(true)
+
+                    } else {
+                        completionClosure?(false)
+
+                    }
+                } else if let destinationToPresent {
+                    splitViewDestination.presentDestination(destination: destinationToPresent, in: column, removeDestinationFromFlowClosure: removeDestinationClosure)
+                    completionClosure?(true)
+
+                } else {
+                    completionClosure?(false)
+                }
+                
 
             } else {
                 completionClosure?(false)

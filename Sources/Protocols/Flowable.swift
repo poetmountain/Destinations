@@ -113,11 +113,11 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// This method can be used to provide deep links into an app's interface.
     ///
     /// - Parameter path: An array of presentation configuration objects. The order of the configuration objects in the array determines the order in which their associated Destinations will be presented.
-    func presentDestinationPath(path: [PresentationConfiguration])
+    func presentDestinationPath(path: [PresentationConfiguration], contentToPass: ContentType?)
     
     /// Presents the next Destination in the ``destinationQueue`` array, if one exists.
     /// - Returns: The newly presented Destination, if any configuration objects were left in the queue.
-    @discardableResult func presentNextDestinationInQueue() -> (any Destinationable<PresentationConfiguration>)?
+    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType?) -> (any Destinationable<PresentationConfiguration>)?
     
     /// Returns a closure to run when a presentation has completed.
     /// - Parameters:
@@ -158,7 +158,7 @@ public extension Flowable {
 
     }
     
-    func presentDestinationPath(path: [PresentationConfiguration]) {
+    func presentDestinationPath(path: [PresentationConfiguration], contentToPass: ContentType? = nil) {
         
         destinationQueue = path
         
@@ -170,7 +170,7 @@ public extension Flowable {
             }
         }
         
-        let nextDestination = presentNextDestinationInQueue()
+        let nextDestination = presentNextDestinationInQueue(contentToPass: contentToPass)
         
         if rootDestination == nil {
             rootDestination = nextDestination
@@ -270,7 +270,7 @@ public extension Flowable {
                     
                     strongSelf.uiCoordinator?.destinationToPresent = nil
 
-                    strongSelf.presentNextDestinationInQueue()
+                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
                                         
                 } else {
                     if let destination {
@@ -280,7 +280,7 @@ public extension Flowable {
                     
                     strongSelf.uiCoordinator?.destinationToPresent = nil
 
-                    strongSelf.presentNextDestinationInQueue()
+                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
 
                 }
 

@@ -1,3 +1,8 @@
+#### 1.2.0
+* Improved support for SwiftUI content hosted within UIKit controllers using `SwiftUIContainerDestination`. New SwiftUI content can now be presented from a UIKit-based Destination without any knowledge of the SwiftUI navigation stack. Destinations will automatically handle this use case when targeting a `SwiftUIContainerDestination` which contains a `NavigationStack`, when specifying a `DestinationPresentation`'s `presentationType` as a `navigationController()` or `splitView()`.
+* Updated tests and example projects. The "SplitViewUIKitExample" project has been updated to showcase this functionality.
+* Package.swift has been updated to formalize a Swift 6 requirement.
+
 #### 1.1.0
 * Destinations now supports split views: `UISplitViewController` on UIKit and `NavigationSplitView` on SwiftUI. You can present or target them with the new presentation type `splitView(column: SplitViewColumn)`.
 Example:

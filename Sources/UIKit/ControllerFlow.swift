@@ -94,7 +94,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     @discardableResult public func presentDestination(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)? {
         
         if case DestinationPresentationType.destinationPath(path: let path) = configuration.presentationType {
-            self.presentDestinationPath(path: path)
+            self.presentDestinationPath(path: path, contentToPass: configuration.contentType)
             return nil
         }
         

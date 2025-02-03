@@ -1,8 +1,7 @@
 //
 //  ColorDetailDestination.swift
-//  SplitViewUIKitExample
 //
-//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  Copyright © 2025 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
 //
 //  Licensed under MIT License. See LICENSE file in this repository.
@@ -10,22 +9,16 @@
 import UIKit
 import Destinations
 
-final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
-
-    
+final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes {
+        
     enum UserInteractions: UserInteractionTypeable {
         case color
-        case colorDetailButton(model: ColorViewModel?)
-        case customDetailButton(model: ColorViewModel?)
 
         var rawValue: String {
             switch self {
                 case .color:
                     return "color"
-                case .colorDetailButton(_):
-                    return "colorDetailButton"
-                case .customDetailButton(_):
-                    return "customDetailButton"
+
             }
         }
         
@@ -42,11 +35,11 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     typealias UserInteractionType = UserInteractions
     typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
     
-    typealias ViewType = ColorDetailView
+    typealias ViewType = ColorNavView
 
     public let id = UUID()
     
-    public let type: RouteDestinationType = .colorDetail
+    public let type: RouteDestinationType = .colorNav
     
     public var view: ViewType?
     
@@ -58,8 +51,15 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     var interactors: [InteractorType : any Interactable] = [:]
     var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
     var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<ColorDetailDestination>] = [:]
+    var interactorAssistants: [UserInteractionType: any InteractorAssisting<ColorNavDestination>] = [:]
 
+    var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
+    var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
+
+    var childWasRemovedClosure: Destinations.GroupChildRemovedClosure?
+    
+    var currentDestinationChangedClosure: Destinations.GroupCurrentDestinationChangedClosure?
+    
     
     public var isSystemNavigating: Bool = false
     

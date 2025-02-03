@@ -23,7 +23,7 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, AppD
         
         switch interactionType {
             case .color(model: let model):
-                routeType = RouteDestinationType.colorDetail
+                routeType = RouteDestinationType.colorNav
                 
                 if let model {
                     contentType = .color(model: model)

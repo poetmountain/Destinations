@@ -20,6 +20,9 @@ public final class DefaultActionAssistant<UserInteractionType: UserInteractionTy
         var closure = interfaceAction
         
         closure.data.parentID = destination.id
+        if closure.data.contentType == nil {
+            closure.data.contentType = content
+        }
         
         return closure
     }

@@ -10,11 +10,11 @@
 import Foundation
 import Destinations
 
-final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
+final class ColorDetailSwiftUIProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    public typealias InteractorType = ColorDetailDestination.InteractorType
+    public typealias UserInteractionType = ColorDetailSwiftUIDestination.UserInteractions
+    public typealias InteractorType = ColorDetailSwiftUIDestination.InteractorType
     
     public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
@@ -39,7 +39,7 @@ final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
         let destinationPresentations = buildPresentations()
         let navigationPresentations = buildSystemPresentations()
         
-        let destination = ColorDetailDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = ColorDetailSwiftUIDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let view = ColorDetailView(destination: destination, model: colorModel)
         destination.assignAssociatedView(view: view)

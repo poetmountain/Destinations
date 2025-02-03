@@ -55,7 +55,6 @@ public extension DestinationProviding {
         
         for (interactionType, configuration) in presentationsData {
             let presentation = configuration.copy()
-            
             if let interactionType = interactionType as? UserInteractionType {
                 configurations.addConfiguration(configuration: presentation, for: interactionType)
             }

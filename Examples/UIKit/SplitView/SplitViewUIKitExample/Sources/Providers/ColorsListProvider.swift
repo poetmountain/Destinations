@@ -30,7 +30,6 @@ final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTy
     
     
     public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
-        
         let destinationPresentations = buildPresentations()
         let navigationPresentations = buildSystemPresentations()
         

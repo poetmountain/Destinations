@@ -156,8 +156,9 @@ final class DestinationProvider<ControllerDestinationableType: ControllerDestina
                     return nil
                 }
 
-            case .splitView:
+            case .splitView, .colorNav, .colorDetailSwiftUI:
                 return nil
+            default: return nil
         }
         
     }

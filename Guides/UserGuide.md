@@ -65,6 +65,7 @@ You can access the Destination instance through this state object, but you can a
 * `ControllerDestination` can be used to represent most `UIViewController`s in your app which don't need to handle interactor requests. 
 * `NavigationControllerDestination` can be used as a Destination for a `UINavigationController` class. 
 * `TabBarControllerDestination` can be used as a Destination for a `UITabBarController` class. `UINavigationController`s are automatically created for each tab, so new presentations targeting a tab just work.  In the associated `UITabBarController` class which conforms to the `TabBarControllerDestinationInterfacing` protocol, you should implement the `customizeTabItem(tab: navigationController:)`. This method passes a`TabModel` object which contains a `type` property you supply and can use to configure the tabs.
+* `SwiftUIContainerDestination` can be used as a Destination for a `SwiftUIContainerController`, which allows you to host SwiftUI content within UIKit via `UIHostingController` instance. The SwiftUI content is managed by a separate `ViewFlow` contained within the `SwiftUIContainerDestination`, and Destination presentation requests for new `View`s can even be sent from UIKit-based Destinations.
 
 #### SwiftUI
 

@@ -31,7 +31,7 @@ import Foundation
     var destinationType: DestinationType? { get set }
         
     /// An enum type representing the way this Destination should be presented.
-    var presentationType: PresentationType { get }
+    var presentationType: PresentationType { get set }
     
     /// The unique identifier of the currently presented Destination.
     var currentDestinationID: UUID? { get set }

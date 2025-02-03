@@ -35,7 +35,7 @@ public enum RouteDestinationType: RoutableDestinations {
     public var id: String { rawValue }
 
     public static var allCases: [RouteDestinationType] {
-        return [.start, .colorsList, .colorDetail, .home, .tabBar(tabs: []), .sheet]
+        return [.start, .colorsList, .colorDetail, .home, .tabBar(tabs: []), .sheet, .swiftUI, .colorNav, .colorDetailSwiftUI]
     }
     
     case start
@@ -45,6 +45,9 @@ public enum RouteDestinationType: RoutableDestinations {
     case tabBar(tabs: [AppTabType])
     case sheet
     case splitView
+    case swiftUI
+    case colorNav
+    case colorDetailSwiftUI
     
     public var rawValue: String {
         switch self {
@@ -62,6 +65,12 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "sheet"
             case .splitView:
                 return "splitView"
+            case .swiftUI:
+                return "swiftUI"
+            case .colorNav:
+                return "colorNav"
+            case .colorDetailSwiftUI:
+                return "colorDetailSwiftUI"
         }
     }
     

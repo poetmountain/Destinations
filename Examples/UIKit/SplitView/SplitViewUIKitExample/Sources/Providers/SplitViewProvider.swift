@@ -36,6 +36,7 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
     public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
                 
         let destinationPresentations = buildPresentations()
+        let navigationPresentations = buildSystemPresentations()
 
         var destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<PresentationConfiguration>] = [:]
         
@@ -44,7 +45,7 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
         for (column, contentType) in initialContent {
             let splitViewConfiguration = configuration
             splitViewConfiguration.destinationType = contentType
-            if contentType == .colorDetail {
+            if contentType == .colorNav {
                 splitViewConfiguration.contentType = .color(model: ColorViewModel(color: .red, name: "Red"))
             }
             
@@ -54,7 +55,7 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
             }
         }
         
-        let splitViewDestination = SplitViewControllerDestination<PresentationConfiguration, SplitViewController<UserInteractionType, PresentationConfiguration, InteractorType>>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations)
+        let splitViewDestination = SplitViewControllerDestination<PresentationConfiguration, SplitViewController<UserInteractionType, PresentationConfiguration, InteractorType>>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations)
 
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewController.preferredDisplayMode = .oneOverSecondary

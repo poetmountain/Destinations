@@ -60,16 +60,15 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
 
  
         let startProvider = StartProvider()
-        let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorDetail])
+        let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorNav])
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
-        let colorDetailProvider = ColorDetailProvider()
-
-
+        let colorContainerProvider = ColorDetailContainerProvider()
+        
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
             .splitView: splitViewProvider,
             .colorsList: colorsListProvider,
-            .colorDetail: colorDetailProvider
+            .colorNav: colorContainerProvider
         ]
         
         return ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)

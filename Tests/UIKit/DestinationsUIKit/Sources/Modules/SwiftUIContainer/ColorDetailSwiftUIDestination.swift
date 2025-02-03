@@ -2,7 +2,7 @@
 //  ColorDetailDestination.swift
 //  SplitViewUIKitExample
 //
-//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  Copyright © 2025 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
 //
 //  Licensed under MIT License. See LICENSE file in this repository.
@@ -10,9 +10,8 @@
 import UIKit
 import Destinations
 
-final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
+final class ColorDetailSwiftUIDestination: ViewDestinationable, DestinationTypes {
 
-    
     enum UserInteractions: UserInteractionTypeable {
         case color
         case colorDetailButton(model: ColorViewModel?)
@@ -46,7 +45,7 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
 
     public let id = UUID()
     
-    public let type: RouteDestinationType = .colorDetail
+    public let type: RouteDestinationType = .colorDetailSwiftUI
     
     public var view: ViewType?
     
@@ -58,7 +57,7 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     var interactors: [InteractorType : any Interactable] = [:]
     var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
     var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<ColorDetailDestination>] = [:]
+    var interactorAssistants: [UserInteractionType: any InteractorAssisting<ColorDetailSwiftUIDestination>] = [:]
 
     
     public var isSystemNavigating: Bool = false
