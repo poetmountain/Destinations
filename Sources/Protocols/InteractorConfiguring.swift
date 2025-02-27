@@ -10,17 +10,28 @@
 import Foundation
 
 /// This protocol represents a model which configures how an interactor is used with a Destination.
-public protocol InteractorConfiguring<InteractorType> {
+@MainActor public protocol InteractorConfiguring<InteractorType> {
     
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
+    
+    associatedtype Interactor: Interactable
     
     /// An enum which defines types of actions for a particular Interactor.
     associatedtype ActionType: InteractorRequestActionTypeable
     
     /// The type of interactor.
-    var interactorType: InteractorType { get set }
+    var interactorType: InteractorType { get }
     
     /// The type of interactor request action.
-    var actionType: ActionType { get set }
+    var actionType: ActionType { get }
+    
+    /// The type of interactor assistant associated with the interactor to be configured.
+    var assistantType: InteractorAssistantType { get }
+    
+    /// Assigns an interactor assistant to a Destination.
+    /// - Parameters:
+    ///   - destination: The Destination to apply this interactor assistant to.
+    ///   - interactionType: The user interaction type to associate this assistant with.
+    func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, interactionType: Destination.UserInteractionType) where InteractorType == Destination.InteractorType
 }

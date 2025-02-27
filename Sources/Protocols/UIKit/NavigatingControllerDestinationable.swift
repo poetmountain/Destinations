@@ -25,10 +25,10 @@ public extension NavigatingControllerDestinationable {
     
     func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         DestinationsSupport.logger.log("Adding \(childDestination.type) as a child of navigation controller \(self.type).", level: .verbose)
-        childDestination.parentDestinationID = id
-        childDestinations.append(childDestination)
+        childDestination.setParentID(id: id)
+        groupInternalState.childDestinations.append(childDestination)
         // shouldSetDestinationAsCurrent is ignored for NavigationControllers because a new Destination should always become the current one
-        currentChildDestination = childDestination
+        groupInternalState.currentChildDestination = childDestination
 
         if let newDestination = childDestination as? any ControllerDestinationable, let newController = newDestination.currentController() {
             let shouldAnimate = shouldAnimate ?? true
@@ -48,15 +48,19 @@ public extension NavigatingControllerDestinationable {
         
         controller.popViewController(animated: true)
         
-        if let current = currentChildDestination {
-            childDestinations.removeAll(where: { $0.id == current.id })
-            currentChildDestination = nil
-            DestinationsSupport.logger.log("child dests \(childDestinations.map { $0.id })")
+        if let current = groupInternalState.currentChildDestination {
+            groupInternalState.childDestinations.removeAll(where: { $0.id == current.id })
+            groupInternalState.currentChildDestination = nil
+            DestinationsSupport.logger.log("child dests \(groupInternalState.childDestinations.map { $0.id })")
             
             // set new active child destination
-            currentChildDestination = childDestinations.last
+            groupInternalState.currentChildDestination = groupInternalState.childDestinations.last
             
         }
+    }
+    
+    // default implementation
+    func prepareForPresentation() {
     }
     
 }

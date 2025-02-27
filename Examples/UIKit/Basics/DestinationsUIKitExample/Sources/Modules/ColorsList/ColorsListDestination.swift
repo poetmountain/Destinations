@@ -22,12 +22,15 @@ final class ColorsListDestination: DestinationTypes, ControllerDestinationable {
     
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
+        case retrieveInitialColors
         case moreButton
         
         var rawValue: String {
             switch self {
-                case .color(_):
+                case .color:
                     return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
                 case .moreButton:
                     return "moreButton"
             }
@@ -74,39 +77,38 @@ final class ColorsListDestination: DestinationTypes, ControllerDestinationable {
     
     public var controller: ControllerType?
     
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    var systemNavigationConfigurations: NavigationConfigurations?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
 
-    public var isSystemNavigating: Bool = false
-    
-    var interactors: [InteractorType : any Interactable] = [:]
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<ColorsListDestination>] = [:]
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        internalState.parentDestinationID = parentDestination
+        internalState.destinationConfigurations = destinationConfigurations
+        internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
-    func configureInteractor(_ interactor: any Interactable, type: InteractorType) {
+
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
         
-        switch type {
-            case .colors:
+        switch result {
+            case .success(let content):
                 
-                if interactor is any AsyncDatasourceable<ColorsRequest.ResultData> {
-                    Task {
-                        let request = ColorsRequest(action: .retrieve)
-                        
-                        let result = await performRequest(interactor: .colors, request: request)
-                        await self.controller?.handleColorsResult(result: result)
-                    }
+                switch content as? ColorsRequest.ResultData {
+                    case .colors(model: let items):
+                        controller?.updateItems(items: items)
+                    default: break
                 }
+                
+            case .failure(let error):
+                logError(error: error)
         }
         
     }
-
+    
+    func prepareForPresentation() {
+                
+        // load initial color models from datasource
+        handleThrowable(closure: {
+            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+        })
+    }
 }

@@ -11,14 +11,13 @@ import Destinations
 
 final class StartProvider: ControllerDestinationProviding, DestinationTypes {
     
+    public typealias Destination = NavigationControllerDestination<StartViewController.UserInteractions, StartViewController, StartViewController.PresentationConfiguration, StartViewController.InteractorType>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = StartViewController.UserInteractionType
-    public typealias InteractorType = StartViewController.InteractorType
+
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
-    
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -27,10 +26,7 @@ final class StartProvider: ControllerDestinationProviding, DestinationTypes {
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
-        
-        let destinationPresentations = buildPresentations()
-        let navigationPresentations = buildSystemPresentations()
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         
         let destination = NavigationControllerDestination<StartViewController.UserInteractions, StartViewController, StartViewController.PresentationConfiguration, StartViewController.InteractorType>(destinationType: .start, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

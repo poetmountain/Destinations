@@ -50,8 +50,10 @@ public enum TestDestinationType: String, RoutableDestinations {
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
         let sheetPresent = PresentationConfiguration(destinationType: .colorsList, presentationType: .sheet(type: .present), assistantType: .basic)
-                
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
+             
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        
         let colorDetailProvider = ColorDetailProvider(presentationsData: [:])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: sheetPresent])
         let tabBarProvider = TabBarProvider()
@@ -99,26 +101,35 @@ extension ColorsListView {
     
 }
 
-final class TestInteractor: Interactable {
+final class TestInteractor: SyncInteractable {
 
     typealias Request = TestRequest
     typealias ResultData = Request.ResultData
-    
+    typealias ActionType = Request.ActionType
+    typealias Item = Request.Item
+
+    var requestResponses: [ActionType: InteractorResponseClosure<Request>] = [:]
+
     var counter: Int = 0
     
-    func perform(request: Request, completionClosure: DatasourceResponseClosure<[ResultData]>?) {
+    func perform(request: Request) {
         
         switch request.action {
             case .increaseCount:
                 counter += 1
-                completionClosure?(.success([counter]))
+                
+                let response = responseForAction(action: request.action)
+                response?(.success(.counter(count: counter)), request)
+                
         }
     }
 }
 
 struct TestRequest: InteractorRequestConfiguring {
   
-    typealias ResultData = Int
+    typealias RequestContentType = AppContentType
+    typealias ResultData = AppContentType
+    typealias Item = Int
 
     var action: TestInteractorOptions.ActionType
 }
@@ -129,9 +140,10 @@ struct TestInteractorOptions: InteractorRequestConfiguring {
         case increaseCount
     }
     
-    typealias RequestType = ActionType
-    typealias ResultData = Int
-    
+    typealias RequestContentType = AppContentType
+    typealias ResultData = AppContentType
+    typealias Item = Int
+
     var action: ActionType
 
     
@@ -155,34 +167,17 @@ final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, D
     typealias Destination = ViewDestination<UserInteractionType, TestGroupView, PresentationConfiguration>
     typealias ViewType = TestGroupView
     
-    var type: TestDestinationType = .group
-    
-    var parentDestinationID: UUID?
-    
-    var destinationConfigurations: DestinationConfigurations?
-    
-    var systemNavigationConfigurations: NavigationConfigurations?
-    
-    var supportsIgnoringCurrentDestinationStatus: Bool = false
-
-    var isSystemNavigating: Bool = false
-    
-    var interactors: [AppInteractorType : any Interactable] = [:]
-    
-    var interfaceActions: [UserInteractions : InterfaceAction<UserInteractions, TestDestinationType, AppContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, TestDestinationType, DestinationsSwiftUI.AppContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<TestGroupDestination>] = [:]
-
-    var childWasRemovedClosure: Destinations.GroupChildRemovedClosure?
-    var currentDestinationChangedClosure: Destinations.GroupCurrentDestinationChangedClosure?
-    
-    var view: TestGroupView?
-
-    var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
-    var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
-    
     let id: UUID = UUID()
     
+    var type: TestDestinationType = .group
+    var view: TestGroupView?
+
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    
+
+    func prepareForPresentation() {
+    }
 }
 
 
@@ -199,34 +194,15 @@ final class TestNavigatorDestination<ViewType: NavigatingDestinationInterfacing>
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
     typealias Destination = ViewDestination<UserInteractionType, TestGroupView, PresentationConfiguration>
-    //typealias ViewType = TestGroupView
-    
-    var type: TestDestinationType = .group
-    
-    var parentDestinationID: UUID?
-    
-    var destinationConfigurations: DestinationConfigurations?
-    
-    var systemNavigationConfigurations: NavigationConfigurations?
-    
-    var isSystemNavigating: Bool = false
-    
-    var interactors: [AppInteractorType : any Interactable] = [:]
-    
-    var interfaceActions: [UserInteractions : InterfaceAction<UserInteractions, TestDestinationType, AppContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, TestDestinationType, DestinationsSwiftUI.AppContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<TestNavigatorDestination>] = [:]
-
-    var childWasRemovedClosure: Destinations.GroupChildRemovedClosure?
-    var currentDestinationChangedClosure: Destinations.GroupCurrentDestinationChangedClosure?
-    
-    var view: ViewType?
-
-    var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
-    var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
     
     let id: UUID = UUID()
-    
+
+    var type: TestDestinationType = .group
+    var view: ViewType?
+
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+
 }
 
 struct TestGroupView: NavigatingDestinationInterfacing, DestinationTypes {

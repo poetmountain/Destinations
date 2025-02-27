@@ -34,7 +34,10 @@ struct SplitViewSwiftUIExampleApp: App, AppDestinationTypes {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)), assistantType: .custom(ChooseColorFromListActionAssistant()))
  
         let splitViewProvider = SplitViewProvider(initialContent: [.sidebar: .colorsList, .detail: .colorDetail])
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
+        
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        
         let colorDetailProvider = ColorDetailProvider()
 
 

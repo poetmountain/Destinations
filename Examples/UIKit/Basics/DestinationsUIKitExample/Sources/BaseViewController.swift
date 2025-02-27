@@ -95,7 +95,9 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
               
         let startProvider = StartProvider()
         
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate)])
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(ColorsInteractorAssistant(actionType: .paginate))), .retrieveInitialColors: colorsListRetrieveAction])
         
         let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])

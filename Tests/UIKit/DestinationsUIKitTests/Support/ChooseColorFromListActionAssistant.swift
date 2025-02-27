@@ -1,16 +1,16 @@
 //
 //  ChooseColorFromListActionAssistant.swift
+//  DestinationsUIKit
 //
-//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
-//  https://github.com/poetmountain
+//  Created by Brett Walker on 2/25/25.
 //
-//  Licensed under MIT License. See LICENSE file in this repository.
 
-import Foundation
+import UIKit
+@testable import DestinationsUIKit
 import Destinations
 
 final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
+    typealias UserInteractionType = TestColorsDestination.UserInteractions
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
         var closure = interfaceAction
@@ -18,7 +18,7 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, Dest
         var routeType: RouteDestinationType?
         var contentType: ContentType?
         
-        closure.data.parentID = destination.parentDestinationID
+        closure.data.parentID = destination.parentDestinationID()
         
         switch interactionType {
             case .color(model: let model):
@@ -31,7 +31,7 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, Dest
                 closure.data.contentType = contentType
                 closure.data.parentID = destination.id
                 
-            case .moreButton:
+            case .moreButton, .retrieveInitialColors:
                 break
         }
         

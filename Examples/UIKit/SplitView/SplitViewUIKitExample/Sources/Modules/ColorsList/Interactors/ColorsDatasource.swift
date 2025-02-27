@@ -12,7 +12,7 @@ import Combine
 import Destinations
 
 protocol ColorsPresenting {
-    func present(colors: [ColorModel], completionClosure: DatasourceResponseClosure<[ColorViewModel]>?) -> Result<[ColorViewModel], Error>
+    func present(colors: [ColorModel], response: InteractorResponseClosure<ColorsRequest>?) -> Result<ColorsRequest.ResultData, Error>
 }
 
 struct ColorsRequest: InteractorRequestConfiguring {
@@ -21,11 +21,23 @@ struct ColorsRequest: InteractorRequestConfiguring {
         case paginate
     }
     
-    typealias ResultData = ColorViewModel
-
-    var action: ActionType
+    typealias RequestContentType = AppContentType
+    typealias ResultData = AppContentType
+    typealias Item = ColorViewModel
+    
+    let action: ActionType
     
     var numColorsToRetrieve: Int = 3
+    
+    init(action: ActionType) {
+        self.action = action
+    }
+    
+    init(action: ActionType, numColorsToRetrieve: Int) {
+        self.action = action
+        self.numColorsToRetrieve = numColorsToRetrieve
+    }
+    
 }
 
 struct ColorModel: Hashable {
@@ -35,21 +47,18 @@ struct ColorModel: Hashable {
 }
 
 actor ColorsDatasource: AsyncDatasourceable {
-
+    
     typealias Request = ColorsRequest
     typealias ActionType = Request.ActionType
     typealias ResultData = Request.ResultData
-
+    typealias Item = Request.Item
+            
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
-    @Published var items: [ColorViewModel] = []
+    @Published var items: [Item] = []
+
     
-    func startItemsRetrieval() async {
-       
-    }
-    
-    
-    public func perform(request: Request) async -> Result<[ColorsRequest.ResultData], Error> {
+    public func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
         
         switch request.action {
             case .retrieve, .paginate:
@@ -59,7 +68,7 @@ actor ColorsDatasource: AsyncDatasourceable {
     
 
     
-    func retrieveColors(request: ColorsRequest) async -> Result<[ColorsRequest.ResultData], Error> {
+    func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
         
         let red = ColorModel(color: UIColor.systemRed, name: "red")
         let yellow = ColorModel(color: UIColor.systemYellow, name: "yellow")
@@ -81,7 +90,7 @@ actor ColorsDatasource: AsyncDatasourceable {
                 
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
         self.items.append(contentsOf: viewModels)
-        let result: Result<[ColorViewModel], Error> = .success(items)
+        let result: Result<AppContentType, Error> = .success(AppContentType.colors(model: items))
         
         if let statusDelegate = self.statusDelegate as? ColorsDatasourceProviderStatusDelegate {
             statusDelegate.didUpdateItems(with: result)
@@ -91,7 +100,6 @@ actor ColorsDatasource: AsyncDatasourceable {
 
     }
     
-
 }
 
 

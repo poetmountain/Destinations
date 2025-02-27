@@ -11,14 +11,13 @@ import Destinations
 
 final class TabBarProvider: ViewDestinationProviding, DestinationTypes {
     
+    public typealias Destination = TabViewDestination<PresentationConfiguration, AppTabView>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
-    public typealias UserInteractionType = AppTabView.UserInteractions
-    public typealias InteractorType = TabViewDestination<PresentationConfiguration, AppTabView>.InteractorType
+
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
-    
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -27,7 +26,7 @@ final class TabBarProvider: ViewDestinationProviding, DestinationTypes {
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> (any ViewDestinationable)? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         
@@ -57,17 +56,11 @@ final class TabBarProvider: ViewDestinationProviding, DestinationTypes {
             }
         }
         
-        let navigationPresentations = buildSystemPresentations()
-
         if let destination = TabViewDestination<PresentationConfiguration, AppTabView>(type: RouteDestinationType.tabBar(tabs: tabs), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabView = AppTabView(destination: destination)
             destination.assignAssociatedView(view: tabView)
-            
-            for tabDestination in tabDestinations {
-                tabDestination.parentDestinationID = destination.id
-            }
-            
+
             return destination
 
         } else {

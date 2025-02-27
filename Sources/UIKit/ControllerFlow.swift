@@ -74,7 +74,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         let existingID: UUID? = configuration.actionTargetID
         
         if let existingID {
-            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID == existingID }) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
+            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID }) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
                 existingDestination = activeDestination
                 
             } else if configuration.actionType == .systemNavigation, let activeDestination = activeDestinations.first(where: { $0.id == existingID }) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>  {
@@ -101,7 +101,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         var mutableConfiguration = configuration
         var parentOfCurrentDestination: (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?
         
-        if let parentID = currentDestination?.parentDestinationID, let parent = self.destination(for: parentID) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
+        if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
             parentOfCurrentDestination = parent
         }
         

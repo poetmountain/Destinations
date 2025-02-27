@@ -10,32 +10,28 @@ import Destinations
 
 final class ColorsDetailContainerProvider: ControllerDestinationProviding, DestinationTypes  {
     
+    public typealias Destination = SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
-    public typealias UserInteractionType = ColorNavDestination.UserInteractions
-    public typealias InteractorType = ColorNavDestination.InteractorType
-    
+
     public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>, _ content: ContentType?) -> ColorNavView
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
-        
     var destinationType: DestinationType = .colorDetailSwiftUI
     
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
         if let interactorsData {
             self.interactorsData = interactorsData
         }
-        
     }
     
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
-        let destinationPresentations = buildPresentations()
-        let navigationPresentations = buildSystemPresentations()
-    
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+ 
         let parentDestination = SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
         
         let colorNavProvider = ColorNavProvider(presentationsData: presentationsData, containerDestination: parentDestination)

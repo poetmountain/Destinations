@@ -12,7 +12,7 @@ import Foundation
 /// This protocol represents a delegate object that provides status updates during the retrieval of items by a ``Datasourceable`` object.
 public protocol DatasourceItemsProviderStatusDelegate: AnyObject {
     
-    /// This method should be calls when a ``Datasourceable`` object has updated its items.
+    /// This method should be called when a ``Datasourceable`` object has updated its items.
     /// - Parameter result: A Result object containing updated items.
     func didUpdateItems<I>(with result: Result<I, Error>)
 }

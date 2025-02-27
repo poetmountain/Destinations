@@ -11,14 +11,13 @@ import Destinations
 
 final class TabBarProvider: ControllerDestinationProviding, DestinationTypes {
     
+    public typealias Destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = AppTabBarController.UserInteractionType
-    public typealias InteractorType = AppTabBarController.InteractorType
+
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
-    
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -27,7 +26,7 @@ final class TabBarProvider: ControllerDestinationProviding, DestinationTypes {
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         guard case let RouteDestinationType.tabBar(tabs: tabs) = destinationType else { return nil }
@@ -54,18 +53,12 @@ final class TabBarProvider: ControllerDestinationProviding, DestinationTypes {
                 tabDestinations.append(destination)
             }
         }
-        
-        let navigationPresentations = buildSystemPresentations()
-        
+                
         if let destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabController = AppTabBarController(destination: destination)
             destination.assignAssociatedController(controller: tabController)
-            
-            for tabDestination in tabDestinations {
-                tabDestination.parentDestinationID = destination.id
-            }
-            
+
             return destination
         } else {
             return nil

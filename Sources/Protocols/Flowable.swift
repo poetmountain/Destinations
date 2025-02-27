@@ -187,13 +187,13 @@ public extension Flowable {
             destination.removeAssociatedInterface()
             
             if let destination = destination as? any GroupedDestinationable<PresentationConfiguration> {
-                let children = destination.childDestinations.map { $0.id }
+                let children = destination.childDestinations().map { $0.id }
                 removeDestinations(destinationIDs: children)
                 destination.removeAllChildren()
             }
             
             // if this Destination's parent is a Group, tell it to remove the child from itself
-            if let parentID = destination.parentDestinationID, let parent = self.destination(for: parentID) as? any GroupedDestinationable<PresentationConfiguration> {
+            if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedDestinationable<PresentationConfiguration> {
                 parent.removeChild(identifier: destinationID)
             }
 
@@ -245,9 +245,9 @@ public extension Flowable {
                 }
                 
                 if let destination, let groupedDestination = destination as? any GroupedDestinationable<PresentationConfiguration> {
-                    let currentChildDestination = groupedDestination.currentChildDestination
+                    let currentChildDestination = groupedDestination.currentChildDestination()
                     
-                    if let parentDestinationID = destination.parentDestinationID, let currentChildDestination, let parent = self?.destination(for: parentDestinationID) as? any GroupedDestinationable<PresentationConfiguration>, (configuration.shouldSetDestinationAsCurrent == true || parent.supportsIgnoringCurrentDestinationStatus == false) {
+                    if let parentDestinationID = destination.parentDestinationID(), let currentChildDestination, let parent = self?.destination(for: parentDestinationID) as? any GroupedDestinationable<PresentationConfiguration>, (configuration.shouldSetDestinationAsCurrent == true || parent.supportsIgnoringCurrentDestinationStatus() == false) {
                         // if this Destination's parent is also Group, add the Destination's current child as the Flow's current Destination
                         // as long as the parent allows this child Destination to take focus
                         strongSelf.updateCurrentDestination(destination: currentChildDestination)
@@ -260,7 +260,7 @@ public extension Flowable {
                         strongSelf.updateCurrentDestination(destination: destination)
                     }
                 
-                    for child in groupedDestination.childDestinations {
+                    for child in groupedDestination.childDestinations() {
                         strongSelf.updateActiveDestinations(with: child)
                     }
                     

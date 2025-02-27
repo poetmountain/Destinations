@@ -18,9 +18,7 @@ public final class ControllerDestination<UserInteractionType: UserInteractionTyp
     public typealias DestinationType = PresentationConfigurationType.DestinationType
     public typealias TabType = PresentationConfigurationType.TabType
     public typealias ContentType = PresentationConfigurationType.ContentType
-    public typealias InteractorType = InteractorType
     public typealias PresentationConfiguration = PresentationConfigurationType
-    public typealias UserInteractionType = UserInteractionType
     public typealias ControllerType = ControllerDestinationType
 
     /// A unique identifier.
@@ -32,23 +30,7 @@ public final class ControllerDestination<UserInteractionType: UserInteractionTyp
     /// The `UIViewController` class associated with this Destination.
     public var controller: ControllerType?
 
-    /// The identifier of this object's parent Destination.
-    public var parentDestinationID: UUID?
-
-    /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    public var destinationConfigurations: DestinationConfigurations?
-    
-    /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    /// A Boolean that denotes whether the UI is currently in a navigation transition.
-    public var isSystemNavigating: Bool = false
-
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<ControllerDestination>] = [:]
-
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
     
     /// The initializer.
     /// - Parameters:
@@ -57,12 +39,14 @@ public final class ControllerDestination<UserInteractionType: UserInteractionTyp
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
     public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
         self.type = destinationType
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
+    public func prepareForPresentation() {
+    }
 }
 
 extension ControllerDestination: Equatable {

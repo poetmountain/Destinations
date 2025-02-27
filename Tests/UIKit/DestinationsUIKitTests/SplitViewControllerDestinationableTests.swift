@@ -61,13 +61,13 @@ import UIKit
         splitViewDestination.replaceChild(currentID: home.id, with: newDestination)
         
         // new Destination should be a child
-        XCTAssertTrue(splitViewDestination.childDestinations.contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
+        XCTAssertTrue(splitViewDestination.childDestinations().contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
         
         // home Destination should not be a child
-        XCTAssertFalse(splitViewDestination.childDestinations.contains(where: { $0.id == home.id }), "Expected the old Destination to be removed from childDestinations")
+        XCTAssertFalse(splitViewDestination.childDestinations().contains(where: { $0.id == home.id }), "Expected the old Destination to be removed from childDestinations")
         
         // new Destination should be the new current
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, newDestination.id, "Expected new Destination to be the current child, but found \(String(describing: splitViewDestination.currentChildDestination?.id))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, newDestination.id, "Expected new Destination to be the current child, but found \(String(describing: splitViewDestination.currentChildDestination()?.id))")
 
         // currentDestination should find the current Destination
         let current = splitViewDestination.currentDestination(for: .secondary)
@@ -80,6 +80,7 @@ import UIKit
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
+        
         let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
@@ -94,19 +95,19 @@ import UIKit
         newDestination.assignAssociatedController(controller: newController)
         splitViewDestination.presentDestination(destination: newDestination, in: .secondary)
         
-        XCTAssertEqual(newDestination.parentDestinationID, splitViewDestination.id)
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == newDestination.id })
+        XCTAssertEqual(newDestination.parentDestinationID(), splitViewDestination.id)
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == newDestination.id })
 
         let thirdDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let thirdController = ColorDetailViewController(destination: thirdDestination)
         thirdDestination.assignAssociatedController(controller: thirdController)
         splitViewDestination.presentDestination(destination: thirdDestination, in: .secondary)
         
-        XCTAssertEqual(thirdDestination.parentDestinationID, splitViewDestination.id)
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == thirdDestination.id })
+        XCTAssertEqual(thirdDestination.parentDestinationID(), splitViewDestination.id)
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == thirdDestination.id })
 
         // primary column + home column + 2 presentations = 4
-        XCTAssertEqual(splitViewDestination.childDestinations.count, 4)
+        XCTAssertEqual(splitViewDestination.childDestinations().count, 4)
         
         // navigation controller in the home column should have 3 children
         let homeColumnController = splitViewController.viewController(for: .secondary)
@@ -142,7 +143,7 @@ import UIKit
         // currentDestination should find the current Destination
         XCTAssertEqual(current?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: current?.type))")
         
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination?.type))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
     }
     

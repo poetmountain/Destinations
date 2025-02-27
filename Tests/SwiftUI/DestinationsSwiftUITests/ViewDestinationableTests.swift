@@ -32,7 +32,7 @@ import Destinations
         let datasource = ColorsDatasource(with: ColorsPresenter())
         destination.setupInteractor(interactor: datasource, for: .colors)
         
-        XCTAssertNotNil(listView.destination().interactors[ColorsListDestination.InteractorType.colors])
+        XCTAssertNotNil(listView.destination().internalState.interactors[ColorsListDestination.InteractorType.colors])
 
     }
 

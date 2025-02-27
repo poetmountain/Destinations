@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an enum describing the types of content that are able to be sent through Destinations.
-public protocol ContentTypeable: Equatable {
+public protocol ContentTypeable: Equatable, Sendable {
 }
 
 

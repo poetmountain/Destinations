@@ -13,6 +13,7 @@ import Destinations
 
 final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTypes {
     
+    public typealias Destination = SplitViewControllerDestination<PresentationConfiguration, SplitViewController<UserInteractionType, PresentationConfiguration, InteractorType>>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     public typealias UserInteractionType = StartViewController.UserInteractionType
     public typealias InteractorType = AppInteractorType
@@ -33,11 +34,8 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
                 
-        let destinationPresentations = buildPresentations()
-        let navigationPresentations = buildSystemPresentations()
-
         var destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<PresentationConfiguration>] = [:]
         
         // create initial content for each column
@@ -62,7 +60,7 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
         splitViewDestination.assignAssociatedController(controller: splitViewController)
 
         for destination in childDestinations {
-            splitViewDestination.parentDestinationID = destination.id
+            splitViewDestination.setParentID(id: destination.id)
         }
         
         return splitViewDestination

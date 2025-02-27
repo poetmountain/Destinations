@@ -11,20 +11,34 @@ import Combine
 import Destinations
 
 protocol ColorsPresenting {
-    func present(colors: [ColorModel], completionClosure: DatasourceResponseClosure<[ColorViewModel]>?) -> Result<[ColorViewModel], Error>
+    func present(colors: [ColorModel]) -> Result<[ColorViewModel], Error>
 }
 
 struct ColorsRequest: InteractorRequestConfiguring {
+    
     enum ActionType: InteractorRequestActionTypeable {
         case retrieve
         case paginate
     }
     
-    typealias ResultData = ColorViewModel
+    typealias RequestContentType = AppContentType
+    typealias ResultData = AppContentType
+    typealias Item = ColorViewModel
 
-    var action: ActionType
+
+    let action: ActionType
     
     var numColorsToRetrieve: Int = 3
+
+    init(action: ActionType) {
+        self.action = action
+    }
+    
+    init(action: ActionType, numColorsToRetrieve: Int) {
+        self.action = action
+        self.numColorsToRetrieve = numColorsToRetrieve
+    }
+    
 }
 
 
@@ -33,12 +47,15 @@ final class ColorsDatasource: Datasourceable {
     typealias Request = ColorsRequest
     typealias ActionType = Request.ActionType
     typealias ResultData = Request.ResultData
-    
+    typealias Item = Request.Item
+
+    var requestResponses: [ActionType: InteractorResponseClosure<Request>] = [:]
+
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
-    @Published var items: [ColorViewModel] = []
+    @Published var items: [Item] = []
 
-    var itemsProvider: Published<[Request.ResultData]>.Publisher { $items }
+    var itemsProvider: Published<[Request.Item]>.Publisher { $items }
     
     let presenter: ColorsPresenting
     
@@ -46,21 +63,18 @@ final class ColorsDatasource: Datasourceable {
         self.presenter = presenter
     }
     
-    func startItemsRetrieval() {
-        perform(request: ColorsRequest(action: .retrieve))
-    }
-    
-    func perform(request: Request, completionClosure: DatasourceResponseClosure<[Request.ResultData]>? = nil) {
+
+    func perform(request: Request) {
         
         switch request.action {
             case .retrieve, .paginate:
-                retrieveColors(request: request, completionClosure: completionClosure)
+                retrieveColors(request: request)
                 
         }
 
     }
     
-    func retrieveColors(request: ColorsRequest, completionClosure: DatasourceResponseClosure<[Request.ResultData]>? = nil) {
+    func retrieveColors(request: ColorsRequest) {
         
         let red = ColorModel(color: UIColor.red, name: "red")
         let yellow = ColorModel(color: UIColor.yellow, name: "yellow")
@@ -72,17 +86,18 @@ final class ColorsDatasource: Datasourceable {
         let range: Range<Int> = 0..<request.numColorsToRetrieve
         let colors = Array(allColors[safe: range])
                 
-        let result = presenter.present(colors: colors, completionClosure: completionClosure)
+        let result = presenter.present(colors: colors)
+        let response = responseForAction(action: request.action)
+
         switch result {
             case .success(let models):
                 self.items = models
+                
+                response?(.success(.colors(models: models)), request)
             case .failure(_):
                 break
         }
-        
-        if let statusDelegate {
-            statusDelegate.didUpdateItems(with: result)
-        }
+
     }
     
     
@@ -90,9 +105,8 @@ final class ColorsDatasource: Datasourceable {
 
 public struct ColorsPresenter: ColorsPresenting {
 
-    @discardableResult func present(colors: [ColorModel], completionClosure: DatasourceResponseClosure<[ColorViewModel]>?) -> Result<[ColorViewModel], Error> {
+    @discardableResult func present(colors: [ColorModel]) -> Result<[ColorViewModel], Error> {
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
-        completionClosure?(.success(viewModels))
         return .success(viewModels)
     }
 }

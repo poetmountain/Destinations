@@ -169,19 +169,26 @@ import Destinations
         
         let interactor = TestInteractor()
         
-        destination.setupInteractor(interactor: interactor, for: .test)
-        
-        let request = TestRequest(action: .increaseCount)
-        
-        destination.performRequest(interactor: .test, request: request) { result in
+        let requestResponse: InteractorResponseClosure<TestRequest> = { (result: Result<TestRequest.ResultData, Error>, request: TestRequest) in
             switch result {
                 case .success(let data):
-                    XCTAssertEqual(data.first, 1, "Expected request result to equal 1, got \(String(describing: data.first))")
+                    switch data {
+                        case .counter(count: let counter):
+                            XCTAssertEqual(counter, 1, "Expected request result to equal 1, got \(String(describing: counter))")
+                        default: break
+                    }
                 case .failure(let error):
                     XCTFail("Request failed: \(error)")
             }
             expectation.fulfill()
         }
+        
+        destination.setupInteractor(interactor: interactor, for: .test)
+        interactor.assignResponseForAction(response: requestResponse, for: .increaseCount)
+        
+        let request = TestRequest(action: .increaseCount)
+        
+        destination.performRequest(interactor: .test, request: request)
         
         waitForExpectations(timeout: 3)
     }
@@ -198,7 +205,7 @@ import Destinations
         
         try? destination.addInterfaceAction(action: interfaceAction)
         
-        XCTAssertNotNil(destination.interfaceActions[interactionType])
+        XCTAssertNotNil(destination.internalState.interfaceActions[interactionType])
     }
     
     func test_addSystemNavigationClosure() {
@@ -212,6 +219,6 @@ import Destinations
         
         destination.addSystemNavigationAction(action: systemAction)
         
-        XCTAssertNotNil(destination.systemNavigationActions[SystemNavigationType.navigateBackInStack])
+        XCTAssertNotNil(destination.internalState.systemNavigationActions[SystemNavigationType.navigateBackInStack])
     }
 }

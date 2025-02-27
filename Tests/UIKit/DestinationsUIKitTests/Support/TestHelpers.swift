@@ -13,18 +13,6 @@ import XCTest
 @testable import DestinationsUIKit
 import Destinations
 
-struct TestColorsRequest: InteractorRequestConfiguring {
-    enum ActionType: InteractorRequestActionTypeable {
-        case retrieve
-        case paginate
-    }
-    
-    typealias ResultData = ColorViewModel
-
-    var action: ActionType
-    
-    var numColorsToRetrieve: Int = 3
-}
 
 @MainActor final class TestDestinations: DestinationTypes {
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
@@ -50,10 +38,15 @@ struct TestColorsRequest: InteractorRequestConfiguring {
         let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .custom(ColorDetailActionAssistant()))
         
         let startProvider = StartProvider()
-        let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
+        
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
+        
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant(actionType: .paginate)))
+        
+        let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
+        
         let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton(model: nil): sheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent, .replaceView: replaceColor])
-        let sheetViewProvider = SheetProvider()
         let tabBarProvider = TabBarProvider()
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
@@ -61,7 +54,6 @@ struct TestColorsRequest: InteractorRequestConfiguring {
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
             .home: homeProvider,
-            .sheet: sheetViewProvider,
             .tabBar(tabs: startingTabs): tabBarProvider
         ]
         
@@ -83,15 +75,13 @@ struct TestColorsRequest: InteractorRequestConfiguring {
 
 
 final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes {
-    
+    public typealias Destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = AppTabBarController.UserInteractionType
-    public typealias InteractorType = AppTabBarController.InteractorType
+
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
-    
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -100,7 +90,7 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         guard case let RouteDestinationType.tabBar(tabs: tabs) = destinationType else { return nil }
@@ -127,16 +117,14 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
                 tabDestinations.append(destination)
             }
         }
-        
-        let navigationPresentations = buildSystemPresentations()
-        
+                
         if let destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabController = AppTabBarController(destination: destination)
             destination.assignAssociatedController(controller: tabController)
             
             for tabDestination in tabDestinations {
-                tabDestination.parentDestinationID = destination.id
+                tabDestination.setParentID(id: destination.id)
             }
             
             return destination
@@ -145,21 +133,19 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
         }
         
     }
-    
 }
 
 
 
 final class TestColorsListProvider: ControllerDestinationProviding, DestinationTypes  {
 
+    public typealias Destination = TestColorsDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
-    public typealias UserInteractionType = TestColorsDestination.UserInteractions
-    public typealias InteractorType = TestColorsDestination.InteractorType
 
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [TestColorsDestination.UserInteractions : any InteractorConfiguring<TestColorsDestination.InteractorType>] = [:]
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractions : any InteractorConfiguring<Destination.InteractorType>] = [:]
 
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType : any InteractorConfiguring<TestColorsDestination.InteractorType>]? = nil) {
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -168,10 +154,7 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
-        
-        let destinationPresentations = buildPresentations()
-        let navigationPresentations = buildSystemPresentations()
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         
         let destination = TestColorsDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
@@ -181,16 +164,6 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         let datasource = TestColorsDatasource(with: ColorsPresenter())
         destination.setupInteractor(interactor: datasource, for: .colors)
 
-        for (interactionType, setupModel) in interactorsData {
-            switch setupModel.interactorType {
-                case .colors:
-                    if let setupModel = setupModel as? InteractorConfiguration<InteractorType, TestColorsDatasource> {
-                        let assistant = TestColorsInteractorAssistant(actionType: setupModel.actionType)
-                        destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
-                    }
-            }
-        }
-        
          return destination
         
     }
@@ -200,15 +173,18 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
 
 final class TestColorsDatasource: Datasourceable {
 
-    typealias RequestType = TestColorsRequest
-    typealias ActionType = RequestType.ActionType
-    typealias ResultData = RequestType.ResultData
+    typealias Request = ColorsRequest
+    typealias ActionType = Request.ActionType
+    typealias ResultData = Request.ResultData
+    typealias Item = Request.Item
 
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
-    @Published var items: [ResultData] = []
+    var requestResponses: [Request.ActionType : InteractorResponseClosure<ColorsRequest>] = [:]
 
-    var itemsProvider: Published<[RequestType.ResultData]>.Publisher { $items }
+    @Published var items: [Item] = []
+
+    var itemsProvider: Published<[Request.Item]>.Publisher { $items }
 
     let presenter: ColorsPresenting
     
@@ -216,89 +192,48 @@ final class TestColorsDatasource: Datasourceable {
         self.presenter = presenter
     }
     
-    func startItemsRetrieval() {
-        perform(request: TestColorsRequest(action: .retrieve))
+    func prepareForRequests() {
+        perform(request: ColorsRequest(action: .retrieve))
     }
-    
-    
-    func perform(request: RequestType, completionClosure: DatasourceResponseClosure<[RequestType.ResultData]>? = nil) {
+
+    func perform(request: Request) {
+        
         switch request.action {
             case .retrieve, .paginate:
-                retrieveColors(request: request, completionClosure: completionClosure)
+                retrieveColors(request: request)
+                
         }
 
     }
     
-    
-    func retrieveColors(request: TestColorsRequest, completionClosure: DatasourceResponseClosure<[RequestType.ResultData]>? = nil) {
+    func retrieveColors(request: Request) {
+        
         let red = ColorModel(color: UIColor.red, name: "red")
         let yellow = ColorModel(color: UIColor.yellow, name: "yellow")
         let blue = ColorModel(color: UIColor.blue, name: "blue")
         let orange = ColorModel(color: UIColor.orange, name: "orange")
         let pink = ColorModel(color: UIColor.systemPink, name: "pink")
+        let allColors = [red, yellow, blue, orange, pink]
         
-        var allColors: [ColorModel] = []
-        
-        switch request.action {
-            case .retrieve:
-                allColors = [red, yellow, blue]
-            case .paginate:
-                allColors = [orange, pink]
-        }
-                                
         let range: Range<Int> = 0..<request.numColorsToRetrieve
         let colors = Array(allColors[safe: range])
                 
-        let result = presenter.present(colors: colors, completionClosure: completionClosure)
+        let response = responseForAction(action: request.action)
+        
+        
+        let result = presenter.present(colors: colors, response: response, request: request)
         switch result {
-            case .success(let models):
-                self.items.append(contentsOf: models)
+            case .success(let response):
+                switch response {
+                    case .colors(models: let models):
+                        self.items = models
+                    default: break
+                }
             case .failure(_):
                 break
         }
 
-        if let statusDelegate = self.statusDelegate as? ColorsDatasourceProviderStatusDelegate {
-            statusDelegate.didUpdateItems(with: result)
-        }
     }
-    
-}
-
-
-struct TestColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
-
-    typealias InteractorType = TestColorsDestination.InteractorType
-    typealias Request = TestColorsRequest
-    typealias Destination = TestColorsDestination
-    
-    let interactorType: InteractorType = .colors
-    
-    var actionType: TestColorsRequest.ActionType
-    
-    var requestMethod: InteractorRequestMethod = .async
-    
-    var completionClosure: DatasourceResponseClosure<[ColorViewModel]>?
-    
-    init(actionType: TestColorsRequest.ActionType) {
-        self.actionType = actionType
-    }
-    
-    func handleAsyncRequest(destination: Destination) async {
-        
-        switch actionType {
-            case .retrieve:
-                let request = TestColorsRequest(action: actionType)
-                let result = await destination.performRequest(interactor: .colors, request: request)
-                await destination.controller?.handleColorsResult(result: result)
-
-            case .paginate:
-                let request = TestColorsRequest(action: actionType, numColorsToRetrieve: 5)
-                let result = await destination.performRequest(interactor: .colors, request: request)
-                await destination.controller?.handleColorsResult(result: result)
-        }
-                
-    }
-    
     
 }
 
@@ -351,34 +286,17 @@ final class TestGroupDestination: ControllerDestinationable, GroupedDestinationa
     typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
     typealias ControllerType = TestGroupViewController
     
+    let id: UUID = UUID()
+
     var type: TestDestinationType = .group
-    
-    var parentDestinationID: UUID?
-    
-    var destinationConfigurations: DestinationConfigurations?
-    
-    var systemNavigationConfigurations: NavigationConfigurations?
-    
-    var supportsIgnoringCurrentDestinationStatus: Bool = false
-
-    var isSystemNavigating: Bool = false
-    
-    var interactors: [AppInteractorType : any Interactable] = [:]
-    
-    var interfaceActions: [UserInteractions : InterfaceAction<UserInteractions, TestDestinationType, AppContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, TestDestinationType, AppContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<TestGroupDestination>] = [:]
-
-    var childWasRemovedClosure: Destinations.GroupChildRemovedClosure?
-    var currentDestinationChangedClosure: Destinations.GroupCurrentDestinationChangedClosure?
     
     var controller: TestGroupViewController?
 
-    var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
-    var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
     
-    let id: UUID = UUID()
-    
+    func prepareForPresentation() {
+    }
 }
 
 
@@ -507,7 +425,7 @@ final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, 
         var routeType: RouteDestinationType?
         var contentType: ContentType?
         
-        closure.data.parentID = destination.parentDestinationID
+        closure.data.parentID = destination.parentDestinationID()
         
         switch interactionType {
             case .color(model: let model):
@@ -519,6 +437,9 @@ final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, 
                 
                 closure.data.contentType = contentType
                 closure.data.parentID = destination.id
+                
+            case .moreButton, .retrieveInitialColors:
+                break
         }
         
         

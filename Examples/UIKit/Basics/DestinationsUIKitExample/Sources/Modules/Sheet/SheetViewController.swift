@@ -41,7 +41,7 @@ final class SheetViewController: UINavigationController, NavigationControllerDes
         let destination = destination()
         
         if isBeingDismissed && !destination.isSystemNavigating {
-            destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID))
+            destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID()))
          }
          super.endAppearanceTransition()
      }
@@ -146,7 +146,7 @@ final class SheetContentViewController: UIViewController, ControllerDestinationI
     func handleButtonTap() {
         if let navigationController = navigationController as? SheetViewController {
             let navDestination = navigationController.destination()
-            navDestination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: navDestination.id, parentID: navDestination.parentDestinationID))
+            navDestination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: navDestination.id, parentID: navDestination.parentDestinationID()))
         }
 
        
@@ -156,7 +156,7 @@ final class SheetContentViewController: UIViewController, ControllerDestinationI
         let destination = destination()
         
         if isBeingDismissed && !destination.isSystemNavigating {
-            destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID))
+            destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID()))
          }
          super.endAppearanceTransition()
      }

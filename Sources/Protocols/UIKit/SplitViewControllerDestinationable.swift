@@ -53,7 +53,7 @@ public extension SplitViewControllerDestinationable {
         addChild(childDestination: destination)
         
         if shouldUpdateSelectedColumn {
-            currentChildDestination = destination
+            groupInternalState.currentChildDestination = destination
         }
 
     }
@@ -72,7 +72,7 @@ public extension SplitViewControllerDestinationable {
             return
             
         }
-        guard let controller, let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController(), let currentColumn = column(destinationID: currentID) else {
+        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController(), let currentColumn = column(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -80,13 +80,13 @@ public extension SplitViewControllerDestinationable {
             return
         }
   
-        guard childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
+        guard groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
             DestinationsSupport.logger.log("Destination of type \(newDestination.type) was already in childDestinations, could not replace child \(currentID).", category: .error)
             return
         }
         
-        childDestinations.insert(newDestination, at: currentIndex)
-        newDestination.parentDestinationID = id
+        groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
+        newDestination.setParentID(id: id)
         destinationIDsForColumns[currentColumn] = newDestination.id
                
         controller.setViewController(newController, for: currentColumn)
@@ -98,7 +98,7 @@ public extension SplitViewControllerDestinationable {
            
         removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
 
-        currentChildDestination = newDestination
+        groupInternalState.currentChildDestination = newDestination
 
     }
     
@@ -140,8 +140,12 @@ public extension SplitViewControllerDestinationable {
     ///   - column: The `UISplitViewController` column to add the Destination controller to.
     internal func addContent(destinationID: UUID, for column: UISplitViewController.Column) {
 
-        if let childDestination = childDestinations.first(where: { $0.id == destinationID }) as? any ControllerDestinationable, let childController = childDestination.currentController() {
+        if let childDestination = groupInternalState.childDestinations.first(where: { $0.id == destinationID }) as? any ControllerDestinationable, let childController = childDestination.currentController() {
             controller?.setViewController(childController, for: column)
         }
+    }
+    
+    // default implementation
+    func prepareForPresentation() {
     }
 }

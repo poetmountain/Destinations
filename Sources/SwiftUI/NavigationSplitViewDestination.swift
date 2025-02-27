@@ -53,34 +53,17 @@ import SwiftUI
     
     public var view: ViewType?
 
-    public var childDestinations: [any Destinationable<PresentationConfiguration>] = []
-    public var currentChildDestination: (any Destinationable<PresentationConfiguration>)?
-    
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+
     public var destinationIDsForColumns: [NavigationSplitViewColumn: UUID] = [:]
     
     public var currentSidebar: ContainerView<AnyView> = ContainerView(view: AnyView(EmptyView()))
     public var currentContent: ContainerView<AnyView> = ContainerView(view: AnyView(EmptyView()))
     public var currentDetail: ContainerView<AnyView> = ContainerView(view: AnyView(EmptyView()))
     
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<NavigationSplitViewDestination>] = [:]
-
-    
-    public var childWasRemovedClosure: GroupChildRemovedClosure?
-    public var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
-
-    public var supportsIgnoringCurrentDestinationStatus: Bool = true
-
     public var listID: UUID = UUID()
 
-    public var isSystemNavigating: Bool = false
     
     /// The initializer.
     /// - Parameters:
@@ -91,13 +74,16 @@ import SwiftUI
     ///   - parentDestinationID: The identifier of the parent Destination.
     public init(destinationType: DestinationType, destinationsForColumns: [NavigationSplitViewColumn: any ViewDestinationable<PresentationConfiguration>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
         self.type = destinationType
-        self.parentDestinationID = parentDestinationID
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestinationID
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
         
         for (column, destination) in destinationsForColumns {
             destinationIDsForColumns[column] = destination.id
             presentDestination(destination: destination, in: column)
         }
+    }
+    
+    public func prepareForPresentation() {
     }
 }

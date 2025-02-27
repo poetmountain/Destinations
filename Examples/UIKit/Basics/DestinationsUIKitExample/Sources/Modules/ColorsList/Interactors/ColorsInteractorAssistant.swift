@@ -9,39 +9,41 @@
 import UIKit
 import Destinations
 
-struct ColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
+struct ColorsInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
 
     typealias InteractorType = ColorsListDestination.InteractorType
     typealias Request = ColorsRequest
-    typealias Destination = ColorsListDestination
     
     let interactorType: InteractorType = .colors
     
-    var actionType: ColorsRequest.ActionType
+    let actionType: ColorsRequest.ActionType
     
-    var requestMethod: InteractorRequestMethod = .async
-    
-    var completionClosure: DatasourceResponseClosure<[ColorViewModel]>?
-    
+    let requestMethod: InteractorRequestMethod = .async
+            
     init(actionType: ColorsRequest.ActionType) {
         self.actionType = actionType
     }
     
-    func handleAsyncRequest(destination: Destination) async {
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, content: Request.RequestContentType?) async where Destination.InteractorType == InteractorType {
         
         switch actionType {
             case .retrieve:
                 let request = ColorsRequest(action: actionType)
-                let result = await destination.performRequest(interactor: .colors, request: request)
-                await destination.controller?.handleColorsResult(result: result)
-
+                let result = await destination.performRequest(interactor: interactorType, request: request)
+                await destination.handleInteractorResult(result: result, for: request)
+                
             case .paginate:
                 let request = ColorsRequest(action: actionType, numColorsToRetrieve: 5)
-                let result = await destination.performRequest(interactor: .colors, request: request)
-                await destination.controller?.handleColorsResult(result: result)
+                let result = await destination.performRequest(interactor: interactorType, request: request)
+                await destination.handleInteractorResult(result: result, for: request)
+
         }
                 
     }
     
     
 }
+
+
+
+

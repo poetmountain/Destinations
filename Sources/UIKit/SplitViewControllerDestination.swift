@@ -34,29 +34,11 @@ public final class SplitViewControllerDestination<PresentationConfiguration: Des
         
     public var controller: ControllerType?
     
-    public var parentDestinationID: UUID?
-                
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+                    
     public var destinationIDsForColumns: [UISplitViewController.Column: UUID] = [:]
-    
-    public var childDestinations: [any Destinationable<PresentationConfiguration>] = []
-    public var currentChildDestination: (any Destinationable<PresentationConfiguration>)?
-    
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<SplitViewControllerDestination>] = [:]
-    
-    public var destinationConfigurations: DestinationConfigurations?
 
-    public var childWasRemovedClosure: GroupChildRemovedClosure?
-    public var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
-
-    public var supportsIgnoringCurrentDestinationStatus: Bool = true
-
-    public var isSystemNavigating: Bool = false
-    
     /// The initializer.
     /// - Parameters:
     ///   - type: The type of Destination.
@@ -66,15 +48,18 @@ public final class SplitViewControllerDestination<PresentationConfiguration: Des
     ///   - parentDestinationID: The identifier of the parent Destination.
     public init(type: DestinationType, destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<PresentationConfiguration>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
         self.type = type
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
-        self.parentDestinationID = parentDestinationID
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestinationID
         
         for (column, destination) in destinationsForColumns {
             destinationIDsForColumns[column] = destination.id
             presentDestination(destination: destination, in: column)
         }
         
+    }
+    
+    public func prepareForPresentation() {
     }
     
 }

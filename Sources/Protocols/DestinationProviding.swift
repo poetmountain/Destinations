@@ -14,11 +14,11 @@ import Foundation
 /// > Note: Adopt SDK-specific protocols like ``ViewDestinationProviding`` or ``ControllerDestinationProviding`` when creating your own provider classes.
 @MainActor public protocol DestinationProviding {
     
-    /// An enum which defines user interaction types for this Destination's interface.
-    associatedtype UserInteractionType: UserInteractionTypeable
-    
     /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
+    
+    /// The Destination class to be provided.
+    associatedtype Destination: Destinationable
     
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
@@ -29,33 +29,36 @@ import Foundation
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
     
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    associatedtype InteractorType: InteractorTypeable
-    
     /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
     associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
     
+    
     /// A dictionary of presentation configuration models, with their keys being the user interaction type.
-    var presentationsData: [UserInteractionType: PresentationConfiguration] { get set }
+    var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] { get set }
     
     /// A dictionary of interactor action configuration models, with their keys being the user interaction type associated with each interactor action.
-    var interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>] { get set }
+    var interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>] { get set }
     
     /// Generates Destination presentations associated with this provider.
-    func buildPresentations() -> AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>?
+    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?
     
     /// Generates system navigation presentations supported by Destinations.
     func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?
+    
+    /// Assigns interactor assistants to the supplied Destination.
+    /// - Parameter destination: The Destination to have interactor assistants applied to.
+    func assignInteractorAssistants(for destination: Destination)
+    
 }
 
 public extension DestinationProviding {
-    func buildPresentations() -> AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>? {
+    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>? {
         
-        let configurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>()
+        let configurations = AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>()
         
         for (interactionType, configuration) in presentationsData {
             let presentation = configuration.copy()
-            if let interactionType = interactionType as? UserInteractionType {
+            if let interactionType = interactionType as? Destination.UserInteractionType {
                 configurations.addConfiguration(configuration: presentation, for: interactionType)
             }
         }
@@ -79,5 +82,11 @@ public extension DestinationProviding {
         }
         
         return configurations
+    }
+
+    func assignInteractorAssistants(for destination: Destination) {
+        for (interactionType, configuration) in interactorsData {
+            configuration.assignInteractorAssistant(destination: destination, interactionType: interactionType)
+        }
     }
 }

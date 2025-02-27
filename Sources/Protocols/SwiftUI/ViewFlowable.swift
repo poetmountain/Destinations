@@ -69,8 +69,10 @@ public extension ViewFlowable {
         var configuration = configuration
         let provider = destinationProviders[destinationType] as? any ViewDestinationProviding<PresentationConfiguration>
         
-        if var destination = provider?.buildDestination(for: configuration, appFlow: self) as? any ViewDestinationable<PresentationConfiguration> {
+        if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ViewDestinationable<PresentationConfiguration> {
             updateDestinationConfiguration(configuration: &configuration, destination: &destination)
+            
+            destination.prepareForPresentation()
             
             return destination
         } else {
@@ -110,7 +112,7 @@ public extension ViewFlowable {
                     }
                     
                     strongSelf.updateCurrentDestination(destination: parentDestination)
-                    parentDestination.isSystemNavigating = false
+                    parentDestination.updateIsSystemNavigating(isNavigating: false)
                     
                 }
                 
@@ -140,7 +142,7 @@ public extension ViewFlowable {
                 
                 if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ViewDestinationable<PresentationConfiguration> {
                     strongSelf.updateCurrentDestination(destination: targetDestination)
-                    targetDestination.isSystemNavigating = false
+                    targetDestination.updateIsSystemNavigating(isNavigating: false)
 
                     strongSelf.logDestinationPresented(configuration: configuration)
 
@@ -174,7 +176,7 @@ public extension ViewFlowable {
         if let navDestination = searchDestination as? any NavigatingViewDestinationable, let navigator = navDestination.navigator() {
             return navigator
             
-        } else if let parentID = searchDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
+        } else if let parentID = searchDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable {
             return findNavigatorInViewHierarchy(searchDestination: parent)
         }
         return nil
@@ -184,7 +186,7 @@ public extension ViewFlowable {
         if let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<PresentationConfiguration> {
             return splitViewDestination
             
-        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
+        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
             return findSplitViewInViewHierarchy(currentDestination: parent)
         }
         return nil
@@ -195,7 +197,7 @@ public extension ViewFlowable {
         if let tabDestination = searchDestination as? any TabBarViewDestinationable<PresentationConfiguration, TabType> {
             return tabDestination
             
-        } else if let parentID = searchDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
+        } else if let parentID = searchDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable {
             return findTabBarInViewHierarchy(searchDestination: parent)
         }
         return nil

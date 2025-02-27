@@ -77,7 +77,7 @@ import Destinations
             XCTAssertEqual(tabsDestination.selectedTab.type, TestTabType.group)
 
             // currentChildDestination should be the current Destination
-            XCTAssertEqual(tabsDestination.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination?.type))")
+            XCTAssertEqual(tabsDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination()?.type))")
             
         } else {
             XCTFail("TabViewDestination was not created")
@@ -95,13 +95,13 @@ import Destinations
             tabsDestination.replaceChild(currentID: homeDestination.id, with: presentedDestination)
             
             // new Destination should be a child
-            XCTAssertTrue(tabsDestination.childDestinations.contains { $0.id == presentedDestination.id })
+            XCTAssertTrue(tabsDestination.childDestinations().contains { $0.id == presentedDestination.id })
             
             // home Destination should not be a child
-            XCTAssertFalse(tabsDestination.childDestinations.contains { $0.id == homeDestination.id })
+            XCTAssertFalse(tabsDestination.childDestinations().contains { $0.id == homeDestination.id })
 
             // new Destination should be the new current
-            XCTAssertEqual(tabsDestination.currentChildDestination?.id, presentedDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination?.type))")
+            XCTAssertEqual(tabsDestination.currentChildDestination()?.id, presentedDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination()?.type))")
             
             // currentDestination should find the current Destination
             let current = tabsDestination.currentDestination(for: .home)
@@ -121,7 +121,7 @@ import Destinations
             
             try? tabsDestination.presentDestination(destination: presentedDestination, in: .home)
             
-            XCTAssertTrue(tabsDestination.childDestinations.contains { $0.id == presentedDestination.id })
+            XCTAssertTrue(tabsDestination.childDestinations().contains { $0.id == presentedDestination.id })
 
             // currentDestination should find the current Destination
             let current = tabsDestination.currentDestination(for: .home)
@@ -150,15 +150,15 @@ import Destinations
             
             try? tabsDestination.presentDestination(destination: thirdDestination, in: .group)
 
-            XCTAssertTrue(tabsDestination.childDestinations.contains { $0.id == presentedDestination.id })
+            XCTAssertTrue(tabsDestination.childDestinations().contains { $0.id == presentedDestination.id })
                     
-            XCTAssertEqual(navigationStackDestination.childDestinations.count, 2, "Expected 2 Destinations in NavigationStack, but found \(navigationStackDestination.childDestinations.count)")
+            XCTAssertEqual(navigationStackDestination.childDestinations().count, 2, "Expected 2 Destinations in NavigationStack, but found \(navigationStackDestination.childDestinations().count)")
             
             try? tabsDestination.updateSelectedTab(type: .home)
 
             try? tabsDestination.updateSelectedTab(type: .group)
             
-            XCTAssertEqual(tabsDestination.currentChildDestination?.id, thirdDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination?.type))")
+            XCTAssertEqual(tabsDestination.currentChildDestination()?.id, thirdDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination()?.type))")
             
             // currentDestination should find the current Destination
             let current = tabsDestination.currentDestination(for: .group)
@@ -198,21 +198,21 @@ import Destinations
         // currentDestination should find the current Destination
         XCTAssertEqual(current?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: current?.type))")
         
-        XCTAssertEqual(tabsDestination?.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination?.type))")
+        XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
         
         try? tabsDestination?.presentDestination(destination: thirdDestination, in: .group)
 
-        XCTAssertEqual(tabsDestination?.currentChildDestination?.id, thirdDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination?.type))")
+        XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, thirdDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
         
         navigationStackDestination.navigateBackInStack()
         navigationStackDestination.removeChild(identifier: thirdDestination.id)
         
-        XCTAssertEqual(tabsDestination?.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination?.type))")
+        XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
         
         navigationStackDestination.navigateBackInStack()
         navigationStackDestination.removeChild(identifier: childDestination.id)
 
-        XCTAssertEqual(tabsDestination?.currentChildDestination?.id, navigationStackDestination.id, "Expected the child Destination to be the NavigationStack Destination, but the current is \(String(describing: tabsDestination?.currentChildDestination?.type))")
+        XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, navigationStackDestination.id, "Expected the child Destination to be the NavigationStack Destination, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
     }
     
     func test_rootDestination_for_tab() {

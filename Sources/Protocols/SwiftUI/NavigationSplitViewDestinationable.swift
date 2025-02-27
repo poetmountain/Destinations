@@ -101,7 +101,7 @@ public extension NavigationSplitViewDestinationable {
         let currentColumnDestination = self.rootDestination(for: column)
         
         if shouldUpdateSelectedColumn {
-            currentChildDestination = destination
+            groupInternalState.currentChildDestination = destination
         }
         
         // If the current Destination is a NavigationStack, add the presented Destination to it
@@ -148,7 +148,7 @@ public extension NavigationSplitViewDestinationable {
             return
         }
         
-        guard let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = childDestinations[safe: currentIndex] as? any ViewDestinationable, let currentColumn = column(destinationID: currentID) else {
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ViewDestinationable, let currentColumn = column(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -156,20 +156,20 @@ public extension NavigationSplitViewDestinationable {
             return
         }
         
-        guard childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
+        guard groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
             DestinationsSupport.logger.log("Destination of type \(newDestination.type) was already in childDestinations, could not replace child \(currentID).", category: .error)
             return
         }
 
         DestinationsSupport.logger.log("Replacing NavigationSplitView destination with \(newDestination.type)", level: .verbose)
                 
-        childDestinations.insert(newDestination, at: currentIndex)
-        newDestination.parentDestinationID = id
+        groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
+        newDestination.setParentID(id: id)
         destinationIDsForColumns[currentColumn] = newDestination.id
 
         removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
         
-        currentChildDestination = newDestination
+        groupInternalState.currentChildDestination = newDestination
         
         switch currentColumn {
             case .sidebar:
@@ -252,7 +252,7 @@ public extension NavigationSplitViewDestinationable {
             if let destinationID {
                 self?.updateCurrentDestination(destinationID: destinationID)
             } else {
-                self?.currentChildDestination = destination
+                self?.groupInternalState.currentChildDestination = destination
             }
         }
         

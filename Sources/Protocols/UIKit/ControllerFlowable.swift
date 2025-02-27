@@ -67,8 +67,10 @@ public extension ControllerFlowable {
         var configuration = configuration
         let provider = destinationProviders[destinationType] as? any ControllerDestinationProviding<PresentationConfiguration>
         
-        if var destination = provider?.buildDestination(for: configuration, appFlow: self) as? any ControllerDestinationable<PresentationConfiguration> {
+        if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ControllerDestinationable<PresentationConfiguration> {
             updateDestinationConfiguration(configuration: &configuration, destination: &destination)
+
+            destination.prepareForPresentation()
             
             return destination
         } else {
@@ -81,7 +83,7 @@ public extension ControllerFlowable {
         if let tabDestination = currentDestination as? any TabBarControllerDestinationable<PresentationConfiguration, TabType> {
             return tabDestination
             
-        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
+        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
             return findTabBarInViewHierarchy(currentDestination: parent)
         }
         return nil
@@ -91,7 +93,7 @@ public extension ControllerFlowable {
         if let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<PresentationConfiguration> {
             return splitViewDestination
             
-        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
+        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
             return findSplitViewInViewHierarchy(currentDestination: parent)
         }
         return nil
@@ -102,7 +104,7 @@ public extension ControllerFlowable {
         if let controllerDestination = currentDestination as? any NavigatingControllerDestinationable<PresentationConfiguration> {
             return controllerDestination
             
-        } else if let parentID = currentDestination.parentDestinationID, let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
+        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<PresentationConfiguration> {
             return findNearestNavigatorInViewHierarchy(currentDestination: parent)
             
         } else if let parentController = currentDestination.currentController()?.parent as? any ControllerDestinationInterfacing, let parentDestination = parentController.destination() as? any ControllerDestinationable {
@@ -191,7 +193,7 @@ public extension ControllerFlowable {
                 
                 if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ControllerDestinationable<PresentationConfiguration> {
                     strongSelf.updateCurrentDestination(destination: targetDestination)
-                    targetDestination.isSystemNavigating = false
+                    targetDestination.updateIsSystemNavigating(isNavigating: false)
                     
                     // Because TabBarControllerDestinationable objects currently use raw UINavigationControllers to supply a navigation stack
                     // We have to manually update the tab bar's current Destination here
@@ -215,7 +217,7 @@ public extension ControllerFlowable {
                     } else {
                         navController.setViewControllers([], animated: true)
                     }
-                    currentDestination.isSystemNavigating = false
+                    currentDestination.updateIsSystemNavigating(isNavigating: false)
 
                 }
                 

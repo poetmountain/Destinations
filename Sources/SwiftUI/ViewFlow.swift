@@ -77,10 +77,10 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         let existingID: UUID? = configuration.actionTargetID
         
         if let existingID {
-            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
+            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
                 existingDestination = activeDestination
                 
-            } else if case .sheet(type: .dismiss, options: _) = configuration.presentationType,  let activeDestination = activeDestinations.first(where: { $0.parentDestinationID == existingID || $0.id == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
+            } else if case .sheet(type: .dismiss, options: _) = configuration.presentationType,  let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID || $0.id == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
                 existingDestination = activeDestination
 
             } else if configuration.actionType == .systemNavigation, let activeDestination = activeDestinations.first(where: { $0.id == existingID }) as? any ViewDestinationable<PresentationConfiguration> {
@@ -110,7 +110,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         var mutableConfiguration = configuration
         var parentOfCurrentDestination: (any ViewDestinationable)?
         
-        if let parentID = currentDestination?.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
+        if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
             parentOfCurrentDestination = parent
         }
         
@@ -132,7 +132,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         
         if var newDestination = newDestination {
             
-            if let parentID = currentViewDestination?.parentDestinationID ?? mutableConfiguration.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
+            if let parentID = currentViewDestination?.parentDestinationID() ?? mutableConfiguration.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
                 parentOfCurrentDestination = parent
             }
             

@@ -11,16 +11,15 @@ import Destinations
 
 final class SplitViewProvider: ViewDestinationProviding, DestinationTypes {
     
-    public typealias ViewDestinationableType = NavigationSplitViewDestination
+    public typealias Destination = NavigationSplitViewDestination<PresentationConfiguration, AppSplitView>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias UserInteractionType = AppSplitView.UserInteractions
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
+    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     var initialContent: [NavigationSplitViewColumn: RouteDestinationType]
 
-    init(initialContent: [NavigationSplitViewColumn: RouteDestinationType], presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(initialContent: [NavigationSplitViewColumn: RouteDestinationType], presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         self.initialContent = initialContent
         
         if let presentationsData {
@@ -31,10 +30,8 @@ final class SplitViewProvider: ViewDestinationProviding, DestinationTypes {
         }
     }
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> (any ViewDestinationable)? {
-        
-        let destinationPresentations = buildPresentations()
-        
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+                
         var destinationsForColumns: [NavigationSplitViewColumn: any ViewDestinationable<PresentationConfiguration>] = [:]
         
         // create initial content for each column

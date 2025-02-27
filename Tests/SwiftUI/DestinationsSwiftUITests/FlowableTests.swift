@@ -54,7 +54,7 @@ import Destinations
             
             try? tabsDestination.updateSelectedTab(type: .palettes)
             
-            XCTAssertEqual(tabsDestination.currentChildDestination?.id, presentedDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination?.type))")
+            XCTAssertEqual(tabsDestination.currentChildDestination()?.id, presentedDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination.currentChildDestination()?.type))")
             
             // currentDestination should find the current Destination
             XCTAssertEqual(appFlow.currentDestination?.id, presentedDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: appFlow.currentDestination?.type))")
@@ -163,7 +163,7 @@ import Destinations
         
         XCTAssertNil(appFlow.activeDestinations.first(where: { $0.id == colorsListDestination.id} ), "Expected destination to not be in activeDestinations")
         
-        XCTAssertEqual(colorsListDestination.childDestinations.count, 0, "Expected all children to be removed")
+        XCTAssertEqual(colorsListDestination.childDestinations().count, 0, "Expected all children to be removed")
         
         XCTAssertNil(appFlow.currentDestination, "Expected no currentDestination, but found \(String(describing: appFlow.currentDestination?.id))")
     }
@@ -218,14 +218,14 @@ import Destinations
             return
         }
         
-        let currentIndex = navDestination.childDestinations.firstIndex(where: { $0.id == destination.id })
+        let currentIndex = navDestination.childDestinations().firstIndex(where: { $0.id == destination.id })
         
         guard let newDestination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
             XCTFail("New Destination not presented")
             return
         }
                     
-        let newIndex = navDestination.childDestinations.firstIndex(where: { $0.id == newDestination.id })
+        let newIndex = navDestination.childDestinations().firstIndex(where: { $0.id == newDestination.id })
         
         XCTAssertEqual(currentIndex, newIndex)
         
@@ -234,7 +234,7 @@ import Destinations
             return
         }
                     
-        let newIndex2 = navDestination.childDestinations.firstIndex(where: { $0.id == newDestination2.id })
+        let newIndex2 = navDestination.childDestinations().firstIndex(where: { $0.id == newDestination2.id })
         
         XCTAssertEqual(newIndex, newIndex2)
             

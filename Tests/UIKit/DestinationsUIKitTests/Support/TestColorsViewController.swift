@@ -13,11 +13,11 @@ import Destinations
 
 public struct ColorsPresenter: ColorsPresenting {
 
-    @discardableResult public func present(colors: [ColorModel], completionClosure: DatasourceResponseClosure<[ColorViewModel]>?) -> Result<[ColorViewModel], Error> {
+    public func present(colors: [ColorModel], response: InteractorResponseClosure<ColorsRequest>?, request: ColorsRequest) -> Result<ColorsRequest.ResultData, any Error> {
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
-        completionClosure?(.success(viewModels))
-        return .success(viewModels)
+        return .success(.colors(models: viewModels))
     }
+
 }
 
 class TestColorsViewController: UIViewController, UICollectionViewDelegate, ControllerDestinationInterfacing {
@@ -145,28 +145,19 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
        
    }
    
-   func requestMoreButtonAction() {
-       
-       let request = TestColorsRequest(action: .paginate, numColorsToRetrieve: 5)
-       
-       let completionClosure: DatasourceResponseClosure<[TestColorsRequest.ResultData]> = { (result: Result<[TestColorsRequest.ResultData], Error>) in
-           //
-       }
-       
-       destination().performRequest(interactor: .colors, request: request, completionClosure: completionClosure)
-   }
-   
-    
-    func handleColorsResult(result: Result<[TestColorsRequest.ResultData], Error>) async {
-        switch result {
-            case .success(let items):
-                self.buildNewCollection(with: items)
-                
-            case .failure(let error):
-                destination().logError(error: error)
+    func requestMoreButtonAction() {
+        
+        destination().handleThrowable { [weak self] in
+            try self?.destination().performInterfaceAction(interactionType: .moreButton)
+        } catchClosure: {
+            print("catch triggered!")
         }
     }
+   
     
+    func updateItems(items: [ColorsRequest.Item]) async {
+        self.buildNewCollection(with: items)
+    }
     
    
    private func makeDataSource() -> UICollectionViewDiffableDataSource<Section, ColorItem> {
@@ -218,7 +209,11 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
        guard let datasource = destination().interactor(for: .colors) as? any Datasourceable<ColorViewModel> else { return }
 
        if let model = datasource.items[safe: indexPath.item] {
-           destination().performInterfaceAction(interactionType: .color(model: model))
+           
+           destination().handleThrowable(closure: {
+               try self.destination().performInterfaceAction(interactionType: .color(model: model))
+           })
+           
        }
 
    }

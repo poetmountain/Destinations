@@ -24,7 +24,7 @@ public extension NavigatingDestinationInterfacing {
         var options: SystemNavigationOptions?
         if let targetID = destinationState.navigator.previousPathElement() {
             options = SystemNavigationOptions(targetID: targetID)
-        } else if let parentID = currentDestination.parentDestinationID {
+        } else if let parentID = currentDestination.parentDestinationID() {
             options = SystemNavigationOptions(targetID: parentID)
         } else {
             options = SystemNavigationOptions(targetID: currentDestination.id)

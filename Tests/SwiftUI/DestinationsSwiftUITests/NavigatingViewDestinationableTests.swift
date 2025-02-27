@@ -26,7 +26,7 @@ import Destinations
         
         navDestination.addChild(childDestination: destination)
         
-        XCTAssertTrue(navDestination.childDestinations.contains(where: { $0.id == destination.id}))
+        XCTAssertTrue(navDestination.childDestinations().contains(where: { $0.id == destination.id}))
     }
     
 
@@ -40,9 +40,9 @@ import Destinations
         
         navDestination.removeChild(identifier: destination.id)
 
-        XCTAssertEqual(navDestination.childDestinations.count, 0)
+        XCTAssertEqual(navDestination.childDestinations().count, 0)
         
-        XCTAssertNil(navDestination.currentChildDestination)
+        XCTAssertNil(navDestination.currentChildDestination())
                 
         XCTAssertNil(navDestination.navigator()?.currentPresentationID, "currentPresentationID was expected to be nil, but found \(String(describing: navDestination.navigator()?.currentPresentationID))")
     }

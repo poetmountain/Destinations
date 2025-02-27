@@ -41,13 +41,13 @@ import Destinations
         splitViewDestination.replaceChild(currentID: homeDestination.id, with: newDestination)
         
         // new Destination should be a child
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == newDestination.id })
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == newDestination.id })
         
         // home Destination should not be a child
-        XCTAssertFalse(splitViewDestination.childDestinations.contains { $0.id == homeDestination.id })
+        XCTAssertFalse(splitViewDestination.childDestinations().contains { $0.id == homeDestination.id })
 
         // new Destination should be the new current
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, newDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination?.type))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, newDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
         // currentDestination should find the current Destination
         let current = splitViewDestination.currentDestination(for: .content)
@@ -64,7 +64,7 @@ import Destinations
                     
         splitViewDestination.presentDestination(destination: presentedDestination, in: .content)
         
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == presentedDestination.id })
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == presentedDestination.id })
 
         // currentDestination should find the current Destination
         let current = splitViewDestination.currentDestination(for: .content)
@@ -87,16 +87,16 @@ import Destinations
         splitViewDestination.assignAssociatedView(view: view)
                     
         splitViewDestination.presentDestination(destination: firstDetailDestination, in: .content)
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == firstDetailDestination.id })
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == firstDetailDestination.id })
 
         splitViewDestination.presentDestination(destination: secondDetailDestination, in: .content)
-        XCTAssertTrue(splitViewDestination.childDestinations.contains { $0.id == secondDetailDestination.id })
+        XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == secondDetailDestination.id })
 
         // sidebar view + navigator view + 2 of its children = 4
-        XCTAssertEqual(splitViewDestination.childDestinations.count, 4)
+        XCTAssertEqual(splitViewDestination.childDestinations().count, 4)
 
         // navigator in the content column should have 2 children
-        XCTAssertEqual(navigatorDestination.childDestinations.count, 2)
+        XCTAssertEqual(navigatorDestination.childDestinations().count, 2)
     }
     
     func test_currentDestination_for_non_group_destination() {
@@ -133,17 +133,17 @@ import Destinations
         // currentDestination should find the current Destination
         XCTAssertEqual(current?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: current?.type))")
         
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination?.type))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
         let secondDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
         splitViewDestination.presentDestination(destination: secondDestination, in: .content)
         
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, secondDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination?.type))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, secondDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
         navigatorDestination.navigateBackInStack()
         navigatorDestination.removeChild(identifier: secondDestination.id)
         
-        XCTAssertEqual(splitViewDestination.currentChildDestination?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination?.type))")
+        XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
     }
     
     func test_rootDestination_for_column() {

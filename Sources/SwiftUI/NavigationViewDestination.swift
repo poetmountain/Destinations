@@ -42,26 +42,10 @@ import Foundation
     
     public var view: ViewType?
 
-    public var childDestinations: [any Destinationable<PresentationConfiguration>] = []
-    public var currentChildDestination: (any Destinationable<PresentationConfiguration>)?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
     
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<NavigationViewDestination>] = [:]
-
-    
-    public var childWasRemovedClosure: GroupChildRemovedClosure?
-    public var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
-
     private(set) var listID: UUID = UUID()
-
-    public var isSystemNavigating: Bool = false
     
     /// The initializer.
     /// - Parameters:
@@ -71,9 +55,11 @@ import Foundation
     ///   - parentDestination: The identifier of the parent Destination.
     public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
         self.type = destinationType
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
 
+    public func prepareForPresentation() {
+    }
 }

@@ -27,12 +27,6 @@ public final class ViewDestination<UserInteractionType: UserInteractionTypeable,
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     public typealias InteractorType = ViewDestinationType.InteractorType
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    public typealias PresentationConfiguration = PresentationConfiguration
-    
-    /// An enum which defines user interaction types for this Destination's interface.
-    public typealias UserInteractionType = UserInteractionType
-    
     /// The `View` associated with this Destination.
     public typealias ViewType = ViewDestinationType
 
@@ -45,23 +39,9 @@ public final class ViewDestination<UserInteractionType: UserInteractionTypeable,
     /// The SwiftUI `View` class associated with this Destination.
     public var view: ViewDestinationType?
 
-    /// The identifier of this object's parent Destination.
-    public var parentDestinationID: UUID?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    
 
-    /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    public var destinationConfigurations: DestinationConfigurations?
-    
-    /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
-    public var systemNavigationConfigurations: NavigationConfigurations?
-        
-    /// A Boolean that denotes whether the UI is currently in a navigation transition.
-    public var isSystemNavigating: Bool = false
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<ViewDestination>] = [:]
-    
     /// The initializer.
     /// - Parameters:
     ///   - destinationType: The type of Destination.
@@ -69,11 +49,15 @@ public final class ViewDestination<UserInteractionType: UserInteractionTypeable,
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
     public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
         self.type = destinationType
 
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
+
+    }
+    
+    public func prepareForPresentation() {
     }
 
 }

@@ -9,27 +9,6 @@
 import UIKit
 import Destinations
 
-enum AppContentType: ContentTypeable {
-    
-    case color(model: ColorViewModel)
-    case colorsRequest(request: ColorsRequest)
-    
-    var rawValue: String {
-        switch self {
-            case .color:
-                return "color"
-            case .colorsRequest:
-                return "colorsRequest"
-        }
-    }
-}
-
-extension AppContentType: Equatable {
-    public static func == (lhs: AppContentType, rhs: AppContentType) -> Bool {
-        return (lhs.rawValue == rhs.rawValue)
-    }
-}
-
 public enum RouteDestinationType: RoutableDestinations {
     
     public var id: String { rawValue }

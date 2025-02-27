@@ -26,23 +26,14 @@ public final class DynamicDestination: DestinationTypes, ViewDestinationable {
 
     public var view: ViewType?
 
-    public var parentDestinationID: UUID?
-
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractions : any InteractorAssisting<DynamicDestination>] = [:]
-
-    public var isSystemNavigating: Bool = false
-
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
 
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
 
+    public func prepareForPresentation() {
+    }
 }

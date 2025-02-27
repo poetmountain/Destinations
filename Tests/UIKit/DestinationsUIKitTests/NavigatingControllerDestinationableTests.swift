@@ -28,9 +28,9 @@ import UIKit
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         navDestination.addChild(childDestination: colors)
         
-        XCTAssertEqual(colors.parentDestinationID, navDestination.id)
-        XCTAssert(navDestination.childDestinations.contains(where: { $0.id == colors.id}))
-        XCTAssertEqual(navDestination.currentChildDestination?.id, colors.id)
+        XCTAssertEqual(colors.parentDestinationID(), navDestination.id)
+        XCTAssert(navDestination.childDestinations().contains(where: { $0.id == colors.id}))
+        XCTAssertEqual(navDestination.currentChildDestination()?.id, colors.id)
     }
 
     func test_navigateBackInStack() {
@@ -48,12 +48,12 @@ import UIKit
         detail.assignAssociatedController(controller: detailController)
         navDestination.addChild(childDestination: detail)
         
-        XCTAssertEqual(navDestination.childDestinations.count, 2)
+        XCTAssertEqual(navDestination.childDestinations().count, 2)
         
         navDestination.navigateBackInStack()
         
-        XCTAssertEqual(navDestination.childDestinations.count, 1, "Expected child destinations to be 1, but found \(navDestination.childDestinations.count)")
-        XCTAssertEqual(navDestination.currentChildDestination?.id, colors.id)
+        XCTAssertEqual(navDestination.childDestinations().count, 1, "Expected child destinations to be 1, but found \(navDestination.childDestinations().count)")
+        XCTAssertEqual(navDestination.currentChildDestination()?.id, colors.id)
         
     }
 }

@@ -18,12 +18,15 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
 
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
+        case retrieveInitialColors
         case moreButton
         
         var rawValue: String {
             switch self {
                 case .color:
                     return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
                 case .moreButton:
                     return "moreButton"
             }
@@ -48,17 +51,8 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
     
     public var view: ViewType?
 
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    var interactors: [InteractorType : any Interactable] = [:]
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<ColorsListDestination>] = [:]
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
 
-    public var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
 
     var items: [ColorViewModel] = []
 
@@ -69,9 +63,9 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
     private(set) var cancellables: Set<AnyCancellable> = []
 
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
     func configureInteractor(_ interactor: any Interactable, type: ColorsListDestination.InteractorType) {
@@ -79,7 +73,6 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
             case .colors:
                 if let datasource = interactor as? ColorsDatasource {
                     subscribeToDatasource(datasource: datasource)
-                    datasource.startItemsRetrieval()
                 }
         }
     }
@@ -100,4 +93,9 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
         .store(in: &cancellables)
     }
 
+    func prepareForPresentation() {
+        handleThrowable(closure: {
+            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+        })
+    }
 }

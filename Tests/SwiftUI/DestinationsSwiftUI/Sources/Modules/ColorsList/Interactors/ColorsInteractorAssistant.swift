@@ -13,30 +13,25 @@ struct ColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
     
     typealias InteractorType = ColorsListDestination.InteractorType
     typealias Request = ColorsRequest
-    typealias Destination = ColorsListDestination
     
     let interactorType: InteractorType = .colors
-    
-    var actionType: ColorsRequest.ActionType
-    
-    var requestMethod: Destinations.InteractorRequestMethod = .sync
+    let actionType: ColorsRequest.ActionType
+    let requestMethod: InteractorRequestMethod = .sync
 
-    var completionClosure: DatasourceResponseClosure<[ColorViewModel]>?
-    
     init(actionType: ColorsRequest.ActionType) {
         self.actionType = actionType
     }
     
-    func handleRequest(destination: Destination) {
+    func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType {
         
         switch actionType {
             case .retrieve:
                 let request = ColorsRequest(action: actionType)
-                destination.performRequest(interactor: .colors, request: request, completionClosure: completionClosure)
-
+                destination.performRequest(interactor: interactorType, request: request)
+                
             case .paginate:
                 let request = ColorsRequest(action: actionType, numColorsToRetrieve: 5)
-                destination.performRequest(interactor: .colors, request: request, completionClosure: completionClosure)
+                destination.performRequest(interactor: interactorType, request: request)
 
         }
     }

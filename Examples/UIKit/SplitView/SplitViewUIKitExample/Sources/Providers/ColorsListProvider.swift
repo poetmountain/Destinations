@@ -12,6 +12,7 @@ import Destinations
 
 final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTypes  {
     
+    public typealias Destination = ColorsListDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
     public typealias UserInteractionType = ColorsListDestination.UserInteractions
     public typealias InteractorType = ColorsListDestination.InteractorType
@@ -29,32 +30,20 @@ final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTy
     }
     
     
-    public func buildDestination(for configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> (any ControllerDestinationable)? {
-        let destinationPresentations = buildPresentations()
-        let navigationPresentations = buildSystemPresentations()
-        
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+
         let destination = ColorsListDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let controller = ColorsViewController(destination: destination)
         destination.assignAssociatedController(controller: controller)
 
+
         let datasource = ColorsDatasource()
         destination.setupInteractor(interactor: datasource, for: .colors)
-        
-        for (interactionType, setupModel) in interactorsData {
-            switch setupModel.interactorType {
-                case .colors:
-                    if let setupModel = setupModel as? InteractorConfiguration<InteractorType, ColorsDatasource> {
-                        let assistant = ColorsInteractorAssistant(actionType: setupModel.actionType)
-                        destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
-                    }
-            }
-        }
-        
+                
          return destination
         
     }
-    
     
 
 }

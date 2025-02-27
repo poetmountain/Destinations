@@ -148,15 +148,15 @@ public extension TabBarControllerDestinationable {
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let controller, let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController() else { return }
+        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController() else { return }
   
-        if childDestinations.contains(where: { $0.id == newDestination.id}) == false {
-            childDestinations.insert(newDestination, at: currentIndex)
-            newDestination.parentDestinationID = id
+        if groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false {
+            groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
+            newDestination.setParentID(id: id)
         }
         
-        if currentChildDestination?.id == currentID {
-            currentChildDestination = newDestination
+        if groupInternalState.currentChildDestination?.id == currentID {
+            groupInternalState.currentChildDestination = newDestination
         }
         
         removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
@@ -169,7 +169,7 @@ public extension TabBarControllerDestinationable {
     }
     
     func updateChildren() {
-        let children = childDestinations.compactMap { $0.id }
+        let children = groupInternalState.childDestinations.compactMap { $0.id }
         updateTabControllers(controllers: children, for: activeTabs)
         
     }
@@ -183,7 +183,7 @@ public extension TabBarControllerDestinationable {
             addChild(childDestination: destination)
             
             if shouldUpdateSelectedTab {
-                currentChildDestination = destination
+                groupInternalState.currentChildDestination = destination
                 try updateSelectedTab(type: tab)
             }
             
@@ -199,7 +199,7 @@ public extension TabBarControllerDestinationable {
     /// Adds the children Destination controllers to each tab's UINavigationController stack. This is used internally by Destinations.
     internal func addContentToNavigationController(tab: TabType) {
 
-        if let controllerID = destinationIDsForTabs[tab], let tabDestination = childDestinations.first(where: { $0.id == controllerID }) as? any ControllerDestinationable, let controller = tabDestination.currentController(), let navigationController = navControllersForTabs[tab] {
+        if let controllerID = destinationIDsForTabs[tab], let tabDestination = groupInternalState.childDestinations.first(where: { $0.id == controllerID }) as? any ControllerDestinationable, let controller = tabDestination.currentController(), let navigationController = navControllersForTabs[tab] {
             navigationController.setViewControllers([controller], animated: false)
         }
     }

@@ -31,12 +31,10 @@ import UIKit
 
 public extension ControllerDestinationable {
     
-    func setupInteractor<Request: InteractorRequestConfiguring, ResultData: Hashable>(interactor: any Interactable<Request, ResultData>, for type: InteractorType) {
+    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any Interactable<Request>, for type: InteractorType) {
     
-        interactors[type] = interactor
+        internalState.interactors[type] = interactor
         
-        
-
         configureInteractor(interactor, type: type)
 
     }

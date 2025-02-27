@@ -13,12 +13,15 @@ import Destinations
 enum AppContentType: ContentTypeable {
     
     case color(model: ColorViewModel)
+    case colors(model: [ColorViewModel])
     case colorsRequest(request: ColorsRequest)
     
     var rawValue: String {
         switch self {
             case .color:
                 return "color"
+            case .colors:
+                return "colors"
             case .colorsRequest:
                 return "colorsRequest"
         }

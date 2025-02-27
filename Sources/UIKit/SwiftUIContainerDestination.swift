@@ -38,21 +38,13 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
     
     public var controller: SwiftUIContainerController<Content>?
     
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+
+    
     /// This `ViewFlow` object manages the SwiftUI `View` presented by this Destination.
     public var viewFlow: ViewFlow<DestinationType, TabType, ContentType>?
 
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
 
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType : any InteractorAssisting<SwiftUIContainerDestination<Content, PresentationConfiguration>>] = [:]
-    
-    public var isSystemNavigating: Bool = false
-    
     /// The initializer.
     /// - Parameters:
     ///   - destinationType: The type of Destination.
@@ -64,13 +56,13 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
         if let flow {
             self.viewFlow = flow
         }
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
     public func buildInterfaceActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
-        guard let destinationConfigurations = destinationConfigurations else { return }
+        guard let destinationConfigurations = internalState.destinationConfigurations else { return }
 
         var containers: [InterfaceAction<UserInteractionType, DestinationType, PresentationConfiguration.ContentType>] = []
         for (type, configuration) in destinationConfigurations.configurations {
@@ -92,6 +84,9 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
 
     public func cleanupResources() {
         controller?.cleanupResources()
+    }
+    
+    public func prepareForPresentation() {
     }
 }
 

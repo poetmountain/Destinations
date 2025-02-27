@@ -118,17 +118,10 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
         
     }
 
-    
-    func handleColorsResult(result: Result<[ColorsRequest.ResultData], Error>) async {
-        switch result {
-            case .success(let items):
-                self.buildNewCollection(with: items)
-                
-            case .failure(let error):
-                destination().logError(error: error)
-        }
+    func updateItems(items: [ColorsRequest.Item]) {
+        print("updating items!!! \(items)")
+        self.buildNewCollection(with: items)
     }
-    
     
     private func makeDataSource() -> UICollectionViewDiffableDataSource<Section, ColorItem> {
         let dataSource: UICollectionViewDiffableDataSource<Section, ColorItem> = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, item in

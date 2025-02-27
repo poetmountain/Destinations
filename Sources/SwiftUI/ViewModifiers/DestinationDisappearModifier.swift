@@ -40,7 +40,7 @@ public struct DestinationDisappearModifier: ViewModifier {
         content
             .onDisappear {
 
-                guard let destination, let presentationID, destination.isSystemNavigating == true else { return }
+                guard let destination, let presentationID, destination.isSystemNavigating() == true else { return }
                 
                 DestinationsSupport.logger.log("Destination is disappearing \(destination.description)", level: .verbose)
                 

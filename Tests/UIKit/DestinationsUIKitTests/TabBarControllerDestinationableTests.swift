@@ -164,9 +164,9 @@ import UIKit
         tabsDestination?.replaceChild(currentID: home.id, with: newDestination)
         
         if let tabsDestination = try? XCTUnwrap(tabsDestination) {
-            XCTAssertTrue(tabsDestination.childDestinations.contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
-            XCTAssertFalse(tabsDestination.childDestinations.contains(where: { $0.id == home.id }), "Expected the old Destination to be removed from childDestinations")
-            XCTAssertEqual(tabsDestination.currentChildDestination?.id, newDestination.id, "Expected new Destination to be the current child, but found \(String(describing: tabsDestination.currentChildDestination?.id))")
+            XCTAssertTrue(tabsDestination.childDestinations().contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
+            XCTAssertFalse(tabsDestination.childDestinations().contains(where: { $0.id == home.id }), "Expected the old Destination to be removed from childDestinations")
+            XCTAssertEqual(tabsDestination.currentChildDestination()?.id, newDestination.id, "Expected new Destination to be the current child, but found \(String(describing: tabsDestination.currentChildDestination()?.id))")
             XCTAssertTrue(((tabsDestination.navControllersForTabs[.home]?.viewControllers.contains(where: { $0 == newController })) != nil))
         }
         
@@ -193,8 +193,8 @@ import UIKit
         try? tabsDestination?.presentDestination(destination: newDestination, in: .home)
         
         if let tabsDestination = try? XCTUnwrap(tabsDestination) {
-            XCTAssert(tabsDestination.childDestinations.contains(where: { $0.id == newDestination.id }))
-            XCTAssertEqual(newDestination.parentDestinationID, tabsDestination.id)
+            XCTAssert(tabsDestination.childDestinations().contains(where: { $0.id == newDestination.id }))
+            XCTAssertEqual(newDestination.parentDestinationID(), tabsDestination.id)
             // When presenting a tab in a different tab, that tab should become the active tab. In this test the original selected tab was ".palettes"
             XCTAssertEqual(tabsDestination.selectedTab.type, .home)
         }
@@ -278,7 +278,7 @@ import UIKit
                 
                 detailDestination?.currentController()?.performSystemNavigationBack()
                                 
-                XCTAssertEqual(tabBar.currentChildDestination?.id, listID, "Expected to find ColorsList destination, but found \(String(describing: tabBar.currentChildDestination?.description))")
+                XCTAssertEqual(tabBar.currentChildDestination()?.id, listID, "Expected to find ColorsList destination, but found \(String(describing: tabBar.currentChildDestination()?.description))")
                 
             } else {
                 XCTFail("Could not find list Destination")

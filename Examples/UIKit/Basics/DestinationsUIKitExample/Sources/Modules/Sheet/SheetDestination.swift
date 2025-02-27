@@ -10,7 +10,7 @@ import Foundation
 import Destinations
 
 final class SheetDestination: NavigatingControllerDestinationable, DestinationTypes {
-    
+
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = SheetViewController.UserInteractions
     typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
@@ -22,28 +22,18 @@ final class SheetDestination: NavigatingControllerDestinationable, DestinationTy
     
     public var controller: ControllerType?
     
-    public var parentDestinationID: UUID?
-    
-    public var destinationConfigurations: DestinationConfigurations?
-    var systemNavigationConfigurations: NavigationConfigurations?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
 
-    var interactors: [InteractorType : any Interactable] = [:]
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<SheetDestination>] = [:]
-
-
-    var childWasRemovedClosure: GroupChildRemovedClosure?
-    var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
-    
-    var childDestinations: [any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>] = []
-    var currentChildDestination: (any Destinationable<DestinationPresentation<DestinationType, AppContentType, TabType>>)?
 
     public var isSystemNavigating: Bool = false
     
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        internalState.parentDestinationID = parentDestination
+        internalState.destinationConfigurations = destinationConfigurations
+        internalState.systemNavigationConfigurations = navigationConfigurations
+    }
+    
+    func prepareForPresentation() {
     }
 }

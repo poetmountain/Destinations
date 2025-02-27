@@ -41,20 +41,7 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     enum InteractorType: InteractorTypeable {
         case colors
     }
-    
-//    enum ContentType: ContentTypeable {
-//        case color(model: ColorViewModel)
-//        case dynamicView(view: ContainerView<AnyView>)
-//        
-//        public var rawValue: String {
-//            switch self {
-//                case .color(_):
-//                    return "color"
-//                case .dynamicView(_):
-//                    return "dynamicView"
-//            }
-//        }
-//    }
+
     
     typealias ViewType = ColorDetailView
     typealias UserInteractionType = UserInteractions
@@ -65,27 +52,20 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     public let type: RouteDestinationType = .colorDetail
     
     public var view: ViewType?
-
-    public var parentDestinationID: UUID?
     
-    public var destinationConfigurations: DestinationConfigurations?
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    var interactors: [InteractorType : any Interactable] = [:]
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractions : any InteractorAssisting<ColorDetailDestination>] = [:]
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
 
     var items: [ColorViewModel] = []
 
     private(set) var listID: UUID = UUID()
 
-    public var isSystemNavigating: Bool = false
-
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
+    }
+    
+    func prepareForPresentation() {
     }
 
 }

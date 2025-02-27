@@ -165,7 +165,7 @@ public extension TabBarViewDestinationable {
        let currentTabDestination = rootDestination(for: tab)
         
         if shouldUpdateSelectedTab {
-            currentChildDestination = destination
+            groupInternalState.currentChildDestination = destination
             try updateSelectedTab(type: tab)
         }
         
@@ -190,7 +190,7 @@ public extension TabBarViewDestinationable {
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }), let destinationToReplace = childDestinations[safe: currentIndex] as? any ViewDestinationable, let tabToReplace = tab(destinationID: currentID) else {
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let destinationToReplace = groupInternalState.childDestinations[safe: currentIndex] as? any ViewDestinationable, let tabToReplace = tab(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -198,22 +198,22 @@ public extension TabBarViewDestinationable {
             return
         }
         
-        guard childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
+        guard groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false else {
             DestinationsSupport.logger.log("Destination of type \(newDestination.type) was already in childDestinations, could not replace child \(currentID).", category: .error)
             return
         }
 
         DestinationsSupport.logger.log("Replacing tab destination with \(newDestination.type)")
         
-        let shouldReplaceCurrentDestination = (currentChildDestination?.id == currentID)
+        let shouldReplaceCurrentDestination = (currentChildDestination()?.id == currentID)
         
-        childDestinations.insert(newDestination, at: currentIndex)
-        newDestination.parentDestinationID = id
+        groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
+        newDestination.setParentID(id: id)
         
         removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
         
         if shouldReplaceCurrentDestination {
-            currentChildDestination = newDestination
+            groupInternalState.currentChildDestination = newDestination
         }
         
         if let navDestination = newDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
@@ -225,7 +225,7 @@ public extension TabBarViewDestinationable {
     }
     
     func updateChildren() {
-        let children = childDestinations.compactMap { $0.id }
+        let children = groupInternalState.childDestinations.compactMap { $0.id }
         updateTabViews(destinationIDs: children, for: activeTabs)
         
     }
@@ -273,7 +273,7 @@ public extension TabBarViewDestinationable {
             if let destinationID {
                 self?.updateCurrentDestination(destinationID: destinationID)
             } else {
-                self?.currentChildDestination = destination
+                self?.groupInternalState.currentChildDestination = destination
             }
         }
         

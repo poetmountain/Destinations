@@ -389,7 +389,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 if let currentDestination, let currentController = currentDestination.currentController(), let destinationToPresent, let newController = destinationToPresent.currentController() {
                     currentController.attach(viewController: newController)
 
-                    destinationToPresent.parentDestinationID = currentDestination.id
+                    destinationToPresent.setParentID(id: currentDestination.id)
                     
                     completionClosure?(true)
                 } else {

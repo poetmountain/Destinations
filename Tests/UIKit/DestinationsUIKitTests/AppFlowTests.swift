@@ -188,7 +188,9 @@ import Destinations
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: detailColor), assistantType: .basic)
         let showInOtherTabAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .home), contentType: .color(model: modelToPass), assistantType: .basic)
 
-        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): colorSelection])
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        
         let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.UserInteractions.colorDetailButton(model: nil): showInOtherTabAction])
         let homeProvider = HomeProvider()
         let tabBarProvider = TestTabBarProvider()
@@ -402,7 +404,9 @@ import Destinations
 
         let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
 
-        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): replaceAction])
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): replaceAction], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        
         let colorDetailProvider = ColorDetailProvider()
         let homeProvider = HomeProvider()
         let tabBarProvider = TestTabBarProvider()
@@ -519,7 +523,7 @@ import Destinations
             XCTAssertEqual(secondaryColumnController?.navigationController?.children.count, 2)
             
             // the current child of the SplitViewDestination should now be the home Destination
-            XCTAssertEqual(splitView.currentChildDestination?.id, home?.id, "Expected currentChildDestination to be the previous Destination, but found \(String(describing: splitView.currentChildDestination?.type))")
+            XCTAssertEqual(splitView.currentChildDestination()?.id, home?.id, "Expected currentChildDestination to be the previous Destination, but found \(String(describing: splitView.currentChildDestination()?.type))")
         } else {
             XCTFail("Could not find split view in hierarchy")
         }
@@ -536,13 +540,12 @@ import Destinations
         let detailColor = ColorViewModel(colorID: UUID(), color: .red, name: "red")
 
         let startingType: RouteDestinationType = .colorDetail
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationController(type: .present), contentType: .color(model: detailColor), assistantType: .basic)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, contentType: .color(model: detailColor), assistantType: .basic)
 
-        let colorButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
+        let sheetButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
 
-        let systemNavigationData = testDestinations.systemNavigationConfigurations()
+        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.UserInteractions.colorDetailButton(model: nil): sheetButtonInteraction])
 
-        let colorDetailProvider = DestinationProvider<ControllerDestination<ColorDetailDestination.UserInteractions, ColorDetailViewController, PresentationConfiguration, InteractorType>, ColorDetailDestination.UserInteractions>(presentationsData: [ColorDetailDestination.UserInteractions.colorDetailButton(model: nil): colorButtonInteraction], systemNavigationData: systemNavigationData)
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .colorDetail: colorDetailProvider
         ]
@@ -561,17 +564,20 @@ import Destinations
             controller.handleDetailTap()
             wait(timeout: 0.7)
 
-            if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
+            if let presentedDetailDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
                 wait(timeout: 0.1)
                 
-                XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
+                XCTAssert(presentedDetailDestination.type == .colorDetail, "expected current type detail, but got \(presentedDetailDestination.type) instead")
      
-                if let newController = try? XCTUnwrap(newDestination.currentController() as? ColorDetailViewController, "couldn't find colorDetail") {
+                if let newController = try? XCTUnwrap(presentedDetailDestination.currentController() as? ColorDetailViewController, "couldn't find colorDetail") {
                     newController.prepareForFirstAppearance()
                     wait(timeout: 0.3)
                     
                     XCTAssert(newController.colorModel == modelToPass, "expected \(modelToPass), got \(String(describing: newController.colorModel))")
+                    
+                    // verify that the new controller is being presented in a sheet
                     XCTAssert((newController.presentingViewController != nil || newController.isBeingPresented), "Expected VC to be presented in a sheet, newController parent \(String(describing: newController.parent))")
+
                 }
                 
                 
@@ -600,7 +606,7 @@ extension AppFlowTests {
             if let modelToTap = modelToTap, let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
                 XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
                 
-                XCTAssert(newDestination.parentDestinationID == currentDestination.id, "expected parent UUID to equal Colors list, got \(String(describing: newDestination.parentDestinationID))")
+                XCTAssert(newDestination.parentDestinationID() == currentDestination.id, "expected parent UUID to equal Colors list, got \(String(describing: newDestination.parentDestinationID()))")
                 
                 if let newController = newDestination.currentController() as? ColorDetailViewController {
                     XCTAssert(newController.colorModel == modelToTap, "expected same color model, got \(String(describing: newController.colorModel))")

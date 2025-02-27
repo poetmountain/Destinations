@@ -31,11 +31,11 @@ public extension NavigatingViewDestinationable {
         DestinationsSupport.logger.log("Adding child \(childDestination.type) to NavigationStack \(childDestination.id)", level: .verbose)
         
         navigator()?.addPathElement(item: childDestination.id, shouldAnimate: shouldAnimate)
-        childDestinations.append(childDestination)
+        groupInternalState.childDestinations.append(childDestination)
         // shouldSetDestinationAsCurrent is ignored for NavigationStacks because a new Destination should always become the current one
-        currentChildDestination = childDestination
+        groupInternalState.currentChildDestination = childDestination
         
-        childDestination.parentDestinationID = id
+        childDestination.setParentID(id: id)
         
     }
     
@@ -55,7 +55,7 @@ public extension NavigatingViewDestinationable {
     }
     
     func removeChild(identifier: UUID) {
-        guard let childIndex = childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = childDestinations[safe: childIndex] else { return }
+        guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
         
         DestinationsSupport.logger.log("Removing child \(childDestination.id) : \(childDestination.type)", level: .verbose)
         
@@ -63,26 +63,29 @@ public extension NavigatingViewDestinationable {
             groupedChild.removeAllChildren()
         }
         
-        if let currentChildDestination = self.currentChildDestination, childDestination.id == currentChildDestination.id {
-            self.currentChildDestination = nil
+        if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
+            groupInternalState.currentChildDestination = nil
         }
         
         childDestination.cleanupResources()
         childDestination.removeAssociatedInterface()
         
-        childDestinations.remove(at: childIndex)
+        groupInternalState.childDestinations.remove(at: childIndex)
 
         // remove presentationID from navigator so that it doesn't create a false positive disappearance
         navigator()?.currentPresentationID = nil
         
-        childWasRemovedClosure?(identifier)
+        groupInternalState.childWasRemovedClosure?(identifier)
         
         // find and set new active child destination
-        if let newCurrentID = navigator()?.navigationPath.last, let newCurrent = childDestinations.first(where: { $0.id == newCurrentID }) {
-            currentChildDestination = newCurrent
+        if let newCurrentID = navigator()?.navigationPath.last, let newCurrent = groupInternalState.childDestinations.first(where: { $0.id == newCurrentID }) {
+            groupInternalState.currentChildDestination = newCurrent
         }
         
-        currentDestinationChangedClosure?(currentChildDestination?.id)
+        groupInternalState.currentDestinationChangedClosure?(groupInternalState.currentChildDestination?.id)
     }
     
+    // default implementation
+    func prepareForPresentation() {
+    }
 }

@@ -12,14 +12,20 @@ import Destinations
 
 public enum AppContentType: ContentTypeable {
     case color(model: ColorViewModel)
+    case colors(models: [ColorViewModel])
     case dynamicView(view: ContainerView<AnyView>)
+    case counter(count: Int)
     
     public var rawValue: String {
         switch self {
-            case .color(_):
+            case .color:
                 return "color"
+            case .colors:
+                return "colors"
             case .dynamicView(_):
                 return "dynamicView"
+            case .counter:
+                return "counter"
         }
     }
 }

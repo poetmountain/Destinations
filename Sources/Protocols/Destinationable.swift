@@ -45,36 +45,15 @@ import Foundation
     /// A type of ``AppDestinationConfigurations`` which handles system navigation events.
     typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>
     
+
     /// The unique identifier for this Destination.
     var id: UUID { get }
 
     /// This enum value conforming to ``RoutableDestinations`` represents a specific Destination type.
     var type: DestinationType { get }
     
-    /// The identifier of this object's parent Destination.
-    var parentDestinationID: UUID? { get set }
-    
-    /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    var destinationConfigurations: DestinationConfigurations? { get set }
-    
-    /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
-    var systemNavigationConfigurations: NavigationConfigurations? { get set }
-
-    /// A Boolean that denotes whether the UI is currently in a navigation transition.
-    var isSystemNavigating: Bool { get set }
-
-    /// A dictionary of interactors, with the associated keys being their interactor type.
-    var interactors: [InteractorType: any Interactable] { get set }
-    
-    /// A dictionary of ``InterfaceAction`` objects, with the key being the associated user interaction type.
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] { get set }
-    
-    /// A dictionary of system navigation interface actions which are run when certain system navigation events occur, with the key being the associated system navigation type.
-    var systemNavigationActions: [SystemNavigationType: InterfaceAction<SystemNavigationType, DestinationType, ContentType>] { get set }
-    
-    /// A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated user interaction type.
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<Self>] { get set }
-
+    /// State object for handling functionality for the Destinations ecosystem.
+    var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> { get set }
     
     /// Performs the interface action associated with the specified user interaction type.
     /// - Parameter interactionType: The user interaction type whose action should be run.
@@ -149,7 +128,7 @@ import Foundation
     /// - Parameters:
     ///   - interactor: The interactor to add.
     ///   - type: Specifies the type of interactor, which will be used to look up the interactor.
-    func setupInteractor<Request: InteractorRequestConfiguring, ResultData: Hashable>(interactor: any Interactable<Request, ResultData>, for type: InteractorType)
+    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any Interactable<Request>, for type: InteractorType)
     
     /// Returns an interactor for the specified type.
     /// - Parameter type: The type of interactor.
@@ -176,21 +155,29 @@ import Foundation
     /// - Parameters:
     ///   - assistant: The interactor assistant to add.
     ///   - interactionType: The type of user interaction which this assistant should handle requests for.
-    func assignInteractorAssistant(assistant: any InteractorAssisting<Self>, for interactionType: UserInteractionType)
+    func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for interactionType: UserInteractionType)
 
+    /// This method is called automatically when a Destination is being built and configured for the first time. Put any setup actions or datasource retrieval calls here.
+    func prepareForPresentation()
+    
     /// Performs a request with the specified interactor.
     /// - Parameters:
     ///   - interactor: The type of interactor that should receive the request.
     ///   - request: A model that defines the request.
-    ///   - completionClosure: A closure to be run with the interactor request is completed.
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request, completionClosure: DatasourceResponseClosure<[Request.ResultData]>?)
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request)
     
     /// Performs a request with the specified interactor asynchronously.
     /// - Parameters:
     ///   - interactor: The type of interactor that should receive the request.
     ///   - request: A model that defines the request.
     /// - Returns: A `Result` containing an array of items.
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<[Request.ResultData], Error>
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
+    
+    /// Handles the result of an async interactor request.
+    /// - Parameters:
+    ///    - result: The Result object containing data returned from the request.
+    ///    - request: The original request used in this interactor operation.
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async 
     
     /// Performs a system navigation action, executing the closure associated with the provided system navigation type.
     /// - Parameters:
@@ -198,11 +185,27 @@ import Foundation
     ///   - options: An optional options object for use with the closure.
     func performSystemNavigationAction<T>(navigationType: SystemNavigationType, options: T?)
     
+    /// Sets the parent Destination identifier of this child.
+    /// - Parameter id: The identifier of the parent Destination.
+    func setParentID(id: UUID)
+    
+    /// Updates the `isSystemNavigating` property of the internal state.
+    /// - Parameter isNavigating: The new value.
+    func updateIsSystemNavigating(isNavigating: Bool)
+    
+    /// Returns the current value of the `isSystemNavigating` property of the internal state.
+    /// - Returns: The current value.
+    func isSystemNavigating() -> Bool
+    
     /// When this method is called, the Destination is about to be removed from the Flow. Any resource references should be removed and in-progress interactor tasks should be stopped.
     func cleanupResources()
     
     /// Removes the associated interface from this Destination. This method is called automatically when a Destination is removed in order to avoid a retain cycle.
     func removeAssociatedInterface()
+    
+    /// Returns the identifier of this Destination's parent, if one exists.
+    /// - Returns: The parent identifier.
+    func parentDestinationID() -> UUID?
     
     /// Provides a way to catch and log Destinations errors from throwable code.
     /// - Parameters:
@@ -218,24 +221,32 @@ import Foundation
 // default function implementations
 public extension Destinationable {
     
+    internal func setupInternalState() {
+        internalState = DestinationInternalState()
+    }
+    
+    func setParentID(id: UUID) {
+        internalState.parentDestinationID = id
+    }
+    
     func cleanupResources() {
     }
     
     func presentation(presentationID: UUID) -> (PresentationConfiguration)? {
-       return destinationConfigurations?.configurations.values.first { $0.id == presentationID }
+        return internalState.destinationConfigurations?.configurations.values.first { $0.id == presentationID }
     }
     
     func systemNavigationPresentation(presentationID: UUID) -> (PresentationConfiguration)? {
-       return systemNavigationConfigurations?.configurations.values.first { $0.id == presentationID }
+        return internalState.systemNavigationConfigurations?.configurations.values.first { $0.id == presentationID }
     }
     
     func systemNavigationPresentation(for navigationType: SystemNavigationType) -> (PresentationConfiguration)? {
-        return systemNavigationConfigurations?.configurations[navigationType]
+        return internalState.systemNavigationConfigurations?.configurations[navigationType]
     }
     
     func presentation(for interactionType: UserInteractionType) -> (PresentationConfiguration)? {
         do {
-            return try destinationConfigurations?.configuration(for: interactionType)
+            return try internalState.destinationConfigurations?.configuration(for: interactionType)
         } catch {
             return nil
         }
@@ -244,24 +255,24 @@ public extension Destinationable {
     func configureInteractor(_ interactor: any Interactable, type: InteractorType) {}
     
     func updatePresentation(presentation: PresentationConfiguration) {
-        guard var destinationConfigurations else { return }
+        guard var destinationConfigurations = internalState.destinationConfigurations else { return }
 
         for (type, configuration) in destinationConfigurations.configurations {
             
             if configuration.id == presentation.id {
-                self.destinationConfigurations?.configurations[type] = presentation
+                internalState.destinationConfigurations?.configurations[type] = presentation
                 break
             }
         }
     }
     
     func updateSystemNavigationPresentation(presentation: PresentationConfiguration) {
-        guard var systemNavigationConfigurations else { return }
+        guard var systemNavigationConfigurations = internalState.systemNavigationConfigurations else { return }
 
         for (type, configuration) in systemNavigationConfigurations.configurations {
             
             if configuration.id == presentation.id {
-                self.systemNavigationConfigurations?.configurations[type] = presentation
+                internalState.systemNavigationConfigurations?.configurations[type] = presentation
                 break
             }
         }
@@ -270,7 +281,7 @@ public extension Destinationable {
     
     func buildInterfaceActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
 
-        guard let destinationConfigurations = destinationConfigurations else { return }
+        guard let destinationConfigurations = internalState.destinationConfigurations else { return }
 
         var containers: [InterfaceAction<UserInteractionType, DestinationType, PresentationConfiguration.ContentType>] = []
         for (type, configuration) in destinationConfigurations.configurations {
@@ -287,8 +298,8 @@ public extension Destinationable {
         var container = InterfaceAction<UserInteractionType, DestinationType, ContentType>(function: { [weak self] (type: UserInteractionType, data: InterfaceActionData<DestinationType, ContentType>) in
             guard let strongSelf = self else { return }
             
-            if var configuration = strongSelf.destinationConfigurations?.configuration(for: type) {
-                if let parentID = data.parentID ?? strongSelf.parentDestinationID {
+            if var configuration = strongSelf.internalState.destinationConfigurations?.configuration(for: type) {
+                if let parentID = data.parentID ?? strongSelf.internalState.parentDestinationID {
                     configuration.parentDestinationID = parentID
                 }
                 if let actionTargetID = data.actionTargetID {
@@ -302,7 +313,7 @@ public extension Destinationable {
                     configuration.contentType = model
                 }
                 
-                strongSelf.destinationConfigurations?.configurations[type] = configuration
+                strongSelf.internalState.destinationConfigurations?.configurations[type] = configuration
                 
                 presentationClosure(configuration)
             } else {
@@ -323,7 +334,7 @@ public extension Destinationable {
     func buildInteractorActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
 
         var containers: [InterfaceAction<UserInteractionType, DestinationType, PresentationConfiguration.ContentType>] = []
-        for (type, _) in interactorAssistants {
+        for (type, _) in internalState.interactorAssistants {
             let container = buildInteractorAction(presentationClosure: presentationClosure, interactionType: type)
             containers.append(container)
         }
@@ -337,15 +348,21 @@ public extension Destinationable {
         var container = InterfaceAction<UserInteractionType, DestinationType, ContentType>(function: { [weak self] (type: UserInteractionType, data: InterfaceActionData<DestinationType, ContentType>) in
             guard let strongSelf = self else { return }
             
-            if let assistant = strongSelf.interactorAssistants[interactionType] {
-                
+            if let assistant = strongSelf.internalState.interactorAssistants[interactionType] {
                 switch assistant.requestMethod {
                     case .async:
                         Task {
-                            await assistant.handleAsyncRequest(destination: strongSelf)
+                            if let asyncAssistant = assistant as? any AsyncInteractorAssisting<InteractorType, ContentType> {
+                                await asyncAssistant.handleAsyncRequest(destination: strongSelf, content: data.contentType)
+                                
+                            } else {
+                                let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                                let message = String(format: template, type.rawValue)
+                                strongSelf.logError(error: DestinationsError.missingInterfaceActionAssistant(message: message))
+                            }
                         }
                     case .sync:
-                        assistant.handleRequest(destination: strongSelf)
+                        assistant.handleRequest(destination: strongSelf, content: data.contentType)
                 }
                 
                 
@@ -365,7 +382,7 @@ public extension Destinationable {
 
     func buildSystemNavigationActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
 
-        guard let systemNavigationConfigurations else { return }
+        guard let systemNavigationConfigurations = internalState.systemNavigationConfigurations else { return }
 
         var containers: [InterfaceAction<SystemNavigationType, DestinationType, PresentationConfiguration.ContentType>] = []
         for (type, configuration) in systemNavigationConfigurations.configurations {
@@ -384,9 +401,9 @@ public extension Destinationable {
             guard let strongSelf = self else { return }
             
 
-            if var configuration = strongSelf.systemNavigationConfigurations?.configuration(for: type) {
+            if var configuration = strongSelf.internalState.systemNavigationConfigurations?.configuration(for: type) {
 
-                if let parentID = data.parentID ?? strongSelf.parentDestinationID {
+                if let parentID = data.parentID ?? strongSelf.internalState.parentDestinationID {
                     configuration.parentDestinationID = parentID
                 }
 
@@ -401,7 +418,7 @@ public extension Destinationable {
                     configuration.contentType = model
                 }
                 
-                strongSelf.systemNavigationConfigurations?.configurations[type] = configuration
+                strongSelf.internalState.systemNavigationConfigurations?.configurations[type] = configuration
                 
                 presentationClosure(configuration)
             } else {
@@ -422,14 +439,14 @@ public extension Destinationable {
 
     func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
         
-        guard var interfaceAction = interfaceActions[interactionType] else {
+        guard var interfaceAction = internalState.interfaceActions[interactionType] else {
             let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
             let message = String(format: template, interactionType.rawValue, type.rawValue)
             
             throw DestinationsError.missingInterfaceAction(message: message)
         }
         
-        if let presentation = destinationConfigurations?.configuration(for: interactionType) {
+        if let presentation = internalState.destinationConfigurations?.configuration(for: interactionType) {
             
             let assistant: (any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType>)
             
@@ -451,19 +468,20 @@ public extension Destinationable {
             
         } else {
             // if no presentation was found, this is probably an action for an interactor
+            interfaceAction.data.contentType = content
             interfaceAction()
         }
     }
     
     func interactor(for type: InteractorType) -> (any Interactable)? {
-        return interactors[type]
+        return internalState.interactors[type]
     }
     
     func addInterfaceAction(action: InterfaceAction<UserInteractionType, DestinationType, ContentType>) throws {
         guard let type = action.userInteractionType else { return }
         
-        if interfaceActions.keys.firstIndex(of: type) == nil {
-            interfaceActions[type] = action
+        if internalState.interfaceActions.keys.firstIndex(of: type) == nil {
+            internalState.interfaceActions[type] = action
             
         } else {
             let template = DestinationsSupport.errorMessage(for: .duplicateUserInteractionTypeUsed(message: ""))
@@ -477,17 +495,17 @@ public extension Destinationable {
     func addSystemNavigationAction(action: InterfaceAction<SystemNavigationType, DestinationType, ContentType>) {
         
         if let type = action.userInteractionType {
-            systemNavigationActions[type] = action
+            internalState.systemNavigationActions[type] = action
         }
     }
     
-    func assignInteractorAssistant(assistant: any InteractorAssisting<Self>, for interactionType: UserInteractionType) {
-        interactorAssistants[interactionType] = assistant
+    func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for interactionType: UserInteractionType) {
+        internalState.interactorAssistants[interactionType] = assistant
     }
     
     func performSystemNavigationAction<T>(navigationType: SystemNavigationType, options: T?) {
         
-        if var closure = systemNavigationActions[navigationType] {
+        if var closure = internalState.systemNavigationActions[navigationType] {
             
             switch navigationType {
                 case .navigateBackInStack:
@@ -514,16 +532,16 @@ public extension Destinationable {
 
             }
             
-            isSystemNavigating = true
+            internalState.isSystemNavigating = true
 
             closure()
         }
     }
     
     
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<[Request.ResultData], Error> {
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error> {
         
-        guard let interactor = interactors[interactor] as? any AsyncInteractable<Request, Request.ResultData> else {
+        guard let interactor = internalState.interactors[interactor] as? any AsyncInteractable<Request, Request.ResultData> else {
             let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
             
@@ -535,19 +553,36 @@ public extension Destinationable {
     }
     
     
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request, completionClosure: DatasourceResponseClosure<[Request.ResultData]>?) {
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) {
         
-        guard let interactor = interactors[interactor] as? any Interactable<Request, Request.ResultData> else {
+        guard let interactor = internalState.interactors[interactor] as? any SyncInteractable<Request> else {
             let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
+            DestinationsSupport.logger.log(message)
             
-            completionClosure?(.failure(DestinationsError.interactorNotFound(message: message)))
             return
         }
         
-        Task {
-            await interactor.perform(request: request, completionClosure: completionClosure)
-        }
+        interactor.perform(request: request)
+
+    }
+    
+    func isSystemNavigating() -> Bool {
+        return internalState.isSystemNavigating
+    }
+    
+    func updateIsSystemNavigating(isNavigating: Bool) {
+        internalState.isSystemNavigating = isNavigating
+    }
+    
+    func parentDestinationID() -> UUID? {
+        return internalState.parentDestinationID
+    }
+    
+    
+    // default implementation
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+        DestinationsSupport.logger.log("Calling default handleInteractorResult method implementation for \(request) because one was not found on Destination of type \(self.type).", category: .error)
     }
     
     /// A description of this object.

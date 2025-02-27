@@ -35,8 +35,10 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
         
     public var controller: ControllerType?
     
-    public var parentDestinationID: UUID?
-                
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+              
+                    
     public var destinationIDsForTabs: [TabType : UUID] = [:]
     
     public var activeTabs: [TabModel<TabType>] = []
@@ -48,26 +50,11 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
         }
     }
     
-    public var childDestinations: [any Destinationable<PresentationConfiguration>] = []
-    public var currentChildDestination: (any Destinationable<PresentationConfiguration>)?
-    
-    public var systemNavigationConfigurations: NavigationConfigurations?
-    
-    public var interactors: [InteractorType : any Interactable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<TabBarControllerDestination>] = [:]
-
     
     public var navControllersForTabs: [TabType : UINavigationController] = [:]
 
-    public var destinationConfigurations: DestinationConfigurations?
-
-    public var childWasRemovedClosure: GroupChildRemovedClosure?
-    public var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure?
     public var selectedTabUpdatedClosure: TabBarControllerSelectedTabUpdatedClosure<TabType>?
 
-    public var isSystemNavigating: Bool = false
     
     
     /// The initializer.
@@ -81,20 +68,21 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
     ///   - parentDestinationID: The identifier of the parent Destination.
     public init?(type: DestinationType, tabDestinations: [any ControllerDestinationable<PresentationConfiguration>], tabTypes: [TabType], selectedTab: TabType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
         self.type = type
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
-        self.parentDestinationID = parentDestinationID
-        self.currentChildDestination = tabDestinations.first
-        
+ 
         var tabModels: [TabModel<TabType>] = []
         var selectedModel: TabModel<TabType>?
+        var selectedIndex: Int?
+        
+        for tabDestination in tabDestinations {
+            tabDestination.setParentID(id: id)
+        }
         
         for (index, type) in tabTypes.enumerated() {
             let model = TabModel(type: type)
             tabModels.append(model)
             if type == selectedTab {
                 selectedModel = model
-                self.currentChildDestination = tabDestinations[index]
+                selectedIndex = index
             }
         }
         self.activeTabs = tabModels
@@ -105,6 +93,15 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
             DestinationsSupport.logger.log("The specified selectedTab type was not found in the supplied tabs array. Initialization of TabViewDestination failed.", category: .error)
             return nil
         }
+        
+        if let selectedIndex {
+            groupInternalState.currentChildDestination = tabDestinations[selectedIndex]
+        }
+        
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestinationID
+        self.groupInternalState.currentChildDestination = tabDestinations.first
         
         updateTabControllers(controllers: tabDestinations.map { $0.id }, for: tabModels)
         
@@ -119,6 +116,7 @@ public final class TabBarControllerDestination<PresentationConfiguration: Destin
         }
     }
     
-
+    public func prepareForPresentation() {
+    }
 
 }

@@ -42,19 +42,21 @@ import Foundation
 ///    await handleColorsResult(result: result)
 /// }
 ///```
-public protocol Interactable<Request, ResultData> {
+public protocol Interactable<Request>: AnyObject {
     
+
     /// A configuration model which defines an interactor request.
     associatedtype Request: InteractorRequestConfiguring
     
     /// The type of data that is returned from a datasource.
-    associatedtype ResultData: Hashable
+    associatedtype ResultData: ContentTypeable
     
+    associatedtype ActionType: InteractorRequestActionTypeable
     
-    /// Requests the interactor to perform an operation.
-    /// - Parameters:
-    ///   - request: A configuration model which defines the request.
-    ///   - completionClosure: A closure to run when the operation is complete.
-    func perform(request: Request, completionClosure: DatasourceResponseClosure<[ResultData]>?)
+    /// A content model type which this interactor returns.
+    associatedtype Item: Hashable
 
 }
+
+/// Generic closure to handle data source responses.
+public typealias InteractorResponseClosure<Request: InteractorRequestConfiguring> = (_ result: Result<Request.ResultData, Error>, _ request: Request) -> Void

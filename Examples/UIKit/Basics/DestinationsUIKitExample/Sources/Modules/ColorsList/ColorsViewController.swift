@@ -142,15 +142,8 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
         }
     }
     
-    
-    func handleColorsResult(result: Result<[ColorsRequest.ResultData], Error>) async {
-        switch result {
-            case .success(let items):
-                self.buildNewCollection(with: items)
-                
-            case .failure(let error):
-                destination().logError(error: error)
-        }
+    func updateItems(items: [ColorsRequest.Item]) {
+        self.buildNewCollection(with: items)
     }
     
     

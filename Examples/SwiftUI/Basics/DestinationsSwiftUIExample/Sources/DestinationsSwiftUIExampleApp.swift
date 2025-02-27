@@ -42,7 +42,13 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
         let options = ViewSheetPresentationOptions(presentationMode: .sheet)
         let sheetPresent = PresentationConfiguration(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
 
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate)])
+        
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        
+        let colorsListMoreButtonAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(ColorsInteractorAssistant(actionType: .paginate)))
+        
+  
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
         let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton: sheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])
         let dynamicProvider = DynamicProvider()

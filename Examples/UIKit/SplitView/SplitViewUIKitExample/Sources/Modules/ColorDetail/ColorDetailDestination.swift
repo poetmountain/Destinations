@@ -50,24 +50,15 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     
     public var view: ViewType?
     
-    public var parentDestinationID: UUID?
+    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
     
-    public var destinationConfigurations: DestinationConfigurations?
-    var systemNavigationConfigurations: NavigationConfigurations?
 
-    var interactors: [InteractorType : any Interactable] = [:]
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
-    var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<ColorDetailDestination>] = [:]
-
-    
-    public var isSystemNavigating: Bool = false
-    
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
-        self.parentDestinationID = parentDestination
-        self.destinationConfigurations = destinationConfigurations
-        self.systemNavigationConfigurations = navigationConfigurations
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
 
-
+    func prepareForPresentation() {
+    }
 }

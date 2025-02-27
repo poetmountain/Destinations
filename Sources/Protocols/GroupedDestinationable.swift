@@ -36,21 +36,8 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// The unique identifier for this Destination.
     var id: UUID { get }
 
-    /// An array of the child Destinations this object manages.
-    var childDestinations: [any Destinationable<PresentationConfiguration>] { get set }
-    
-    /// The child Destination which currently has focus within this Destination's children.
-    var currentChildDestination: (any Destinationable<PresentationConfiguration>)? { get set }
-    
-    /// Determines whether this Destination supports the `shouldSetDestinationAsCurrent` parameter of the `addChild` method. If this Destination should ignore requests to not make added children the current Destination, this property should be set to `false`.
-    var supportsIgnoringCurrentDestinationStatus: Bool { get }
-    
-    /// A closure run when a child Destination is removed from this Group.
-    var childWasRemovedClosure: GroupChildRemovedClosure? { get set }
-    
-    /// A closure run when the current child Destination has changed.
-    var currentDestinationChangedClosure: GroupCurrentDestinationChangedClosure? { get set }
-    
+    /// State object for handling functionality for the Destinations ecosystem.
+    var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> { get set }
     
     /// Assigns a closure to be run when a child Destination is removed from this Group. This closure should be used by an associated Destination to respond to child removals that happened internally.
     /// - Parameter closure: A closure.
@@ -98,27 +85,37 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     
     /// Provides a method for requesting the children of a Destination group be updated in some way.
     func updateChildren()
-    
 
+    /// Returns the child Destinations of this group.
+    /// - Returns: The Destinations belonging to this gorup.
+    func childDestinations() -> [any Destinationable<PresentationConfiguration>]
+
+    /// Returns the currently active child Destination.
+    /// - Returns: The current child Destination.
+    func currentChildDestination() -> (any Destinationable<PresentationConfiguration>)?
+    
+    /// Determines whether this Destination supports the `shouldSetDestinationAsCurrent` parameter of the `addChild` method. If this Destination should ignore requests to not make added children the current Destination, this property should be set to `false`.
+    /// - Returns: Returns whether the current Destination status should be ignored.
+    func supportsIgnoringCurrentDestinationStatus() -> Bool
 }
 
 public extension GroupedDestinationable {
     
     func assignChildRemovedClosure(closure: @escaping GroupChildRemovedClosure) {
-        childWasRemovedClosure = closure
+        groupInternalState.childWasRemovedClosure = closure
     }
     
     func assignCurrentDestinationChangedClosure(closure: @escaping GroupCurrentDestinationChangedClosure) {
-        currentDestinationChangedClosure = closure
+        groupInternalState.currentDestinationChangedClosure = closure
     }
     
     func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
-        childDestinations.append(childDestination)
-        childDestination.parentDestinationID = id
+        groupInternalState.childDestinations.append(childDestination)
+        childDestination.setParentID(id: id)
     }
     
     func replaceCurrentDestination(with newDestination: any Destinationable<PresentationConfiguration>) {
-        if let currentChildDestination {
+        if let currentChildDestination = groupInternalState.currentChildDestination {
             replaceChild(currentID: currentChildDestination.id, with: newDestination)
         } else {
             addChild(childDestination: newDestination)
@@ -127,15 +124,15 @@ public extension GroupedDestinationable {
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let currentIndex = childDestinations.firstIndex(where: { $0.id == currentID }) else { return }
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }) else { return }
         
-        if childDestinations.contains(where: { $0.id == newDestination.id}) == false {
-            childDestinations.insert(newDestination, at: currentIndex)
-            newDestination.parentDestinationID = id
+        if groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false {
+            groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
+            newDestination.setParentID(id: id)
         }
         
-        if currentChildDestination?.id == currentID {
-            currentChildDestination = newDestination
+        if groupInternalState.currentChildDestination?.id == currentID {
+            groupInternalState.currentChildDestination = newDestination
         }
         
         removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
@@ -143,38 +140,50 @@ public extension GroupedDestinationable {
     }
     
     func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let childIndex = childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = childDestinations[safe: childIndex] else { return }
+        guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
 
-        if let currentChildDestination, childDestination.id == currentChildDestination.id {
+        if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
             DestinationsSupport.logger.log("Removing current child \(identifier) from \(Self.self)", level: .verbose)
-            self.currentChildDestination = nil
+            groupInternalState.currentChildDestination = nil
         }
         
         DestinationsSupport.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
 
-        childDestinations.remove(at: childIndex)
+        groupInternalState.childDestinations.remove(at: childIndex)
     
 
-        childWasRemovedClosure?(identifier)
+        groupInternalState.childWasRemovedClosure?(identifier)
         
         removeDestinationFromFlowClosure?(identifier)
 
     }
     
     func removeAllChildren() {
-        for childDestination in self.childDestinations {
+        for childDestination in groupInternalState.childDestinations {
             removeChild(identifier: childDestination.id)
         }
     }
     
     func childForIdentifier(destinationIdentifier: UUID) -> (any Destinationable<PresentationConfiguration>)? {
-        return childDestinations.first(where: { $0.id == destinationIdentifier })
+        return groupInternalState.childDestinations.first(where: { $0.id == destinationIdentifier })
     }
     
     func updateCurrentDestination(destinationID: UUID) {
-        if let childDestination = childDestinations.first(where: { $0.id == destinationID }) {
-            currentChildDestination = childDestination
+        if let childDestination = groupInternalState.childDestinations.first(where: { $0.id == destinationID }) {
+            groupInternalState.currentChildDestination = childDestination
         }
+    }
+    
+    func childDestinations() -> [any Destinationable<PresentationConfiguration>] {
+        return groupInternalState.childDestinations
+    }
+    
+    func currentChildDestination() -> (any Destinationable<PresentationConfiguration>)? {
+        return groupInternalState.currentChildDestination
+    }
+    
+    func supportsIgnoringCurrentDestinationStatus() -> Bool {
+        return groupInternalState.supportsIgnoringCurrentDestinationStatus
     }
     
     func updateChildren() {}
