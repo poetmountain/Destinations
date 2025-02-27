@@ -174,8 +174,6 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
 final class TestColorsDatasource: Datasourceable {
 
     typealias Request = ColorsRequest
-    typealias ActionType = Request.ActionType
-    typealias ResultData = Request.ResultData
     typealias Item = Request.Item
 
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?

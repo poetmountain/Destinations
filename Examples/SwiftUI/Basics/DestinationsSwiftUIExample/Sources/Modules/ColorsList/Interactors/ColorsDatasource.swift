@@ -45,8 +45,6 @@ struct ColorsRequest: InteractorRequestConfiguring {
 final class ColorsDatasource: Datasourceable {
     
     typealias Request = ColorsRequest
-    typealias ActionType = Request.ActionType
-    typealias ResultData = Request.ResultData
     typealias Item = Request.Item
 
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
@@ -55,7 +53,7 @@ final class ColorsDatasource: Datasourceable {
 
     var itemsProvider: Published<[Request.Item]>.Publisher { $items }
     
-    var requestResponses: [ActionType: InteractorResponseClosure<Request>] = [:]
+    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
 
     let presenter: ColorsPresenting
     

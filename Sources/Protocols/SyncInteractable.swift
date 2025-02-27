@@ -9,39 +9,39 @@
 
 import Foundation
 
-/// This protocol represents interactors that exist in a non-async environment.
+/// This protocol represents Interactors that handle requests using a synchronous context, typically providing results for requests via a ``InteractorResponseClosure``.
 public protocol SyncInteractable<Request>: Interactable {
     
-    /// A dictionary of interactor request responses, whose keys are the interactor action type they are associated with.
-    var requestResponses: [ActionType: InteractorResponseClosure<Request>] { get set }
+    /// A dictionary of Interactor request responses, whose keys are the Interactor action type they are associated with.
+    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] { get set }
 
-    /// Requests the interactor to perform an operation.
+    /// Requests the Interactor to perform an operation.
     /// - Parameters:
     ///   - request: A configuration model which defines the request.
     func perform(request: Request)
     
-    /// Assigns a response closure for an interactor action type, which is called after the request has completed.
+    /// Assigns a response closure for an Interactor action type, which is called after the request has completed.
     /// - Parameters:
     ///   - response: The response closure to be called.
-    ///   - action: The interactor action type to be associated with this response.
-    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: ActionType)
+    ///   - action: The Interactor action type to be associated with this response.
+    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: Request.ActionType)
     
-    /// Returns a response closure for the specified interactor action.
+    /// Returns a response closure for the specified Interactor action.
     /// - Parameter action: The interactor action to find a response for.
     /// - Returns: The response closure, if one was found.
-    func responseForAction(action: ActionType) -> InteractorResponseClosure<Request>?
+    func responseForAction(action: Request.ActionType) -> InteractorResponseClosure<Request>?
     
-    /// This method can be called to prepare the interactor for requests. Typically you might want to call this from ``Destinationable``'s `configureInteractor()` method.
+    /// This method can be called to prepare the Interactor for requests. Typically you might want to call this from ``Destinationable``'s `configureInteractor()` method.
     func prepareForRequests()
 }
 
 
 public extension SyncInteractable {
-    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: ActionType) {
+    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: Request.ActionType) {
         self.requestResponses[action] = response
     }
     
-    func responseForAction(action: ActionType) -> InteractorResponseClosure<Request>? {
+    func responseForAction(action: Request.ActionType) -> InteractorResponseClosure<Request>? {
         return self.requestResponses[action]
     }
     

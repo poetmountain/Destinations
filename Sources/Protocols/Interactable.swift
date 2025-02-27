@@ -9,7 +9,9 @@
 
 import Foundation
 
-/// This protocol represents an Interactor object. Interactors provide an interface to perform some business logic, often acting as a datasource by interfacing with an API, handling system APIs, or some other self-contained work.
+/// This is an abstract protocol representing an Interactor object. Please see the important notice below for choosing the correct protocol for your Interactors.
+///
+/// Interactors provide an interface to perform some business logic, often acting as a datasource by interfacing with an API, handling system APIs, or some other self-contained work.
 ///
 ///  The concept of Interactors comes from [Clean Swift](https://clean-swift.com), used in its architecture as a way to move logic and datasource management out of view controllers. In Destinations, the `Interactable` protocol represents Interactor objects which provide an interface to perform some logic or data request, typically by interfacing with an backend API, handling system APIs, or some other self-contained work. `Datasourceable` inherits from this protocol and should be used for objects which specifically represent a datasource of some kind. There are also Actor-based async versions of these protocols available.
 ///
@@ -33,30 +35,15 @@ import Foundation
 /// }
 /// ```
 ///
-/// If it's necessary, you can always make a request to a Destination's Interactor directly:
-/// ```swift
-/// Task {
-///    let request = ColorsRequest(action: .paginate, numColorsToRetrieve: 5)
-///
-///    let result = await destination().performRequest(interactor: .colors, request: request)
-///    await handleColorsResult(result: result)
-/// }
-///```
+/// > Important: This is an abstract protocol and Interactor objects should not conform to this directly. For Interactors running in a synchronous context where closures will provide operation results, please conform to ``SyncInteractable``. If you need your Interactor to run as an Actor in an async context, please conform to ``AsyncInteractable``. And if your Interactor needs to represent a datasource for model retrieval, please use the ``Datasourceable`` or ``AsyncDatasourceable`` based on the context it should run in.
 public protocol Interactable<Request>: AnyObject {
     
-
     /// A configuration model which defines an interactor request.
     associatedtype Request: InteractorRequestConfiguring
     
-    /// The type of data that is returned from a datasource.
-    associatedtype ResultData: ContentTypeable
-    
-    associatedtype ActionType: InteractorRequestActionTypeable
-    
-    /// A content model type which this interactor returns.
-    associatedtype Item: Hashable
-
 }
 
-/// Generic closure to handle data source responses.
+/// A generic closure which provides a result to an Interactor request.
+///
+/// This closure is generally used with Interactors conforming to ``SyncInteractable``, which runs in a synchronous context. It provides both the result data and the original request object.
 public typealias InteractorResponseClosure<Request: InteractorRequestConfiguring> = (_ result: Result<Request.ResultData, Error>, _ request: Request) -> Void

@@ -9,11 +9,18 @@
 
 import Foundation
 
-/// This protocol represents a datasource Interactor actor. These datasources can be used to provide items to a Destination's view interface.
+/// This protocol represents a datasource Interactor actor. Datasources are designed to provide data models to a Destination based on requests, such as requesting objects from a server for display in a navigation stack. For more information on Interactors, please see the documentation for ``Interactable``.
+///
+/// > Note: If you need your datasource Interactor to run in a synchronous context, please conform it to the ``Datasourceable`` protocol instead.
 public protocol AsyncDatasourceable<Item>: Actor, AsyncInteractable {
     
-    /// Tells the provider to start retrieval of the items.
-    @available(*, deprecated, message: "This method is deprecated and will be removed in a future version. To start items retrieval for a datasource, please instead use Destinationable's prepareForPresentation() and call performInterfaceAction() with an interaction type which can initiate a retrieval request from the datasource. If you need to configure an interactor prior to making requests, please call the new prepareForRequests() method.")
+    /// This type represents the type of data model this datasource handles.
+    associatedtype Item: Hashable
+    
+    /// Tells the datasource to start retrieval of the items.
+    ///
+    /// > Note: This method is deprecated and will be removed in a future version. To start the retrieval of items for a datasource, please instead use ``Destinationable``'s `prepareForPresentation()` and call `performInterfaceAction()` with an interaction type which can initiate a retrieval request. If you need to configure an Interactor prior to making requests, please call the new `prepareForRequests()` method.
+    @available(*, deprecated, message: "This method is deprecated and will be removed in a future version. To start items retrieval for a datasource, please instead use Destinationable's prepareForPresentation() and call performInterfaceAction() with an interaction type which can initiate a retrieval request. If you need to configure an interactor prior to making requests, please call the new prepareForRequests() method.")
     func startItemsRetrieval() async
     
     /// An object which receives status updates about items retrieval progress.

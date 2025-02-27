@@ -124,20 +124,20 @@ import Foundation
     /// - Parameter presentation: The presentation configuration object to replace an existing one.
     func updateSystemNavigationPresentation(presentation: PresentationConfiguration)
     
-    /// Adds setup functionality for an interactor, which will add and register it with this Destination. An interactor handles specialized tasks and interactions with other APIs for the Destination.
+    /// Adds setup functionality for an Interactor, which will add and register it with this Destination. An Interactor handles specialized tasks and interactions with other APIs for the Destination.
     /// - Parameters:
-    ///   - interactor: The interactor to add.
-    ///   - type: Specifies the type of interactor, which will be used to look up the interactor.
+    ///   - interactor: The Interactor to add.
+    ///   - type: Specifies the enum type of this Interactor. This type can be used to look up the Interactor.
     func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any Interactable<Request>, for type: InteractorType)
     
-    /// Returns an interactor for the specified type.
-    /// - Parameter type: The type of interactor.
-    /// - Returns: An interactor, if one was found.
+    /// Returns an Interactor for the specified type.
+    /// - Parameter type: The enum type of an Interactor.
+    /// - Returns: An Interactor, if one was found.
     func interactor(for type: InteractorType) -> (any Interactable)?
     
-    /// Configures the interactor that is assigned to this Destination. You may use this method to make any initial requests to the interactor to set up the interface's initial state. This method is called automatically when an interactor is assigned to it.
+    /// Configures the Interactor that is assigned to this Destination. You may use this method to make any initial requests to the Interactor to set up the interface's initial state. This method is called automatically when an Interactor is assigned to it.
     /// - Parameters:
-    ///   - interactor: The interactor to configure requests for.
+    ///   - interactor: The Interactor to configure requests for.
     ///   - type: The type of interactor.
     func configureInteractor(_ interactor: any Interactable, type: InteractorType)
     
@@ -151,33 +151,33 @@ import Foundation
     ///   - closure: The closure to add.
     func addSystemNavigationAction(action: InterfaceAction<SystemNavigationType, DestinationType, ContentType>)
     
-    /// Assigns an interactor assistant to a specific type of user interaction.
+    /// Assigns an Interactor assistant to a specific type of user interaction.
     /// - Parameters:
-    ///   - assistant: The interactor assistant to add.
+    ///   - assistant: The Interactor assistant to add.
     ///   - interactionType: The type of user interaction which this assistant should handle requests for.
     func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for interactionType: UserInteractionType)
 
     /// This method is called automatically when a Destination is being built and configured for the first time. Put any setup actions or datasource retrieval calls here.
     func prepareForPresentation()
     
-    /// Performs a request with the specified interactor.
+    /// Performs a request with the specified Interactor.
     /// - Parameters:
-    ///   - interactor: The type of interactor that should receive the request.
+    ///   - interactor: The type of Interactor that should receive the request.
     ///   - request: A model that defines the request.
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request)
     
-    /// Performs a request with the specified interactor asynchronously.
+    /// Performs a request with the specified Interactor asynchronously.
     /// - Parameters:
-    ///   - interactor: The type of interactor that should receive the request.
+    ///   - interactor: The type of Interactor that should receive the request.
     ///   - request: A model that defines the request.
     /// - Returns: A `Result` containing an array of items.
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
     
-    /// Handles the result of an async interactor request.
+    /// Handles the result of an async Interactor request.
     /// - Parameters:
     ///    - result: The Result object containing data returned from the request.
-    ///    - request: The original request used in this interactor operation.
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async 
+    ///    - request: The original request used in this Interactor operation.
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
     
     /// Performs a system navigation action, executing the closure associated with the provided system navigation type.
     /// - Parameters:

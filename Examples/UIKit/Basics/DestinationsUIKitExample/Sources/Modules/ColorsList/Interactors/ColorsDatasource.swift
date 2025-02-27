@@ -39,8 +39,6 @@ struct ColorsRequest: InteractorRequestConfiguring {
 actor ColorsDatasource: AsyncDatasourceable {
     
     typealias Request = ColorsRequest
-    typealias ActionType = Request.ActionType
-    typealias ResultData = Request.ResultData
     typealias Item = Request.Item
             
     weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?

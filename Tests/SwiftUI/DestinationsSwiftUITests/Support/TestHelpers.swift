@@ -104,11 +104,8 @@ extension ColorsListView {
 final class TestInteractor: SyncInteractable {
 
     typealias Request = TestRequest
-    typealias ResultData = Request.ResultData
-    typealias ActionType = Request.ActionType
-    typealias Item = Request.Item
 
-    var requestResponses: [ActionType: InteractorResponseClosure<Request>] = [:]
+    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
 
     var counter: Int = 0
     
