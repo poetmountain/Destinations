@@ -26,13 +26,13 @@ import Destinations
         
         let homepath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
         ]
         
         let replaceColor = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(colorID: UUID(), color: .yellow, name: "yellow")), assistantType: .basic)
 
 
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
 
         let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
         let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .custom(ColorDetailActionAssistant()))
@@ -65,7 +65,7 @@ import Destinations
     }
     
     func systemNavigationConfigurations() -> [SystemNavigationType: PresentationConfiguration] {
-        let goBackAction = PresentationConfiguration(presentationType: .navigationController(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
+        let goBackAction = PresentationConfiguration(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
         let sheetDismiss = PresentationConfiguration(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)
 
         return [.navigateBackInStack: goBackAction, .dismissSheet: sheetDismiss]

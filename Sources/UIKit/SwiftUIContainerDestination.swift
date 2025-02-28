@@ -77,7 +77,7 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
     public func presentDestination(presentation: DestinationPresentation<DestinationType, ContentType, TabType>) {
         let copiedPresentation = presentation.copy()
         if case .splitView(column: let column) = presentation.presentationType {
-            copiedPresentation.presentationType = .navigationController(type: .present)
+            copiedPresentation.presentationType = .navigationStack(type: .present)
         }
         viewFlow?.presentDestination(configuration: copiedPresentation)
     }

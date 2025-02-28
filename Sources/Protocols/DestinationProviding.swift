@@ -70,7 +70,7 @@ public extension DestinationProviding {
         
         let configurations = AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>()
         
-        let backSelection = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationController(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
+        let backSelection = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
         let sheetDismiss = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)
         let systemNavigations: [SystemNavigationType: DestinationPresentation<DestinationType, ContentType, TabType>] = [.navigateBackInStack: backSelection, .dismissSheet: sheetDismiss]
         

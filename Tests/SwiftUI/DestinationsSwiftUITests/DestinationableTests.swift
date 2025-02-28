@@ -21,7 +21,7 @@ import Destinations
         let startingType: RouteDestinationType = .colorsList
         let startingPresentation = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
@@ -60,7 +60,7 @@ import Destinations
         let startingType: RouteDestinationType = .colorsList
         let startingPresentation = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
@@ -112,7 +112,7 @@ import Destinations
         let startingType: RouteDestinationType = .colorsList
         let startingPresentation = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
@@ -138,7 +138,7 @@ import Destinations
         let startingType: RouteDestinationType = .colorsList
         let startingPresentation = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
@@ -198,7 +198,7 @@ import Destinations
         let listView = ColorsListView(destination: destination)
         destination.assignAssociatedView(view: listView)
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let interactionType = ColorsListDestination.UserInteractions.color(model: nil)
         let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorSelection, interactionType: interactionType)
@@ -214,7 +214,7 @@ import Destinations
         let listView = ColorsListView(destination: destination)
         destination.assignAssociatedView(view: listView)
 
-        let backSelection = PresentationConfiguration(presentationType: .navigationController(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
+        let backSelection = PresentationConfiguration(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
         let systemAction = destination.buildSystemNavigationAction(presentationClosure: { _ in }, configuration: backSelection, navigationType: .navigateBackInStack)
         
         destination.addSystemNavigationAction(action: systemAction)

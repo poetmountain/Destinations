@@ -163,7 +163,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {
-            case .navigationController(type: .goBack):
+            case .navigationStack(type: .goBack):
                 closure = self.defaultNavigationBackCompletionClosure(configuration: configuration)
 
             case .sheet(type: .dismiss, options: _):

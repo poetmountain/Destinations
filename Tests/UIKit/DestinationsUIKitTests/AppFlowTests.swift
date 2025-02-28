@@ -106,7 +106,7 @@ import Destinations
         
         let startPath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorsList, presentationType: .navigationController(type: .present), assistantType: .basic)
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .navigationStack(type: .present), assistantType: .basic)
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController)
@@ -128,7 +128,7 @@ import Destinations
 
                 wait(timeout: 0.3)
                             
-                let goBackAction = PresentationConfiguration(presentationType: .navigationController(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
+                let goBackAction = PresentationConfiguration(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
                 goBackAction.currentDestinationID = detailDestination.id
                 appFlow.presentDestination(configuration: goBackAction)
 
@@ -181,7 +181,7 @@ import Destinations
         
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let detailColor = ColorViewModel(colorID: UUID(), color: .red, name: "red")
         let modelToPass = ColorViewModel(colorID: UUID(), color: .purple, name: "purple")
@@ -400,7 +400,7 @@ import Destinations
         
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
 

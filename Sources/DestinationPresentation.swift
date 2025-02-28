@@ -19,7 +19,7 @@ import SwiftUI
 ///
 ///  Destinations has several built-in presentation types which `DestinationPresentation` supports to enable native SwiftUI and UIKit UI navigation, as well as more complex or custom behavior.
 ///
-///  * `navigationController(type: NavigationPresentationType)` This presentation type will add and present a Destination in a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
+///  * `navigationStack(type: NavigationPresentationType)` This presentation type will add and present a Destination in a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
 ///  * `tabBar(tab: TabType)` This presentation type will present a Destination in the specified tab of a tab bar component, such as a `UITabBarController` or SwiftUI's `TabView`. If no `destinationType` is present in the `DestinationPresentation` model, the specified tab will simply be selected, becoming the active tab within the interface.
 ///  * `splitView(column: SplitViewColumn)` This presentation type will present a Destination in a column of a split view interface, such as a `UISplitViewController` or SwiftUI's `NavigationSplitView`.
 ///  * `addToCurrent` This presentation type adds a Destination as a child of the currently-presented Destination. Note that this type only works with UIKit and utilizes `UIViewController`'s `addChild` method.
@@ -78,7 +78,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     ///
     /// The Destinations protocols and classes which handle UINavigationControllers/NavigationStacks and UITabController/TabBars ignore this property. Custom classes which conform to one of these protocols should handle this property appropriately, though generally speaking if a Destination is added to a `GroupedDestinationable` object, it would be a good user experience for that Destination to become the focus. This may vary based on how your custom group's children are displayed to the user.
     ///
-    /// - Important: Setting this property to `false` can have side effects on the presentation of future Destinations within `GroupedDestinationable` objects whose placement depends on the location of a previous Destination. For example, if you present a Destination in a non-active child of a  `GroupedDestinationable` object with this property set to `false`, then present another Destination with a `presentationType` of `navigationController`, depending on how you handle this property the Destination may not be put into the same child of the group because the active child will be different than if this property had been `true`. To overcome this, you would need to use a `presentationType` on the second presentation that targets the same child directly.
+    /// - Important: Setting this property to `false` can have side effects on the presentation of future Destinations within `GroupedDestinationable` objects whose placement depends on the location of a previous Destination. For example, if you present a Destination in a non-active child of a  `GroupedDestinationable` object with this property set to `false`, then present another Destination with a `presentationType` of `navigationStack`, depending on how you handle this property the Destination may not be put into the same child of the group because the active child will be different than if this property had been `true`. To overcome this, you would need to use a `presentationType` on the second presentation that targets the same child directly.
     public var shouldSetDestinationAsCurrent: Bool = true
         
     /// A completion closure which should be run upon completion of the presentation of the Destination.
@@ -115,7 +115,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             self.shouldDelayCompletionActivation = shouldDelayCompletionActivation
         }
         
-        if case .navigationController(type: .goBack) = presentationType {
+        if case .navigationStack(type: .goBack) = presentationType {
             self.shouldDelayCompletionActivation = true
         }
     }
@@ -148,7 +148,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     @MainActor public func handlePresentation(destinationToPresent: (any ViewDestinationable<DestinationPresentation>)? = nil, currentDestination: (any ViewDestinationable<DestinationPresentation>)?, parentOfCurrentDestination: (any ViewDestinationable)?, removeDestinationClosure: RemoveDestinationFromFlowClosure?)  {
         
         switch presentationType {
-            case .navigationController(type: let navigationType):
+            case .navigationStack(type: let navigationType):
                 
                 var navigationDestination: (any NavigatingViewDestinationable<DestinationPresentation>)?
                 
@@ -294,7 +294,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     public func handlePresentation(destinationToPresent: (any ControllerDestinationable<DestinationPresentation>)? = nil, rootController: (any ControllerDestinationInterfacing)? = nil, currentDestination: (any ControllerDestinationable)? = nil, parentOfCurrentDestination: (any ControllerDestinationable)? = nil, removeDestinationClosure: RemoveDestinationFromFlowClosure? = nil) {
         
         switch presentationType {
-        case .navigationController(type: let navigationType):
+        case .navigationStack(type: let navigationType):
                 
             switch navigationType {
                 case .present:

@@ -54,14 +54,14 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         
         let startPath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: tabsType, presentationType: .navigationController(type: .present), assistantType: .basic)
+            PresentationConfiguration(destinationType: tabsType, presentationType: .navigationStack(type: .present), assistantType: .basic)
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
         
         let homepath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
         ]
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .custom(ChooseColorFromListActionAssistant()))

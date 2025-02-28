@@ -89,7 +89,7 @@ import Destinations
         let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
         appFlow.start()
         
-        let newPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let newPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         guard let newDestination = appFlow.buildDestination(for: newPresentation) else {
             XCTFail("New destination wasn't created")
             return
@@ -107,7 +107,7 @@ import Destinations
         let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
         appFlow.start()
         
-        let newPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let newPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         guard let newDestination = appFlow.buildDestination(for: newPresentation) else {
             XCTFail("New destination wasn't created")
             return
@@ -249,8 +249,8 @@ import Destinations
         appFlow.start()
         
         let path: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
         ]
         
         appFlow.presentDestinationPath(path: path)

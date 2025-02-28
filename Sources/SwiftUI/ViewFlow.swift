@@ -140,7 +140,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 mutableConfiguration.tabBarDestination = tabDestination
             }
             
-            if case DestinationPresentationType.navigationController(type: .present) = mutableConfiguration.presentationType {
+            if case DestinationPresentationType.navigationStack(type: .present) = mutableConfiguration.presentationType {
                 if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<PresentationConfiguration> {
                     parentOfCurrentDestination = navDestination
                 }
@@ -178,7 +178,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {
-            case .navigationController(type: .goBack):
+            case .navigationStack(type: .goBack):
                 closure = self.defaultNavigationBackCompletionClosure(configuration: configuration)
 
             case .sheet(type: .dismiss, options: _):

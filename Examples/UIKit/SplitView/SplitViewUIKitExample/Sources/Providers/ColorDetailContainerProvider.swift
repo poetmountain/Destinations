@@ -50,7 +50,7 @@ final class ColorDetailContainerProvider: ControllerDestinationProviding, AppDes
         
         let startingPath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .colorNav, presentationType: .replaceCurrent, contentType: configuration.contentType, assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
         ]
         
         let startingPresentation = PresentationConfiguration(presentationType: .destinationPath(path: startingPath), contentType: configuration.contentType, assistantType: .basic)

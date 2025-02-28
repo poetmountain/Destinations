@@ -21,7 +21,7 @@ import Destinations
     }
 
     func test_setupInteractor() {
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationController(type: .present), assistantType: .basic)
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.UserInteractions, PresentationConfiguration>(configurations: [.color(model: nil): colorSelection])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>(configurations: [:])
 

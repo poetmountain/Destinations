@@ -92,7 +92,7 @@ import UIKit
         let swiftUINavDestination = try? XCTUnwrap(swiftUIContainerDestination?.viewFlow?.currentDestination as? any NavigatingViewDestinationable<PresentationConfiguration>, "expected a NavigatingViewDestinationable object but found \(String(describing: appFlow.currentDestination?.type))")
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetailSwiftUI,
-                                                       presentationType: .navigationController(type: .present),
+                                                       presentationType: .navigationStack(type: .present),
                                                        contentType: .color(model: ColorViewModel(color: .blue)),
                                                        assistantType: .custom(ChooseColorFromListActionAssistant()))
         

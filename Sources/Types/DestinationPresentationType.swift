@@ -18,7 +18,7 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
     /// Represents a presentation action of a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
     ///
     /// - Parameter type: An enum representing the type of navigation action to be taken.
-    case navigationController(type: NavigationPresentationType)
+    case navigationStack(type: NavigationPresentationType)
         
     /// Presents a Destination in the specified tab of a tab bar such as a `UITabBarController` or SwiftUI's `TabView`.
     ///
@@ -61,8 +61,8 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
     
     nonisolated public var rawValue: String {
         switch self {
-            case .navigationController(let type):
-                return "navigationController"
+            case .navigationStack(let type):
+                return "navigationStack"
             case .splitView:
                 return "splitView"
             case .tabBar(let tab):
