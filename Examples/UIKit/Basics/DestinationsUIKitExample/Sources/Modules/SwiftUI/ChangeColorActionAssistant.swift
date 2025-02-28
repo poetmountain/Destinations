@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-final class ChangeColorActionAssistant: InterfaceActionConfiguring, DestinationTypes {
+struct ChangeColorActionAssistant: InterfaceActionConfiguring, DestinationTypes {
     typealias UserInteractionType = ColorView.UserInteractions
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {

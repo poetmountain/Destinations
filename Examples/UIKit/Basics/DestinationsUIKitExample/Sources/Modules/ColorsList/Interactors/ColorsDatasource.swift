@@ -43,7 +43,7 @@ actor ColorsDatasource: AsyncDatasourceable {
                 
     var items: [Item] = []
     
-    public func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
+    func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
         
         switch request.action {
             case .retrieve, .paginate:

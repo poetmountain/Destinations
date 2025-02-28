@@ -9,7 +9,7 @@
 import SwiftUI
 import Destinations
 
-final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes {
+struct ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes {
     typealias UserInteractionType = ColorDetailDestination.UserInteractions
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {

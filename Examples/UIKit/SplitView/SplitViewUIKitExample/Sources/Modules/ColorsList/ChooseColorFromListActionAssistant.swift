@@ -10,20 +10,18 @@
 import UIKit
 import Destinations
 
-final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, AppDestinationTypes {
+struct ChooseColorFromListActionAssistant: InterfaceActionConfiguring, AppDestinationTypes {
     typealias UserInteractionType = ColorsListDestination.UserInteractions
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
         var closure = interfaceAction
         
-        var routeType: RouteDestinationType?
         var contentType: ContentType?
         
         closure.data.parentID = destination.parentDestinationID()
         
         switch interactionType {
             case .color(model: let model):
-                routeType = RouteDestinationType.colorNav
                 
                 if let model {
                     contentType = .color(model: model)
@@ -38,15 +36,9 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, AppD
                 break
         }
         
-        
         if let contentType {
             closure.data.contentType = contentType
         }
-        
-        if let routeType {
-            closure.data.destinationType = routeType
-        }
-        
         
         return closure
     }

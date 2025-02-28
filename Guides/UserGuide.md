@@ -17,10 +17,10 @@ For Interactors, use `InteractorConfiguration` objects to define actions which c
 
 These `DestinationPresentation`s and `InteractorConfiguration`s are then supplied to their associated Destination providers – Destinations that should be presented and Interactor actions that should be requested from user interactions tied to a specific Destination:
 ```swift
-let colorSelection = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .colors), assistantType: .custom(ChooseColorFromListAssistant()))
+let presentColorDetail = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .colors), assistantType: .custom(ChooseColorFromListAssistant()))
 let moreColorsRequest = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colorsDatasource, actionType: .paginate)
 
-let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: moreColorsRequest])
+let colorsListProvider = ColorsListProvider(presentationsData: [.selectColor: presentColorDetail], interactorsData: [.moreButton: moreColorsRequest])
 ```
 
 ### Interaction Flow
@@ -122,7 +122,7 @@ TabView(selection: $destinationState.destination.selectedTab) {
  
 Destinations has several built-in presentation types which `DestinationPresentation` supports to enable native SwiftUI and UIKit UI navigation, as well as more complex or custom behavior.
 
-* `navigationController(type: NavigationPresentationType)` This presentation type will add and present a Destination in a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
+* `navigationStack(type: NavigationPresentationType)` This presentation type will add and present a Destination in a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
 * `tabBar(tab: TabType)` This presentation type will present a Destination in the specified tab of a tab bar component, such as a `UITabBarController` or SwiftUI's `TabView`. If no `destinationType` is present in the `DestinationPresentation` model, the specified tab will simply be selected, becoming the active tab within the interface.
 * `splitView(column: SplitViewColumn)` This presentation type will present a Destination in a column of a split view interface, such as a `UISplitViewController` or SwiftUI's `NavigationSplitView`. The `column` parameter defines the column of the split view to present the Destination in.
 * `addToCurrent` This presentation type adds a Destination as a child of the currently-presented Destination. Note that this type only works with UIKit and utilizes `UIViewController`'s `addChild` method.
@@ -134,7 +134,7 @@ Destinations has several built-in presentation types which `DestinationPresentat
   
 * `custom(presentation: CustomPresentation<DestinationPresentation>)` This presentation type enables you to present a custom presentation of a Destination. It can be used to support the presentation of custom UI, as well as system components which Destinations does not directly support. The `presentation` parameter allows you to use a `CustomPresentation` model with specialized closures to provide whatever functionality you need.
 
-### Interactors
+### Interactor
 
  The concept of Interactors comes from [Clean Swift](https://clean-swift.com), used in its architecture as a way to move logic and datasource management out of view controllers. In Destinations, the `Interactable` protocol represents Interactor objects which provide an interface to perform some logic or data request, typically by interfacing with an backend API, handling system APIs, or some other self-contained work. `Datasourceable` inherits from this protocol and should be used for objects which specifically represent a datasource of some kind. There are also Actor-based async versions of these protocols available. 
  
@@ -146,8 +146,8 @@ The recommended way is to assign a user interaction type to your request and usi
 
 Here the configuration model for the interface action is being assigned to a "moreButton" user interaction type when the Destination's provider is created:
 ```swift
-let moreButtonConfiguration = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate)
-let colorsListProvider = ColorsListProvider(presentationsData: [.color: colorSelection], 
+let moreButtonConfiguration = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basic)
+let colorsListProvider = ColorsListProvider(presentationsData: [.showColor: colorSelection], 
 											  interactorsData: [.moreButton: moreButtonConfiguration])
 ```
 
@@ -158,15 +158,37 @@ destination().handleThrowable { [weak self] in
 }
 ```
 
- If it's necessary, you can always make a request to a Destination's Interactor directly: 
- ```swift
-Task {
-    let request = ColorsRequest(action: .paginate, numColorsToRetrieve: 5)
+We've shown how to connect an Interactor action to a user interaction request, but how do we handle the result of the operation?  
 
-    let result = await destination().performRequest(interactor: .colors, request: request)
-    await handleColorsResult(result: result)
+#### Handling an async Interactor result
+
+For an Interactor that conforms to `AsyncInteractable` or `AsyncDatasourceable`, the result is presented to the calling Destination's `handleInteractorResult()` method which you should implement on your custom Destination class. As a Destination can house multiple Interactors which provide results via this method, we have to cast the content to the ResultData type of the Request inside this method. How you update your UI with the results of an Interactor request is up to you and the requirements of the app. If this Destination backs a SwiftUI `View`, the `items` array on this Destination may be an observable property that the `View` uses to populate a `List`.
+```swift
+func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+    
+    switch result {
+        case .success(let content):
+            switch content as? NotesRequest.ResultData {
+                case .notes(models: let items):
+                    self.items = items
+                default: break
+            }
+            
+        case .failure(let error):
+            logError(error: error)
+    }
 }
 ```
+
+#### Handling a sync Interactor result
+
+If an Interactor conforms to `SyncInteractable` or `Datasourceable` you can assign a `InteractorResponseClosure` closure to the Interactor with its `assignResponseForAction()` method when you create the Interactor in a Provider.
+
+
+### Provider
+
+A Provider is responsible for building a specific type of Destination class. It takes all of the `DestinationPresentation` and `InteractorConfiguration` objects assigned to it and uses them to provide a configured Destination to a Flow object. When a Flow needs to present a new Destination, it finds the Provider associated with the requested Destination type and calls the `buildDestination(...)` method. This method should create the Destination, create the `View` or `UIViewController` and assign it to the Destination, and then create any Interactors and add them to the Destination.
+
 
 ### Flow
 
