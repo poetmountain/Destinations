@@ -50,11 +50,8 @@ actor ColorsDatasource: AsyncDatasourceable {
     
     typealias Request = ColorsRequest
     typealias Item = Request.Item
-            
-    weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
-    
-    @Published var items: [Item] = []
-
+                
+    var items: [Item] = []
     
     public func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
         
@@ -63,8 +60,6 @@ actor ColorsDatasource: AsyncDatasourceable {
                 return await retrieveColors(request: request)
         }
     }
-    
-
     
     func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
         
@@ -90,20 +85,8 @@ actor ColorsDatasource: AsyncDatasourceable {
         self.items.append(contentsOf: viewModels)
         let result: Result<AppContentType, Error> = .success(AppContentType.colors(model: items))
         
-        if let statusDelegate = self.statusDelegate as? ColorsDatasourceProviderStatusDelegate {
-            statusDelegate.didUpdateItems(with: result)
-        }
-        
         return result
 
     }
     
 }
-
-
-protocol ColorsDatasourceProviderStatusDelegate: DatasourceItemsProviderStatusDelegate {
-    
-    func didUpdateItems(with result: Result<[ColorViewModel], Error>)
-}
-
-

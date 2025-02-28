@@ -48,8 +48,6 @@ final class ColorsDatasource: Datasourceable {
     typealias Item = Request.Item
 
     var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
-
-    weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
     @Published var items: [Item] = []
 
@@ -67,7 +65,6 @@ final class ColorsDatasource: Datasourceable {
         switch request.action {
             case .retrieve, .paginate:
                 retrieveColors(request: request)
-                
         }
 
     }

@@ -148,7 +148,6 @@ struct TestInteractorOptions: InteractorRequestConfiguring {
 
 final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, DestinationTypes {
     
-        
     enum UserInteractions: UserInteractionTypeable {
         public var rawValue: String {
             return ""

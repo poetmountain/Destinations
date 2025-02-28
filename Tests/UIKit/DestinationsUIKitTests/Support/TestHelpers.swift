@@ -175,8 +175,6 @@ final class TestColorsDatasource: Datasourceable {
 
     typealias Request = ColorsRequest
     typealias Item = Request.Item
-
-    weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
     var requestResponses: [Request.ActionType : InteractorResponseClosure<ColorsRequest>] = [:]
 

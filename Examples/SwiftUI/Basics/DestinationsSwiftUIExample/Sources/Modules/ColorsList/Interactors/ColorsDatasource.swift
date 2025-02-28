@@ -25,7 +25,6 @@ struct ColorsRequest: InteractorRequestConfiguring {
     typealias ResultData = AppContentType
     typealias Item = ColorViewModel
 
-
     let action: ActionType
     
     var numColorsToRetrieve: Int = 3
@@ -46,8 +45,6 @@ final class ColorsDatasource: Datasourceable {
     
     typealias Request = ColorsRequest
     typealias Item = Request.Item
-
-    weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
     @Published var items: [Item] = []
 
@@ -66,11 +63,9 @@ final class ColorsDatasource: Datasourceable {
         switch request.action {
             case .retrieve, .paginate:
                 retrieveColors(request: request)
-                
         }
 
     }
-    
     
     func retrieveColors(request: ColorsRequest) {
         
@@ -97,11 +92,7 @@ final class ColorsDatasource: Datasourceable {
             case .failure(_):
                 break
         }
-        
-        
-        if let statusDelegate {
-            statusDelegate.didUpdateItems(with: result)
-        }
+
     }
     
     

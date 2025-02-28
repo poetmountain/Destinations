@@ -52,8 +52,6 @@ final class ColorsDatasource: Datasourceable {
     
     typealias Request = ColorsRequest
     typealias Item = Request.Item
-
-    weak var statusDelegate: (any DatasourceItemsProviderStatusDelegate)?
     
     @Published var items: [Item] = []
 
@@ -67,13 +65,11 @@ final class ColorsDatasource: Datasourceable {
         self.presenter = presenter
     }
     
-    
     func perform(request: Request) {
         
         switch request.action {
             case .retrieve, .paginate:
                 retrieveColors(request: request)
-                
         }
 
     }
@@ -103,11 +99,7 @@ final class ColorsDatasource: Datasourceable {
             case .failure(_):
                 break
         }
-        
-        
-        if let statusDelegate {
-            statusDelegate.didUpdateItems(with: result)
-        }
+
     }
     
     
