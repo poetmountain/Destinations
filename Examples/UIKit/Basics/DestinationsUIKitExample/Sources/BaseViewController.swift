@@ -114,7 +114,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             
             return ColorView(model: colorModel, parentDestination: destination)
         }
-        let swiftUIProvider = SwiftUIContainerProvider<ColorView>(viewSetup: viewSetup, presentationsData: [.changeColor: changeSwiftUIColor])
+        let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeColor: changeSwiftUIColor], viewSetup: viewSetup)
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,

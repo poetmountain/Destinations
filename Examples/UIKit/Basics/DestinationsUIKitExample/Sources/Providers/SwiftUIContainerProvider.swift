@@ -11,7 +11,7 @@ import SwiftUI
 import Destinations
 
 
-final class SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & SwiftUIHostedInterfacing>: ControllerDestinationProviding, DestinationTypes {
+struct SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & SwiftUIHostedInterfacing>: ControllerDestinationProviding, DestinationTypes {
     
     public typealias Destination = SwiftUIContainerDestination<SwiftUIView, PresentationConfiguration>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
@@ -24,17 +24,6 @@ final class SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & S
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
         
     var viewSetup: SwiftUIViewSetupClosure
-    
-    init(viewSetup: @escaping SwiftUIViewSetupClosure, presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
-        self.viewSetup = viewSetup
-        
-        if let presentationsData {
-            self.presentationsData = presentationsData
-        }
-        if let interactorsData {
-            self.interactorsData = interactorsData
-        }
-    }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         

@@ -10,7 +10,7 @@
 import Foundation
 import Destinations
 
-final class ColorNavProvider: ViewDestinationProviding, DestinationTypes {
+struct ColorNavProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias Destination = ColorNavDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
@@ -20,16 +20,6 @@ final class ColorNavProvider: ViewDestinationProviding, DestinationTypes {
     
     var containerDestination: SwiftUIContainerDestination<ColorNavView, ColorNavView.PresentationConfiguration>
 
-    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil, containerDestination: SwiftUIContainerDestination<ColorNavView, ColorNavView.PresentationConfiguration>) {
-        if let presentationsData {
-            self.presentationsData = presentationsData
-        }
-        if let interactorsData {
-            self.interactorsData = interactorsData
-        }
-        
-        self.containerDestination = containerDestination
-    }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
 

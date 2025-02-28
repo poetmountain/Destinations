@@ -9,7 +9,7 @@
 import SwiftUI
 import Destinations
 
-final class SplitViewProvider: ViewDestinationProviding, DestinationTypes {
+struct SplitViewProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias Destination = NavigationSplitViewDestination<PresentationConfiguration, AppSplitView>
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
@@ -19,16 +19,6 @@ final class SplitViewProvider: ViewDestinationProviding, DestinationTypes {
     
     var initialContent: [NavigationSplitViewColumn: RouteDestinationType]
 
-    init(initialContent: [NavigationSplitViewColumn: RouteDestinationType], presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
-        self.initialContent = initialContent
-        
-        if let presentationsData {
-            self.presentationsData = presentationsData
-        }
-        if let interactorsData {
-            self.interactorsData = interactorsData
-        }
-    }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
                 
