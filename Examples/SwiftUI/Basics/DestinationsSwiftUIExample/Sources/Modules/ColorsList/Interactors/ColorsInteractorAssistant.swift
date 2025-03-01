@@ -9,20 +9,14 @@
 import Foundation
 import Destinations
 
-final class ColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
+struct ColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
     
     typealias InteractorType = ColorsListDestination.InteractorType
     typealias Request = ColorsRequest
     
     let interactorType: InteractorType = .colors
-    
     let actionType: ColorsRequest.ActionType
-    
     let requestMethod: InteractorRequestMethod = .sync
-
-    init(actionType: ColorsRequest.ActionType) {
-        self.actionType = actionType
-    }
     
     func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType {
         

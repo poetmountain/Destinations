@@ -17,6 +17,36 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
     public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
+    let transitionAnimator = AnimationTransitionCoordinator()
+
+    init() {
+        let options = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .formSheet, configurationClosure: { sheet in
+            
+            sheet.detents = [.medium(), .large()]
+            sheet.largestUndimmedDetentIdentifier = .medium
+            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            sheet.prefersEdgeAttachedInCompactHeight = true
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+            sheet.prefersGrabberVisible = true
+        }))
+        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: options), assistantType: .custom(ColorDetailActionAssistant()))
+        let customOptions = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .custom, transitionDelegate: transitionAnimator))
+        let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .custom(ColorDetailActionAssistant()))
+        
+        
+        let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<PresentationConfiguration>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in
+            guard let destinationToPresent else {
+                completionClosure?(false)
+                return
+            }
+                       
+            completionClosure?(true)
+            
+        })), assistantType: .basic)
+        
+        presentationsData = [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent]
+    }
+    
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
         
         var colorModel: ColorViewModel?

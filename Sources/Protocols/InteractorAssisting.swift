@@ -35,3 +35,7 @@ import Foundation
     /// - Parameter content: An optional content model used to make a request to the Interactor.
     func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType
 }
+
+public extension InteractorAssisting {
+    var requestMethod: InteractorRequestMethod { .sync }
+}

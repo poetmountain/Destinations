@@ -20,6 +20,9 @@ public extension Array {
         return self[Swift.min(Swift.max(0, range.startIndex), endIndex)..<Swift.min(range.endIndex, endIndex)]
     }
     
+    var isNotEmpty: Bool {
+        return !isEmpty
+    }
 }
 
 typealias VoidClosure = () -> Void

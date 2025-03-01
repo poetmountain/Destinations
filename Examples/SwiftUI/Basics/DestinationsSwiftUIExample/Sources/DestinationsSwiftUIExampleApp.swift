@@ -26,7 +26,7 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
         //DestinationsSupport.logger.shouldUseFileInfo = true
         //DestinationsSupport.logger.shouldUseMethodInfo = true
 
-        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingTabs: [AppTabType] = [.palettes, .home, .counter]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
@@ -36,22 +36,13 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .magenta, name: "magenta")), assistantType: .basic)
         ]
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
-        
         let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
-        let options = ViewSheetPresentationOptions(presentationMode: .sheet)
-        let sheetPresent = PresentationConfiguration(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
-
-        
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
-        
-        let colorsListMoreButtonAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(ColorsInteractorAssistant(actionType: .paginate)))
-        
-  
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
-        let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton: sheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])
+        
+        let colorsListProvider = ColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
         let dynamicProvider = DynamicProvider()
+        let counterProvider = CounterProvider()
         let tabBarProvider = TabBarProvider()
 
         let providers: [RouteDestinationType: any ViewDestinationProviding] = [
@@ -59,6 +50,7 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
             .colorDetail: colorDetailProvider,
             .home: homeProvider,
             .dynamic: dynamicProvider,
+            .counter: counterProvider,
             .tabBar(tabs: startingTabs): tabBarProvider
         ]
         

@@ -173,11 +173,17 @@ import Foundation
     /// - Returns: A `Result` containing an array of items.
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
     
+    /// Handles the result of an Interactor request in a synchronous context.
+    /// - Parameters:
+    ///    - result: The Result object containing data returned from the request.
+    ///    - request: The original request used in this Interactor operation.
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request)
+    
     /// Handles the result of an async Interactor request.
     /// - Parameters:
     ///    - result: The Result object containing data returned from the request.
     ///    - request: The original request used in this Interactor operation.
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
+    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
     
     /// Performs a system navigation action, executing the closure associated with the provided system navigation type.
     /// - Parameters:
@@ -579,10 +585,14 @@ public extension Destinationable {
         return internalState.parentDestinationID
     }
     
+    // default implementation
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) {
+        DestinationsSupport.logger.log("Calling default handleInteractorResult method implementation for \(request) because one was not found on Destination of type \(self.type).", category: .error)
+    }
     
     // default implementation
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
-        DestinationsSupport.logger.log("Calling default handleInteractorResult method implementation for \(request) because one was not found on Destination of type \(self.type).", category: .error)
+    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+        DestinationsSupport.logger.log("Calling default handleAsyncInteractorResult method implementation for \(request) because one was not found on Destination of type \(self.type).", category: .error)
     }
     
     /// A description of this object.

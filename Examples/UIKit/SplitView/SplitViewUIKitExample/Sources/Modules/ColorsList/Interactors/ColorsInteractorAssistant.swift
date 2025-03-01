@@ -31,12 +31,12 @@ struct ColorsInteractorAssistant: AsyncInteractorAssisting, AppDestinationTypes 
             case .retrieve:
                 let request = ColorsRequest(action: actionType)
                 let result = await destination.performRequest(interactor: interactorType, request: request)
-                await destination.handleInteractorResult(result: result, for: request)
+                await destination.handleAsyncInteractorResult(result: result, for: request)
                 
             case .paginate:
                 let request = ColorsRequest(action: actionType, numColorsToRetrieve: 5)
                 let result = await destination.performRequest(interactor: interactorType, request: request)
-                await destination.handleInteractorResult(result: result, for: request)
+                await destination.handleAsyncInteractorResult(result: result, for: request)
 
         }
                 

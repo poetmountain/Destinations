@@ -13,6 +13,7 @@ public enum AppTabType: String, TabTypeable {
  
     case palettes
     case home
+    case counter
     
     
     public var tabName: String {
@@ -21,6 +22,8 @@ public enum AppTabType: String, TabTypeable {
                 return "Colors"
             case .home:
                 return "Home"
+            case .counter:
+                return "Counter"
         }
     }
     
@@ -36,6 +39,8 @@ public enum AppTabType: String, TabTypeable {
                 "paintpalette"
             case .home:
                 "house"
+            case .counter:
+                "plus.arrow.trianglehead.clockwise"
         }
     }
 

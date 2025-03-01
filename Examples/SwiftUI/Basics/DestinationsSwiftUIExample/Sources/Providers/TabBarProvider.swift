@@ -35,6 +35,8 @@ struct TabBarProvider: ViewDestinationProviding, DestinationTypes {
                     tabContentType = .colorsList
                 case .home:
                     tabContentType = .home
+                case .counter:
+                    tabContentType = .counter
             }
             let tabConfig = configuration
             tabConfig.destinationType = tabContentType

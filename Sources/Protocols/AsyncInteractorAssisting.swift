@@ -20,5 +20,7 @@ import Foundation
 }
 
 public extension AsyncInteractorAssisting {
-    func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType {}
+    var requestMethod: InteractorRequestMethod { .async }
+
+    func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType {}    
 }

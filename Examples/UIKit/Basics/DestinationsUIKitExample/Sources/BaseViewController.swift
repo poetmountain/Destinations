@@ -33,8 +33,6 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
     typealias Destination = ControllerDestination<UserInteractionType, BaseViewController, PresentationConfiguration, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
-
-    let transitionAnimator = AnimationTransitionCoordinator()
     
     var appFlow: ControllerFlow<DestinationType, TabType, ContentType>?
     
@@ -58,49 +56,16 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
-        
         let homepath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
         ]
-        
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .custom(ChooseColorFromListActionAssistant()))
         let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
-        
-        let options = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .formSheet, configurationClosure: { sheet in
-            
-            sheet.detents = [.medium(), .large()]
-            sheet.largestUndimmedDetentIdentifier = .medium
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
-            sheet.prefersEdgeAttachedInCompactHeight = true
-            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-            sheet.prefersGrabberVisible = true
-        }))
-        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: options), assistantType: .custom(ColorDetailActionAssistant()))
-        let customOptions = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .custom, transitionDelegate: transitionAnimator))
-        let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .custom(ColorDetailActionAssistant()))
-        
-        
-        let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<PresentationConfiguration>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in
-            guard let destinationToPresent else {
-                completionClosure?(false)
-                return
-            }
-                       
-            completionClosure?(true)
-            
-        })), assistantType: .basic)
-        
-        let changeSwiftUIColor = PresentationConfiguration(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
-              
-        let startProvider = StartProvider()
-        
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
-        
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(ColorsInteractorAssistant(actionType: .paginate))), .retrieveInitialColors: colorsListRetrieveAction])
-        
-        let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])
+        
+        let startProvider = StartProvider()
+        let colorsListProvider = ColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
         let sheetViewProvider = SheetProvider()
         let tabBarProvider = TabBarProvider()
         
@@ -114,6 +79,8 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             
             return ColorView(model: colorModel, parentDestination: destination)
         }
+        
+        let changeSwiftUIColor = PresentationConfiguration(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
         let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeColor: changeSwiftUIColor], viewSetup: viewSetup)
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [

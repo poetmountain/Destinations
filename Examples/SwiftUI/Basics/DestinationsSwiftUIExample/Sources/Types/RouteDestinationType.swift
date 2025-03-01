@@ -10,35 +10,14 @@ import UIKit
 import SwiftUI
 import Destinations
 
-public enum AppContentType: ContentTypeable {
-    case color(model: ColorViewModel)
-    case colors(models: [ColorViewModel])
-    case dynamicView(view: ContainerView<AnyView>)
-    
-    public var rawValue: String {
-        switch self {
-            case .color(_):
-                return "color"
-            case .colors(_):
-                return "colors"
-            case .dynamicView:
-                return "dynamicView"
-        }
-    }
-}
 
-extension AppContentType: Equatable {
-    public static func == (lhs: AppContentType, rhs: AppContentType) -> Bool {
-        return (lhs.rawValue == rhs.rawValue)
-    }
-}
 
 public enum RouteDestinationType: RoutableDestinations, CaseIterable {
 
     public var id: String { rawValue }
 
     public static var allCases: [RouteDestinationType] {
-        return [.colorsList, .colorDetail, .home, .dynamic, .tabBar(tabs: [])]
+        return [.colorsList, .colorDetail, .home, .dynamic, .tabBar(tabs: []), .counter]
     }
     
     case colorsList
@@ -46,6 +25,7 @@ public enum RouteDestinationType: RoutableDestinations, CaseIterable {
     case home
     case dynamic
     case tabBar(tabs: [AppTabType])
+    case counter
     
     public var rawValue: String {
         switch self {
@@ -59,6 +39,8 @@ public enum RouteDestinationType: RoutableDestinations, CaseIterable {
                 return "dynamic"
             case .tabBar(_):
                 return "tabBar"
+            case .counter:
+                return "counter"
         }
     }
 }

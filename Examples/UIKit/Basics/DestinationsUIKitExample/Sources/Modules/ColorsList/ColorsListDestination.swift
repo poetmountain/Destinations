@@ -87,7 +87,7 @@ final class ColorsListDestination: DestinationTypes, ControllerDestinationable {
     }
     
 
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
         
         switch result {
             case .success(let content):
