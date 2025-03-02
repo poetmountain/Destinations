@@ -7,6 +7,7 @@
 * Destination classes have a new `prepareForPresentation()` method which should be used to initialize any state, datasource retrievals, etc. before the Destination is presented.
 * Destination classes have new `handleInteractorResult(result:, for:)` and `handleAsyncInteractorResult(result:, for:)` methods to handle the results of Interactor operations.
 * Automated the setup of Interactor assistants and Destination presentations when a Provider builds a Destination. Manually calling `buildPresentations()` and manually setting up Interactor assistants is no longer necessary within the Provider `buildDestination(...)` method.
+* Updated the basic SwiftUI example project to include an example of an Interactor that returns a continuous stream of result values using AsyncStream. See the new "Counter" tab in the example app.
 
 #### 1.2.0
 * Improved support for SwiftUI content hosted within UIKit controllers using `SwiftUIContainerDestination`. New SwiftUI content can now be presented from a UIKit-based Destination without any knowledge of the SwiftUI navigation stack. Destinations will automatically handle this use case when targeting a `SwiftUIContainerDestination` which contains a `NavigationStack`, when specifying a `DestinationPresentation`'s `presentationType` as a `navigationController()` or `splitView()`.
