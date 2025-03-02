@@ -295,4 +295,4 @@ var body: some Scene {
 
 ### Next Steps
 
-Now that you've had an overview of the major concepts in Destinations, please check out the [Examples projects](Examples) projects to see Destinations in action in UIKit and SwiftUI, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
+Now that you've had an overview of the major concepts in Destinations, please check out the [Examples projects](../Examples/) to see Destinations in action in UIKit and SwiftUI, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
