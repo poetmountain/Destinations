@@ -31,7 +31,7 @@ struct CounterProvider: ViewDestinationProviding, DestinationTypes {
         destination.assignAssociatedView(view: counterView)
 
         let interactor = CounterInteractor()
-        destination.setupInteractor(interactor: interactor, for: .counter)
+        destination.assignInteractor(interactor: interactor, for: .counter)
                 
          return destination
         

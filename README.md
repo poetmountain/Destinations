@@ -114,7 +114,7 @@ struct NotesRequest: InteractorRequestConfiguring {
 }
 ```
 
-Now that we have a datasource and a way to make requests of it, we need to make an interface action which will represent a specific request. For Interactor interface actions we should use`InteractorConfiguration` to represent them. It specifies the type of Interactor being called (this enum type should be assigned to one using a Destination's `setupInteractor` method), the type of action the Interactor should take, and the type of Interactor assistant that should be used. (Interactor assistants create the actual Request and handle communication between the Destination and the Interactor) 
+Now that we have a datasource and a way to make requests of it, we need to make an interface action which will represent a specific request. For Interactor interface actions we should use`InteractorConfiguration` to represent them. It specifies the type of Interactor being called (this enum type should be assigned to one using a Destination's `assignInteractor` method), the type of action the Interactor should take, and the type of Interactor assistant that should be used. (Interactor assistants create the actual Request and handle communication between the Destination and the Interactor) 
 
 As with our `View` presentation, we can pass this action, paired with a user interaction type which should call it, in to the Provider which creates the Notes list `View`. All interactor actions should go into the `interactorsData` dictionary parameter. Here we've assigned the Notes retrieval action to a new user interaction type `retrieveNotes`.
 ```swift

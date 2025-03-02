@@ -43,7 +43,7 @@ struct ColorsListProvider: ViewDestinationProviding, AppDestinationTypes {
         let datasource = ColorsDatasource(with: ColorsPresenter())
         datasource.assignResponseForAction(response: colorsResponse, for: .paginate)
         datasource.assignResponseForAction(response: colorsResponse, for: .retrieve)
-        destination.setupInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(interactor: datasource, for: .colors)
         
 
         

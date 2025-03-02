@@ -12,7 +12,7 @@ To configure your app, `DestinationPresentation` objects should be created to de
 * The `assistantType` property allows you to define an assistant which provides additional configuration when the Destination is being presented. In most cases you can just use the `.basic` assistant which Destinations implements internally. However, if you need to pass content from an interface or are using custom UI that needs special handling then you'll need to use the `.custom(assistant: any InterfaceActionConfiguring)` type and provide your own assisant.
 
 For Interactors, use `InteractorConfiguration` objects to define actions which can be requested from UI interactions.
-* The `interactorType` property defines the type of Interactor to request an action from. This is an enum type of your choosing and can be scoped to a particular Destination. In other words, each Destination can have its own set of interactor types, and the association between a specific Interactor and an interactor type is made when calling the `setupInteractor(interactor: type:)` method on a Destination.
+* The `interactorType` property defines the type of Interactor to request an action from. This is an enum type of your choosing and can be scoped to a particular Destination. In other words, each Destination can have its own set of interactor types, and the association between a specific Interactor and an interactor type is made when calling the `assignInteractor(interactor: type:)` method on a Destination.
 * The `actionType` property defines the specific action of the interactor to be requested, represented by an enum type of your choosing and is scoped to individual Interactors.
 
 These `DestinationPresentation`s and `InteractorConfiguration`s are then supplied to their associated Destination providers – Destinations that should be presented and Interactor actions that should be requested from user interactions tied to a specific Destination:
@@ -239,7 +239,7 @@ public func buildDestination(destinationPresentations: AppDestinationConfigurati
     destination.assignAssociatedView(view: view)
 
     let datasource = NotesDatasource()
-    destination.setupInteractor(interactor: datasource, for: .notes)
+    destination.assignInteractor(interactor: datasource, for: .notes)
             
     return destination
     

@@ -124,11 +124,11 @@ import Foundation
     /// - Parameter presentation: The presentation configuration object to replace an existing one.
     func updateSystemNavigationPresentation(presentation: PresentationConfiguration)
     
-    /// Adds setup functionality for an Interactor, which will add and register it with this Destination. An Interactor handles specialized tasks and interactions with other APIs for the Destination.
+    /// Assigns an Interactor to this Destination. An Interactor handles specialized tasks and interactions with other APIs for the Destination.
     /// - Parameters:
     ///   - interactor: The Interactor to add.
     ///   - type: Specifies the enum type of this Interactor. This type can be used to look up the Interactor.
-    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType)
+    func assignInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType)
     
     /// Returns an Interactor for the specified type.
     /// - Parameter type: The enum type of an Interactor.

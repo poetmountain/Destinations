@@ -15,7 +15,7 @@ import UIKit
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
 
-    func test_setupInteractor() {
+    func test_assignInteractor() {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let colorsListConfigs = AppDestinationConfigurations<TestColorsDestination.UserInteractions, PresentationConfiguration>(configurations: [.color(model: nil): colorSelection])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>(configurations: [:])
@@ -24,7 +24,7 @@ import UIKit
 
         
         let datasource = TestColorsDatasource(with: ColorsPresenter())
-        destination.setupInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(interactor: datasource, for: .colors)
         
         XCTAssertNotNil(destination.internalState.interactors[.colors])
     }

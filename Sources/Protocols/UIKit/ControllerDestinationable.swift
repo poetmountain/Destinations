@@ -31,7 +31,7 @@ import UIKit
 
 public extension ControllerDestinationable {
     
-    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType) {
+    func assignInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType) {
     
         internalState.interactors[type] = interactor
         

@@ -39,7 +39,7 @@ final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTy
 
 
         let datasource = ColorsDatasource()
-        destination.setupInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(interactor: datasource, for: .colors)
                 
          return destination
         

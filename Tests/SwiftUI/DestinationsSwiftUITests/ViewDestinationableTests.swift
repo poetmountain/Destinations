@@ -20,7 +20,7 @@ import Destinations
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func test_setupInteractor() {
+    func test_assignInteractor() {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.UserInteractions, PresentationConfiguration>(configurations: [.color(model: nil): colorSelection])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>(configurations: [:])
@@ -30,7 +30,7 @@ import Destinations
         destination.assignAssociatedView(view: listView)
         
         let datasource = ColorsDatasource(with: ColorsPresenter())
-        destination.setupInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(interactor: datasource, for: .colors)
         
         XCTAssertNotNil(listView.destination().internalState.interactors[ColorsListDestination.InteractorType.colors])
 
