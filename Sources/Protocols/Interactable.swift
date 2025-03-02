@@ -21,17 +21,16 @@ import Foundation
 ///
 ///  Interactors are typically created by Destination providers and stored in the Destination. Like with presentations of new Destinations, Interactor requests are associated with a particular `InterfaceAction` object and are represented by an `InteractorConfiguration` model object. Action types for each Interactor are defined as enums, keeping Interactor-specific knowledge out of the interface.
 ///
-///  Here the configuration model for the interface action is being assigned to a "moreButton" user interaction type when the Destination's provider is created:
+///  For example, here we're creating an Interactor action for making a pagination request to the ColorsDatasource, and then assign it to a `moreButton` user interaction type:
 ///  ```swift
-///  let moreButtonConfiguration = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate)
-///  let colorsListProvider = ColorsListProvider(presentationsData: [.color: colorSelection],
-///                                              interactorsData: [.moreButton: moreButtonConfiguration])
+///  let paginateAction = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basic)
+///  let colorsProvider = ColorsListProvider(interactorsData: [.moreButton: paginateAction])
 ///  ```
 ///
-/// And here is that user interaction type being called a Destination's interface after a user's tap on a UI element. Note that `performInterfaceAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
+/// And here is that user interaction type being called by a Destination's interface. Note that `performInterfaceAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
 /// ```swift
-/// destination().handleThrowable { [weak self] in
-///    try self?.destination().performInterfaceAction(interactionType: .moreButton)
+/// destination().handleThrowable {
+///    try destination().performInterfaceAction(interactionType: .moreButton)
 /// }
 /// ```
 ///

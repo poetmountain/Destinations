@@ -5,6 +5,7 @@ Destinations is a Swift library for UIKit and SwiftUI that is designed to remove
 
 * Enables clean separation of concerns between your interfaces, datasources, and other application logic
 * Allows you to easily replace UI and datasources for A/B testing or providing testing mocks
+* Reduces development time due to abstracting away navigation boilerplate code and the ease of changing feature flows
 * Provides easy deep linking capability
 * Provides the ability to display and test sections of your apps in isolation
 * A flexible and extensible, protocol-based system to fit your project's needs, including custom UI
@@ -28,28 +29,34 @@ Destinations is designed to represent each significant interface element – typ
 
 Let's say we have a SwiftUI app which shows user Notes in a `List` in a NotesView `View`, backed by a NotesDestination. We want to create a detail screen that will be pushed onto the `NavigationStack` when a user taps on a Note list item. To do that we should create a `DestinationPresentation` object which represents that action. This object contains the type of Destination to present, the `presentationType` which represents *how* the Destination should be presented, and the `assistantType` which represents the kind of presentation assistant to be used (we'll talk more about those in a bit). Often you can just use the `basic` assistant if you don't need to pass along any state.
 ```swift
-let notePresentation = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .noteDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseNoteActionAssistant())
+let notePresentation = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .noteDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(SelectNoteAssistant())
 ```
 
-In order for the NotesView containing the list of Notes to be aware of this user action, we need to feed the action into a Provider object which builds its Destination. The `presentationsData` dictionary in the example below pairs user interaction types for that Destination with a presentation configuration model. So in this example, we're telling the Destination that when a user taps the list item and causes the `displayNote` interaction type to be sent, the presentation action should be run, which will create the Note detail Destination and present its associated `View` on-screen by pushing it onto the `NavigationStack`.
+In order for the NotesView containing the list of Notes to be aware of this user action, we need to feed the action into a Provider object which builds the NotesDestination and the associated NotesView. The `presentationsData` dictionary in the example below pairs user interaction types for that Destination with a presentation configuration model. Effectively, we're associating a particular type of user interaction with a specific action which Destinations should take. So in this example, we're supplying a configuration to the NotesDestination that when a user taps a Note list item and causes the `displayNote` interaction type to be sent, the presentation action should be run, which will create the Note detail Destination and present its associated `View` on-screen by pushing it onto the `NavigationStack`.
 ```swift
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation])
 ```
 
-Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` user interaction type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that user interaction type to its Destination along with a `content` parameter which provides an enum encapsulating the Note model of the selected list item we should display in the detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performInteraceAction()` method)
+Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` user interaction type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that user interaction type to its Destination, along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performInteraceAction()` method)
 ```swift
-destination().handleThrowable {
-    try self.destination().performInterfaceAction(interactionType: .displayNote, content: .note(model: item))
-}
+.onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
+	if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
+        destination().handleThrowable {
+            try self.destination().performInterfaceAction(interactionType: .displayNote, content: .note(model: item))
+        }
+	}
+})
 ```
 
 There's one more step. We need a presentation assistant. We saw those before when creating the `DestinationPresentation` object. These assistants handle the user interaction, configuring an `InterfaceAction` which will drive the presentation of the new Destination. Usually, creating a custom assistant like this isn't necessary, but in this case we're passing along a Note model to the detail `View` so we need an assistant that can handle that.
 ```swift
-struct ChooseNoteActionAssistant: InterfaceActionConfiguring, DestinationTypes {
+struct SelectNoteAssistant: InterfaceActionConfiguring {
     typealias UserInteractionType = NotesDestination.UserInteractions
+    typealias DestinationType = AppDestinationType
+    typealias ContentType = AppContentType
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
-        var closure = interfaceAction
+        var action = interfaceAction
         
         var contentType: ContentType?
                 
@@ -58,11 +65,11 @@ struct ChooseNoteActionAssistant: InterfaceActionConfiguring, DestinationTypes {
                 contentType = .note(model: model)
             }
             
-            closure.data.contentType = contentType
-            closure.data.parentID = destination.id
+            action.data.contentType = contentType
+            action.data.parentID = destination.id
         }
 
-        return closure
+        return action
     }
 }
 ```
@@ -71,7 +78,7 @@ struct ChooseNoteActionAssistant: InterfaceActionConfiguring, DestinationTypes {
 
 Continuing our Notes example, let's hook up a datasource **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI -- datasource retrievals, system API requests, etc.
 
-So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncDatasourceable` protocol and will be called when our Notes Destination makes a request by passing in a NotesRequest. The `action` types we switch on represent the possible actions that the Interactor handles. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
+So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncDatasourceable` protocol and will be called when our Notes Destination makes a request by passing in a NotesRequest. The `action` types we switch on represent the possible actions that the Interactor supports. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
 ```swift
 actor NotesDatasource: AsyncDatasourceable {
     typealias Request = NotesRequest
@@ -144,7 +151,7 @@ So with a relatively small amount of code we've created an interaction where the
 
 Because of that pairing between user interaction type and presentation action, we've also opened up the ability to quickly reconfigure what the Note's list item displays when tapped. Let's say the product team wants to have the button to present a detail `View` with an alternate design. That's as easy as creating a new `DestinationPresentation` and assigning it to the `displayNote` type. Or if the product team wants to A/B test with these two detail views, then additionally create a new user interaction type and switch the type being called as necessary. Or perhaps we want to change the Notes datasource to pull from a local cache instead. The only change required is to swap the datasource linked to the interface action. This flexibility makes it possible to quickly test new behaviors and change the routing paths in your app without editing several files. Less code, less time, less potential bugs.
 
-If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** and the examples projects to dive deeper into Destinations.
+If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** and the examples projects to dive deeper into Destinations!
 
 
 ### Requirements
