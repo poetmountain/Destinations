@@ -24,7 +24,7 @@ struct CounterRequest: InteractorRequestConfiguring {
     var action: ActionType
 }
 
-final class CounterInteractor: SyncInteractable {
+final class CounterInteractor: Interactable {
 
     typealias Request = CounterRequest
     typealias Item = Request.Item

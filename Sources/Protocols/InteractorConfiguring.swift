@@ -15,7 +15,7 @@ import Foundation
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
     
-    associatedtype Interactor: Interactable
+    associatedtype Interactor: AbstractInteractable
     
     /// An enum which defines types of actions for a particular Interactor.
     associatedtype ActionType: InteractorRequestActionTypeable

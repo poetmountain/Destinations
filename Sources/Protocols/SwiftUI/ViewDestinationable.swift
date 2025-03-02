@@ -43,7 +43,7 @@ public extension ViewDestinationable {
         return view
     }
     
-    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any Interactable<Request>, for type: InteractorType) {
+    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType) {
     
         internalState.interactors[type] = interactor
 

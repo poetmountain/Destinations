@@ -68,7 +68,7 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
         self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
-    func configureInteractor(_ interactor: any Interactable, type: ColorsListDestination.InteractorType) {
+    func configureInteractor(_ interactor: any AbstractInteractable, type: ColorsListDestination.InteractorType) {
         switch type {
             case .colors:
                 if let datasource = interactor as? ColorsDatasource {

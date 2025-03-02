@@ -33,7 +33,7 @@ public final class DestinationInternalState<InteractorType: InteractorTypeable, 
     /// A Boolean that denotes whether the UI is currently in a navigation transition.
     public var isSystemNavigating: Bool = false
 
-    public var interactors: [InteractorType : any Interactable] = [:]
+    public var interactors: [InteractorType : any AbstractInteractable] = [:]
     public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, PresentationConfiguration.DestinationType, PresentationConfiguration.ContentType>] = [:]
     public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, PresentationConfiguration.DestinationType, PresentationConfiguration.ContentType>] = [:]
     public var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, PresentationConfiguration.ContentType>] = [:]

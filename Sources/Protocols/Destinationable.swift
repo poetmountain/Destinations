@@ -128,18 +128,18 @@ import Foundation
     /// - Parameters:
     ///   - interactor: The Interactor to add.
     ///   - type: Specifies the enum type of this Interactor. This type can be used to look up the Interactor.
-    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any Interactable<Request>, for type: InteractorType)
+    func setupInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType)
     
     /// Returns an Interactor for the specified type.
     /// - Parameter type: The enum type of an Interactor.
     /// - Returns: An Interactor, if one was found.
-    func interactor(for type: InteractorType) -> (any Interactable)?
+    func interactor(for type: InteractorType) -> (any AbstractInteractable)?
     
     /// Configures the Interactor that is assigned to this Destination. You may use this method to make any initial requests to the Interactor to set up the interface's initial state. This method is called automatically when an Interactor is assigned to it.
     /// - Parameters:
     ///   - interactor: The Interactor to configure requests for.
     ///   - type: The type of interactor.
-    func configureInteractor(_ interactor: any Interactable, type: InteractorType)
+    func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType)
     
     /// Adds an interface action.
     /// - Parameters:
@@ -258,7 +258,7 @@ public extension Destinationable {
         }
     }
     
-    func configureInteractor(_ interactor: any Interactable, type: InteractorType) {}
+    func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType) {}
     
     func updatePresentation(presentation: PresentationConfiguration) {
         guard var destinationConfigurations = internalState.destinationConfigurations else { return }
@@ -479,7 +479,7 @@ public extension Destinationable {
         }
     }
     
-    func interactor(for type: InteractorType) -> (any Interactable)? {
+    func interactor(for type: InteractorType) -> (any AbstractInteractable)? {
         return internalState.interactors[type]
     }
     
@@ -561,7 +561,7 @@ public extension Destinationable {
     
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) {
         
-        guard let interactor = internalState.interactors[interactor] as? any SyncInteractable<Request> else {
+        guard let interactor = internalState.interactors[interactor] as? any Interactable<Request> else {
             let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
             DestinationsSupport.logger.log(message)

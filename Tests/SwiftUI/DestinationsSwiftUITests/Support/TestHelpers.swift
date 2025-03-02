@@ -101,7 +101,7 @@ extension ColorsListView {
     
 }
 
-final class TestInteractor: SyncInteractable {
+final class TestInteractor: Interactable {
 
     typealias Request = TestRequest
 

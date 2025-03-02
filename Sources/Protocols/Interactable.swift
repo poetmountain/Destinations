@@ -2,14 +2,14 @@
 //  Interactable.swift
 //  Destinations
 //
-//  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
+//  Copyright © 2025 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
 //
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import Foundation
 
-/// This is an abstract protocol representing an Interactor object. Please see the important notice below for choosing the correct protocol for your Interactors.
+/// This protocol represents Interactors that handle requests using a synchronous context, typically providing results for requests via a ``InteractorResponseClosure``.
 ///
 /// Interactors provide an interface to perform some business logic, often acting as a datasource by interfacing with an API, handling system APIs, or some other self-contained work.
 ///
@@ -33,16 +33,37 @@ import Foundation
 ///    try destination().performInterfaceAction(interactionType: .moreButton)
 /// }
 /// ```
-///
-/// > Important: This is an abstract protocol and Interactor objects should not conform to this directly. For Interactors running in a synchronous context where closures will provide operation results, please conform to ``SyncInteractable``. If you need your Interactor to run as an Actor in an async context, please conform to ``AsyncInteractable``. And if your Interactor needs to represent a datasource for model retrieval, please use the ``Datasourceable`` or ``AsyncDatasourceable`` based on the context it should run in.
-public protocol Interactable<Request>: AnyObject {
+public protocol Interactable<Request>: AbstractInteractable {
     
-    /// A configuration model which defines an interactor request.
-    associatedtype Request: InteractorRequestConfiguring
+    /// A dictionary of Interactor request responses, whose keys are the Interactor action type they are associated with.
+    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] { get set }
+
+    /// Requests the Interactor to perform an operation.
+    /// - Parameters:
+    ///   - request: A configuration model which defines the request.
+    func perform(request: Request)
+    
+    /// Assigns a response closure for an Interactor action type, which is called after the request has completed.
+    /// - Parameters:
+    ///   - response: The response closure to be called.
+    ///   - action: The Interactor action type to be associated with this response.
+    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: Request.ActionType)
+    
+    /// Returns a response closure for the specified Interactor action.
+    /// - Parameter action: The interactor action to find a response for.
+    /// - Returns: The response closure, if one was found.
+    func responseForAction(action: Request.ActionType) -> InteractorResponseClosure<Request>?
     
 }
 
-/// A generic closure which provides a result to an Interactor request.
-///
-/// This closure is generally used with Interactors conforming to ``SyncInteractable``, which runs in a synchronous context. It provides both the result data and the original request object.
-public typealias InteractorResponseClosure<Request: InteractorRequestConfiguring> = (_ result: Result<Request.ResultData, Error>, _ request: Request) -> Void
+
+public extension Interactable {
+    func assignResponseForAction(response: @escaping InteractorResponseClosure<Request>, for action: Request.ActionType) {
+        self.requestResponses[action] = response
+    }
+    
+    func responseForAction(action: Request.ActionType) -> InteractorResponseClosure<Request>? {
+        return self.requestResponses[action]
+    }
+    
+}

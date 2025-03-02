@@ -53,7 +53,7 @@ public protocol DestinationInternalStateable<InteractorType, UserInteractionType
     var isSystemNavigating: Bool { get set }
 
     /// A dictionary of interactors, with the associated keys being their interactor type.
-    var interactors: [InteractorType: any Interactable] { get set }
+    var interactors: [InteractorType: any AbstractInteractable] { get set }
     
     /// A dictionary of ``InterfaceAction`` objects, with the key being the associated user interaction type.
     var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] { get set }
