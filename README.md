@@ -17,6 +17,8 @@ Destinations is a Swift library for UIKit and SwiftUI that is designed to remove
 
 #### Get started with the **[user guide](Guides/UserGuide.md)** for detailed explanations and examples.
 
+If you're upgrading from a previous version of Destinations, check out the [2.0 Migration Guide](Guides/MigrationGuide2.0.md) for breaking changes.
+
 Also check out the [Examples projects](Examples) to see Destinations in action in UIKit and SwiftUI, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
 
 ## Overview
