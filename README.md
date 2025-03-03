@@ -10,7 +10,6 @@ Destinations is a Swift library for UIKit and SwiftUI that is designed to truly 
 * Provides the ability to display and test sections of your apps in isolation
 * A flexible and extensible, protocol-based system to fit your project's needs, including custom UI
 * A similar API for both UIKit and SwiftUI, and generic enough to allow further platform support. Supports pure UIKit and SwiftUI apps, but also supports hybrid apps with SwiftUI content hosted within UIKit controllers.
-* Full [documentation](https://poetmountain.github.io/Destinations/)
 
 ## Getting Started
 
