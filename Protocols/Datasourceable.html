@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (99% documented)
+         (98% documented)
       </p>
     
     
@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationInternalState.html">DestinationInternalState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationNavigator.html">DestinationNavigator</a>
               </li>
               <li class="nav-group-task">
@@ -76,6 +79,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationsSupport.html">DestinationsSupport</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GroupDestinationInternalState.html">GroupDestinationInternalState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
@@ -143,6 +149,9 @@
                 <a class="nav-group-task-link" href="../Enums/DestinationsError.html">DestinationsError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/InteractorAssistantType.html">InteractorAssistantType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a>
               </li>
               <li class="nav-group-task">
@@ -168,10 +177,16 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractInteractable.html">AbstractInteractable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a>
@@ -207,6 +222,9 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationInterfacing.html">DestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInternalStateable.html">DestinationInternalStateable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
@@ -232,6 +250,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
@@ -362,6 +383,12 @@
                 <a class="nav-group-task-link" href="../Structs/CustomPresentation.html">CustomPresentation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultAsyncInteractorAssistant.html">DefaultAsyncInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultInteractorAssistant.html">DefaultInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DestinationDisappearModifier.html">DestinationDisappearModifier</a>
               </li>
               <li class="nav-group-task">
@@ -409,9 +436,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25DatasourceResponseClosurea">DatasourceResponseClosure</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24GroupChildRemovedClosurea">GroupChildRemovedClosure</a>
               </li>
               <li class="nav-group-task">
@@ -422,6 +446,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
@@ -456,11 +483,16 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Datasourceable</span><span class="o">&lt;</span><span class="kt">ResultData</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt"><a href="../Protocols/Interactable.html">Interactable</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Datasourceable</span><span class="o">&lt;</span><span class="kt">Item</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Interactable.html">Interactable</a></span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol represents a datasource interactor. These datasources can be used to provide items to a Destination&rsquo;s view interface.</p>
+            <p>This protocol represents a datasource Interactor. Datasources are designed to provide data models to a Destination based on requests, such as requesting objects from a server for display in a navigation stack. For more information on Interactors, please see the documentation for <code><a href="../Protocols/Interactable.html">Interactable</a></code>.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>If you need your datasource Interactor to run in an async context, please instead conform it to the <code><a href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a></code> protocol.</p>
+
+</div>
 
           </div>
         </section>
@@ -472,9 +504,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations14DatasourceableP10ActionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/ActionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14DatasourceableP10ActionTypeQa">ActionType</a>
+                    <a name="/s:12Destinations14DatasourceableP4ItemQa"></a>
+                    <a name="//apple_ref/swift/Alias/Item" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations14DatasourceableP4ItemQa">Item</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -482,14 +514,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines types of actions for a particular Interactor.</p>
+                        <p>This type represents the type of data model this datasource handles.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ActionType</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Item</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -503,20 +535,33 @@
                     <a name="//apple_ref/swift/Method/startItemsRetrieval()" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations14DatasourceableP19startItemsRetrievalyyF">startItemsRetrieval()</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the provider to start retrieval of the items. Once retrieved, the items should be provided via the <code>itemsProvider</code> publisher.</p>
+                        <p>Tells the datasource to start retrieval of the items.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This method is deprecated and will be removed in a future version. To start the retrieval of items for a datasource, please instead use <code><a href="../Protocols/Destinationable.html">Destinationable</a></code>&lsquo;s <code>prepareForPresentation()</code> and call <code>performInterfaceAction()</code> with an interaction type which can initiate a retrieval request. If you need to configure an Interactor prior to making requests, please call the new <code>prepareForRequests()</code> method.</p>
 
+</div>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">startItemsRetrieval</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"This method is deprecated and will be removed in a future version. To start items retrieval for a datasource, please instead use Destinationable's prepareForPresentation(﹚ and call performInterfaceAction(﹚ with an interaction type which can initiate a retrieval request. If you need to configure an interactor prior to making requests, please call the new prepareForRequests(﹚ method."</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">startItemsRetrieval</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -526,36 +571,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations14DatasourceableP14statusDelegateAA029DatasourceItemsProviderStatusD0_pSgvp"></a>
-                    <a name="//apple_ref/swift/Property/statusDelegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14DatasourceableP14statusDelegateAA029DatasourceItemsProviderStatusD0_pSgvp">statusDelegate</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An object which receives status updates about items retrieval progress.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">statusDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DatasourceItemsProviderStatusDelegate.html">DatasourceItemsProviderStatusDelegate</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations14DatasourceableP5itemsSay10ResultDataQzGvp"></a>
+                    <a name="/s:12Destinations14DatasourceableP5itemsSay4ItemQzGvp"></a>
                     <a name="//apple_ref/swift/Property/items" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14DatasourceableP5itemsSay10ResultDataQzGvp">items</a>
+                    <a class="token" href="#/s:12Destinations14DatasourceableP5itemsSay4ItemQzGvp">items</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -570,7 +588,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt">ResultData</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/Datasourceable.html#/s:12Destinations14DatasourceableP4ItemQa">Item</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

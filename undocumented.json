@@ -1,0 +1,131 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/DefaultAsyncInteractorAssistant.swift",
+      "line": 21,
+      "symbol": "DefaultAsyncInteractorAssistant.init(interactorType:actionType:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/DefaultInteractorAssistant.swift",
+      "line": 21,
+      "symbol": "DefaultInteractorAssistant.init(interactorType:actionType:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/DestinationInternalState.swift",
+      "line": 41,
+      "symbol": "DestinationInternalState.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/GroupDestinationInternalState.swift",
+      "line": 29,
+      "symbol": "GroupDestinationInternalState.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/Destinationable.swift",
+      "line": 548,
+      "symbol": "Destinationable.performRequest(interactor:request:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/Destinationable.swift",
+      "line": 562,
+      "symbol": "Destinationable.performRequest(interactor:request:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/InteractorConfiguring.swift",
+      "line": 18,
+      "symbol": "InteractorConfiguring.Interactor",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/InteractorRequestConfiguring.swift",
+      "line": 30,
+      "symbol": "InteractorRequestConfiguring.init(action:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/SwiftUI/NavigatingViewDestinationable.swift",
+      "line": 42,
+      "symbol": "NavigatingViewDestinationable.replaceChild(currentID:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/SwiftUI/NavigatingViewDestinationable.swift",
+      "line": 57,
+      "symbol": "NavigatingViewDestinationable.removeChild(identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/UIKit/NavigatingControllerDestinationable.swift",
+      "line": 39,
+      "symbol": "NavigatingControllerDestinationable.replaceChild(currentID:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/SwiftUI/BindableContainerView.swift",
+      "line": 32,
+      "symbol": "BindableContainerView.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/SwiftUI/NavigationSplitViewDestination.swift",
+      "line": 65,
+      "symbol": "NavigationSplitViewDestination.listID",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/UIKit/SplitViewController.swift",
+      "line": 17,
+      "symbol": "SplitViewController.TabType",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/UIKit/SplitViewController.swift",
+      "line": 18,
+      "symbol": "SplitViewController.ContentType",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/UIKit/SplitViewController.swift",
+      "line": 22,
+      "symbol": "SplitViewController.ControllerType",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/UIKit/SwiftUIAdapter.swift",
+      "line": 58,
+      "symbol": "SwiftUIAdapter.cleanupResources()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/UIKit/SwiftUIContainerController.swift",
+      "line": 57,
+      "symbol": "SwiftUIContainerController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations"
+}

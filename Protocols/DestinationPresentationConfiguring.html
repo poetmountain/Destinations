@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (99% documented)
+         (98% documented)
       </p>
     
     
@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationInternalState.html">DestinationInternalState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationNavigator.html">DestinationNavigator</a>
               </li>
               <li class="nav-group-task">
@@ -76,6 +79,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationsSupport.html">DestinationsSupport</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GroupDestinationInternalState.html">GroupDestinationInternalState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
@@ -143,6 +149,9 @@
                 <a class="nav-group-task-link" href="../Enums/DestinationsError.html">DestinationsError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/InteractorAssistantType.html">InteractorAssistantType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a>
               </li>
               <li class="nav-group-task">
@@ -168,10 +177,16 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractInteractable.html">AbstractInteractable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a>
@@ -207,6 +222,9 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationInterfacing.html">DestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInternalStateable.html">DestinationInternalStateable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
@@ -232,6 +250,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
@@ -362,6 +383,12 @@
                 <a class="nav-group-task-link" href="../Structs/CustomPresentation.html">CustomPresentation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultAsyncInteractorAssistant.html">DefaultAsyncInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultInteractorAssistant.html">DefaultInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DestinationDisappearModifier.html">DestinationDisappearModifier</a>
               </li>
               <li class="nav-group-task">
@@ -409,9 +436,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25DatasourceResponseClosurea">DatasourceResponseClosure</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24GroupChildRemovedClosurea">GroupChildRemovedClosure</a>
               </li>
               <li class="nav-group-task">
@@ -422,6 +446,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
@@ -988,7 +1015,7 @@
 <p>The Destinations protocols and classes which handle UINavigationControllers/NavigationStacks and UITabController/TabBars ignore this property. Custom classes which conform to one of these protocols should handle this property appropriately, though generally speaking if a Destination is added to a <code><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></code> object, it would be a good user experience for that Destination to become the focus. This may vary based on how your custom group&rsquo;s children are displayed to the user.</p>
 <div class="aside aside-important">
     <p class="aside-title">Important</p>
-    Setting this property to <code>false</code> can have side effects on the presentation of future Destinations within <code><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></code> objects whose placement depends on the location of a previous Destination. For example, if you present a Destination in a non-active child of a  <code><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></code> object with this property set to <code>false</code>, then present another Destination with a <code><a href="../Protocols/DestinationPresentationConfiguring.html#/s:12Destinations34DestinationPresentationConfiguringP16presentationTypeAA0bcF0OyxGvp">presentationType</a></code> of <code>navigationController</code>, depending on how you handle this property the Destination may not be put into the same child of the group because the active child will be different than if this property had been <code>true</code>. To overcome this, you would need to use a <code><a href="../Protocols/DestinationPresentationConfiguring.html#/s:12Destinations34DestinationPresentationConfiguringP16presentationTypeAA0bcF0OyxGvp">presentationType</a></code> on the second presentation that targets the same child directly.
+    Setting this property to <code>false</code> can have side effects on the presentation of future Destinations within <code><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></code> objects whose placement depends on the location of a previous Destination. For example, if you present a Destination in a non-active child of a  <code><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></code> object with this property set to <code>false</code>, then present another Destination with a <code><a href="../Protocols/DestinationPresentationConfiguring.html#/s:12Destinations34DestinationPresentationConfiguringP16presentationTypeAA0bcF0OyxGvp">presentationType</a></code> of <code>navigationStack</code>, depending on how you handle this property the Destination may not be put into the same child of the group because the active child will be different than if this property had been <code>true</code>. To overcome this, you would need to use a <code><a href="../Protocols/DestinationPresentationConfiguring.html#/s:12Destinations34DestinationPresentationConfiguringP16presentationTypeAA0bcF0OyxGvp">presentationType</a></code> on the second presentation that targets the same child directly.
 
 </div>
 

@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (99% documented)
+         (98% documented)
       </p>
     
     
@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DestinationInternalState.html">DestinationInternalState</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationNavigator.html">DestinationNavigator</a>
               </li>
               <li class="nav-group-task">
@@ -76,6 +79,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationsSupport.html">DestinationsSupport</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/GroupDestinationInternalState.html">GroupDestinationInternalState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NavigationControllerDestination.html">NavigationControllerDestination</a>
@@ -143,6 +149,9 @@
                 <a class="nav-group-task-link" href="../Enums/DestinationsError.html">DestinationsError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/InteractorAssistantType.html">InteractorAssistantType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a>
               </li>
               <li class="nav-group-task">
@@ -168,10 +177,16 @@
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractInteractable.html">AbstractInteractable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a>
@@ -207,6 +222,9 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationInterfacing.html">DestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DestinationInternalStateable.html">DestinationInternalStateable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
@@ -232,6 +250,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
@@ -362,6 +383,12 @@
                 <a class="nav-group-task-link" href="../Structs/CustomPresentation.html">CustomPresentation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultAsyncInteractorAssistant.html">DefaultAsyncInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DefaultInteractorAssistant.html">DefaultInteractorAssistant</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DestinationDisappearModifier.html">DestinationDisappearModifier</a>
               </li>
               <li class="nav-group-task">
@@ -409,9 +436,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25DatasourceResponseClosurea">DatasourceResponseClosure</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations24GroupChildRemovedClosurea">GroupChildRemovedClosure</a>
               </li>
               <li class="nav-group-task">
@@ -422,6 +446,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a>
@@ -457,11 +484,11 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">InteractorAssisting</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">InteractorAssisting</span><span class="o">&lt;</span><span class="kt">InteractorType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol represents an assistant which helps a Destination make requests of an interactor. Concrete assistants conforming to this protocol should handle requests for a specific interactor type.</p>
+            <p>This protocol represents an assistant which helps a Destination make requests of an Interactor. Concrete assistants conforming to this protocol should handle requests for a specific Interactor type.</p>
 
           </div>
         </section>
@@ -510,7 +537,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A configuration model which defines an interactor request.</p>
+                        <p>A configuration model which defines an Interactor request.</p>
 
                       </div>
                       <div class="declaration">
@@ -527,9 +554,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations19InteractorAssistingP11DestinationQa"></a>
-                    <a name="//apple_ref/swift/Alias/Destination" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations19InteractorAssistingP11DestinationQa">Destination</a>
+                    <a name="/s:12Destinations19InteractorAssistingP11ContentTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/ContentType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations19InteractorAssistingP11ContentTypeQa">ContentType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -537,14 +564,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A Destination type.</p>
+                        <p>A content type associated with the Interactor.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -564,7 +591,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The type of interactor.</p>
+                        <p>The type of Interactor.</p>
 
                       </div>
                       <div class="declaration">
@@ -592,7 +619,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The type of action requested of the interactor.</p>
+                        <p>The type of action requested of the Interactor.</p>
 
                       </div>
                       <div class="declaration">
@@ -600,7 +627,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">actionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP7RequestQa">Request</a></span><span class="o">.</span><span class="kt">ActionType</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+<span class="k">var</span> <span class="nv">actionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP7RequestQa">Request</a></span><span class="o">.</span><span class="kt">ActionType</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -614,116 +641,6 @@
                     <a name="//apple_ref/swift/Property/requestMethod" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations19InteractorAssistingP13requestMethodAA0b7RequestE0Ovp">requestMethod</a>
                     </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A type that represents whether the interactor request should be made using concurrency or not.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">requestMethod</span><span class="p">:</span> <span class="kt"><a href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations19InteractorAssistingP17completionClosureys6ResultOySay7Request_0F4DataQZGs5Error_pGcSgvp"></a>
-                    <a name="//apple_ref/swift/Property/completionClosure" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations19InteractorAssistingP17completionClosureys6ResultOySay7Request_0F4DataQZGs5Error_pGcSgvp">completionClosure</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A completion closure used to handle an interactor response in a non-async request.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">completionClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations25DatasourceResponseClosurea">DatasourceResponseClosure</a></span><span class="o">&lt;</span><span class="p">[</span><span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP7RequestQa">Request</a></span><span class="o">.</span><span class="kt">ResultData</span><span class="p">]</span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations19InteractorAssistingP18handleAsyncRequest11destinationy11DestinationQz_tYaF"></a>
-                    <a name="//apple_ref/swift/Method/handleAsyncRequest(destination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations19InteractorAssistingP18handleAsyncRequest11destinationy11DestinationQz_tYaF">handleAsyncRequest(destination:<wbr>)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Default implementation, asynchronous
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Handles an async request to an interactor.</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">handleAsyncRequest</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP11DestinationQa">Destination</a></span><span class="p">)</span> <span class="k">async</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>destination</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The Destination which the interactor is associated with. This reference is used to make requests to the interactor.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations19InteractorAssistingP13handleRequest11destinationy11DestinationQz_tF"></a>
-                    <a name="//apple_ref/swift/Method/handleRequest(destination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations19InteractorAssistingP13handleRequest11destinationy11DestinationQz_tF">handleRequest(destination:<wbr>)</a>
-                    </code>
                       <span class="declaration-note">
                         Default implementation
                       </span>
@@ -733,7 +650,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Handles a non-async request to an interactor. Responses to the interactor should be handled using the <code><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP17completionClosureys6ResultOySay7Request_0F4DataQZGs5Error_pGcSgvp">completionClosure</a></code> closure.</p>
+                        <p>A type that represents whether the Interactor request should be made using concurrency or not.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -745,7 +662,35 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">handleRequest</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP11DestinationQa">Destination</a></span><span class="p">)</span></code></pre>
+<span class="k">var</span> <span class="nv">requestMethod</span><span class="p">:</span> <span class="kt"><a href="../Enums/InteractorRequestMethod.html">InteractorRequestMethod</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations19InteractorAssistingP13handleRequest11destination7contentyqd___11ContentTypeQzSgtAA15DestinationableRd__0bI0Qyd__AKRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/handleRequest(destination:content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations19InteractorAssistingP13handleRequest11destination7contentyqd___11ContentTypeQzSgtAA15DestinationableRd__0bI0Qyd__AKRtzlF">handleRequest(destination:<wbr>content:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles a request to an Interactor. Responses to the Interactor should be handled using the <code>completionClosure</code> closure.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="n">handleRequest</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">Destination</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP0B4TypeQa">InteractorType</a></span> <span class="o">==</span> <span class="kt">Destination</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorAssisting.html#/s:12Destinations19InteractorAssistingP0B4TypeQa">InteractorType</a></span></code></pre>
 
                         </div>
                       </div>
@@ -761,7 +706,19 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The Destination which the interactor is associated with. This reference is used to make requests to the interactor.</p>
+                                  <p>The Destination which the Interactor is associated with. This reference is used to make requests to the Interactor.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional content model used to make a request to the Interactor.</p>
                                 </div>
                               </td>
                             </tr>
