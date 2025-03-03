@@ -1,7 +1,7 @@
 # Destinations
 ![Static Badge](https://img.shields.io/badge/Swift-6.0-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
 
-Destinations is a Swift library for UIKit and SwiftUI that is designed to truly decouple your UI and manage navigation flow. It is based on a philosophy that emphasizes clear separation of concerns, that each significant `View` or `UIViewController` in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change. Destinations wants your user interfaces to focus again on the user.
+Destinations is a Swift library for UIKit and SwiftUI that is designed to truly decouple your UI and manage navigation flow. It is based on a philosophy that emphasizes clear separation of concerns, that each significant `View` or `UIViewController` in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change. Destinations enables your user interfaces to focus again on the user.
 
 * Enables clean separation of concerns between your interfaces, datasources, and other application logic
 * Allows you to easily replace UI and datasources for A/B testing or providing testing mocks
