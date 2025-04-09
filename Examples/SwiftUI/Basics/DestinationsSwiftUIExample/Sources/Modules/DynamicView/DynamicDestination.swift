@@ -26,7 +26,7 @@ public final class DynamicDestination: DestinationTypes, ViewDestinationable {
 
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
 
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination

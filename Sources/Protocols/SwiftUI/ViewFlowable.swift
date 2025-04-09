@@ -10,10 +10,10 @@
 import SwiftUI
 
 /// This protocol represents a Flow which coordinates routing and navigation as a user moves through a SwiftUI-based app.
-@MainActor public protocol ViewFlowable<PresentationConfiguration>: Flowable where InterfaceCoordinator == DestinationSwiftUICoordinator, PresentationConfiguration == DestinationPresentation<DestinationType, ContentType, TabType> {
+@MainActor public protocol ViewFlowable<DestinationType, ContentType, TabType>: Flowable where InterfaceCoordinator == DestinationSwiftUICoordinator {
     
     /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
+    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
     
     /// A dictionary of Destination providers whose keys are an enum of Destination types. The Destination type represents the type of Destination each provider can provide.
     var destinationProviders: [DestinationType: any ViewDestinationProviding] { get set }
@@ -21,23 +21,23 @@ import SwiftUI
     /// Provides a Destination based on the provided configuration model.
     /// - Parameter configuration: The presentation configuration model describing the Destination to return.
     /// - Returns: The requested Destination, if one was found or able to be built.
-    func destination(for configuration: PresentationConfiguration) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func destination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Builds and returns a new Destination based on the supplied configuration model.
     /// - Parameter configuration: A presentation configuration model to build the Destination.
     /// - Returns: The created Destination, if one could be built.
-    func buildDestination(for configuration: PresentationConfiguration) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func buildDestination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
         
     /// Presents a Destination based on the supplied configuration model.
     /// - Parameter configuration: A presentation configuration model by which to find or build a Destination.
     /// - Returns: The presented Destination, if one was found or created.
-    @discardableResult func presentDestination(configuration: PresentationConfiguration) -> (any ViewDestinationable<PresentationConfiguration>)?
+    @discardableResult func presentDestination(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Updates a presentation configuration model.
     /// - Parameters:
     ///   - configuration: A presentation configuration model to update.
     ///   - destination: A Destination to update.
-    func updateDestinationConfiguration(configuration: inout PresentationConfiguration, destination: inout some ViewDestinationable<PresentationConfiguration>)
+    func updateDestinationConfiguration(configuration: inout DestinationPresentation<DestinationType, ContentType, TabType>, destination: inout some ViewDestinationable<DestinationType, ContentType, TabType>)
     
     /// Finds the closest navigator in the view hierarchy to the provided Destination.
     /// - Parameter currentDestination: The Destination to start searching at.
@@ -47,29 +47,29 @@ import SwiftUI
     /// Finds the closest Destination in the view hierarchy whose interface is a `NavigationSplitView`.
     /// - Parameter currentDestination: The Destination to start searching at.
     /// - Returns: Returns a Destination, if one was found.
-    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<PresentationConfiguration>)?
+    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Finds the closest Destination in the view hierarchy whose interface manages a `TabBar`.
     /// - Parameter currentDestination: The Destination to start searching at.
     /// - Returns: Returns a `TabBar` Destination, if found.
-    func findTabBarInViewHierarchy(searchDestination: any ViewDestinationable) -> (any TabBarViewDestinationable<PresentationConfiguration, TabType>)?
+    func findTabBarInViewHierarchy(searchDestination: any ViewDestinationable) -> (any TabBarViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// The default presentation closure run when a Destination is presented in the tab of a `TabView`.
     /// - Returns: A closure.
-    func defaultTabBarPresentationClosure() -> ((_ destination: any ViewDestinationable<PresentationConfiguration>, _ tabViewID: UUID) -> Void)
+    func defaultTabBarPresentationClosure() -> ((_ destination: any ViewDestinationable<DestinationType, ContentType, TabType>, _ tabViewID: UUID) -> Void)
 }
 
 
 public extension ViewFlowable {
     
-    func buildDestination(for configuration: PresentationConfiguration) -> (any ViewDestinationable<PresentationConfiguration>)? where DestinationType == PresentationConfiguration.DestinationType, TabType == PresentationConfiguration.TabType {
+    func buildDestination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         
         var configuration = configuration
-        let provider = destinationProviders[destinationType] as? any ViewDestinationProviding<PresentationConfiguration>
+        let provider = destinationProviders[destinationType] as? any ViewDestinationProviding<DestinationType, ContentType, TabType>
         
-        if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ViewDestinationable<PresentationConfiguration> {
+        if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             updateDestinationConfiguration(configuration: &configuration, destination: &destination)
             
             destination.prepareForPresentation()
@@ -82,7 +82,7 @@ public extension ViewFlowable {
     }
     
 
-    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<PresentationConfiguration>)? {
+    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
         guard destinationQueue.count > 0 else { return nil }
         
         if let nextPresentation = destinationQueue.popFirst() {
@@ -100,12 +100,73 @@ public extension ViewFlowable {
     }
     
     
-    func defaultSheetDismissalCompletionClosure(configuration: PresentationConfiguration) -> PresentationCompletionClosure? {
+    func defaultCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)? = nil) -> PresentationCompletionClosure? {
+        
+        return { [weak self, weak configuration, weak destination] didComplete in
+            guard let strongSelf = self else { return }
+            //guard let destination else { return }
+            guard let configuration else { return }
+            
+            if didComplete == true {
+                DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
+                
+                if let destination {
+                    strongSelf.updateActiveDestinations(with: destination)
+                }
+                
+                if let destination, let groupedDestination = destination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                    let currentChildDestination = groupedDestination.currentChildDestination()
+                    
+                    if let parentDestinationID = destination.parentDestinationID(), let currentChildDestination, let parent = self?.destination(for: parentDestinationID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType>, (configuration.shouldSetDestinationAsCurrent == true || parent.supportsIgnoringCurrentDestinationStatus() == false) {
+                        // if this Destination's parent is also Group, add the Destination's current child as the Flow's current Destination
+                        // as long as the parent allows this child Destination to take focus
+                        strongSelf.updateCurrentDestination(destination: currentChildDestination)
+                        
+                    } else if let currentChildDestination {
+                        // if this wasn't added to a Group and this Destination has a child, make that the current Flow Destination
+                        strongSelf.updateCurrentDestination(destination: currentChildDestination)
+                    } else {
+                        // this Destination has no current child, so just make it the current Flow Destination
+                        strongSelf.updateCurrentDestination(destination: destination)
+                    }
+                
+                    for child in groupedDestination.childDestinations() {
+                        strongSelf.updateActiveDestinations(with: child)
+                    }
+                    
+                    groupedDestination.updateChildren()
+                    
+                    strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
+                    
+                    strongSelf.uiCoordinator?.destinationToPresent = nil
+
+                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
+                                        
+                } else {
+                    if let destination {
+                        strongSelf.updateCurrentDestination(destination: destination)
+                        strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
+                    }
+                    
+                    strongSelf.uiCoordinator?.destinationToPresent = nil
+
+                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
+
+                }
+
+            }
+            
+        }
+    
+    }
+    
+    
+    func defaultSheetDismissalCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> PresentationCompletionClosure? {
         
         return { [weak self, weak configuration] didComplete in
             guard let strongSelf = self, let configuration else { return }
             if didComplete {
-                if let parentID = configuration.parentDestinationID, let parentDestination = strongSelf.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
+                if let parentID = configuration.parentDestinationID, let parentDestination = strongSelf.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
 
                     if let sheetID = configuration.actionTargetID {
                         strongSelf.removeDestination(destinationID: sheetID)
@@ -128,7 +189,7 @@ public extension ViewFlowable {
 
     }
     
-    func defaultNavigationBackCompletionClosure(configuration: PresentationConfiguration) -> PresentationCompletionClosure? {
+    func defaultNavigationBackCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> PresentationCompletionClosure? {
         
         return { [weak self, weak configuration] didComplete in
             guard let strongSelf = self, let configuration else { return }
@@ -140,7 +201,7 @@ public extension ViewFlowable {
                     strongSelf.removeDestination(destinationID: oldID)
                 }
                 
-                if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ViewDestinationable<PresentationConfiguration> {
+                if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                     strongSelf.updateCurrentDestination(destination: targetDestination)
                     targetDestination.updateIsSystemNavigating(isNavigating: false)
 
@@ -157,13 +218,13 @@ public extension ViewFlowable {
         
     }
     
-    func defaultTabBarPresentationClosure() -> ((_ destination: any ViewDestinationable<PresentationConfiguration>, _ tabViewID: UUID) -> Void) {
+    func defaultTabBarPresentationClosure() -> ((_ destination: any ViewDestinationable<DestinationType, ContentType, TabType>, _ tabViewID: UUID) -> Void) {
         
-        let closure =  { [weak self] (destination: any ViewDestinationable<PresentationConfiguration>, tabViewID: UUID) in
+        let closure =  { [weak self] (destination: any ViewDestinationable<DestinationType, ContentType, TabType>, tabViewID: UUID) in
             guard let strongSelf = self else { return }
-            guard let tabRootViewDestination = strongSelf.destination(for: tabViewID) as? any GroupedViewDestinationable<PresentationConfiguration>, let navigator = strongSelf.findNavigatorInViewHierarchy(searchDestination: tabRootViewDestination) else { return }
+            guard let tabRootViewDestination = strongSelf.destination(for: tabViewID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType>, let navigator = strongSelf.findNavigatorInViewHierarchy(searchDestination: tabRootViewDestination) else { return }
             
-            if let navID = navigator.navigatorDestinationID, let navDestination = strongSelf.destination(for: navID) as? any GroupedDestinationable<PresentationConfiguration> {
+            if let navID = navigator.navigatorDestinationID, let navDestination = strongSelf.destination(for: navID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
                 navDestination.addChild(childDestination: destination)
             }
         }
@@ -182,19 +243,19 @@ public extension ViewFlowable {
         return nil
     }
     
-    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<PresentationConfiguration>)? {
-        if let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<PresentationConfiguration> {
+    func findSplitViewInViewHierarchy(currentDestination: any ViewDestinationable) -> (any NavigationSplitViewDestinationable<DestinationType, ContentType, TabType>)? {
+        if let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<DestinationType, ContentType, TabType> {
             return splitViewDestination
             
-        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<PresentationConfiguration> {
+        } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             return findSplitViewInViewHierarchy(currentDestination: parent)
         }
         return nil
     }
     
-    func findTabBarInViewHierarchy(searchDestination: any ViewDestinationable) -> (any TabBarViewDestinationable<PresentationConfiguration, TabType>)? {
+    func findTabBarInViewHierarchy(searchDestination: any ViewDestinationable) -> (any TabBarViewDestinationable<DestinationType, ContentType, TabType>)? {
         
-        if let tabDestination = searchDestination as? any TabBarViewDestinationable<PresentationConfiguration, TabType> {
+        if let tabDestination = searchDestination as? any TabBarViewDestinationable<DestinationType, ContentType, TabType> {
             return tabDestination
             
         } else if let parentID = searchDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable {
@@ -212,7 +273,7 @@ public extension ViewFlowable {
     /// - Parameter destinationID: The identifier of the Destination.
     /// - Returns: A strongly-typed `View` associated with the specified Destination.
     @ViewBuilder func destinationView(for destinationID: UUID) -> (some View)? {
-        if let destination = destination(for: destinationID) as? any ViewDestinationable<PresentationConfiguration>, let view = destination.currentView() {
+        if let destination = destination(for: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType>, let view = destination.currentView() {
             
             AnyView(view)
         }
@@ -221,7 +282,7 @@ public extension ViewFlowable {
     /// A `ViewBuilder` that returns a strongly-typed `View` associated with the Flow's starting Destination.
     /// - Returns: A strongly-typed `View` associated with the Flow's starting Destination.
     @ViewBuilder func startingDestinationView() -> (some View)? {
-        if let destination = rootDestination as? any ViewDestinationable<PresentationConfiguration> {
+        if let destination = rootDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             destinationView(for: destination.id)
         }
     }
@@ -230,18 +291,19 @@ public extension ViewFlowable {
 
 public extension ViewFlowable {
     
-    func updateDestinationConfiguration(configuration: inout PresentationConfiguration, destination: inout some ViewDestinationable<PresentationConfiguration>) {
+    func updateDestinationConfiguration(configuration: inout DestinationPresentation<DestinationType, ContentType, TabType>, destination: inout some ViewDestinationable<DestinationType, ContentType, TabType>) {
         
-        let currentDestination = currentDestination as? any ViewDestinationable<PresentationConfiguration>
+        let currentDestination = currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>
         
         if case PresentationType.tabBar(tab: _) = configuration.presentationType {
             if let tabDestination = configuration.tabBarDestination {
-                tabDestination.assignPresentationClosure(closure: self.defaultTabBarPresentationClosure())
+                let closure = self.defaultTabBarPresentationClosure()
+                tabDestination.assignPresentationClosure(closure: closure)
             }
         }
         
         // subscribe to tab selection changes in order to update the current Destination
-        if let tabDestination = destination as? any TabBarViewDestinationable<PresentationConfiguration, TabType> {
+        if let tabDestination = destination as? any TabBarViewDestinationable<DestinationType, ContentType, TabType> {
             tabDestination.assignSelectedTabUpdatedClosure { [weak self, weak tabDestination] selectedTab in
                 if let selectedDestination = tabDestination?.currentDestination(for: selectedTab.type) {
                     tabDestination?.updateCurrentDestination(destinationID: selectedDestination.id)

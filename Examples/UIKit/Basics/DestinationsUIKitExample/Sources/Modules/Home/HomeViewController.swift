@@ -13,8 +13,7 @@ final class HomeViewController: UIViewController, ControllerDestinationInterfaci
  
     typealias UserInteractionType = HomeUserInteractions
     typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias Destination = ControllerDestination<UserInteractionType, HomeViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = ControllerDestination<HomeViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
 

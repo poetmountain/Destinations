@@ -24,37 +24,16 @@ import SwiftUI
 /// } detail: {
 ///     BindableContainerView(content: $destinationState.destination.currentDetail)
 /// }
-@Observable public final class NavigationSplitViewDestination<PresentationConfigurationType: DestinationPresentationConfiguring, SplitViewType: NavigationSplitViewDestinationInterfacing>: NavigationSplitViewDestinationable where PresentationConfigurationType.DestinationType == SplitViewType.DestinationType {
-    
-    /// An enum which defines all routable Destinations in the app.
-    public typealias DestinationType = SplitViewType.DestinationType
-    
-    /// An enum which defines types of tabs in a tab bar.
-    public typealias TabType = PresentationConfigurationType.TabType
-    
-    /// An enum which defines the types of content that are able to be sent through Destinations.
-    public typealias ContentType = PresentationConfigurationType.ContentType
-    
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    public typealias InteractorType = SplitViewType.InteractorType
-    
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    public typealias PresentationConfiguration = PresentationConfigurationType
-    
-    /// An enum which defines user interaction types for this Destination's interface.
-    public typealias UserInteractionType = SplitViewType.UserInteractionType
-    
-    /// The type of `View` associated with this Destination.
-    public typealias ViewType = SplitViewType
-    
+@Observable public final class NavigationSplitViewDestination<ViewType: NavigationSplitViewDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigationSplitViewDestinationable {
+   
     public let id = UUID()
     
     public let type: DestinationType
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
 
     public var destinationIDsForColumns: [NavigationSplitViewColumn: UUID] = [:]
     
@@ -72,7 +51,7 @@ import SwiftUI
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestinationID: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, destinationsForColumns: [NavigationSplitViewColumn: any ViewDestinationable<PresentationConfiguration>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
+    public init(destinationType: DestinationType, destinationsForColumns: [NavigationSplitViewColumn: any ViewDestinationable<DestinationType, ContentType, TabType>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
         self.type = destinationType
         self.internalState.parentDestinationID = parentDestinationID
         self.internalState.destinationConfigurations = destinationConfigurations

@@ -27,7 +27,7 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
         //DestinationsSupport.logger.shouldUseMethodInfo = true
 
         let startingTabs: [AppTabType] = [.palettes, .home, .counter]
-        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingType: RouteDestinationType =  .tabBar(tabs: startingTabs)
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
         let homepath: [PresentationConfiguration] = [
@@ -69,6 +69,9 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
                 if (hasStartedAppFlow == false) {
                     self.appFlow = buildAppFlow()
                     self.appFlow?.start()
+                    
+                    print("root dest \(appFlow?.rootDestination?.type)")
+                    
                     hasStartedAppFlow = true
 
                 }

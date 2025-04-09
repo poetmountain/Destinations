@@ -48,7 +48,7 @@ final class CounterDestination: ViewDestinationable, DestinationTypes {
     
     public var view: ViewType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
 
     var counter: Int = 0
 

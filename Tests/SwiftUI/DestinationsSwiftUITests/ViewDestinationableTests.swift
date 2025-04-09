@@ -22,8 +22,8 @@ import Destinations
 
     func test_assignInteractor() {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
-        let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.UserInteractions, PresentationConfiguration>(configurations: [.color(model: nil): colorSelection])
-        let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>(configurations: [:])
+        let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.UserInteractions, DestinationType, ContentType, TabType>(configurations: [.color(model: nil): colorSelection])
+        let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>(configurations: [:])
 
         let destination = ColorsListDestination(destinationConfigurations: colorsListConfigs, navigationConfigurations: navigationConfigs, parentDestination: nil)
         let listView = ColorsListView(destination: destination)

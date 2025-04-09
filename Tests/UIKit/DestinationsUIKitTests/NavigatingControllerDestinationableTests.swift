@@ -23,7 +23,7 @@ import UIKit
 
     func test_addChild() {
 
-        let navDestination = NavigationControllerDestination<StartViewController.UserInteractions, StartViewController, StartViewController.PresentationConfiguration, StartViewController.InteractorType>(destinationType: .start)
+        let navDestination = NavigationControllerDestination<StartViewController, StartViewController.UserInteractions, StartViewController.DestinationType, StartViewController.ContentType, StartViewController.TabType, StartViewController.InteractorType>(destinationType: .start)
         
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         navDestination.addChild(childDestination: colors)
@@ -34,7 +34,7 @@ import UIKit
     }
 
     func test_navigateBackInStack() {
-        let navDestination = NavigationControllerDestination<StartViewController.UserInteractions, StartViewController, StartViewController.PresentationConfiguration, StartViewController.InteractorType>(destinationType: .start)
+        let navDestination = NavigationControllerDestination<StartViewController, StartViewController.UserInteractions, StartViewController.DestinationType, StartViewController.ContentType, StartViewController.TabType, StartViewController.InteractorType>(destinationType: .start)
         let navController = StartViewController(destination: navDestination)
         navDestination.assignAssociatedController(controller: navController)
         

@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents a type of Destination which manages a SwiftUI `NavigationStack`.
-@MainActor public protocol NavigatingViewDestinationable<PresentationConfiguration>: ViewDestinationable, GroupedDestinationable where ViewType: NavigatingDestinationInterfacing {
+@MainActor public protocol NavigatingViewDestinationable<DestinationType, ContentType, TabType>: GroupedViewDestinationable where ViewType: NavigatingDestinationInterfacing {
     
     /// Removes the current Destination and navigates to the previous Destination in the stack, if one exists.
     /// - Parameter previousPresentationID: An optional unique identifier of the previous Destination.
@@ -27,7 +27,7 @@ public extension NavigatingViewDestinationable {
         return false
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
+    func addChild(childDestination: any Destinationable<DestinationType, ContentType, TabType>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         DestinationsSupport.logger.log("Adding child \(childDestination.type) to NavigationStack \(childDestination.id)", level: .verbose)
         
         navigator()?.addPathElement(item: childDestination.id, shouldAnimate: shouldAnimate)
@@ -39,7 +39,7 @@ public extension NavigatingViewDestinationable {
         
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
 
         navigateBackInStack()
         addChild(childDestination: newDestination)
@@ -59,7 +59,7 @@ public extension NavigatingViewDestinationable {
         
         DestinationsSupport.logger.log("Removing child \(childDestination.id) : \(childDestination.type)", level: .verbose)
         
-        if let groupedChild = childDestination as? any GroupedDestinationable {
+        if let groupedChild = childDestination as? any GroupedViewDestinationable {
             groupedChild.removeAllChildren()
         }
         

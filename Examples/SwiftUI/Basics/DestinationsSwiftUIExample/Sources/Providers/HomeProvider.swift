@@ -11,18 +11,22 @@ import Destinations
 
 struct HomeProvider: ViewDestinationProviding, DestinationTypes {
     
-    public typealias Destination = ViewDestination<HomeView.UserInteractions, HomeView, PresentationConfiguration>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
+    typealias DestinationType = HomeView.DestinationType
+    typealias ContentType = HomeView.ContentType
+    typealias TabType = HomeView.TabType
+    typealias UserInteractionType = HomeView.UserInteractions
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public typealias Destination =  ViewDestination<HomeView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
+
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
-        let destination = ViewDestination<HomeView.UserInteractions, HomeView, PresentationConfiguration>(destinationType: .home, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .home, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let listView = HomeView(destination: destination)
-        destination.assignAssociatedView(view: listView)
+        let view = HomeView(destination: destination)
+        destination.assignAssociatedView(view: view)
 
         return destination
         

@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// This protocol represents a Destination whose interface `View` handles a `NavigationSplitView`.
-@MainActor public protocol NavigationSplitViewDestinationable<PresentationConfiguration>: ViewDestinationable, GroupedDestinationable where ViewType: NavigationSplitViewDestinationInterfacing {
+@MainActor public protocol NavigationSplitViewDestinationable<DestinationType, ContentType, TabType>: GroupedViewDestinationable where ViewType: NavigationSplitViewDestinationInterfacing {
     
     ///  A dictionary of `View`-based Destination object identifiers, whose associated keys are the `NavigationSplitViewColumn` column type should be displayed in.
     var destinationIDsForColumns: [NavigationSplitViewColumn: UUID] { get set }
@@ -70,7 +70,7 @@ import SwiftUI
     ///   - destination: A SwiftUI-based Destination to be presented.
     ///   - column: The column to present this Destination in.
     ///   - shouldUpdateSelectedColumn: Determines whether the column should become the current one.
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in column: NavigationSplitViewColumn, shouldUpdateSelectedColumn: Bool, presentationOptions: NavigationStackPresentationOptions?, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
+    func presentDestination(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, in column: NavigationSplitViewColumn, shouldUpdateSelectedColumn: Bool, presentationOptions: NavigationStackPresentationOptions?, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
     
     /// Returns a column type if it finds a Destination identifier which matches the root Destination for that column.
     /// - Parameter destinationID: A Destination identifier representing the root Destination of a column.
@@ -80,14 +80,14 @@ import SwiftUI
     /// Returns the current Destination for the specified colunn. In the case where multiple Destinations are presented in a column, it will return the most recently-presented (visible) one.
     /// - Parameter column: The column type.
     /// - Returns: A `View`-based Destination, if one was found.
-    func currentDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func currentDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Returns the root Destination for the column. This is not necessarily the Destination representing the currently visible `View` in a column, but is instead the `View` which is at the column's root level, such as a `NavigationStack`.
     ///
     /// This method should be used when building the column for a `NavigationSplitView`.
     /// - Parameter column: The column type.
     /// - Returns: A Destination, if one was found.
-    func rootDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func rootDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     
 }
@@ -95,7 +95,7 @@ import SwiftUI
 
 public extension NavigationSplitViewDestinationable {
     
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in column: NavigationSplitViewColumn, shouldUpdateSelectedColumn: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func presentDestination(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, in column: NavigationSplitViewColumn, shouldUpdateSelectedColumn: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         DestinationsSupport.logger.log("Presenting View \(destination.type) in splitview column \(column).", level: .verbose)
 
         let currentColumnDestination = self.rootDestination(for: column)
@@ -106,7 +106,7 @@ public extension NavigationSplitViewDestinationable {
         
         // If the current Destination is a NavigationStack, add the presented Destination to it
         // Otherwise replace the current View with the new one
-        if let navDestination = currentColumnDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = currentColumnDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             addChild(childDestination: destination)
             let shouldAnimate = presentationOptions?.shouldAnimate ?? true
             navDestination.addChild(childDestination: destination, shouldAnimate: shouldAnimate)
@@ -128,7 +128,7 @@ public extension NavigationSplitViewDestinationable {
                 break
         }
         
-        if let navDestination = destination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = destination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
         }
         
@@ -139,8 +139,8 @@ public extension NavigationSplitViewDestinationable {
     }
 
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let newDestination = newDestination as? any ViewDestinationable<PresentationConfiguration> else {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+        guard let newDestination = newDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> else {
             let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))
             let message = String(format: template, "\(newDestination.self)")
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -182,11 +182,11 @@ public extension NavigationSplitViewDestinationable {
                 break
         }
         
-        if let navDestination = newDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = newDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
         }
         
-        if let newDestination = newDestination as? any ViewDestinationable<PresentationConfiguration> {
+        if let newDestination = newDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             updateSplitView(destination: newDestination, for: currentColumn)
         }
         
@@ -196,17 +196,17 @@ public extension NavigationSplitViewDestinationable {
         return destinationIDsForColumns.first(where: { $0.value == destinationID })?.key
     }
     
-    func rootDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<PresentationConfiguration>)? {
+    func rootDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
         guard let destinationID = destinationIDsForColumns[column] else { return nil }
         
-        return childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<PresentationConfiguration>
+        return childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType>
     }
     
-    func currentDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<PresentationConfiguration>)? {
-        guard let destinationID = destinationIDsForColumns[column], let childDestination = childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<PresentationConfiguration> else { return nil }
+    func currentDestination(for column: NavigationSplitViewColumn) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
+        guard let destinationID = destinationIDsForColumns[column], let childDestination = childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> else { return nil }
 
         // If the top-level Destination is a NavigationStack, we need to return Destination of the current path element in its navigationPath. Otherwise, return the top-level Destination itself
-        if let navDestination = childDestination as? any NavigatingViewDestinationable<PresentationConfiguration>, let navigator = navDestination.navigator(), let lastID = navigator.currentPathElement(), let lastDestination = navDestination.childForIdentifier(destinationIdentifier: lastID) as? any ViewDestinationable<PresentationConfiguration> {
+        if let navDestination = childDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navDestination.navigator(), let lastID = navigator.currentPathElement(), let lastDestination = navDestination.childForIdentifier(destinationIdentifier: lastID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
 
             return lastDestination
 
@@ -229,7 +229,7 @@ public extension NavigationSplitViewDestinationable {
     /// A `ViewBuilder` method that returns a strongly-typed `View` associated with the specified Destiantion.
     /// - Parameter destination: The Destination whose `View` should be returned.
     /// - Returns: A strongly-typed `View` associated with the specified Destination.
-    @ViewBuilder internal func destinationView(for destination: any ViewDestinationable<PresentationConfiguration>) -> (some View)? {
+    @ViewBuilder internal func destinationView(for destination: any ViewDestinationable<DestinationType, ContentType, TabType>) -> (some View)? {
         if let view = destination.currentView() {
             AnyView(view)
         }
@@ -237,7 +237,7 @@ public extension NavigationSplitViewDestinationable {
     
     /// Registers this object for feedback with an associated NavigatingViewDestinationable class. This is used internally by Destinations to make sure that this object updates properly when there are changes in the NavigationStack.
     /// - Parameter destination: A Destination with an associated NavigationStack.
-    internal func registerNavigationClosures(for destination: any NavigatingViewDestinationable<PresentationConfiguration>) {
+    internal func registerNavigationClosures(for destination: any NavigatingViewDestinationable<DestinationType, ContentType, TabType>) {
         DestinationsSupport.logger.log("Registering navigation closures for \(destination.description)", level: .verbose)
 
         destination.assignChildRemovedClosure { [weak self] destinationID in
@@ -262,7 +262,7 @@ public extension NavigationSplitViewDestinationable {
     /// - Parameters:
     ///   - destination: The Destination to update the column with.
     ///   - column: The type of column to update.
-    internal func updateSplitView(destination: any ViewDestinationable<PresentationConfiguration>, for column: NavigationSplitViewColumn) {
+    internal func updateSplitView(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, for column: NavigationSplitViewColumn) {
 
         self.destinationIDsForColumns[column] = destination.id
 

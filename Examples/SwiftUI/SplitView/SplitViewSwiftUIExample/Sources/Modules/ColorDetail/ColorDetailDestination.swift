@@ -53,7 +53,7 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
 
     var items: [ColorViewModel] = []

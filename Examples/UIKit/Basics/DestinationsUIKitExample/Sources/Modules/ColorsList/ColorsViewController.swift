@@ -13,7 +13,6 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
         
     typealias UserInteractionType = ColorsListDestination.UserInteractions
     typealias InteractorType = ColorsListDestination.InteractorType
-    typealias PresentationConfiguration = Destination.PresentationConfiguration
     typealias Destination = ColorsListDestination
     
     enum ColorItem: Sendable, Equatable, Hashable {

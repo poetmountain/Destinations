@@ -31,11 +31,11 @@ public protocol DestinationUIKitCoordinating: DestinationInterfaceCoordinating, 
     ///   - parentOfCurrentDestination: The parent of the current Destination.
     ///   - tabBarDestinationInViewHiearchy: A TabBar controller, if one was found in the view hierarchy.
     ///   - configuration: The configuration object for this presentation.
-    func presentControllerDestination<PresentationConfiguration: DestinationPresentationConfiguring>(
-        destination: (any ControllerDestinationable<PresentationConfiguration>)?,
+    func presentControllerDestination<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(
+        destination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?,
         currentDestination: (any ControllerDestinationable)?,
         parentOfCurrentDestination: (any ControllerDestinationable)?,
         tabBarDestinationInViewHiearchy: (any TabBarControllerDestinationable)?,
-        configuration: PresentationConfiguration)
+        configuration: DestinationPresentation<DestinationType, ContentType, TabType>)
     
 }

@@ -12,7 +12,6 @@ import Destinations
 final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
     
     typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias Destination = ColorDetailDestination
         
     var destinationState: DestinationInterfaceState<Destination>

@@ -60,9 +60,8 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
     }
     
     typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationPresentation<DestinationType, AppContentType, TabType>>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
     typealias ControllerType = TestColorsViewController
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     
     public let id = UUID()
     
@@ -70,7 +69,7 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
     
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
     
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {

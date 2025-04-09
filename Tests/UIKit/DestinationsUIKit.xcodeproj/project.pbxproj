@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8BCD98E32CD0CA3400EB127E /* Destinations in Frameworks */ = {isa = PBXBuildFile; productRef = 8BCD98E22CD0CA3400EB127E /* Destinations */; };
+		8BD596D22DA5EDB4009E53A1 /* UIKitTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 8BD596D12DA5EDB4009E53A1 /* UIKitTests.xctestplan */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		8B1C29082CD0BF0E007CCF36 /* DestinationsUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DestinationsUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B1C291E2CD0BF0F007CCF36 /* DestinationsUIKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DestinationsUIKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BD596D12DA5EDB4009E53A1 /* UIKitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UIKitTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -83,6 +85,7 @@
 		8B1C28FF2CD0BF0E007CCF36 = {
 			isa = PBXGroup;
 			children = (
+				8BD596D12DA5EDB4009E53A1 /* UIKitTests.xctestplan */,
 				8B1C290A2CD0BF0E007CCF36 /* DestinationsUIKit */,
 				8B1C29212CD0BF0F007CCF36 /* DestinationsUIKitTests */,
 				8B1C29092CD0BF0E007CCF36 /* Products */,
@@ -194,6 +197,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BD596D22DA5EDB4009E53A1 /* UIKitTests.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

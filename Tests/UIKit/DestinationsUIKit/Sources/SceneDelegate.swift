@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return baseVC
             
         } else {
-            let destination = ControllerDestination<BaseViewController.UserInteractions, BaseViewController, BaseViewController.PresentationConfiguration, BaseViewController.InteractorType>(destinationType: .home)
+            let destination = ControllerDestination<BaseViewController, BaseViewController.UserInteractions, BaseViewController.DestinationType, BaseViewController.ContentType, BaseViewController.TabType, BaseViewController.InteractorType>(destinationType: .home)
             let baseVC = BaseViewController(destination: destination)
             destination.assignAssociatedController(controller: baseVC)
             rootController = baseVC
@@ -72,14 +72,13 @@ final class BaseTestsViewController: UINavigationController, ControllerDestinati
     }
 
     
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<UserInteractionType, BaseViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
     
     var destinationState: DestinationInterfaceState<Destination>
     
     init() {
-        let destination = ControllerDestination<UserInteractionType, BaseViewController, PresentationConfiguration, InteractorType>(destinationType: .home)
+        let destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .home)
         destinationState = DestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }

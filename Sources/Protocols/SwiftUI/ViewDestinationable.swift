@@ -10,13 +10,10 @@
 import SwiftUI
 
 /// This protocol represents a Destination which is associated with a SwiftUI `View`.
-@MainActor public protocol ViewDestinationable<PresentationConfiguration>: Destinationable {
+@MainActor public protocol ViewDestinationable<DestinationType, ContentType, TabType>: Destinationable {
     
     /// The type of `View` associated with this Destination.
     associatedtype ViewType: ViewDestinationInterfacing
-
-    /// A ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
 
     /// The SwiftUI `View` associated with this Destination.
     var view: ViewType? { get set }

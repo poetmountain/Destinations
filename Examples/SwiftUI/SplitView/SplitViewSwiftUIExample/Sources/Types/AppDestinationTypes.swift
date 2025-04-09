@@ -17,7 +17,7 @@ protocol AppDestinationTypes {
     typealias DestinationType = RouteDestinationType
     typealias TabType = AppTabType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias PresentationType = DestinationPresentationType<DestinationPresentation<DestinationType, AppContentType, TabType>>
+    typealias PresentationType = DestinationPresentationType<DestinationType, AppContentType, TabType>
     typealias ContentType = AppContentType
     
 }

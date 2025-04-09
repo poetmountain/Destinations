@@ -12,12 +12,11 @@ import Destinations
 struct DynamicProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias Destination = DynamicDestination
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
     public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         guard let contentType = configuration.contentType, case .dynamicView(view: let customView) = contentType else { return nil }
         

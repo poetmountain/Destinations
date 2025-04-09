@@ -31,8 +31,7 @@ struct AppTabView: TabBarViewDestinationInterfacing, DestinationTypes {
     typealias UserInteractionType = UserInteractions
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = DestinationPresentation<RouteDestinationType, AppContentType, TabType>
-    typealias Destination = TabViewDestination<PresentationConfiguration, Self>
+    typealias Destination = TabViewDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
         
     @State public var destinationState: DestinationInterfaceState<Destination>
 

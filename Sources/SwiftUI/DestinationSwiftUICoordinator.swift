@@ -38,11 +38,11 @@ public final class DestinationSwiftUICoordinator: NSObject, DestinationSwiftUICo
     ///   - currentDestination: The currently presented Destination.
     ///   - parentOfCurrentDestination: The parent of the current Destination.
     ///   - configuration: The configuration object for this presentation.
-    public func presentViewDestination<PresentationConfiguration: DestinationPresentationConfiguring>(
-        destination: (any ViewDestinationable<PresentationConfiguration>)? = nil,
-        currentDestination: (any ViewDestinationable<PresentationConfiguration>)?,
+    public func presentViewDestination<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(
+        destination: (any ViewDestinationable<DestinationType, ContentType, TabType>)? = nil,
+        currentDestination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?,
         parentOfCurrentDestination: (any ViewDestinationable)?,
-        configuration: PresentationConfiguration) {
+        configuration: DestinationPresentation<DestinationType, ContentType, TabType>) {
             
             destinationToPresent = destination
             

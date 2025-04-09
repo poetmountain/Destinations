@@ -31,9 +31,8 @@ final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes
         }
     }
     
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
     
     typealias ViewType = ColorNavView
 
@@ -43,8 +42,8 @@ final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes
     
     public var view: ViewType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, AppContentType, TabType> = GroupDestinationInternalState()
     
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {

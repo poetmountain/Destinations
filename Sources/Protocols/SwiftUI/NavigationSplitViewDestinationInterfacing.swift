@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// A protocol defining a SwiftUI `View` which handles a `NavigationSplitView` and conforms to Destinations.
-@MainActor public protocol NavigationSplitViewDestinationInterfacing: ViewDestinationInterfacing, View where Destination: NavigationSplitViewDestinationable<PresentationConfiguration>, DestinationState.Destination == Destination {
+@MainActor public protocol NavigationSplitViewDestinationInterfacing: ViewDestinationInterfacing, View where Destination: NavigationSplitViewDestinationable<DestinationType, ContentType, TabType>, DestinationState.Destination == Destination {
 
 }
 

@@ -13,21 +13,26 @@ import Destinations
 
 struct SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & SwiftUIHostedInterfacing>: ControllerDestinationProviding, DestinationTypes {
     
-    public typealias Destination = SwiftUIContainerDestination<SwiftUIView, PresentationConfiguration>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
     public typealias UserInteractionType = SwiftUIView.UserInteractionType
     public typealias InteractorType = SwiftUIView.InteractorType
+    typealias ContentType = SwiftUIView.ContentType
+    typealias TabType = SwiftUIView.TabType
+    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
     
-    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<SwiftUIView, PresentationConfiguration>, _ content: ContentType?) -> SwiftUIView
+    public typealias Destination = SwiftUIContainerDestination<SwiftUIView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
+    
+    
+    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<SwiftUIView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, _ content: ContentType?) -> SwiftUIView
+
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
         
     var viewSetup: SwiftUIViewSetupClosure
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
-        let destination = SwiftUIContainerDestination<SwiftUIView, PresentationConfiguration>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = SwiftUIContainerDestination<SwiftUIView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(destinationType: DestinationType.swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
          
         let view = self.viewSetup(destination, configuration.contentType)
         

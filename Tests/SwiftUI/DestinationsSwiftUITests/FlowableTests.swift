@@ -46,7 +46,7 @@ import Destinations
         
         appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic))
         
-        if let presentedDestination = appFlow.currentDestination as? any ViewDestinationable<PresentationConfiguration>, let tabsDestination = appFlow.findTabBarInViewHierarchy(searchDestination: presentedDestination) {
+        if let presentedDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let tabsDestination = appFlow.findTabBarInViewHierarchy(searchDestination: presentedDestination) {
             
             XCTAssertEqual(presentedDestination.type, .colorDetail)
             
@@ -151,7 +151,7 @@ import Destinations
         let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
         appFlow.start()
         
-        guard let colorsListDestination = appFlow.currentDestination as? any NavigatingViewDestinationable<PresentationConfiguration> else {
+        guard let colorsListDestination = appFlow.currentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> else {
             XCTFail("No current destination found")
             return
         }
@@ -212,7 +212,7 @@ import Destinations
         let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
         appFlow.start()
         
-        guard let navDestination = appFlow.activeDestinations.first(where: { $0.type == .colorsList }) as? any NavigatingViewDestinationable<PresentationConfiguration>, let destination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic)) else {
+        guard let navDestination = appFlow.activeDestinations.first(where: { $0.type == .colorsList }) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let destination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic)) else {
             
             XCTFail("No nav destination found")
             return

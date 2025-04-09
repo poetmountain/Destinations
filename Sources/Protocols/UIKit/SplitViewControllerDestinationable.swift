@@ -10,7 +10,7 @@
 import UIKit
 
 /// This protocol represents a Destination whose interface is a `UISplitViewController`.
-public protocol SplitViewControllerDestinationable<PresentationConfiguration>: ControllerDestinationable, GroupedDestinationable  where ControllerType: UISplitViewController {
+public protocol SplitViewControllerDestinationable<DestinationType, ContentType, TabType>: GroupedControllerDestinationable  where ControllerType: UISplitViewController {
     
     ///  A dictionary of `UIViewController`-based Destination object identifiers, whose associated keys are the `UISplitViewController.Column` column type should be displayed in.
     var destinationIDsForColumns: [UISplitViewController.Column: UUID] { get set }
@@ -22,7 +22,7 @@ public protocol SplitViewControllerDestinationable<PresentationConfiguration>: C
     ///   - destination: A UIKit-based Destination to be presented.
     ///   - column: The column to present this Destination in.
     ///   - shouldUpdateSelectedColumn: Determines whether the column should become the current one.
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in column: UISplitViewController.Column, shouldUpdateSelectedColumn: Bool, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
+    func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in column: UISplitViewController.Column, shouldUpdateSelectedColumn: Bool, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
     
     /// Returns a column type if it finds a Destination identifier which matches the root Destination for that column.
     /// - Parameter destinationID: A Destination identifier representing the root Destination of a column.
@@ -32,19 +32,19 @@ public protocol SplitViewControllerDestinationable<PresentationConfiguration>: C
     /// Returns the current Destination for the specified colunn. In the case where multiple Destinations are presented in a column, it will return the most recently-presented (visible) one.
     /// - Parameter column: The column type.
     /// - Returns: A `Controller`-based Destination, if one was found.
-    func currentDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<PresentationConfiguration>)?
+    func currentDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Returns the root Destination for the column. This is not necessarily the Destination representing the currently visible `UIViewController` class in a column, but is instead the `UIViewController` which is at the column's root level.
     ///
     /// This method should be used when building the column for a `UISplitViewController`.
     /// - Parameter column: The column type.
     /// - Returns: A Destination, if one was found.
-    func rootDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<PresentationConfiguration>)?
+    func rootDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
 }
 
 public extension SplitViewControllerDestinationable {
     
-    func presentDestination(destination: any ControllerDestinationable<PresentationConfiguration>, in column: UISplitViewController.Column, shouldUpdateSelectedColumn: Bool = true, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in column: UISplitViewController.Column, shouldUpdateSelectedColumn: Bool = true, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         DestinationsSupport.logger.log("Presenting controller \(destination.type) in splitview column \(column.rawValue).", level: .verbose)
 
         let controllerToPresent = destination.currentController()
@@ -62,9 +62,9 @@ public extension SplitViewControllerDestinationable {
         updateColumnControllers(columns: destinationIDsForColumns)
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         
-        guard let newDestination = newDestination as? any ControllerDestinationable<PresentationConfiguration>, let newController = newDestination.currentController() else {
+        guard let newDestination = newDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let newController = newDestination.currentController() else {
             let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))
             let message = String(format: template, "\(newDestination.self)")
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -72,7 +72,7 @@ public extension SplitViewControllerDestinationable {
             return
             
         }
-        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<PresentationConfiguration>, let currentController = currentDestination.currentController(), let currentColumn = column(destinationID: currentID) else {
+        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let currentController = currentDestination.currentController(), let currentColumn = column(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -106,19 +106,19 @@ public extension SplitViewControllerDestinationable {
         return destinationIDsForColumns.first(where: { $0.value == destinationID })?.key
     }
     
-    func currentDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<PresentationConfiguration>)? {
+    func currentDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
 
         if let splitViewController = self.currentController(), let columnController = splitViewController.viewController(for: column), let visibleController = columnController.navigationController?.visibleViewController as? any ControllerDestinationInterfacing {
-            return visibleController.destination() as? any ControllerDestinationable<PresentationConfiguration>
+            return visibleController.destination() as? any ControllerDestinationable<DestinationType, ContentType, TabType>
         }
         
         return nil
     }
     
-    func rootDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<PresentationConfiguration>)? {
+    func rootDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
         guard let destinationID = destinationIDsForColumns[column] else { return nil }
         
-        return childForIdentifier(destinationIdentifier: destinationID) as? any ControllerDestinationable<PresentationConfiguration>
+        return childForIdentifier(destinationIdentifier: destinationID) as? any ControllerDestinationable<DestinationType, ContentType, TabType>
     }
     
     /// Updates multiple Destinations in the specified columns. This is used internally by Destinations.

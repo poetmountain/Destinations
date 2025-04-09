@@ -44,12 +44,12 @@ import UIKit
     ///   - currentDestination: The currently presented Destination.
     ///   - parentOfCurrentDestination: The parent of the current Destination.
     ///   - configuration: The configuration object for this presentation.
-    public func presentControllerDestination<PresentationConfiguration: DestinationPresentationConfiguring>(
-        destination: (any ControllerDestinationable<PresentationConfiguration>)? = nil,
+    public func presentControllerDestination<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(
+        destination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)? = nil,
         currentDestination: (any ControllerDestinationable)?,
         parentOfCurrentDestination: (any ControllerDestinationable)?,
         tabBarDestinationInViewHiearchy: (any TabBarControllerDestinationable)?,
-        configuration: PresentationConfiguration) {
+        configuration: DestinationPresentation<DestinationType, ContentType, TabType>) {
         
         let newController = destination?.currentController()
         

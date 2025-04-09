@@ -10,7 +10,7 @@ import XCTest
 @testable import DestinationsSwiftUI
 import Destinations
 
-@MainActor final class NavigatingViewDestinationableTests: XCTestCase {
+@MainActor final class NavigatingViewDestinationableTests: XCTestCase, DestinationTypes {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,7 +21,7 @@ import Destinations
     }
 
     func test_addChild() {
-        let destination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navDestination = TestGroupDestination()
         
         navDestination.addChild(childDestination: destination)
@@ -31,7 +31,7 @@ import Destinations
     
 
     func test_removeChild() {
-        let destination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navDestination)
         navDestination.assignAssociatedView(view: navView)

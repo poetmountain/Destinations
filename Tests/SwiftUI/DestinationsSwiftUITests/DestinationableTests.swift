@@ -163,7 +163,7 @@ import Destinations
         
         let expectation = expectation(description: "Performs a request and tests the result in the closure")
 
-        let destination = ViewDestination<HomeView.UserInteractions, HomeView, PresentationConfiguration>(destinationType: .home)
+        let destination = ViewDestination<HomeView, HomeView.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home)
         let view = HomeView(destination: destination)
         destination.assignAssociatedView(view: view)
         

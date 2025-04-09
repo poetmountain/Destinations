@@ -13,6 +13,6 @@ import Foundation
 @MainActor public protocol SwiftUIHostedInterfacing: ViewDestinationInterfacing {
     
     /// A state object used to hold a reference to this view's associated UIKit Destination.
-    var hostingState: SwiftUIHostingState<Self, PresentationConfiguration> { get set }
+    var hostingState: SwiftUIHostingState<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType> { get set }
     
 }

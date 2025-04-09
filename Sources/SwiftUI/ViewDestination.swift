@@ -13,22 +13,7 @@ import Foundation
 ///
 /// This is a generic Destination that can be used to represent most `View`s in a SwiftUI-based app.
 @Observable
-public final class ViewDestination<UserInteractionType: UserInteractionTypeable, ViewDestinationType: ViewDestinationInterfacing, PresentationConfiguration: DestinationPresentationConfiguring>: ViewDestinationable {
-
-    /// An enum which defines all routable Destinations in the app.
-    public typealias DestinationType = PresentationConfiguration.DestinationType
-    
-    /// An enum which defines types of tabs in a tab bar.
-    public typealias TabType = PresentationConfiguration.TabType
-    
-    /// An enum which defines the types of content that are able to be sent through Destinations.
-    public typealias ContentType = PresentationConfiguration.ContentType
-    
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    public typealias InteractorType = ViewDestinationType.InteractorType
-    
-    /// The `View` associated with this Destination.
-    public typealias ViewType = ViewDestinationType
+public final class ViewDestination<ViewType: ViewDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: ViewDestinationable {
 
     /// A unique identifier.
     public let id = UUID()
@@ -37,9 +22,9 @@ public final class ViewDestination<UserInteractionType: UserInteractionTypeable,
     public var type: DestinationType
     
     /// The SwiftUI `View` class associated with this Destination.
-    public var view: ViewDestinationType?
+    public var view: ViewType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
 
     /// The initializer.

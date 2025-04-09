@@ -231,7 +231,7 @@ A Provider is responsible for building a specific type of Destination class. The
 
 Here's a simple example that creates a NotesDestination and its associated `View`, assigns a datasource to the Destination that will supply Note models to the UI, and returns the Destination to the Flow object for presentation.
 ```swift
-public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
     
     let destination = NotesDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
@@ -254,8 +254,6 @@ When creating a Flow object you supply it with a starting Destination. All Desti
 
 This SwiftUI app sketch shows how simple it is to add a Flow object. Just assign to the Flow object the Providers for the Destination types you want to support, as well as providing the starting Destination, and then attach the Flow's interface root to the app's UI. Please see the example projects for full implementations.
 ```swift
-typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
-
 @State var appFlow: ViewFlow<DestinationType, TabType, ContentType>?
 @State var hasStartedAppFlow = false
 
@@ -264,7 +262,7 @@ func buildAppFlow() -> ViewFlow<DestinationType, TabType, ContentType> {
         
     let startingTabs: [TabType] = [.home, .userNotes]
     let startingType: DestinationType = .tabBar(tabs: startingTabs)
-    let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+    let startingDestination = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
     
     let homeProvider = HomeProvider()
     let notesProvider = NotesProvider()

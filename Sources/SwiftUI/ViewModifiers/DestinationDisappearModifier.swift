@@ -10,10 +10,10 @@
 import SwiftUI
 
 /// A `ViewModifier` that handles the removal of a Destination from the Destinations ecosystem when its associated `View` disappears from a `NavigationStack`.
-public struct DestinationDisappearModifier: ViewModifier {
+public struct DestinationDisappearModifier<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>: ViewModifier {
     
     /// The Destination that is disappearing.
-    public weak var destination: (any ViewDestinationable)?
+    public weak var destination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// The Destination whose `View` contains a `NavigationStack`.
     public weak var navigationDestination: (any NavigatingViewDestinationable)?
@@ -29,7 +29,7 @@ public struct DestinationDisappearModifier: ViewModifier {
     ///   - destination: The Destination that is disappearing.
     ///   - navigationDestination: The Destination whose `View` contains a `NavigationStack`.
     ///   - action: An optional action to perform when the button is tapped.
-    public init(destination: any ViewDestinationable, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) {
+    public init(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) {
         self.destination = destination
         self.navigationDestination = navigationDestination
         self.presentationID = destination.systemNavigationPresentation(for: .navigateBackInStack)?.id
@@ -47,6 +47,7 @@ public struct DestinationDisappearModifier: ViewModifier {
                 disappearanceAction?()
 
                 navigationDestination?.removeChild(identifier: destination.id)
+                
                 
                 if let presentation = destination.systemNavigationPresentation(presentationID: presentationID), presentation.shouldDelayCompletionActivation {
                     
@@ -67,7 +68,7 @@ public extension View {
     ///   - navigationDestination: A Destination whose `View` contains a `NavigationStack`.
     ///   - action: An optional action to perform when the `View` disappears.
     /// - Returns: A `View` which runs the removal logic and optional action when it disappears.
-    public func onDestinationDisappear(destination: any ViewDestinationable, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) -> some View {
-        modifier(DestinationDisappearModifier(destination: destination, navigationDestination: navigationDestination, action: action))
+    public func onDestinationDisappear<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) -> some View {
+        modifier(DestinationDisappearModifier<DestinationType, ContentType, TabType>(destination: destination, navigationDestination: navigationDestination, action: action))
     }
 }

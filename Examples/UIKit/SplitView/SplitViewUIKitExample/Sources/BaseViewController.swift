@@ -31,7 +31,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<UserInteractionType, BaseViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
     

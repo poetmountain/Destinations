@@ -15,8 +15,10 @@ public typealias GroupChildRemovedClosure = (_ destinationID: UUID) -> Void
 /// A closure run when the current child Destination of a ``GroupedDestinationable`` has changed.
 public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?) -> Void
 
-/// This protocol represents a type of Destination which manages child Destinations, such as a `NavigationStack` in SwiftUI.
-@MainActor public protocol GroupedDestinationable<PresentationConfiguration>: AnyObject {
+/// This abstract protocol represents a type of Destination which manages child Destinations, such as a `NavigationStack` in SwiftUI.
+///
+/// > Note: Protocols or classes that should take on group behavior should use ``GroupedViewDestinationable`` for SwiftUI projects and ``GroupedControllerDestinationable`` for UIKit projects.
+@MainActor public protocol GroupedDestinationable<DestinationType, ContentType, TabType>: AnyObject {
     
     /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
@@ -24,20 +26,14 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    associatedtype PresentationType: DestinationPresentationTypeable
-    
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
-
     /// The unique identifier for this Destination.
     var id: UUID { get }
 
     /// State object for handling functionality for the Destinations ecosystem.
-    var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> { get set }
+    var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> { get set }
     
     /// Assigns a closure to be run when a child Destination is removed from this Group. This closure should be used by an associated Destination to respond to child removals that happened internally.
     /// - Parameter closure: A closure.
@@ -51,7 +47,7 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// - Parameter childDestination: A ``Destinationable`` object to add.
     /// - Parameter shouldSetDestinationAsCurrent: A Boolean which determines whether this Destination should become the current one.
     /// - Parameter shouldAnimate: A Boolean which determines whether this Destination should be animated when presented in the Group.
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool?, shouldAnimate: Bool?)
+    func addChild(childDestination: any Destinationable<DestinationType, ContentType, TabType>, shouldSetDestinationAsCurrent: Bool?, shouldAnimate: Bool?)
     
     /// Removes a child Destination.
     /// - Parameter destinationIdentifier: The identifier of the Destination to remove.
@@ -65,11 +61,11 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     /// Returns the child Destination for the specified identifier.
     /// - Parameter destinationIdentifier: The identifier of the child Destination.
     /// - Returns: The child Destination, if one was found.
-    func childForIdentifier(destinationIdentifier: UUID) -> (any Destinationable<PresentationConfiguration>)?
+    func childForIdentifier(destinationIdentifier: UUID) -> (any Destinationable<DestinationType, ContentType, TabType>)?
     
     /// Replaces the child Destination that currently has focus.
     /// - Parameter newDestination: The new ``Destinationable`` object that should replace the current Destination referenced by ``currentChildDestination``.
-    func replaceCurrentDestination(with newDestination: any Destinationable<PresentationConfiguration>)
+    func replaceCurrentDestination(with newDestination: any Destinationable<DestinationType, ContentType, TabType>)
     
     /// Replaces the current child Destination.
     /// - Parameters:
@@ -77,7 +73,7 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
     ///   - newDestination: A ``Destinationable`` object to replace an existing child Destination.
     ///   - removeDestinationClosure: A closure that notifies an external object when this Destination has removed one of its children.
     ///   Typically this will be passed in when being called from a `DestinationPresentation` object, and handles the removal of the child Destination from the active Flow object. The identifier of the child that was removed should be passed in to the closure.
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?)
     
     /// Updates the currently active Destination with an identifier of another child.
     /// - Parameter destinationID: The Destination identifier to use. This Destination must be a current child.
@@ -88,11 +84,11 @@ public typealias GroupCurrentDestinationChangedClosure = (_ destinationID: UUID?
 
     /// Returns the child Destinations of this group.
     /// - Returns: The Destinations belonging to this gorup.
-    func childDestinations() -> [any Destinationable<PresentationConfiguration>]
+    func childDestinations() -> [any Destinationable<DestinationType, ContentType, TabType>]
 
     /// Returns the currently active child Destination.
     /// - Returns: The current child Destination.
-    func currentChildDestination() -> (any Destinationable<PresentationConfiguration>)?
+    func currentChildDestination() -> (any Destinationable<DestinationType, ContentType, TabType>)?
     
     /// Determines whether this Destination supports the `shouldSetDestinationAsCurrent` parameter of the `addChild` method. If this Destination should ignore requests to not make added children the current Destination, this property should be set to `false`.
     /// - Returns: Returns whether the current Destination status should be ignored.
@@ -109,12 +105,12 @@ public extension GroupedDestinationable {
         groupInternalState.currentDestinationChangedClosure = closure
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
+    func addChild(childDestination: any Destinationable<DestinationType, ContentType, TabType>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         groupInternalState.childDestinations.append(childDestination)
         childDestination.setParentID(id: id)
     }
     
-    func replaceCurrentDestination(with newDestination: any Destinationable<PresentationConfiguration>) {
+    func replaceCurrentDestination(with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
         if let currentChildDestination = groupInternalState.currentChildDestination {
             replaceChild(currentID: currentChildDestination.id, with: newDestination)
         } else {
@@ -123,7 +119,7 @@ public extension GroupedDestinationable {
         }
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }) else { return }
         
         if groupInternalState.childDestinations.contains(where: { $0.id == newDestination.id}) == false {
@@ -164,7 +160,7 @@ public extension GroupedDestinationable {
         }
     }
     
-    func childForIdentifier(destinationIdentifier: UUID) -> (any Destinationable<PresentationConfiguration>)? {
+    func childForIdentifier(destinationIdentifier: UUID) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
         return groupInternalState.childDestinations.first(where: { $0.id == destinationIdentifier })
     }
     
@@ -174,11 +170,11 @@ public extension GroupedDestinationable {
         }
     }
     
-    func childDestinations() -> [any Destinationable<PresentationConfiguration>] {
+    func childDestinations() -> [any Destinationable<DestinationType, ContentType, TabType>] {
         return groupInternalState.childDestinations
     }
     
-    func currentChildDestination() -> (any Destinationable<PresentationConfiguration>)? {
+    func currentChildDestination() -> (any Destinationable<DestinationType, ContentType, TabType>)? {
         return groupInternalState.currentChildDestination
     }
     
@@ -188,9 +184,3 @@ public extension GroupedDestinationable {
     
     func updateChildren() {}
 }
-
-/// A typealias describing a SwiftUI-based ``GroupedDestinationable`` which also conforms to ``ViewDestinationable``.
-public typealias GroupedViewDestinationable<PresentationConfiguration: DestinationPresentationConfiguring> = GroupedDestinationable<PresentationConfiguration> & ViewDestinationable<PresentationConfiguration>
-
-/// A typealias describing a UIKit-based ``GroupedDestinationable`` which also conforms to ``ControllerDestinationable``.
-public typealias GroupedControllerDestinationable<PresentationConfiguration: DestinationPresentationConfiguring> = GroupedDestinationable<PresentationConfiguration> & ControllerDestinationable<PresentationConfiguration>

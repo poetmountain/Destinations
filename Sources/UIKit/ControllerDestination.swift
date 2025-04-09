@@ -13,12 +13,8 @@ import Foundation
 ///
 /// This is a generic Destination that can be used to represent most `UIViewController` subclasses in a UIKit-based app.
 @Observable
-public final class ControllerDestination<UserInteractionType: UserInteractionTypeable, ControllerDestinationType: ControllerDestinationInterfacing, PresentationConfigurationType: DestinationPresentationConfiguring, InteractorType: InteractorTypeable>: ControllerDestinationable {
+public final class ControllerDestination<ControllerDestinationType: ControllerDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: ControllerDestinationable {
  
-    public typealias DestinationType = PresentationConfigurationType.DestinationType
-    public typealias TabType = PresentationConfigurationType.TabType
-    public typealias ContentType = PresentationConfigurationType.ContentType
-    public typealias PresentationConfiguration = PresentationConfigurationType
     public typealias ControllerType = ControllerDestinationType
 
     /// A unique identifier.
@@ -30,7 +26,7 @@ public final class ControllerDestination<UserInteractionType: UserInteractionTyp
     /// The `UIViewController` class associated with this Destination.
     public var controller: ControllerType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
     /// The initializer.
     /// - Parameters:

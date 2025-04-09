@@ -14,13 +14,18 @@ public final class SwiftUIContainerController<Content: SwiftUIHostedInterfacing>
     
     public typealias InteractorType = Content.InteractorType
     public typealias UserInteractionType = Content.UserInteractionType
-    public typealias PresentationConfiguration = Content.PresentationConfiguration
-    public typealias DestinationType = PresentationConfiguration.DestinationType
-    public typealias Destination = SwiftUIContainerDestination<Content, PresentationConfiguration>
+    public typealias DestinationType = Content.DestinationType
+    public typealias ContentType = Content.ContentType
+    public typealias TabType = Content.TabType
+    
+    public typealias DestinationState = SwiftUIHostingState<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    
+    
+    public typealias Destination = SwiftUIContainerDestination<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
     
     /// The Destination associated with the contained SwiftUI `View`.
-    public var destinationState: SwiftUIHostingState<Content, PresentationConfiguration> {
+    public var destinationState: SwiftUIHostingState<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType> {
         get {
             return adapter.view.hostingState
         }

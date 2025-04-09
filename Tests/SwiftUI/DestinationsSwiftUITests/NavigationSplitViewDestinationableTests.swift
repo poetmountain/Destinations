@@ -18,10 +18,10 @@ import Destinations
     }
 
     func test_column_for_destinationID() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: .detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .detail)
         let groupDestination = TestGroupDestination()
         
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
         
         let groupColumn = splitViewDestination.column(destinationID: groupDestination.id)
         XCTAssertEqual(groupColumn, .sidebar)
@@ -32,11 +32,11 @@ import Destinations
     }
 
     func test_replaceChild() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let newDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
             
         splitViewDestination.replaceChild(currentID: homeDestination.id, with: newDestination)
         
@@ -56,11 +56,11 @@ import Destinations
     }
     
     func test_presentDestination_in_single_view_column() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let presentedDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
+        let presentedDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
         
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
                     
         splitViewDestination.presentDestination(destination: presentedDestination, in: .content)
         
@@ -74,15 +74,15 @@ import Destinations
     }
     
     func test_presentDestination_in_navigationStack_column() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navigatorDestination = TestNavigatorDestination<TestGroupView>()
         let groupView = TestGroupView(destination: navigatorDestination)
         navigatorDestination.assignAssociatedView(view: groupView)
         
-        let firstDetailDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
-        let secondDetailDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
+        let firstDetailDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
+        let secondDetailDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
         
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestSplitView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
         let view = TestSplitView(destination: splitViewDestination)
         splitViewDestination.assignAssociatedView(view: view)
                     
@@ -100,31 +100,31 @@ import Destinations
     }
     
     func test_currentDestination_for_non_group_destination() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
  
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestSplitView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: groupDestination, .content: homeDestination])
         
         let current = splitViewDestination.currentDestination(for: .content)
         XCTAssertEqual(current?.id, homeDestination.id)
     }
     
     func test_currentDestination_for_group_destination() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navigatorDestination = TestNavigatorDestination<TestGroupView>()
         let groupView = TestGroupView(destination: navigatorDestination)
         navigatorDestination.assignAssociatedView(view: groupView)
         
-        let firstDetailDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
+        let firstDetailDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
   
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestSplitView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
         let view = TestSplitView(destination: splitViewDestination)
         splitViewDestination.assignAssociatedView(view: view)
         
         splitViewDestination.presentDestination(destination: firstDetailDestination, in: .content)
 
         
-        let childDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
         splitViewDestination.presentDestination(destination: childDestination, in: .content)
 
@@ -135,7 +135,7 @@ import Destinations
         
         XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
-        let secondDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let secondDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         splitViewDestination.presentDestination(destination: secondDestination, in: .content)
         
         XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, secondDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
@@ -147,14 +147,14 @@ import Destinations
     }
     
     func test_rootDestination_for_column() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navigatorDestination = TestNavigatorDestination<TestGroupView>()
         let groupView = TestGroupView(destination: navigatorDestination)
         navigatorDestination.assignAssociatedView(view: groupView)
         
-        let firstDetailDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
+        let firstDetailDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
   
-        let splitViewDestination = NavigationSplitViewDestination<TestSplitView.PresentationConfiguration, TestSplitView>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
+        let splitViewDestination = NavigationSplitViewDestination<TestSplitView, TestSplitView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: .splitView, destinationsForColumns: [.sidebar: homeDestination, .content: navigatorDestination])
         let view = TestSplitView(destination: splitViewDestination)
         splitViewDestination.assignAssociatedView(view: view)
         

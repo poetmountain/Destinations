@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// A model that's used internally to represent tab types in Destinations.
-public final class TabModel<TabType: TabTypeable>: Identifiable, Equatable, Hashable {
+public final class TabModel<TabType: TabTypeable>: Equatable, Hashable {
     
     /// A unique identifier.
     public let id = UUID()

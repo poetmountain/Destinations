@@ -12,12 +12,6 @@ import Foundation
 /// This protocol represents an enum which defines Destination presentation types.
 @MainActor public protocol DestinationPresentationTypeable {
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring
-    
-    /// An enum which defines types of tabs in a tab bar.
-    associatedtype TabType: TabTypeable
-    
     /// The String representation of the enum type.
     var rawValue: String { get }
 }

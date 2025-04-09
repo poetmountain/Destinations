@@ -11,9 +11,8 @@ import Destinations
 
 final class SheetDestination: NavigatingControllerDestinationable, DestinationTypes {
 
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = SheetViewController.UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
     typealias ControllerType = SheetViewController
     
     public let id = UUID()
@@ -22,8 +21,8 @@ final class SheetDestination: NavigatingControllerDestinationable, DestinationTy
     
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, AppContentType, TabType> = GroupDestinationInternalState()
 
 
     public var isSystemNavigating: Bool = false

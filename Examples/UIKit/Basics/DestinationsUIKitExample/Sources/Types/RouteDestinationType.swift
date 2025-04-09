@@ -13,10 +13,6 @@ public enum RouteDestinationType: RoutableDestinations {
     
     public var id: String { rawValue }
 
-    public static var allCases: [RouteDestinationType] {
-        return [.start, .colorsList, .colorDetail, .home, .tabBar(tabs: []), .sheet]
-    }
-    
     case start
     case colorsList
     case colorDetail

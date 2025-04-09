@@ -29,21 +29,17 @@ import Foundation
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
-    
-    
     /// A dictionary of presentation configuration models, with their keys being the user interaction type.
-    var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] { get set }
+    var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
     
     /// A dictionary of interactor action configuration models, with their keys being the user interaction type associated with each interactor action.
     var interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>] { get set }
     
     /// Generates Destination presentations associated with this provider.
-    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?
+    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?
     
     /// Generates system navigation presentations supported by Destinations.
-    func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?
+    func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?
     
     /// Assigns interactor assistants to the supplied Destination.
     /// - Parameter destination: The Destination to have interactor assistants applied to.
@@ -52,9 +48,9 @@ import Foundation
 }
 
 public extension DestinationProviding {
-    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>? {
+    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>? {
         
-        let configurations = AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>()
+        let configurations = AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>()
         
         for (interactionType, configuration) in presentationsData {
             let presentation = configuration.copy()
@@ -66,9 +62,9 @@ public extension DestinationProviding {
         return configurations
     }
     
-    func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>? {
+    func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>? {
         
-        let configurations = AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>()
+        let configurations = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>()
         
         let backSelection = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)
         let sheetDismiss = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)

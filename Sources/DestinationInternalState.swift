@@ -10,33 +10,24 @@
 import Foundation
 
 /// This class holds the internal state of classes conforming to the ``Destinationable`` protocol.
-public final class DestinationInternalState<InteractorType: InteractorTypeable, UserInteractionType: UserInteractionTypeable, PresentationType: DestinationPresentationTypeable, PresentationConfiguration: DestinationPresentationConfiguring>: DestinationInternalStateable {
-    
-    public typealias UserInteractionType = UserInteractionType
-    public typealias DestinationType = PresentationConfiguration.DestinationType
-    public typealias InteractorType = InteractorType
-    public typealias TabType = PresentationConfiguration.TabType
-    public typealias PresentationType = PresentationType
-    public typealias ContentType = PresentationConfiguration.ContentType
-    public typealias PresentationConfiguration = PresentationConfiguration
-    
+public final class DestinationInternalState<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: DestinationInternalStateable {
     
     /// The identifier of this object's parent Destination.
     public var parentDestinationID: UUID?
 
     /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    public var destinationConfigurations: DestinationConfigurations?
+    public var destinationConfigurations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?
     
     /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
-    public var systemNavigationConfigurations: NavigationConfigurations?
+    public var systemNavigationConfigurations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?
     
     /// A Boolean that denotes whether the UI is currently in a navigation transition.
     public var isSystemNavigating: Bool = false
 
     public var interactors: [InteractorType : any AbstractInteractable] = [:]
-    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, PresentationConfiguration.DestinationType, PresentationConfiguration.ContentType>] = [:]
-    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, PresentationConfiguration.DestinationType, PresentationConfiguration.ContentType>] = [:]
-    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, PresentationConfiguration.ContentType>] = [:]
+    public var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] = [:]
+    public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
+    public var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, ContentType>] = [:]
 
     public init() {}
 }

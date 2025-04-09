@@ -75,13 +75,15 @@ import Destinations
 
 
 final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes {
-    public typealias Destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
+    typealias UserInteractionType = AppTabBarController.UserInteractions
+    
+    public typealias Destination = TabBarControllerDestination<AppTabBarController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    
+    init(presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -90,13 +92,13 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
         }
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         guard case let RouteDestinationType.tabBar(tabs: tabs) = destinationType else { return nil }
         
         var tabTypes: [TabType] = []
-        var tabDestinations: [any ControllerDestinationable<PresentationConfiguration>] = []
+        var tabDestinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>] = []
         
         // create starting content for each tab
         for tabType in tabs {
@@ -118,7 +120,7 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
             }
         }
                 
-        if let destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
+        if let destination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabController = AppTabBarController(destination: destination)
             destination.assignAssociatedController(controller: tabController)
@@ -154,7 +156,7 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         }
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         let destination = TestColorsDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
@@ -265,21 +267,20 @@ public enum TestTabType: String, TabTypeable {
 }
 
 
-final class TestGroupDestination: ControllerDestinationable, GroupedDestinationable, DestinationTypes {
+final class TestGroupDestination: NavigatingControllerDestinationable, DestinationTypes {
     
-        
     enum UserInteractions: UserInteractionTypeable {
         var rawValue: String {
             return ""
         }
     }
     
+    
     typealias UserInteractionType = UserInteractions
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
+    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
     typealias ControllerType = TestGroupViewController
     
     let id: UUID = UUID()
@@ -288,8 +289,8 @@ final class TestGroupDestination: ControllerDestinationable, GroupedDestinationa
     
     var controller: TestGroupViewController?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
     
     func prepareForPresentation() {
     }
@@ -305,10 +306,11 @@ final class TestViewController: UIViewController, ControllerDestinationInterfaci
     }
     
     typealias UserInteractionType = Selections
+    typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = TestGroupDestination.PresentationConfiguration
-    typealias Destination = ControllerDestination<UserInteractionType, TestViewController, PresentationConfiguration, InteractorType>
     typealias TabType = TestTabType
+    typealias Destination = ControllerDestination<TestViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+
 
     var destinationState: DestinationInterfaceState<Destination>
 
@@ -325,17 +327,12 @@ final class TestViewController: UIViewController, ControllerDestinationInterfaci
 
 final class TestGroupViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
-        var rawValue: String {
-            return ""
-        }
-    }
-    
-    typealias UserInteractionType = UserInteractions
-    typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = TestGroupDestination.PresentationConfiguration
+    typealias UserInteractionType = TestGroupDestination.UserInteractions
+    typealias DestinationType = TestGroupDestination.DestinationType
+    typealias InteractorType = TestGroupDestination.InteractorType
+    typealias TabType = TestGroupDestination.TabType
+    typealias ContentType = TestGroupDestination.ContentType
     typealias Destination = TestGroupDestination
-    typealias TabType = TestTabType
 
     var destinationState: DestinationInterfaceState<Destination>
 
@@ -364,8 +361,7 @@ final class TestTabBarController: UITabBarController, TabBarControllerDestinatio
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
-    typealias PresentationConfiguration = DestinationPresentation<TestDestinationType, AppContentType, TabType>
-    typealias Destination = TabBarControllerDestination<PresentationConfiguration, TestTabBarController>
+    typealias Destination = TabBarControllerDestination<TestTabBarController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
     var destinationState: DestinationInterfaceState<Destination>
 

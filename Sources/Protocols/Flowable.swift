@@ -23,9 +23,6 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
-    
     /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
     associatedtype PresentationType: DestinationPresentationTypeable
     
@@ -36,19 +33,19 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     associatedtype InterfaceCoordinator: DestinationInterfaceCoordinating
     
     /// The currently presented Destination object.
-    var currentDestination: (any Destinationable<PresentationConfiguration>)? { get set }
+    var currentDestination: (any Destinationable<DestinationType, ContentType, TabType>)? { get set }
     
     /// An array of the active Destination objects. These are Destinations which have been presented and currently exist in the app's user interface, even if they are not currently visible on screen.
-    var activeDestinations: [any Destinationable<PresentationConfiguration>] { get set }
+    var activeDestinations: [any Destinationable<DestinationType, ContentType, TabType>] { get set }
     
     /// The ``DestinationInterfaceCoordinating`` object which coordinates the presentation of new Destinations within the app's user interface.
     var uiCoordinator: InterfaceCoordinator? { get set }
     
     /// The root Destination of the user interface this Flow manages.
-    var rootDestination: (any Destinationable<PresentationConfiguration>)? { get set }
+    var rootDestination: (any Destinationable<DestinationType, ContentType, TabType>)? { get set }
     
     /// A queue of Destination presentations to be presented in serial order, used with the ``presentDestinationPath`` method.
-    var destinationQueue: [PresentationConfiguration] { get set }
+    var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
     
     /// Starts the presentation of the Destination defined by the `startingDestination` configuration object.
     func start()
@@ -56,19 +53,19 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// Returns the Destination object associated with an identifier.
     /// - Parameter destinationID: A `UUID` identifier of the Destination to return.
     /// - Returns: A ``Destinationable`` object, if one is found.
-    func destination(for destinationID: UUID) -> (any Destinationable<PresentationConfiguration>)?
+    func destination(for destinationID: UUID) -> (any Destinationable<DestinationType, ContentType, TabType>)?
 
     /// Updates a stored Destination with a new one matching its identifier.
     /// - Parameter destination: A ``Destinationable`` object to replace the current one with.
-    func updateDestination(destination: any Destinationable<PresentationConfiguration>)
+    func updateDestination(destination: any Destinationable<DestinationType, ContentType, TabType>)
     
     /// Updates the currently presented Destination stored in ``currentDestination``.
     /// - Parameter destination: The new current Destination.
-    func updateCurrentDestination(destination: any Destinationable<PresentationConfiguration>)
+    func updateCurrentDestination(destination: any Destinationable<DestinationType, ContentType, TabType>)
     
     /// Adds a new Destination to the ``activeDestinations`` array.
     /// - Parameter destination: The ``Destinationable`` object to add.
-    func updateActiveDestinations(with destination: any Destinationable<PresentationConfiguration>)
+    func updateActiveDestinations(with destination: any Destinationable<DestinationType, ContentType, TabType>)
     
     /// Removes a Destination and any of its children.
     ///
@@ -95,17 +92,17 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     ///   - configuration: The presentation configuration object.
     ///   - destination: The ``Destinationable`` object which was presented.
     /// - Returns: A completion closure.
-    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: (any Destinationable<PresentationConfiguration>)?) -> PresentationCompletionClosure?
+    func defaultCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)?) -> PresentationCompletionClosure?
     
     /// Returns the default completion closure that is activated when a currently presented UI sheet was dismissed.
     /// - Parameter configuration: The presentation configuration object associated with this action.
     /// - Returns: A completion closure.
-    func defaultSheetDismissalCompletionClosure(configuration: PresentationConfiguration) -> PresentationCompletionClosure?
+    func defaultSheetDismissalCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> PresentationCompletionClosure?
     
     /// Returns the default completion closure that is activated when a UI navigation path has moved back to the previous Destination.
     /// - Parameter configuration: The presentation configuration object associated with this action.
     /// - Returns: A completion closure.
-    func defaultNavigationBackCompletionClosure(configuration: PresentationConfiguration) -> PresentationCompletionClosure?
+    func defaultNavigationBackCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> PresentationCompletionClosure?
     
     /// Presents a nested path of Destination objects, displaying them serially within the user interface.
     ///
@@ -113,52 +110,52 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// This method can be used to provide deep links into an app's interface.
     ///
     /// - Parameter path: An array of presentation configuration objects. The order of the configuration objects in the array determines the order in which their associated Destinations will be presented.
-    func presentDestinationPath(path: [PresentationConfiguration], contentToPass: ContentType?)
+    func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType?)
     
     /// Presents the next Destination in the ``destinationQueue`` array, if one exists.
     /// - Returns: The newly presented Destination, if any configuration objects were left in the queue.
-    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType?) -> (any Destinationable<PresentationConfiguration>)?
+    @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType?) -> (any Destinationable<DestinationType, ContentType, TabType>)?
     
     /// Returns a closure to run when a presentation has completed.
     /// - Parameters:
     ///   - configuration: A presentation configuration model to use with the closure.
     ///   - destination: The Destination being presented. This is not used with system navigation events.
     /// - Returns: The presentation closure.
-    func presentationCompletionClosure(for configuration: PresentationConfiguration, destination: (any Destinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?) -> PresentationCompletionClosure?
+    func presentationCompletionClosure(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)?) -> PresentationCompletionClosure?
     
     /// Logs the type of Destination presentation.
     /// - Parameters:
     ///   - destination: The Destination that was presented.
     ///   - configuration: The presentation configuration model associated with this presentation.
-    func logDestinationPresented(destination: (any Destinationable<PresentationConfiguration>)?, configuration: PresentationConfiguration)
+    func logDestinationPresented(destination: (any Destinationable<DestinationType, ContentType, TabType>)?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>)
 }
 
 public extension Flowable {
     
-    func destination(for destinationID: UUID) -> (any Destinationable<PresentationConfiguration>)? {
+    func destination(for destinationID: UUID) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
         return activeDestinations.first(where: { $0.id == destinationID })
     }
     
-    func updateCurrentDestination(destination: any Destinationable<PresentationConfiguration>) {
+    func updateCurrentDestination(destination: any Destinationable<DestinationType, ContentType, TabType>) {
         uiCoordinator?.destinationToPresent = nil
         currentDestination = destination
         DestinationsSupport.logger.log("🔄 Updated current destination to \(destination.type).")
     }
     
-    func updateDestination(destination: any Destinationable<PresentationConfiguration>) {
+    func updateDestination(destination: any Destinationable<DestinationType, ContentType, TabType>) {
         if let destinationIndex = activeDestinations.firstIndex(where: { $0.id == destination.id }) {
             activeDestinations[destinationIndex] = destination
         }
     }
     
-    func updateActiveDestinations(with destination: any Destinationable<PresentationConfiguration>) {
+    func updateActiveDestinations(with destination: any Destinationable<DestinationType, ContentType, TabType>) {
         guard self.destination(for: destination.id) == nil else { return }
         activeDestinations.append(destination)
         DestinationsSupport.logger.log("Active destinations \(activeDestinations.map { $0.type }).", level: .verbose)
 
     }
     
-    func presentDestinationPath(path: [PresentationConfiguration], contentToPass: ContentType? = nil) {
+    func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType? = nil) {
         
         destinationQueue = path
         
@@ -186,14 +183,21 @@ public extension Flowable {
             destination.cleanupResources()
             destination.removeAssociatedInterface()
             
-            if let destination = destination as? any GroupedDestinationable<PresentationConfiguration> {
+            if let destination = destination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                let children = destination.childDestinations().map { $0.id }
+                removeDestinations(destinationIDs: children)
+                destination.removeAllChildren()
+                
+            } else if let destination = destination as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
                 let children = destination.childDestinations().map { $0.id }
                 removeDestinations(destinationIDs: children)
                 destination.removeAllChildren()
             }
             
             // if this Destination's parent is a Group, tell it to remove the child from itself
-            if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedDestinationable<PresentationConfiguration> {
+            if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                parent.removeChild(identifier: destinationID)
+            } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
                 parent.removeChild(identifier: destinationID)
             }
 
@@ -213,9 +217,9 @@ public extension Flowable {
     
     func activateCompletionClosure(for destinationID: UUID, presentationID: UUID, didComplete: Bool, isSystemNavigationAction: Bool = false) {
         
-        if let destination = self.destination(for: destinationID) as? any Destinationable<PresentationConfiguration> {
+        if let destination = self.destination(for: destinationID) as? any Destinationable<DestinationType, ContentType, TabType> {
             
-            var presentation: PresentationConfiguration?
+            var presentation: DestinationPresentation<DestinationType, ContentType, TabType>?
             
             if isSystemNavigationAction {
                 presentation = destination.systemNavigationPresentation(presentationID: presentationID)
@@ -230,68 +234,8 @@ public extension Flowable {
         
     }
     
-    func defaultCompletionClosure(configuration: PresentationConfiguration, destination: (any Destinationable<PresentationConfiguration>)? = nil) -> PresentationCompletionClosure? {
-        
-        return { [weak self, weak configuration, weak destination] didComplete in
-            guard let strongSelf = self else { return }
-            //guard let destination else { return }
-            guard let configuration else { return }
-            
-            if didComplete == true {
-                DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                
-                if let destination {
-                    strongSelf.updateActiveDestinations(with: destination)
-                }
-                
-                if let destination, let groupedDestination = destination as? any GroupedDestinationable<PresentationConfiguration> {
-                    let currentChildDestination = groupedDestination.currentChildDestination()
-                    
-                    if let parentDestinationID = destination.parentDestinationID(), let currentChildDestination, let parent = self?.destination(for: parentDestinationID) as? any GroupedDestinationable<PresentationConfiguration>, (configuration.shouldSetDestinationAsCurrent == true || parent.supportsIgnoringCurrentDestinationStatus() == false) {
-                        // if this Destination's parent is also Group, add the Destination's current child as the Flow's current Destination
-                        // as long as the parent allows this child Destination to take focus
-                        strongSelf.updateCurrentDestination(destination: currentChildDestination)
-                        
-                    } else if let currentChildDestination {
-                        // if this wasn't added to a Group and this Destination has a child, make that the current Flow Destination
-                        strongSelf.updateCurrentDestination(destination: currentChildDestination)
-                    } else {
-                        // this Destination has no current child, so just make it the current Flow Destination
-                        strongSelf.updateCurrentDestination(destination: destination)
-                    }
-                
-                    for child in groupedDestination.childDestinations() {
-                        strongSelf.updateActiveDestinations(with: child)
-                    }
-                    
-                    groupedDestination.updateChildren()
-                    
-                    strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
-                    
-                    strongSelf.uiCoordinator?.destinationToPresent = nil
 
-                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
-                                        
-                } else {
-                    if let destination {
-                        strongSelf.updateCurrentDestination(destination: destination)
-                        strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
-                    }
-                    
-                    strongSelf.uiCoordinator?.destinationToPresent = nil
-
-                    strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
-
-                }
-
-            }
-            
-        }
-    
-    }
-    
-
-    func logDestinationPresented(destination: (any Destinationable<PresentationConfiguration>)? = nil, configuration: PresentationConfiguration) {
+    func logDestinationPresented(destination: (any Destinationable<DestinationType, ContentType, TabType>)? = nil, configuration: DestinationPresentation<DestinationType, ContentType, TabType>) {
         if let destinationType = destination?.type {
             DestinationsSupport.logger.log("✅ New destination \(destinationType) was presented in \(configuration.presentationType).")
         } else if let currentDestination {

@@ -40,7 +40,7 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
     
     typealias ViewType = ColorDetailView
 
@@ -50,7 +50,7 @@ final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
     
     public var view: ViewType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {

@@ -13,37 +13,17 @@ import Foundation
 /// A Destination class whose associated user interface is a `View` which contains a `NavigationStack`.
 ///
 /// This is a generic Destination that can be used to represent most `NavigationStack`-based `View`s in a SwiftUI-based app.
-@Observable public final class NavigationViewDestination<UserInteractionType: UserInteractionTypeable, ViewDestinationType: NavigatingDestinationInterfacing, PresentationConfigurationType: DestinationPresentationConfiguring, InteractorType: InteractorTypeable>: NavigatingViewDestinationable {
+@Observable public final class NavigationViewDestination<UserInteractionType: UserInteractionTypeable, ViewType: NavigatingDestinationInterfacing, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingViewDestinationable {
 
-    /// An enum which defines all routable Destinations in the app.
-    public typealias DestinationType = PresentationConfigurationType.DestinationType
-    
-    /// An enum which defines types of tabs in a tab bar.
-    public typealias TabType = PresentationConfigurationType.TabType
-    
-    /// An enum which defines the types of content that are able to be sent through Destinations.
-    public typealias ContentType = PresentationConfigurationType.ContentType
-    
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    public typealias InteractorType = InteractorType
-    
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    public typealias PresentationConfiguration = PresentationConfigurationType
-    
-    /// An enum which defines user interaction types for this Destination's interface.
-    public typealias UserInteractionType = UserInteractionType
-    
-    /// The type of `View` associated with this Destination.
-    public typealias ViewType = ViewDestinationType
-    
+
     public let id = UUID()
     
     public let type: DestinationType
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
     
     private(set) var listID: UUID = UUID()
     

@@ -23,7 +23,6 @@ final class SheetViewController: UINavigationController, NavigationControllerDes
 
     typealias UserInteractionType = UserInteractions
     typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias Destination = SheetDestination
         
     var destinationState: DestinationInterfaceState<Destination>

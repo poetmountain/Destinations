@@ -26,7 +26,7 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
     typealias UserInteractionType = UserInteractions
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = AppInteractorType
-    typealias Destination = ViewDestination<UserInteractionType, HomeView, PresentationConfiguration>
+    typealias Destination = ViewDestination<HomeView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     
 
     @State public var destinationState: DestinationInterfaceState<Destination>

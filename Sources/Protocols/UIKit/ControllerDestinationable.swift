@@ -10,14 +10,11 @@
 import UIKit
 
 /// This protocol represents a Destination which is associated with a `UIViewController`.
-@MainActor public protocol ControllerDestinationable<PresentationConfiguration>: Destinationable {
+@MainActor public protocol ControllerDestinationable<DestinationType, ContentType, TabType>: Destinationable {
     
     /// The type of view controller associated with this Destination.
     associatedtype ControllerType: ControllerDestinationInterfacing
 
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<PresentationConfiguration>
-    
     /// The `UIViewController` associated with this Destination.
     var controller: ControllerType? { get set }
     

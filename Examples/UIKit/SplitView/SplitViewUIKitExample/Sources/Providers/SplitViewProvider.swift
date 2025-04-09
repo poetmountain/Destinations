@@ -13,17 +13,16 @@ import Destinations
 
 final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTypes {
     
-    public typealias Destination = SplitViewControllerDestination<PresentationConfiguration, SplitViewController<UserInteractionType, PresentationConfiguration, InteractorType>>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
+    public typealias Destination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     public typealias UserInteractionType = StartViewController.UserInteractionType
     public typealias InteractorType = AppInteractorType
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
     public var interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>] = [:]
     
     var initialContent: [UISplitViewController.Column: RouteDestinationType]
     
-    init(initialContent: [UISplitViewController.Column: RouteDestinationType], presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(initialContent: [UISplitViewController.Column: RouteDestinationType], presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
         self.initialContent = initialContent
         
         if let presentationsData {
@@ -34,9 +33,9 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
         }
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
                 
-        var destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<PresentationConfiguration>] = [:]
+        var destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<DestinationType, ContentType, TabType>] = [:]
         
         // create initial content for each column
         var childDestinations: [any ControllerDestinationable] = []
@@ -53,7 +52,7 @@ final class SplitViewProvider: ControllerDestinationProviding, AppDestinationTyp
             }
         }
         
-        let splitViewDestination = SplitViewControllerDestination<PresentationConfiguration, SplitViewController<UserInteractionType, PresentationConfiguration, InteractorType>>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations)
+        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations)
 
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewController.preferredDisplayMode = .oneOverSecondary

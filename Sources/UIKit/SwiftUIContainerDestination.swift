@@ -10,35 +10,19 @@
 import Foundation
 
 /// A Destination representing a ``SwiftUIContainerController`` instance which presents a SwiftUI `View` within UIKit.
-public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing, PresentationConfiguration: DestinationPresentationConfiguring>: SwiftUIContainerDestinationable {
-    
-    enum UserInteractions: UserInteractionTypeable {
-        var rawValue: String {
-            return ""
-        }
-    }
-    
-    public typealias InteractorType = Content.InteractorType
-    public typealias PresentationConfiguration = PresentationConfiguration
-    public typealias DestinationType = PresentationConfiguration.DestinationType
-    public typealias TabType = PresentationConfiguration.TabType
-    public typealias ContentType = PresentationConfiguration.ContentType
-    public typealias UserInteractionType = Content.UserInteractionType
+public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: SwiftUIContainerDestinationable {
     
     /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
-    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
-    public typealias ControllerType = SwiftUIContainerController<Content>
+    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
+    public typealias ControllerType = SwiftUIContainerController<ViewType>
     
-    /// The type of `View` contained within this Destination.
-    public typealias ViewType = Content
-
     public let id = UUID()
     
     public let type: DestinationType
     
-    public var controller: SwiftUIContainerController<Content>?
+    public var controller: SwiftUIContainerController<ViewType>?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
 
     
     /// This `ViewFlow` object manages the SwiftUI `View` presented by this Destination.
@@ -61,10 +45,10 @@ public final class SwiftUIContainerDestination<Content: SwiftUIHostedInterfacing
         self.internalState.systemNavigationConfigurations = navigationConfigurations
     }
     
-    public func buildInterfaceActions(presentationClosure: @escaping (PresentationConfiguration) -> Void) {
+    public func buildInterfaceActions(presentationClosure: @escaping (DestinationPresentation<DestinationType, ContentType, TabType>) -> Void) {
         guard let destinationConfigurations = internalState.destinationConfigurations else { return }
 
-        var containers: [InterfaceAction<UserInteractionType, DestinationType, PresentationConfiguration.ContentType>] = []
+        var containers: [InterfaceAction<UserInteractionType, DestinationType, ContentType>] = []
         for (type, configuration) in destinationConfigurations.configurations {
             let container = buildInterfaceAction(presentationClosure: presentationClosure, configuration: configuration, interactionType: type)
             containers.append(container)

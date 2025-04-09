@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "338145EA-19B2-42CE-A15D-45054BED5874",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DestinationsUIKit.xcodeproj",
+        "identifier" : "8B1C291D2CD0BF0F007CCF36",
+        "name" : "DestinationsUIKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

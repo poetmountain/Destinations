@@ -20,8 +20,7 @@ final class AppTabBarController: UITabBarController, TabBarControllerDestination
     typealias UserInteractionType = UserInteractions
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = AppInteractorType
-    typealias PresentationConfiguration = DestinationPresentation<RouteDestinationType, AppContentType, TabType>
-    typealias Destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>
+    typealias Destination = TabBarControllerDestination<AppTabBarController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
     var destinationState: DestinationInterfaceState<Destination>
 

@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func createRootViewController() -> UIViewController {
 
-        let destination = ControllerDestination<BaseViewController.UserInteractions, BaseViewController, BaseViewController.PresentationConfiguration, BaseViewController.InteractorType>(destinationType: .start)
+        let destination = ControllerDestination<BaseViewController, BaseViewController.UserInteractions, BaseViewController.DestinationType, BaseViewController.ContentType, BaseViewController.TabType, BaseViewController.InteractorType>(destinationType: .start)
         let baseVC = BaseViewController(destination: destination)
         destination.assignAssociatedController(controller: baseVC)
         rootController = baseVC

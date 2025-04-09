@@ -10,6 +10,11 @@ import SwiftUI
 import Destinations
 
 struct ColorsListProvider: ViewDestinationProviding {
+    typealias DestinationType = Destination.DestinationType
+    typealias TabType = Destination.TabType
+    typealias PresentationType = Destination.PresentationType
+    typealias ContentType = Destination.ContentType
+    
     
     public typealias Destination = ColorsListDestination
     public typealias PresentationConfiguration = DestinationPresentation<Destination.DestinationType, Destination.ContentType, Destination.TabType>
@@ -29,7 +34,7 @@ struct ColorsListProvider: ViewDestinationProviding {
         interactorsData = [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<Destination.DestinationType, Destination.ContentType, Destination.TabType>) -> Destination? {
   
         let destination = ColorsListDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

@@ -19,7 +19,7 @@ import UIKit
         let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
 
         let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController.PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
+        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
         let tabsController = AppTabBarController(destination: tabsDestination!)
         tabsDestination?.assignAssociatedController(controller: tabsController)
         tabsDestination?.updateChildren()
@@ -35,7 +35,7 @@ import UIKit
         let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
 
         let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController.PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
+        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
         let tabsController = AppTabBarController(destination: tabsDestination!)
         tabsDestination?.assignAssociatedController(controller: tabsController)
         tabsDestination?.updateChildren()
@@ -54,7 +54,7 @@ import UIKit
         home.assignAssociatedController(controller: homeController)
         
         let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController.PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
+        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
         let tabsController = AppTabBarController(destination: tabsDestination!)
         tabsDestination?.assignAssociatedController(controller: tabsController)
         
@@ -72,7 +72,7 @@ import UIKit
         home.assignAssociatedController(controller: homeController)
         
         let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController.PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
+        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
         let tabsController = AppTabBarController(destination: tabsDestination!)
         tabsDestination?.assignAssociatedController(controller: tabsController)
         tabsDestination?.updateChildren()

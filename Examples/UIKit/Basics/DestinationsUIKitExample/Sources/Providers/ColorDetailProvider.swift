@@ -14,7 +14,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     public typealias Destination = ColorDetailDestination
     
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     let transitionAnimator = AnimationTransitionCoordinator()
@@ -34,7 +34,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
         let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .custom(ColorDetailActionAssistant()))
         
         
-        let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<PresentationConfiguration>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in
+        let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<DestinationType, AppContentType, TabType>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in
             guard let destinationToPresent else {
                 completionClosure?(false)
                 return
@@ -47,7 +47,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
         presentationsData = [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?
         if let contentType = configuration.contentType, case let .color(model) = contentType {

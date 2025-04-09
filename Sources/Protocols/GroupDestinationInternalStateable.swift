@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents classes which holds internal state specific to the ``GroupedDestinationable`` protocol.
-public protocol GroupDestinationInternalStateable {
+public protocol GroupDestinationInternalStateable<DestinationType, ContentType, TabType> {
     
     /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
@@ -18,23 +18,17 @@ public protocol GroupDestinationInternalStateable {
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    associatedtype PresentationType: DestinationPresentationTypeable
-    
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
 
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
-    
     /// A type of ``AppDestinationConfigurations`` which handles system navigation events.
-    typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>
+    typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>
  
     /// An array of the child Destinations this object manages.
-    var childDestinations: [any Destinationable<PresentationConfiguration>] { get set }
+    var childDestinations: [any Destinationable<DestinationType, ContentType, TabType>] { get set }
     
     /// The child Destination which currently has focus within this Destination's children.
-    var currentChildDestination: (any Destinationable<PresentationConfiguration>)? { get set }
+    var currentChildDestination: (any Destinationable<DestinationType, ContentType, TabType>)? { get set }
     
     /// A closure run when a child Destination is removed from this Group.
     var childWasRemovedClosure: GroupChildRemovedClosure? { get set }

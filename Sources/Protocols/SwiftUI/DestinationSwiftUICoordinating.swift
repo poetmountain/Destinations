@@ -33,10 +33,10 @@ public protocol DestinationSwiftUICoordinating: DestinationInterfaceCoordinating
     ///   - currentDestination: The currently presented Destination.
     ///   - parentOfCurrentDestination: The parent of the current Destination.
     ///   - configuration: The configuration object for this presentation.
-    func presentViewDestination<PresentationConfiguration: DestinationPresentationConfiguring>(
-        destination: (any ViewDestinationable<PresentationConfiguration>)?,
-        currentDestination: (any ViewDestinationable<PresentationConfiguration>)?,
+    func presentViewDestination<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(
+        destination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?,
+        currentDestination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?,
         parentOfCurrentDestination: (any ViewDestinationable)?,
-        configuration: PresentationConfiguration)
+        configuration: DestinationPresentation<DestinationType, ContentType, TabType>)
     
 }

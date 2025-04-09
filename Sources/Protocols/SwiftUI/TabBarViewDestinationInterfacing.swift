@@ -10,11 +10,10 @@
 import SwiftUI
 
 /// A protocol defining a SwiftUI `View` which handles a `TabView` and conforms to Destinations.
-@MainActor public protocol TabBarViewDestinationInterfacing<TabType>: View, TabBarDestinationInterfacing, ViewDestinationInterfacing where Destination: TabBarViewDestinationable<PresentationConfiguration, TabType>, DestinationState.Destination == Destination {
+@MainActor public protocol TabBarViewDestinationInterfacing<TabType>: View, TabBarDestinationInterfacing, ViewDestinationInterfacing where Destination: TabBarViewDestinationable {
     
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring
-
+    associatedtype Destination: TabBarViewDestinationable
+    
     /// Replaces a `View` in the specified tab with a new one.
     /// - Parameters:
     ///   - view: The `View` to be replaced.

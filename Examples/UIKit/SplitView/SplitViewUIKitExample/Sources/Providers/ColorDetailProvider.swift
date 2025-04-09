@@ -13,14 +13,13 @@ import Destinations
 final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
     
     public typealias Destination = ColorDetailDestination
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     public typealias UserInteractionType = ColorDetailDestination.UserInteractions
     public typealias InteractorType = ColorDetailDestination.InteractorType
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
     
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -30,7 +29,7 @@ final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
         
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?
         if let contentType = configuration.contentType, case let .color(model) = contentType {

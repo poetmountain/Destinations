@@ -10,11 +10,8 @@
 import Foundation
 
 /// An enum representing the supported presentation types in Destinations.
-public enum DestinationPresentationType<PresentationConfiguration: DestinationPresentationConfiguring>: DestinationPresentationTypeable, Equatable {
-    
-    /// An enum which defines types of tabs in a tab bar.
-    public typealias TabType = PresentationConfiguration.TabType
-
+public enum DestinationPresentationType<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>: DestinationPresentationTypeable, Equatable {
+        
     /// Represents a presentation action of a navigation stack such as a `UINavigationController` or SwiftUI's `NavigationStack`.
     ///
     /// - Parameter type: An enum representing the type of navigation action to be taken.
@@ -51,13 +48,13 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
     /// - Parameter path: An array of presentation configuration models representing the Destinations to be presented.
     ///
     /// > Note: The array order of the configuration objects is the order in which the Destinations will be presented.
-    case destinationPath(path: [PresentationConfiguration])
+    case destinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>])
     
     /// Defines a custom presentation of a Destination. This presentation type can be used to support the presentation of non-standard interfaces or system components which Destinations does not directly support.
     ///
     /// - Parameter presentation: An object containing a closure which drives the custom presentation.
     /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
-    case custom(presentation: CustomPresentation<PresentationConfiguration>)
+    case custom(presentation: CustomPresentation<DestinationType, ContentType, TabType>)
     
     nonisolated public var rawValue: String {
         switch self {
@@ -80,7 +77,7 @@ public enum DestinationPresentationType<PresentationConfiguration: DestinationPr
         }
     }
     
-    nonisolated public static func == (lhs: DestinationPresentationType<PresentationConfiguration>, rhs: DestinationPresentationType<PresentationConfiguration>) -> Bool {
+    nonisolated public static func == (lhs: DestinationPresentationType<DestinationType, ContentType, TabType>, rhs: DestinationPresentationType<DestinationType, ContentType, TabType>) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
 }

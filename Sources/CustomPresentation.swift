@@ -12,9 +12,9 @@ import Foundation
 /// A closure which drives a custom SwiftUI Destination presentation.
 ///
 /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
-public typealias CustomViewPresentationClosure<DestinationPresentation: DestinationPresentationConfiguring> = (
-    _ destinationToPresent: (any ViewDestinationable<DestinationPresentation>)?,
-    _ currentDestination: (any ViewDestinationable<DestinationPresentation>)?,
+public typealias CustomViewPresentationClosure<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable> = (
+    _ destinationToPresent: (any ViewDestinationable<DestinationType, ContentType, TabType>)?,
+    _ currentDestination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?,
     _ parentOfCurrentDestination: (any ViewDestinationable)?,
     _ completionClosure: ((Bool) -> Void)?) -> Void
 
@@ -22,31 +22,31 @@ public typealias CustomViewPresentationClosure<DestinationPresentation: Destinat
 /// A closure which drives a custom UIKit Destination presentation.
 ///
 /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
-public typealias CustomControllerPresentationClosure<DestinationPresentation: DestinationPresentationConfiguring> = (
-    _ destinationToPresent: (any ControllerDestinationable<DestinationPresentation>)?,
+public typealias CustomControllerPresentationClosure<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable> = (
+    _ destinationToPresent: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?,
     _ rootController: (any ControllerDestinationInterfacing)?,
     _ currentDestination: (any ControllerDestinationable)?,
     _ parentOfCurrentDestination: (any ControllerDestinationable)?,
     _ completionClosure: ((Bool) -> Void)?) -> Void
 
 /// This model provides closures which drive a custom Destination presentation.
-public struct CustomPresentation<PresentationConfiguration: DestinationPresentationConfiguring> {
+public struct CustomPresentation<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable> {
     
     /// A closure which drives a custom UIKit Destination presentation.
     ///
     /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
-    public var uiKit: CustomControllerPresentationClosure<PresentationConfiguration>?
+    public var uiKit: CustomControllerPresentationClosure<DestinationType, ContentType, TabType>?
     
     /// A closure which drives a custom SwiftUI Destination presentation.
     ///
     /// - Important: At the end of your custom presentation you must call `completionClosure`, passing a Boolean for whether the presentation or setup succeeds or fails.
-    public var swiftUI: CustomViewPresentationClosure<PresentationConfiguration>?
+    public var swiftUI: CustomViewPresentationClosure<DestinationType, ContentType, TabType>?
     
     /// The initializer.
     /// - Parameters:
     ///   - uiKit: A closure which drives a custom UIKit Destination presentation.
     ///   - swiftUI: A closure which drives a custom SwiftUI Destination presentation.
-    public init(uiKit: CustomControllerPresentationClosure<PresentationConfiguration>? = nil, swiftUI: CustomViewPresentationClosure<PresentationConfiguration>? = nil) {
+    public init(uiKit: CustomControllerPresentationClosure<DestinationType, ContentType, TabType>? = nil, swiftUI: CustomViewPresentationClosure<DestinationType, ContentType, TabType>? = nil) {
         self.uiKit = uiKit
         self.swiftUI = swiftUI
     }

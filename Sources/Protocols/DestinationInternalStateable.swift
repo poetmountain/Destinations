@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents classes which the internal state of classes conforming to the ``Destinationable`` protocol.
-public protocol DestinationInternalStateable<InteractorType, UserInteractionType, DestinationType, TabType, ContentType> {
+public protocol DestinationInternalStateable<UserInteractionType, DestinationType, TabType, ContentType, InteractorType> {
     
     /// An enum which defines user interaction types for this Destination's interface.
     associatedtype UserInteractionType: UserInteractionTypeable
@@ -24,30 +24,17 @@ public protocol DestinationInternalStateable<InteractorType, UserInteractionType
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    associatedtype PresentationType: DestinationPresentationTypeable
-    
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
 
-    /// A model type which configures Destination presentations. Typically this is a ``DestinationPresentation``.
-    associatedtype PresentationConfiguration: DestinationPresentationConfiguring<DestinationType, TabType, ContentType>
-    
-    /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
-    
-    /// A type of ``AppDestinationConfigurations`` which handles system navigation events.
-    typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>
-    
-    
     /// The identifier of this object's parent Destination.
     var parentDestinationID: UUID? { get set }
     
     /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    var destinationConfigurations: DestinationConfigurations? { get set }
+    var destinationConfigurations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>? { get set }
     
     /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
-    var systemNavigationConfigurations: NavigationConfigurations? { get set }
+    var systemNavigationConfigurations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>? { get set }
 
     /// A Boolean that denotes whether the UI is currently in a navigation transition.
     var isSystemNavigating: Bool { get set }

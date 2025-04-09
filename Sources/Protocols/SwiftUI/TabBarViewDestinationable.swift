@@ -10,14 +10,14 @@
 import Foundation
 
 /// A closure to be run when a Destination is presented in a tab.
-public typealias TabBarViewDestinationPresentationClosure<PresentationConfiguration: DestinationPresentationConfiguring> = (_ destination: any ViewDestinationable<PresentationConfiguration>, _ tabViewID: UUID) -> Void
+public typealias TabBarViewDestinationPresentationClosure<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable> = (_ destination: any ViewDestinationable<DestinationType, ContentType, TabType>, _ tabViewID: UUID) -> Void
 
 /// A closure to be run when the ``selectedTab`` property changed.
 public typealias TabBarViewSelectedTabUpdatedClosure<TabType: TabTypeable> = (_ selectedTab: TabModel<TabType>) -> Void
 
 /// This protocol represents a Destination whose interface view handles a `TabBar`.
-@MainActor public protocol TabBarViewDestinationable<PresentationConfiguration, TabType>: ViewDestinationable, GroupedDestinationable where ViewType: TabBarViewDestinationInterfacing<TabType> {
-    
+@MainActor public protocol TabBarViewDestinationable<DestinationType, ContentType, TabType>: GroupedViewDestinationable {
+        
     /// A dictionary of top-level Destination identifiers whose keys are their associated tab types.
     var destinationIDsForTabs: [TabType: UUID] { get set }
 
@@ -28,7 +28,7 @@ public typealias TabBarViewSelectedTabUpdatedClosure<TabType: TabTypeable> = (_ 
     var selectedTab: TabModel<TabType> { get set }
     
     /// A closure to be run when a Destination is presented in a tab.
-    var destinationPresentationClosure: TabBarViewDestinationPresentationClosure<PresentationConfiguration>? { get set }
+    var destinationPresentationClosure: TabBarViewDestinationPresentationClosure<DestinationType, ContentType, TabType>? { get set }
     
     /// A closure to be run when the ``selectedTab`` property changed.
     var selectedTabUpdatedClosure: TabBarViewSelectedTabUpdatedClosure<TabType>? { get set }
@@ -59,14 +59,14 @@ public typealias TabBarViewSelectedTabUpdatedClosure<TabType: TabTypeable> = (_ 
     /// Returns the current Destination for the specified tab.
     /// - Parameter tab: The tab type.
     /// - Returns: A `View`-based Destination, if one was found.
-    func currentDestination(for tab: TabType) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func currentDestination(for tab: TabType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Returns the root Destination for the tab. This is not necessarily the Destination representing the currently visible `View` in a tab, but is instead the `View` which is at the root level of the column, such as a `NavigationStack`.
     ///
     /// This method should be used when building the tabs for a `TabView`.
     /// - Parameter tab: A tab type.
     /// - Returns: A Destination, if one was found.
-    func rootDestination(for tab: TabType) -> (any ViewDestinationable<PresentationConfiguration>)?
+    func rootDestination(for tab: TabType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// Presents a Destination in a tab.
     ///
@@ -76,11 +76,11 @@ public typealias TabBarViewSelectedTabUpdatedClosure<TabType: TabTypeable> = (_ 
     ///   - tab: The tab type to present this Destination in.
     ///   - shouldUpdateSelectedTab: Determines whether the selected tab should be updated.
     ///   - presentationOptions: A model which provides options for presenting this Destination within the tab when this tab includes a `NavigationStack`, including determining whether the presentation should be animated.
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) throws
+    func presentDestination(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool, presentationOptions: NavigationStackPresentationOptions?, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) throws
     
     /// Assigns a presentation closure to be run when a Destination is presented in a tab.
     /// - Parameter closure: The closure to run.
-    func assignPresentationClosure(closure: @escaping TabBarViewDestinationPresentationClosure<PresentationConfiguration>)
+    func assignPresentationClosure(closure: @escaping TabBarViewDestinationPresentationClosure<DestinationType, ContentType, TabType>)
     
     /// Returns the identifier of the top-level Destination associated with this tab.
     /// - Parameter tab: The type of tab.
@@ -131,18 +131,18 @@ public extension TabBarViewDestinationable {
     }
     
     
-    func rootDestination(for tab: TabType) -> (any ViewDestinationable<PresentationConfiguration>)? {
+    func rootDestination(for tab: TabType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
         guard let tabID = destinationIDsForTabs[tab] else { return nil }
         
-        return childForIdentifier(destinationIdentifier: tabID) as? any ViewDestinationable<PresentationConfiguration>
+        return childForIdentifier(destinationIdentifier: tabID) as? any ViewDestinationable<DestinationType, ContentType, TabType>
     }
     
     
-    func currentDestination(for tab: TabType) -> (any ViewDestinationable<PresentationConfiguration>)? {
-        guard let tabID = destinationIDsForTabs[tab], let childDestination = childForIdentifier(destinationIdentifier: tabID) as? any ViewDestinationable<PresentationConfiguration> else { return nil }
+    func currentDestination(for tab: TabType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
+        guard let tabID = destinationIDsForTabs[tab], let childDestination = childForIdentifier(destinationIdentifier: tabID) as? any ViewDestinationable<DestinationType, ContentType, TabType> else { return nil }
 
         // If the top-level Destination is a NavigationStack, we need to return Destination of the current path element in its navigationPath. Otherwise, return the top-level Destination itself
-        if let navDestination = childDestination as? any NavigatingViewDestinationable<PresentationConfiguration>, let navigator = navDestination.navigator(), let lastID = navigator.currentPathElement(), let lastDestination = navDestination.childForIdentifier(destinationIdentifier: lastID) as? any ViewDestinationable<PresentationConfiguration> {
+        if let navDestination = childDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navDestination.navigator(), let lastID = navigator.currentPathElement(), let lastDestination = navDestination.childForIdentifier(destinationIdentifier: lastID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
 
             return lastDestination
 
@@ -152,7 +152,7 @@ public extension TabBarViewDestinationable {
         return nil
     }
     
-    func assignPresentationClosure(closure: @escaping TabBarViewDestinationPresentationClosure<PresentationConfiguration>) {
+    func assignPresentationClosure(closure: @escaping TabBarViewDestinationPresentationClosure<DestinationType, ContentType, TabType>) {
         destinationPresentationClosure = closure
     }
     
@@ -160,7 +160,7 @@ public extension TabBarViewDestinationable {
         selectedTabUpdatedClosure = closure
     }
     
-    func presentDestination(destination: any ViewDestinationable<PresentationConfiguration>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
+    func presentDestination(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
         DestinationsSupport.logger.log("Presenting tab view \(destination.type) in tab \(tab).")
        let currentTabDestination = rootDestination(for: tab)
         
@@ -171,7 +171,7 @@ public extension TabBarViewDestinationable {
         
         // If the current Destination is a NavigationStack, add the presented Destination to it
         // Otherwise replace the current View with the new one
-        if let navDestination = currentTabDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = currentTabDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             addChild(childDestination: destination)
             let shouldAnimate = presentationOptions?.shouldAnimate ?? true
             navDestination.addChild(childDestination: destination, shouldAnimate: shouldAnimate)
@@ -182,14 +182,14 @@ public extension TabBarViewDestinationable {
             addChild(childDestination: destination)
         }
         
-        if let navDestination = destination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = destination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
         }
         
 
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let destinationToReplace = groupInternalState.childDestinations[safe: currentIndex] as? any ViewDestinationable, let tabToReplace = tab(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
@@ -216,7 +216,7 @@ public extension TabBarViewDestinationable {
             groupInternalState.currentChildDestination = newDestination
         }
         
-        if let navDestination = newDestination as? any NavigatingViewDestinationable<PresentationConfiguration> {
+        if let navDestination = newDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
         }
         
@@ -258,7 +258,7 @@ public extension TabBarViewDestinationable {
     
     /// Registers this object for feedback with an associated NavigatingViewDestinationable class. This is used internally by Destinations to make sure that this object updates properly when there are changes in the NavigationStack.
     /// - Parameter destination: A Destination with an associated NavigationStack.
-    internal func registerNavigationClosures(for destination: any NavigatingViewDestinationable<PresentationConfiguration>) {
+    internal func registerNavigationClosures(for destination: any NavigatingViewDestinationable<DestinationType, ContentType, TabType>) {
         DestinationsSupport.logger.log("Registering navigation closures for \(destination.description)", level: .verbose)
 
         destination.assignChildRemovedClosure { [weak self] destinationID in

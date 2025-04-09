@@ -11,14 +11,17 @@ import Foundation
 
 /// A state object for a SwiftUI `View` being hosted within a UIKit interface.
 @Observable
-public final class SwiftUIHostingState<Content: SwiftUIHostedInterfacing, PresentationConfiguration: DestinationPresentationConfiguring>: DestinationStateable {
+public final class SwiftUIHostingState<Content: SwiftUIHostedInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: DestinationStateable {
+    
+    public typealias Destination = SwiftUIContainerDestination<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    
     
     /// The container Destination which user interaction events are sent to.
-    public var destination: SwiftUIContainerDestination<Content, PresentationConfiguration>
+    public var destination: Destination
     
     /// The initializer.
     /// - Parameter destination: The container Destination which user interaction events are sent to.
-    public init(destination: SwiftUIContainerDestination<Content, PresentationConfiguration>) {
+    public init(destination: Destination) {
         self.destination = destination
     }
 }

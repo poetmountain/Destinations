@@ -60,7 +60,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     })
                 }
                 .navigationDestination(for: UUID.self) { [weak destinationState] destinationID in
-                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<PresentationConfiguration> {
+                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                         buildView(for: destination)
                     }
                 }
@@ -71,7 +71,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
     
 
     
-    @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<PresentationConfiguration>) -> (some View)? {
+    @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<DestinationType, ContentType, TabType>) -> (some View)? {
         destinationView(for: destinationToBuild)
         .id(destinationToBuild.id.uuidString)
         .goBackButton {

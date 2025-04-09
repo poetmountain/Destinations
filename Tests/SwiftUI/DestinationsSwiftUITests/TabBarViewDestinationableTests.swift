@@ -17,9 +17,9 @@ import Destinations
     }
 
     func test_tab_for_destinationID() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         let tab = tabsDestination?.tab(destinationID: homeDestination.id)
         
@@ -27,9 +27,9 @@ import Destinations
     }
     
     func test_tab_for_type() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         let tab = tabsDestination?.tab(for: .home)
         
@@ -37,9 +37,9 @@ import Destinations
     }
     
     func test_tabIndex_for_type() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         let tabIndex = tabsDestination?.tabIndex(for: .home)
         
@@ -47,10 +47,10 @@ import Destinations
     }
     
     func test_updateSelectedTab() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
 
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         try? tabsDestination?.updateSelectedTab(type: .group)
         
@@ -58,13 +58,13 @@ import Destinations
     }
     
     func test_updateSelectedTab_preserve_current_destination_in_nav_stack() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
-        let childDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        if let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home) {
+        if let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home) {
             
             try? tabsDestination.presentDestination(destination: childDestination, in: .group)
             
@@ -86,11 +86,11 @@ import Destinations
     }
     
     func test_replaceChild() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let presentedDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let presentedDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        if let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home) {
+        if let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home) {
             
             tabsDestination.replaceChild(currentID: homeDestination.id, with: presentedDestination)
             
@@ -113,11 +113,11 @@ import Destinations
     }
     
     func test_presentDestination_in_single_view_tab() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let presentedDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.replacement)
+        let presentedDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.replacement)
         
-        if let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home) {
+        if let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home) {
             
             try? tabsDestination.presentDestination(destination: presentedDestination, in: .home)
             
@@ -135,16 +135,16 @@ import Destinations
     }
     
     func test_presentDestination_in_navigationStack_tab() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         
-        let presentedDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let presentedDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        let thirdDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let thirdDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        if let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home) {
+        if let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home) {
             
             try? tabsDestination.presentDestination(destination: presentedDestination, in: .group)
             
@@ -171,26 +171,26 @@ import Destinations
     
     
     func test_currentDestination_for_non_group_destination() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
         
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         let current = tabsDestination?.currentDestination(for: .home)
         XCTAssertEqual(current?.id, homeDestination.id)
     }
     
     func test_currentDestination_for_group_destination() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.home)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.home)
         let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         
-        let childDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        let thirdDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let thirdDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home)
         try? tabsDestination?.presentDestination(destination: childDestination, in: .group)
         
         let current = tabsDestination?.currentDestination(for: .group)
@@ -216,14 +216,14 @@ import Destinations
     }
     
     func test_rootDestination_for_tab() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.home)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.home)
         let navigationStackDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navigationStackDestination)
         navigationStackDestination.assignAssociatedView(view: navView)
         
-        let childDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, navigationStackDestination], tabTypes: [.home, .group], selectedTab: .home)
         try? tabsDestination?.presentDestination(destination: childDestination, in: .group)
         
         let homeRoot = tabsDestination?.rootDestination(for: .home)
@@ -238,9 +238,9 @@ import Destinations
     
 
     func test_destinationIdentifier_for_tab() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         let identifier = tabsDestination?.destinationIdentifier(for: .home)
         
@@ -248,10 +248,10 @@ import Destinations
     }
     
     func test_updateTabViews() {
-        let homeDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
+        let homeDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
-        let newDestination = ViewDestination<TestView.UserInteractions, TestView, TestView.PresentationConfiguration>(destinationType: TestDestinationType.detail)
-        let tabsDestination = TabViewDestination<TestTabView.PresentationConfiguration, TestTabView>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
+        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let tabsDestination = TabViewDestination<TestTabView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(type: .tabBar, tabDestinations: [homeDestination, groupDestination], tabTypes: [.home, .group], selectedTab: .home)
         
         tabsDestination?.updateTabViews(destinationIDs: [newDestination.id, groupDestination.id], for: [TabModel(type: TestTabType.home), TabModel(type: TestTabType.group)])
         

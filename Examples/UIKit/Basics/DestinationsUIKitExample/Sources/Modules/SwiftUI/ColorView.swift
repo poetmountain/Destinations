@@ -35,16 +35,16 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = ViewDestination<UserInteractionType, ColorView, PresentationConfiguration>
+    typealias Destination = ViewDestination<ColorView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     
     var destinationState: DestinationInterfaceState<Destination>
 
-    @State var hostingState: SwiftUIHostingState<ColorView, PresentationConfiguration>
+    @State var hostingState: SwiftUIHostingState<ColorView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     
     @State var colorModel: ColorViewModel?
 
-    init(model: ColorViewModel? = nil, parentDestination: SwiftUIContainerDestination<Self, PresentationConfiguration>) {
-        let destination = ViewDestination<UserInteractions, ColorView, PresentationConfiguration>(destinationType: .colorDetail)
+    init(model: ColorViewModel? = nil, parentDestination: SwiftUIContainerDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>) {
+        let destination = Destination(destinationType: .colorDetail)
         self.destinationState = DestinationInterfaceState(destination: destination)
         self.hostingState = SwiftUIHostingState(destination: parentDestination)
         

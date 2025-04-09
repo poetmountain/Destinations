@@ -21,17 +21,15 @@ struct SplitViewSwiftUIExampleApp: App, AppDestinationTypes {
     
     @State private var startDestinationID: UUID = UUID()
     
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-
     func buildAppFlow() -> ViewFlow<DestinationType, TabType, ContentType> {
         
         DestinationsSupport.logger.options.maximumOutputLevel = .verbose
         //DestinationsSupport.logger.shouldUseFileInfo = true
         //DestinationsSupport.logger.shouldUseMethodInfo = true
 
-        let startingDestination = PresentationConfiguration(destinationType: .splitView, presentationType: .replaceCurrent, assistantType: .basic)
+        let startingDestination = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .splitView, presentationType: .replaceCurrent, assistantType: .basic)
 
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)), assistantType: .custom(ChooseColorFromListActionAssistant()))
+        let colorSelection = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)), assistantType: .custom(ChooseColorFromListActionAssistant()))
  
         let splitViewProvider = SplitViewProvider(initialContent: [.sidebar: .colorsList, .detail: .colorDetail])
         

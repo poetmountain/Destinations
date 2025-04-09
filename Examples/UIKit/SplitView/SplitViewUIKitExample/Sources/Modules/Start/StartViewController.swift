@@ -20,7 +20,7 @@ final class StartViewController: UINavigationController, NavigationControllerDes
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = NavigationControllerDestination<UserInteractionType, StartViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
         

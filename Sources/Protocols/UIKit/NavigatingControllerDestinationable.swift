@@ -10,7 +10,7 @@
 import UIKit
 
 /// This protocol represents a Destination whose interface is a `UINavigationController`.
-@MainActor public protocol NavigatingControllerDestinationable<PresentationConfiguration>: ControllerDestinationable, GroupedDestinationable where ControllerType: UINavigationController {
+@MainActor public protocol NavigatingControllerDestinationable<DestinationType, ContentType, TabType>: GroupedControllerDestinationable where ControllerType: UINavigationController {
     
     /// Removes the current Destination and navigates to the previous Destination in the `UINavigationController` stack, if one exists.
     /// - Parameter previousPresentationID: An optional unique identifier of the previous Destination.
@@ -23,7 +23,7 @@ public extension NavigatingControllerDestinationable {
         return false
     }
     
-    func addChild(childDestination: any Destinationable<PresentationConfiguration>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
+    func addChild(childDestination: any Destinationable<DestinationType, ContentType, TabType>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         DestinationsSupport.logger.log("Adding \(childDestination.type) as a child of navigation controller \(self.type).", level: .verbose)
         childDestination.setParentID(id: id)
         groupInternalState.childDestinations.append(childDestination)
@@ -36,7 +36,7 @@ public extension NavigatingControllerDestinationable {
         }
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<PresentationConfiguration>) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
         
         navigateBackInStack()
         addChild(childDestination: newDestination)

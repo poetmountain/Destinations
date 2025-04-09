@@ -11,19 +11,19 @@ import Destinations
 
 struct TabBarProvider: ControllerDestinationProviding, DestinationTypes {
     
-    public typealias Destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
+    public typealias Destination = TabBarControllerDestination<AppTabBarController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    typealias UserInteractionType = AppTabBarController.UserInteractionType
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         guard case let RouteDestinationType.tabBar(tabs: tabs) = destinationType else { return nil }
         
         var tabTypes: [TabType] = []
-        var tabDestinations: [any ControllerDestinationable<PresentationConfiguration>] = []
+        var tabDestinations: [any ControllerDestinationable<DestinationType, AppContentType, TabType>] = []
         
         // create starting content for each tab
         for tabType in tabs {
@@ -47,7 +47,7 @@ struct TabBarProvider: ControllerDestinationProviding, DestinationTypes {
             }
         }
                 
-        if let destination = TabBarControllerDestination<PresentationConfiguration, AppTabBarController>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
+        if let destination = Destination(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabController = AppTabBarController(destination: destination)
             destination.assignAssociatedController(controller: tabController)

@@ -11,22 +11,27 @@ import UIKit
 
 /// A concrete Flow class designed to be used to manage Destinations flows within the UIKit framework. In most cases creating a custom Flow object is unnecessary, and this class can be used as-is in your UIKit-based app.
 public final class ControllerFlow<DestinationType: RoutableDestinations, TabType: TabTypeable, ContentType: ContentTypeable>: NSObject, ControllerFlowable, UITabBarControllerDelegate {
-    
+
+    /// An enum which defines all routable Destinations in the app.
     public typealias DestinationType = DestinationType
+    
+    /// An enum which defines types of tabs in a tab bar.
     public typealias TabType = TabType
+    
+    /// An enum which defines the types of content that are able to be sent through Destinations.
     public typealias ContentType = ContentType
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
+    
     public typealias InterfaceCoordinator = DestinationUIKitCoordinator
     
-    public var activeDestinations: [any Destinationable<DestinationPresentation<DestinationType, ContentType, TabType>>] = []
+    public var activeDestinations: [any Destinationable<DestinationType, ContentType, TabType>] = []
     
-    public var currentDestination: (any Destinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?
+    public var currentDestination: (any Destinationable<DestinationType, ContentType, TabType>)?
         
     public var destinationProviders: [DestinationType: any ControllerDestinationProviding] = [:]
             
     public var uiCoordinator: DestinationUIKitCoordinator? = DestinationUIKitCoordinator()
             
-    public var rootDestination: (any Destinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?
+    public var rootDestination: (any Destinationable<DestinationType, ContentType, TabType>)?
 
     public var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] = []
     
@@ -69,15 +74,15 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         uiCoordinator?.rootController = rootController
     }
     
-    public func destination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)? {
-        var existingDestination: (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?
+    public func destination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
+        var existingDestination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
         let existingID: UUID? = configuration.actionTargetID
         
         if let existingID {
-            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID }) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
+            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID }) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
                 existingDestination = activeDestination
                 
-            } else if configuration.actionType == .systemNavigation, let activeDestination = activeDestinations.first(where: { $0.id == existingID }) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>  {
+            } else if configuration.actionType == .systemNavigation, let activeDestination = activeDestinations.first(where: { $0.id == existingID }) as? any ControllerDestinationable<DestinationType, ContentType, TabType>  {
                 existingDestination = activeDestination
             }
 
@@ -91,7 +96,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
 
     }
     
-    @discardableResult public func presentDestination(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)? {
+    @discardableResult public func presentDestination(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
         
         if case DestinationPresentationType.destinationPath(path: let path) = configuration.presentationType {
             self.presentDestinationPath(path: path, contentToPass: configuration.contentType)
@@ -99,15 +104,15 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         }
         
         var mutableConfiguration = configuration
-        var parentOfCurrentDestination: (any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)?
+        var parentOfCurrentDestination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
         
-        if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>> {
+        if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             parentOfCurrentDestination = parent
         }
         
         let destination = self.destination(for: mutableConfiguration)
                 
-        var currentDestination = currentDestination as? any ControllerDestinationable<DestinationPresentation<DestinationType, ContentType, TabType>>
+        var currentDestination = currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>
         
         if case .splitView(column: let column) = configuration.presentationType, let current = currentDestination {
             guard column.uiKit != nil else {
@@ -121,7 +126,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             currentDestination = findSplitViewInViewHierarchy(currentDestination: current)
         }
 
-        var tabDestination: (any TabBarControllerDestinationable<PresentationConfiguration, TabType>)?
+        var tabDestination: (any TabBarControllerDestinationable<DestinationType, ContentType, TabType>)?
         if let currentDestination = currentDestination ?? rootDestination as? any ControllerDestinationable {
             tabDestination = findTabBarInViewHierarchy(currentDestination: currentDestination)
         }
@@ -159,7 +164,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     }
     
     
-    public func presentationCompletionClosure(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationPresentation<DestinationType, ContentType, TabType>>)? = nil) -> PresentationCompletionClosure? {
+    public func presentationCompletionClosure(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)? = nil) -> PresentationCompletionClosure? {
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {

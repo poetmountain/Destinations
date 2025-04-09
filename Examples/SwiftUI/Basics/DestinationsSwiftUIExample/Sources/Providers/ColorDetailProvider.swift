@@ -12,19 +12,18 @@ import Destinations
 struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias Destination = ColorDetailDestination
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
+    public var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     init() {
         let options = ViewSheetPresentationOptions(presentationMode: .sheet)
-        let sheetPresent = PresentationConfiguration(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
+        let sheetPresent = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
         
         presentationsData = [.colorDetailButton: sheetPresent]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?
         if let contentType = configuration.contentType, case let .color(model) = contentType {

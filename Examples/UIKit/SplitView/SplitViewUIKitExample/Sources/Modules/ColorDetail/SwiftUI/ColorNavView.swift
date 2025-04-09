@@ -17,11 +17,11 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
     
     @State var destinationState: NavigationDestinationInterfaceState<Destination>
 
-    @State var hostingState: SwiftUIHostingState<ColorNavView, PresentationConfiguration>
+    @State var hostingState: SwiftUIHostingState<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
-    init(destination: Destination, parentDestination: SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>) {
+    init(destination: Destination, parentDestination: SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>) {
         self.destinationState = NavigationDestinationInterfaceState(destination: destination)
-        self.hostingState = SwiftUIHostingState<ColorNavView, PresentationConfiguration>(destination: parentDestination)
+        self.hostingState = SwiftUIHostingState<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(destination: parentDestination)
 
     }
     
@@ -35,7 +35,7 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
                 }
                 
                 .navigationDestination(for: UUID.self) { [weak destinationState] destinationID in
-                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<PresentationConfiguration> {
+                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                         buildView(for: destination)
                     }
                 }
@@ -48,7 +48,7 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
         }
     }
         
-    @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<PresentationConfiguration>) -> (some View)? {
+    @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<DestinationType, ContentType, TabType>) -> (some View)? {
         destinationView(for: destinationToBuild)
         .id(destinationToBuild.id.uuidString)
         .goBackButton {

@@ -67,7 +67,7 @@ final class ColorsListDestination: AppDestinationTypes, ControllerDestinationabl
     }
     
     typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationPresentation<DestinationType, AppContentType, TabType>>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
     typealias ControllerType = ColorsViewController
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     
@@ -77,7 +77,7 @@ final class ColorsListDestination: AppDestinationTypes, ControllerDestinationabl
     
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {

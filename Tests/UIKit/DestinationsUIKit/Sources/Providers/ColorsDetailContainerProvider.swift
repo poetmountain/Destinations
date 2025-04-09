@@ -8,21 +8,21 @@
 import Foundation
 import Destinations
 
-struct ColorsDetailContainerProvider: ControllerDestinationProviding, DestinationTypes  {
-    
-    public typealias Destination = SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
+struct ColorsDetailContainerProvider: ControllerDestinationProviding, DestinationTypes {
 
-    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>, _ content: ContentType?) -> ColorNavView
+    typealias UserInteractionType = ColorNavProvider.UserInteractionType
+    public typealias Destination = SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+
+    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, _ content: ContentType?) -> ColorNavView
     
     var destinationType: DestinationType = .colorDetailSwiftUI
     
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
  
-        let parentDestination = SwiftUIContainerDestination<ColorNavView, PresentationConfiguration>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let parentDestination = SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
         
         let colorNavProvider = ColorNavProvider(presentationsData: presentationsData, containerDestination: parentDestination)
         let colorDetailProvider = ColorDetailSwiftUIProvider()
@@ -33,11 +33,11 @@ struct ColorsDetailContainerProvider: ControllerDestinationProviding, Destinatio
             .colorDetailSwiftUI: colorDetailProvider
         ]
         
-        let startingPath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .colorNav, presentationType: .replaceCurrent, contentType: configuration.contentType, assistantType: .basic)
+        let startingPath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorNav, presentationType: .replaceCurrent, contentType: configuration.contentType, assistantType: .basic)
         ]
         
-        let startingPresentation = PresentationConfiguration(presentationType: .destinationPath(path: startingPath), contentType: configuration.contentType, assistantType: .basic)
+        let startingPresentation = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: startingPath), contentType: configuration.contentType, assistantType: .basic)
         
         let viewFlow = ViewFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingPresentation)
         

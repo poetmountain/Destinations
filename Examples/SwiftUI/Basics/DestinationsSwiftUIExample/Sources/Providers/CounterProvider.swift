@@ -10,7 +10,6 @@ import Destinations
 
 struct CounterProvider: ViewDestinationProviding, DestinationTypes {
     
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
     public typealias Destination = CounterDestination
     
     public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
@@ -23,7 +22,7 @@ struct CounterProvider: ViewDestinationProviding, DestinationTypes {
         interactorsData = [.start: startCountAction, .stop: stopCountAction]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         let destination = CounterDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

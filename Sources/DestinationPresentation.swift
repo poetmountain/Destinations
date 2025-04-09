@@ -27,11 +27,19 @@ import SwiftUI
 ///  * `sheet(type: SheetPresentationType, options: SheetPresentationOptions?)` This presentation type presents (or dismisses) a Destination in a sheet. The `options` parameter allows you to customize how the sheet is presented, configuring SwiftUI-specific options with a `ViewSheetPresentationOptions` model and UIKit-specific options with a `ControllerSheetPresentationOptions` model.
 ///  * `destinationPath(path: [DestinationPresentation])` This presentation type presents a path of multiple Destination objects, useful for providing deep linking functionality or building complex state with one user interaction.
 ///  * `custom(presentation: CustomPresentation<DestinationPresentation>)` This presentation type enables you to present a custom presentation of a Destination. It can be used to support the presentation of custom UI, as well as system components which Destinations does not directly support. The `presentation` parameter allows you to use a `CustomPresentation` model with specialized closures to provide whatever functionality you need.
-public final class DestinationPresentation<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>: DestinationPresentationConfiguring {
+@MainActor public final class DestinationPresentation<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable> {
+    
+    /// An enum which defines all routable Destinations in the app.
     public typealias DestinationType = DestinationType
+    /// An enum which defines the types of content that are able to be sent through Destinations.
     public typealias ContentType = ContentType
+    /// An enum which defines types of tabs in a tab bar.
     public typealias TabType = TabType
 
+    /// A ``DestinationPresentationType`` configured for this configuration object.
+    public typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
+
+    
     /// A unique identifier.
     public let id = UUID()
     
@@ -39,7 +47,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     public var destinationType: DestinationType?
     
     /// An enum type representing the way this Destination should be presented.
-    public var presentationType: DestinationPresentationType<DestinationPresentation>
+    public var presentationType: DestinationPresentationType<DestinationType, ContentType, TabType>
     
     /// An enum type representing the content to be used with this presentation.
     public var contentType: ContentType?
@@ -65,11 +73,15 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     /// An options model that configures how a Destination is presented within a navigation stack, either for SwiftUI's `NavigationStack` or UIKit's `UINavigationController`. This includes the ability to disable the system animation when the Destination is presented.
     public var navigationStackOptions: NavigationStackPresentationOptions?
 
+#if canImport(SwiftUI)
     /// A reference to a ``TabBarViewDestinationable`` object, should one currently exist in the UI hierarchy.
-    public weak var tabBarDestination: (any TabBarViewDestinationable<DestinationPresentation, TabType>)?
-       
+    public weak var tabBarDestination: (any TabBarViewDestinationable<DestinationType, ContentType, TabType>)?
+#endif
+    
+#if canImport(UIKit)
     /// A reference to a ``TabBarControllerDestinationable`` object, should one currently exist in the UI hierarchy.
-    public weak var tabBarControllerDestination: (any TabBarControllerDestinationable<DestinationPresentation, TabType>)?
+    public weak var tabBarControllerDestination: (any TabBarControllerDestinationable<DestinationType, ContentType, TabType>)?
+#endif
     
     /// A Boolean which determines whether the activation of the presentation's completion closure, referenced in the ``completionClosure`` property, should be delayed. The default value of this property is `false`.
     public var shouldDelayCompletionActivation: Bool = false
@@ -145,16 +157,16 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     ///   - currentDestination: A ``ViewDestinationable`` object, representing the currently presented Destination.
     ///   - parentOfCurrentDestination: A ``ViewDestinationable`` object, representing the parent of the current Destination.
     ///   - removeDestinationClosure: An optional closure to the run when the Destination is removed from the UI hierarchy.
-    @MainActor public func handlePresentation(destinationToPresent: (any ViewDestinationable<DestinationPresentation>)? = nil, currentDestination: (any ViewDestinationable<DestinationPresentation>)?, parentOfCurrentDestination: (any ViewDestinationable)?, removeDestinationClosure: RemoveDestinationFromFlowClosure?)  {
+    @MainActor public func handlePresentation(destinationToPresent: (any ViewDestinationable<DestinationType, ContentType, TabType>)? = nil, currentDestination: (any ViewDestinationable<DestinationType, ContentType, TabType>)?, parentOfCurrentDestination: (any ViewDestinationable)?, removeDestinationClosure: RemoveDestinationFromFlowClosure?)  {
         
         switch presentationType {
             case .navigationStack(type: let navigationType):
                 
-                var navigationDestination: (any NavigatingViewDestinationable<DestinationPresentation>)?
+                var navigationDestination: (any NavigatingViewDestinationable<DestinationType, ContentType, TabType>)?
                 
-                if let navDestination = currentDestination as? any NavigatingViewDestinationable<DestinationPresentation> {
+                if let navDestination = currentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     navigationDestination = navDestination
-                } else if let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationPresentation> {
+                } else if let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     navigationDestination = navDestination
                 }
                 
@@ -171,7 +183,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                             navigationDestination.navigateBackInStack(previousPresentationID: id)
                     }
                     
-                } else if let navigationDestination = destinationToPresent as? any NavigatingViewDestinationable<DestinationPresentation> {
+                } else if let navigationDestination = destinationToPresent as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     switch navigationType {
                         case .present:
                             completionClosure?(false)
@@ -185,7 +197,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
 
                 
             case .splitView(column: let columnModel):
-                if let destinationToPresent, let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<DestinationPresentation>, let column = columnModel.swiftUI {
+                if let destinationToPresent, let splitViewDestination = currentDestination as? any NavigationSplitViewDestinationable<DestinationType, ContentType, TabType>, let column = columnModel.swiftUI {
                     splitViewDestination.presentDestination(destination: destinationToPresent, in: column, removeDestinationFromFlowClosure: removeDestinationClosure)
                     completionClosure?(true)
 
@@ -220,7 +232,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                 
             case .replaceCurrent:
                 
-                if let currentDestination, let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationPresentation> {
+                if let currentDestination, let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     
                     if let destinationToPresent {
                         navDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
@@ -230,7 +242,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                         completionClosure?(false)
                     }
                     
-                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
                     if let destinationToPresent {
                         groupedDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
 
@@ -291,7 +303,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
     ///   - currentDestination: A ``ControllerDestinationable`` object, representing the currently presented Destination.
     ///   - parentOfCurrentDestination: A ``ControllerDestinationable`` object, representing the parent of the current Destination.
     ///   - removeDestinationClosure: An optional closure to the run when the Destination is removed from the UI hierarchy.
-    public func handlePresentation(destinationToPresent: (any ControllerDestinationable<DestinationPresentation>)? = nil, rootController: (any ControllerDestinationInterfacing)? = nil, currentDestination: (any ControllerDestinationable)? = nil, parentOfCurrentDestination: (any ControllerDestinationable)? = nil, removeDestinationClosure: RemoveDestinationFromFlowClosure? = nil) {
+    public func handlePresentation(destinationToPresent: (any ControllerDestinationable<DestinationType, ContentType, TabType>)? = nil, rootController: (any ControllerDestinationInterfacing)? = nil, currentDestination: (any ControllerDestinationable)? = nil, parentOfCurrentDestination: (any ControllerDestinationable)? = nil, removeDestinationClosure: RemoveDestinationFromFlowClosure? = nil) {
         
         switch presentationType {
         case .navigationStack(type: let navigationType):
@@ -299,12 +311,12 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             switch navigationType {
                 case .present:
                     if let destinationToPresent {
-                        if let navController = currentDestination as? any NavigatingControllerDestinationable<DestinationPresentation> {
+                        if let navController = currentDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
                             navController.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             completionClosure?(true)
                             
                         } else if let navController = currentDestination?.currentController()?.navigationController, let newController = destinationToPresent.currentController() {
-                            if let navController = navController as? any NavigationControllerDestinationInterfacing, let navDestination = navController.destination() as? any NavigatingControllerDestinationable<DestinationPresentation> {
+                            if let navController = navController as? any NavigationControllerDestinationInterfacing, let navDestination = navController.destination() as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
                                 navDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             } else {
                                 let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
@@ -338,7 +350,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             
                 
         case .splitView(let columnModel):
-            if let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<DestinationPresentation>, let column = columnModel.uiKit {
+            if let splitViewDestination = currentDestination as? any SplitViewControllerDestinationable<DestinationType, ContentType, TabType>, let column = columnModel.uiKit {
                 
                 if let swiftUIContainer = splitViewDestination.currentDestination(for: column) as? any SwiftUIContainerDestinationable<DestinationType, ContentType, TabType> {
                     // only pass the presentation to the SwiftUI container if it contains a NavigationStack
@@ -368,7 +380,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
             if let tabBarControllerDestination, let currentDestination {
                     do {
                         if let destinationToPresent {
-                            try tabBarControllerDestination.presentDestination(destination: destinationToPresent, in: tab, presentationOptions: navigationStackOptions, removeDestinationFromFlowClosure: removeDestinationClosure)
+                            try tabBarControllerDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true, presentationOptions: navigationStackOptions, removeDestinationFromFlowClosure: removeDestinationClosure)
                         } else {
                             // there's no specified Destination so we should just switch tabs
                             try tabBarControllerDestination.updateSelectedTab(type: tab)
@@ -415,7 +427,7 @@ public final class DestinationPresentation<DestinationType: RoutableDestinations
                         removeDestinationClosure?(currentDestination.id)
                     }
                     
-                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedDestinationable<DestinationPresentation> {
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
                     let currentID = currentDestination.id
                     groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
                     

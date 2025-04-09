@@ -36,9 +36,8 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
         }
     }
     
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
+    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
     typealias ControllerType = ColorDetailViewController
     
     public let id = UUID()
@@ -47,7 +46,7 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
     
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
     public var parentDestinationID: UUID?
     

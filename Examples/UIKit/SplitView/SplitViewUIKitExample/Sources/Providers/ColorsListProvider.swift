@@ -13,14 +13,13 @@ import Destinations
 final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTypes  {
     
     public typealias Destination = ColorsListDestination
-    public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
     public typealias UserInteractionType = ColorsListDestination.UserInteractions
     public typealias InteractorType = ColorsListDestination.InteractorType
     
-    public var presentationsData: [UserInteractionType: PresentationConfiguration] = [:]
+    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
     public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
     
-    init(presentationsData: [UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
+    init(presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -30,7 +29,7 @@ final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTy
     }
     
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, PresentationConfiguration>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationPresentation<DestinationType, ContentType, TabType>>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<PresentationConfiguration>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
 
         let destination = ColorsListDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

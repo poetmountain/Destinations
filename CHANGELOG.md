@@ -1,3 +1,6 @@
+### 2.1.0
+* Fixes for Swift 6.1 compiler issues with generics and associated type complexity.
+
 #### 2.0.0
 * Interactors now support a separate type for passing in request state.
 * Interactor assistants are no longer tightly coupled to a Destination, allowing assistants to be reused with multiple Destination types with no changes.

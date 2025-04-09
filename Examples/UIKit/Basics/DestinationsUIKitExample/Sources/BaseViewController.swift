@@ -28,9 +28,8 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         }
     }
     
-    typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<UserInteractionType, BaseViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
     
@@ -50,17 +49,17 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let startingTabs: [AppTabType] = [.palettes, .home, .swiftUI]
         let tabsType: RouteDestinationType = .tabBar(tabs: startingTabs)
         
-        let startPath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: tabsType, presentationType: .navigationStack(type: .present), assistantType: .basic)
+        let startPath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: tabsType, presentationType: .navigationStack(type: .present), assistantType: .basic)
         ]
-        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+        let startingDestination = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
-        let homepath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
+        let homepath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
         ]
-        let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
+        let homePathPresent = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: homepath), assistantType: .basic)
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])
         
         let startProvider = StartProvider()
@@ -69,7 +68,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let sheetViewProvider = SheetProvider()
         let tabBarProvider = TabBarProvider()
         
-        let viewSetup: SwiftUIContainerProvider<ColorView>.SwiftUIViewSetupClosure = { (destination: SwiftUIContainerDestination<ColorView, PresentationConfiguration>, content: ContentType?) in
+        let viewSetup: SwiftUIContainerProvider<ColorView>.SwiftUIViewSetupClosure = { (destination: SwiftUIContainerDestination<ColorView, ColorView.UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, content: ContentType?) in
             var colorModel: ColorViewModel?
             if let content = content, case let .color(model) = content {
                 colorModel = model
@@ -80,7 +79,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             return ColorView(model: colorModel, parentDestination: destination)
         }
         
-        let changeSwiftUIColor = PresentationConfiguration(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
+        let changeSwiftUIColor = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
         let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeColor: changeSwiftUIColor], viewSetup: viewSetup)
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
@@ -119,7 +118,7 @@ final class StartViewController: UINavigationController, NavigationControllerDes
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias UserInteractionType = UserInteractions
-    typealias Destination = NavigationControllerDestination<UserInteractionType, StartViewController, PresentationConfiguration, InteractorType>
+    typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
         

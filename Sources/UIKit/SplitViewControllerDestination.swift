@@ -12,21 +12,16 @@ import UIKit
 /// A Destination which represents a UIKit `UISplitViewController`.
 ///
 /// This is a generic Destination that can be used to represent most `UISplitViewController`s in a UIKit-based app.
-public final class SplitViewControllerDestination<PresentationConfiguration: DestinationPresentationConfiguring, SplitViewControllerType: SplitViewControllerDestinationInterfacing>: SplitViewControllerDestinationable where PresentationConfiguration.DestinationType == SplitViewControllerType.DestinationType {
+public final class SplitViewControllerDestination<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: SplitViewControllerDestinationable {
     
     /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
-    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, PresentationConfiguration>
+    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
     /// A type of ``AppDestinationConfigurations`` which handles system navigation events.
-    public typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, PresentationConfiguration>
+    public typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>
     
-    public typealias DestinationType = SplitViewControllerType.DestinationType
-    public typealias TabType = PresentationConfiguration.TabType
-    public typealias ContentType = PresentationConfiguration.ContentType
-    public typealias InteractorType = SplitViewControllerType.InteractorType
-    public typealias PresentationConfiguration = PresentationConfiguration
-    public typealias UserInteractionType = SplitViewControllerType.UserInteractionType
-    public typealias ControllerType = SplitViewControllerType
-    public typealias PresentationType = PresentationConfiguration.PresentationType
+    public typealias InteractorType = InteractorType
+    public typealias ControllerType = SplitViewController<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias PresentationType = DestinationPresentation<DestinationType, ContentType, TabType>.PresentationType
 
     public let id = UUID()
     
@@ -34,9 +29,9 @@ public final class SplitViewControllerDestination<PresentationConfiguration: Des
         
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
-                    
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
+    
     public var destinationIDsForColumns: [UISplitViewController.Column: UUID] = [:]
 
     /// The initializer.
@@ -46,7 +41,7 @@ public final class SplitViewControllerDestination<PresentationConfiguration: Des
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestinationID: The identifier of the parent Destination.
-    public init(type: DestinationType, destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<PresentationConfiguration>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
+    public init(type: DestinationType, destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<DestinationType, ContentType, TabType>], destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
         self.type = type
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations

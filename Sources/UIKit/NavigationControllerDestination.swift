@@ -12,12 +12,8 @@ import UIKit
 /// A Destination class whose associated user interface is a `UINavigationController`.
 ///
 /// This is a generic Destination that can be used to represent most `UINavigationController` classes in a UIKit-based app.
-public final class NavigationControllerDestination<UserInteractionType: UserInteractionTypeable, ControllerDestinationType: NavigationControllerDestinationInterfacing, PresentationConfigurationType: DestinationPresentationConfiguring, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
+public final class NavigationControllerDestination<ControllerDestinationType: NavigationControllerDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
 
-    public typealias DestinationType = PresentationConfigurationType.DestinationType
-    public typealias TabType = PresentationConfigurationType.TabType
-    public typealias ContentType = PresentationConfigurationType.ContentType
-    public typealias PresentationConfiguration = PresentationConfigurationType
     public typealias ControllerType = ControllerDestinationType
 
     /// A unique identifier.
@@ -29,8 +25,8 @@ public final class NavigationControllerDestination<UserInteractionType: UserInte
     /// The `UIViewController` class associated with this Destination.
     public var controller: ControllerType?
 
-    public var internalState: DestinationInternalState<InteractorType, UserInteractionType, PresentationType, PresentationConfiguration> = DestinationInternalState()
-    public var groupInternalState: GroupDestinationInternalState<PresentationType, PresentationConfiguration> = GroupDestinationInternalState()
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
 
 
     /// The initializer.

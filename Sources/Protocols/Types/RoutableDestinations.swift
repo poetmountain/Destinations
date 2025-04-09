@@ -10,7 +10,14 @@
 import Foundation
 
 /// This protocol represents an enum which defines Destination types for an app which can be routed to.
-public protocol RoutableDestinations: Hashable {
+public protocol RoutableDestinations: Hashable, Equatable {
     /// The String representation of the enum type.
     var rawValue: String { get }
+    
+}
+
+public extension RoutableDestinations {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return (lhs.rawValue == rhs.rawValue)
+    }
 }

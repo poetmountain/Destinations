@@ -10,6 +10,6 @@
 import UIKit
 
 /// A protocol representing a `UISplitViewController` class which conforms to Destinations.
-@MainActor public protocol SplitViewControllerDestinationInterfacing: ControllerDestinationInterfacing, UISplitViewController where Destination: SplitViewControllerDestinationable<PresentationConfiguration> {
+@MainActor public protocol SplitViewControllerDestinationInterfacing: ControllerDestinationInterfacing, UISplitViewController where Destination: SplitViewControllerDestinationable<DestinationType, ContentType, TabType> {
     
 }
