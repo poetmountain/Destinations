@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -483,7 +480,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">CustomPresentation</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">CustomPresentation</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span></code></pre>
 
                 </div>
               </div>
@@ -499,9 +496,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations18CustomPresentationV5uiKityAA25ControllerDestinationable_px0C13ConfigurationRts_XPSg_AA0F22DestinationInterfacing_pSgAaE_pSgAKySbcSgtcSgvp"></a>
+                    <a name="/s:12Destinations18CustomPresentationV5uiKityAA25ControllerDestinationable_pq_11ContentTypeRts_x011DestinationI0Rtsq0_03TabI0RtsXPSg_AA0fJ11Interfacing_pSgAaE_pSgAOySbcSgtcSgvp"></a>
                     <a name="//apple_ref/swift/Property/uiKit" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations18CustomPresentationV5uiKityAA25ControllerDestinationable_px0C13ConfigurationRts_XPSg_AA0F22DestinationInterfacing_pSgAaE_pSgAKySbcSgtcSgvp">uiKit</a>
+                    <a class="token" href="#/s:12Destinations18CustomPresentationV5uiKityAA25ControllerDestinationable_pq_11ContentTypeRts_x011DestinationI0Rtsq0_03TabI0RtsXPSg_AA0fJ11Interfacing_pSgAaE_pSgAOySbcSgtcSgvp">uiKit</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -521,7 +518,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">uiKit</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations35CustomControllerPresentationClosurea">CustomControllerPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">uiKit</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations35CustomControllerPresentationClosurea">CustomControllerPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -531,9 +528,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations18CustomPresentationV7swiftUIyAA19ViewDestinationable_px0C13ConfigurationRts_XPSg_AhaE_pSgySbcSgtcSgvp"></a>
+                    <a name="/s:12Destinations18CustomPresentationV7swiftUIyAA19ViewDestinationable_pq_11ContentTypeRts_x011DestinationI0Rtsq0_03TabI0RtsXPSg_AlaE_pSgySbcSgtcSgvp"></a>
                     <a name="//apple_ref/swift/Property/swiftUI" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations18CustomPresentationV7swiftUIyAA19ViewDestinationable_px0C13ConfigurationRts_XPSg_AhaE_pSgySbcSgtcSgvp">swiftUI</a>
+                    <a class="token" href="#/s:12Destinations18CustomPresentationV7swiftUIyAA19ViewDestinationable_pq_11ContentTypeRts_x011DestinationI0Rtsq0_03TabI0RtsXPSg_AlaE_pSgySbcSgtcSgvp">swiftUI</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -553,7 +550,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">swiftUI</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">swiftUI</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -563,9 +560,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations18CustomPresentationV5uiKit7swiftUIACyxGyAA25ControllerDestinationable_px0C13ConfigurationRts_XPSg_AA0H22DestinationInterfacing_pSgAaG_pSgAMySbcSgtcSg_yAA04ViewI0_pxAIRS_XPSg_AqaP_pSgANtcSgtcfc"></a>
+                    <a name="/s:12Destinations18CustomPresentationV5uiKit7swiftUIACyxq_q0_GyAA25ControllerDestinationable_pq_11ContentTypeRts_x011DestinationK0Rtsq0_03TabK0RtsXPSg_AA0hL11Interfacing_pSgAaG_pSgAQySbcSgtcSg_yAA04ViewI0_pq_AIRS_xAKRSq0_AMRSXPSg_AuaT_pSgARtcSgtcfc"></a>
                     <a name="//apple_ref/swift/Method/init(uiKit:swiftUI:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations18CustomPresentationV5uiKit7swiftUIACyxGyAA25ControllerDestinationable_px0C13ConfigurationRts_XPSg_AA0H22DestinationInterfacing_pSgAaG_pSgAMySbcSgtcSg_yAA04ViewI0_pxAIRS_XPSg_AqaP_pSgANtcSgtcfc">init(uiKit:<wbr>swiftUI:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations18CustomPresentationV5uiKit7swiftUIACyxq_q0_GyAA25ControllerDestinationable_pq_11ContentTypeRts_x011DestinationK0Rtsq0_03TabK0RtsXPSg_AA0hL11Interfacing_pSgAaG_pSgAQySbcSgtcSg_yAA04ViewI0_pq_AIRS_xAKRSq0_AMRSXPSg_AuaT_pSgARtcSgtcfc">init(uiKit:<wbr>swiftUI:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -580,7 +577,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">uiKit</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations35CustomControllerPresentationClosurea">CustomControllerPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">swiftUI</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">uiKit</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations35CustomControllerPresentationClosurea">CustomControllerPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">swiftUI</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29CustomViewPresentationClosurea">CustomViewPresentationClosure</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -626,7 +623,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

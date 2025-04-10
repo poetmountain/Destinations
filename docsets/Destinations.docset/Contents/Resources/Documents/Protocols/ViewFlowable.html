@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -484,7 +481,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewFlowable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="../Classes/DestinationSwiftUICoordinator.html">DestinationSwiftUICoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span> <span class="o">==</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewFlowable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="../Classes/DestinationSwiftUICoordinator.html">DestinationSwiftUICoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -517,7 +514,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -555,9 +552,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP11destination3forAA0B15Destinationable_pAA23DestinationPresentationCy0G4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP11destination3forAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationH0QzAJRS03TabH0QzALRSXPSgAA0I12PresentationCyAjhLG_tF"></a>
                     <a name="//apple_ref/swift/Method/destination(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP11destination3forAA0B15Destinationable_pAA23DestinationPresentationCy0G4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF">destination(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP11destination3forAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationH0QzAJRS03TabH0QzALRSXPSgAA0I12PresentationCyAjhLG_tF">destination(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -573,7 +570,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">destination</span><span class="p">(</span><span class="k">for</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">destination</span><span class="p">(</span><span class="k">for</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -606,9 +603,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP16buildDestination3forAA0B15Destinationable_pAA0E12PresentationCy0E4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP16buildDestination3forAA0B15Destinationable_p11ContentTypeQzAHRS_0eI0QzAJRS03TabI0QzALRSXPSgAA0E12PresentationCyAjhLG_tF"></a>
                     <a name="//apple_ref/swift/Method/buildDestination(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP16buildDestination3forAA0B15Destinationable_pAA0E12PresentationCy0E4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF">buildDestination(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP16buildDestination3forAA0B15Destinationable_p11ContentTypeQzAHRS_0eI0QzAJRS03TabI0QzALRSXPSgAA0E12PresentationCyAjhLG_tF">buildDestination(for:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -631,7 +628,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">buildDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">buildDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -664,9 +661,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP18presentDestination13configurationAA0B15Destinationable_pAA0E12PresentationCy0E4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP18presentDestination13configurationAA0B15Destinationable_p11ContentTypeQzAHRS_0eI0QzAJRS03TabI0QzALRSXPSgAA0E12PresentationCyAjhLG_tF"></a>
                     <a name="//apple_ref/swift/Method/presentDestination(configuration:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP18presentDestination13configurationAA0B15Destinationable_pAA0E12PresentationCy0E4TypeQz07ContentI0Qz03TabI0QzG0H13ConfigurationRts_XPSgAO_tF">presentDestination(configuration:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP18presentDestination13configurationAA0B15Destinationable_p11ContentTypeQzAHRS_0eI0QzAJRS03TabI0QzALRSXPSgAA0E12PresentationCyAjhLG_tF">presentDestination(configuration:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -683,7 +680,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
 <span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -716,9 +713,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP30updateDestinationConfiguration13configuration11destinationyAA0E12PresentationCy0E4TypeQz07ContentJ0Qz03TabJ0QzGz_qd__ztAA0B15DestinationableRd__AO0iF0Rtd__lF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP30updateDestinationConfiguration13configuration11destinationyAA0E12PresentationCy0E4TypeQz07ContentJ0Qz03TabJ0QzGz_qd__ztAA0B15DestinationableRd__AKQyd__ALRSAIQyd__AJRSAMQyd__ANRSlF"></a>
                     <a name="//apple_ref/swift/Method/updateDestinationConfiguration(configuration:destination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP30updateDestinationConfiguration13configuration11destinationyAA0E12PresentationCy0E4TypeQz07ContentJ0Qz03TabJ0QzGz_qd__ztAA0B15DestinationableRd__AO0iF0Rtd__lF">updateDestinationConfiguration(configuration:<wbr>destination:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP30updateDestinationConfiguration13configuration11destinationyAA0E12PresentationCy0E4TypeQz07ContentJ0Qz03TabJ0QzGz_qd__ztAA0B15DestinationableRd__AKQyd__ALRSAIQyd__AJRSAMQyd__ANRSlF">updateDestinationConfiguration(configuration:<wbr>destination:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -741,7 +738,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">updateDestinationConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="k">inout</span> <span class="kd">some</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">updateDestinationConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="k">inout</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="k">inout</span> <span class="kd">some</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -840,9 +837,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP09findSplitb2InB9Hierarchy18currentDestinationAA010NavigationeB15Destinationable_pAA0I12PresentationCy0I4TypeQz07ContentM0Qz03TabM0QzG0L13ConfigurationRts_XPSgAA0bK0_p_tF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP09findSplitb2InB9Hierarchy18currentDestinationAA010NavigationeB15Destinationable_p11ContentTypeQzAHRS_0iM0QzAJRS03TabM0QzALRSXPSgAA0bK0_p_tF"></a>
                     <a name="//apple_ref/swift/Method/findSplitViewInViewHierarchy(currentDestination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP09findSplitb2InB9Hierarchy18currentDestinationAA010NavigationeB15Destinationable_pAA0I12PresentationCy0I4TypeQz07ContentM0Qz03TabM0QzG0L13ConfigurationRts_XPSgAA0bK0_p_tF">findSplitViewInViewHierarchy(currentDestination:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP09findSplitb2InB9Hierarchy18currentDestinationAA010NavigationeB15Destinationable_p11ContentTypeQzAHRS_0iM0QzAJRS03TabM0QzALRSXPSgAA0bK0_p_tF">findSplitViewInViewHierarchy(currentDestination:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -865,7 +862,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">findSplitViewInViewHierarchy</span><span class="p">(</span><span class="nv">currentDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">findSplitViewInViewHierarchy</span><span class="p">(</span><span class="nv">currentDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/NavigationSplitViewDestinationable.html">NavigationSplitViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -898,9 +895,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP012findTabBarInB9Hierarchy17searchDestinationAA0efB15Destinationable_pAA0J12PresentationCy0J4TypeQz07ContentM0Qz0eM0QzG0L13ConfigurationRts_A2NRSXPSgAA0bK0_p_tF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP012findTabBarInB9Hierarchy17searchDestinationAA0efB15Destinationable_p11ContentTypeQzAHRS_0jM0QzAJRS0eM0QzALRSXPSgAA0bK0_p_tF"></a>
                     <a name="//apple_ref/swift/Method/findTabBarInViewHierarchy(searchDestination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP012findTabBarInB9Hierarchy17searchDestinationAA0efB15Destinationable_pAA0J12PresentationCy0J4TypeQz07ContentM0Qz0eM0QzG0L13ConfigurationRts_A2NRSXPSgAA0bK0_p_tF">findTabBarInViewHierarchy(searchDestination:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP012findTabBarInB9Hierarchy17searchDestinationAA0efB15Destinationable_p11ContentTypeQzAHRS_0jM0QzAJRS0eM0QzALRSXPSgAA0bK0_p_tF">findTabBarInViewHierarchy(searchDestination:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -923,7 +920,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">findTabBarInViewHierarchy</span><span class="p">(</span><span class="nv">searchDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">findTabBarInViewHierarchy</span><span class="p">(</span><span class="nv">searchDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -956,9 +953,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_pAA011DestinationG0Cy0J4TypeQz07ContentK0Qz0eK0QzG0G13ConfigurationRts_XP_10Foundation4UUIDVtcyF"></a>
+                    <a name="/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_p11ContentTypeQzAGRS_011DestinationK0QzAIRS0eK0QzAKRSXP_10Foundation4UUIDVtcyF"></a>
                     <a name="//apple_ref/swift/Method/defaultTabBarPresentationClosure()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_pAA011DestinationG0Cy0J4TypeQz07ContentK0Qz0eK0QzG0G13ConfigurationRts_XP_10Foundation4UUIDVtcyF">defaultTabBarPresentationClosure()</a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_p11ContentTypeQzAGRS_011DestinationK0QzAIRS0eK0QzAKRSXP_10Foundation4UUIDVtcyF">defaultTabBarPresentationClosure()</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -981,7 +978,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">defaultTabBarPresentationClosure</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">((</span><span class="n">_</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span> <span class="nv">tabViewID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">defaultTabBarPresentationClosure</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">((</span><span class="n">_</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">_</span> <span class="nv">tabViewID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -995,9 +992,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg11ContentTypeQzSg_tF"></a>
+                    <a name="/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p11ContentTypeQzAHRS_0eM0QzAJRS03TabM0QzALRSXPSgAHSg_tF"></a>
                     <a name="//apple_ref/swift/Method/presentNextDestinationInQueue(contentToPass:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p25PresentationConfigurationQzAHRS_XPSg11ContentTypeQzSg_tF">presentNextDestinationInQueue(contentToPass:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations8FlowableP29presentNextDestinationInQueue13contentToPassAA15Destinationable_p11ContentTypeQzAHRS_0eM0QzAJRS03TabM0QzALRSXPSgAHSg_tF">presentNextDestinationInQueue(contentToPass:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -1016,7 +1013,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
 <span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">(</span><span class="nv">contentToPass</span><span class="p">:</span> <span class="kt">ContentType</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">(</span><span class="nv">contentToPass</span><span class="p">:</span> <span class="kt">ContentType</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -1026,9 +1023,39 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF"></a>
+                    <a name="/s:12Destinations8FlowableP24defaultCompletionClosure13configuration11destinationySbcSgAA23DestinationPresentationCy0H4TypeQz07ContentJ0Qz03TabJ0QzG_AA15Destinationable_pA2MRS_A2KRSA2ORSXPSgtF"></a>
+                    <a name="//apple_ref/swift/Method/defaultCompletionClosure(configuration:destination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations8FlowableP24defaultCompletionClosure13configuration11destinationySbcSgAA23DestinationPresentationCy0H4TypeQz07ContentJ0Qz03TabJ0QzG_AA15Destinationable_pA2MRS_A2KRSA2ORSXPSgtF">defaultCompletionClosure(configuration:<wbr>destination:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">defaultCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSgAA23DestinationPresentationCy0I4TypeQz07ContentK0Qz03TabK0QzG_tF"></a>
                     <a name="//apple_ref/swift/Method/defaultSheetDismissalCompletionClosure(configuration:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF">defaultSheetDismissalCompletionClosure(configuration:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations8FlowableP38defaultSheetDismissalCompletionClosure13configurationySbcSgAA23DestinationPresentationCy0I4TypeQz07ContentK0Qz03TabK0QzG_tF">defaultSheetDismissalCompletionClosure(configuration:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -1046,7 +1073,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">defaultSheetDismissalCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+<span class="kd">func</span> <span class="nf">defaultSheetDismissalCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1056,9 +1083,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF"></a>
+                    <a name="/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSgAA23DestinationPresentationCy0I4TypeQz07ContentK0Qz03TabK0QzG_tF"></a>
                     <a name="//apple_ref/swift/Method/defaultNavigationBackCompletionClosure(configuration:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSg25PresentationConfigurationQz_tF">defaultNavigationBackCompletionClosure(configuration:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations8FlowableP38defaultNavigationBackCompletionClosure13configurationySbcSgAA23DestinationPresentationCy0I4TypeQz07ContentK0Qz03TabK0QzG_tF">defaultNavigationBackCompletionClosure(configuration:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -1076,7 +1103,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">defaultNavigationBackCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
+<span class="kd">func</span> <span class="nf">defaultNavigationBackCompletionClosure</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations29PresentationCompletionClosurea">PresentationCompletionClosure</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -1182,7 +1209,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

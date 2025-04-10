@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -483,7 +480,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -543,7 +540,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">DestinationType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">DestinationType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span></code></pre>
 
                         </div>
                       </div>
@@ -570,7 +567,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">TabType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">TabType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -597,7 +594,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">ContentType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -607,63 +604,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa"></a>
-                    <a name="//apple_ref/swift/Alias/PresentationConfiguration" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A model type which configures Destination presentations. Typically this is a <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code>.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP16PresentationTypea"></a>
-                    <a name="//apple_ref/swift/Alias/PresentationType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16PresentationTypea">PresentationType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An enum which defines available Destination presentation types. Typically this is <code><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></code>.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQz25PresentationConfigurationQzGvp"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp"></a>
                     <a name="//apple_ref/swift/Property/configurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQz25PresentationConfigurationQzGvp">configurations</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp">configurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -678,7 +621,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">configurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">configurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -688,9 +631,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3fory012PresentationF0Qz_19UserInteractionTypeQztF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF"></a>
                     <a name="//apple_ref/swift/Method/addConfiguration(configuration:for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3fory012PresentationF0Qz_19UserInteractionTypeQztF">addConfiguration(configuration:<wbr>for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF">addConfiguration(configuration:<wbr>for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -698,14 +641,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adds a presentation configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQz25PresentationConfigurationQzGvp">configurations</a></code> dictionary.</p>
+                        <p>Adds a presentation configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp">configurations</a></code> dictionary.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -746,9 +689,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP13configuration3for25PresentationConfigurationQzSg19UserInteractionTypeQz_tF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg015UserInteractionH0Qz_tF"></a>
                     <a name="//apple_ref/swift/Method/configuration(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP13configuration3for25PresentationConfigurationQzSg19UserInteractionTypeQz_tF">configuration(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg015UserInteractionH0Qz_tF">configuration(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -763,7 +706,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">configuration</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">configuration</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -788,7 +731,7 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP25PresentationConfigurationQa">PresentationConfiguration</a></code> object, or <code>nil</code> if the specified object was not found.</p>
+                        <p>A <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code> object, or <code>nil</code> if the specified object was not found.</p>
                       </div>
                     </section>
                   </div>
@@ -828,7 +771,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

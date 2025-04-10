@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -484,7 +481,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingControllerDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UINavigationController</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UINavigationController</span></code></pre>
 
                 </div>
               </div>
@@ -554,9 +551,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations22GroupedDestinationableP40supportsIgnoringCurrentDestinationStatusSbyF"></a>
+                    <a name="/s:12Destinations35NavigatingControllerDestinationablePAAE40supportsIgnoringCurrentDestinationStatusSbvp"></a>
                     <a name="//apple_ref/swift/Property/supportsIgnoringCurrentDestinationStatus" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP40supportsIgnoringCurrentDestinationStatusSbyF">supportsIgnoringCurrentDestinationStatus</a>
+                    <a class="token" href="#/s:12Destinations35NavigatingControllerDestinationablePAAE40supportsIgnoringCurrentDestinationStatusSbvp">supportsIgnoringCurrentDestinationStatus</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -567,7 +564,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Determines whether this Destination supports the <code>shouldSetDestinationAsCurrent</code> parameter of the <code>addChild</code> method. If this Destination should ignore requests to not make added children the current Destination, this property should be set to <code>false</code>. For <code>NavigatingControllerDestinationable</code>-conforming classes, the default is <code>false</code>.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -578,15 +576,19 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Returns whether the current Destination status should be ignored.</p>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p25PresentationConfigurationQzAJRS_XP_SbSgAKtF"></a>
+                    <a name="/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p11ContentTypeQzAJRS_0gN0QzALRS03TabN0QzANRSXP_SbSgAOtF"></a>
                     <a name="//apple_ref/swift/Method/addChild(childDestination:shouldSetDestinationAsCurrent:shouldAnimate:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p25PresentationConfigurationQzAJRS_XP_SbSgAKtF">addChild(childDestination:<wbr>shouldSetDestinationAsCurrent:<wbr>shouldAnimate:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p11ContentTypeQzAJRS_0gN0QzALRS03TabN0QzANRSXP_SbSgAOtF">addChild(childDestination:<wbr>shouldSetDestinationAsCurrent:<wbr>shouldAnimate:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -604,7 +606,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">addChild</span><span class="p">(</span><span class="nv">childDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">shouldSetDestinationAsCurrent</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">shouldAnimate</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">addChild</span><span class="p">(</span><span class="nv">childDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">shouldSetDestinationAsCurrent</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">shouldAnimate</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -614,9 +616,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p25PresentationConfigurationQzALRS_XPtF"></a>
+                    <a name="/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p11ContentTypeQzALRS_011DestinationM0QzANRS03TabM0QzAPRSXPtF"></a>
                     <a name="//apple_ref/swift/Method/replaceChild(currentID:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p25PresentationConfigurationQzALRS_XPtF">replaceChild(currentID:<wbr>with:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p11ContentTypeQzALRS_011DestinationM0QzANRS03TabM0QzAPRSXPtF">replaceChild(currentID:<wbr>with:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -635,7 +637,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -680,7 +682,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

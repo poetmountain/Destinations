@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -484,7 +481,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigationSplitViewDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigationSplitViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a></span></code></pre>
 
                 </div>
               </div>
@@ -648,9 +645,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP18presentDestination11destination2in26shouldUpdateSelectedColumn19presentationOptions06removeG15FromFlowClosureyAA0dE0_p25PresentationConfigurationQzALRS_XP_7SwiftUI0bcdM0VSbAA0b5StacktO0VSgy10Foundation4UUIDVcSgtF"></a>
+                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP18presentDestination11destination2in26shouldUpdateSelectedColumn19presentationOptions06removeG15FromFlowClosureyAA0dE0_p11ContentTypeQzALRS_0gU0QzANRS03TabU0QzAPRSXP_7SwiftUI0bcdM0VSbAA0b17StackPresentationO0VSgy10Foundation4UUIDVcSgtF"></a>
                     <a name="//apple_ref/swift/Method/presentDestination(destination:in:shouldUpdateSelectedColumn:presentationOptions:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP18presentDestination11destination2in26shouldUpdateSelectedColumn19presentationOptions06removeG15FromFlowClosureyAA0dE0_p25PresentationConfigurationQzALRS_XP_7SwiftUI0bcdM0VSbAA0b5StacktO0VSgy10Foundation4UUIDVcSgtF">presentDestination(destination:<wbr>in:<wbr>shouldUpdateSelectedColumn:<wbr>presentationOptions:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP18presentDestination11destination2in26shouldUpdateSelectedColumn19presentationOptions06removeG15FromFlowClosureyAA0dE0_p11ContentTypeQzALRS_0gU0QzANRS03TabU0QzAPRSXP_7SwiftUI0bcdM0VSbAA0b17StackPresentationO0VSgy10Foundation4UUIDVcSgtF">presentDestination(destination:<wbr>in:<wbr>shouldUpdateSelectedColumn:<wbr>presentationOptions:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -678,7 +675,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">in</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">,</span> <span class="nv">shouldUpdateSelectedColumn</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">presentationOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/NavigationStackPresentationOptions.html">NavigationStackPresentationOptions</a></span><span class="p">?,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentDestination</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">in</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">,</span> <span class="nv">shouldUpdateSelectedColumn</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span> <span class="nv">presentationOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/NavigationStackPresentationOptions.html">NavigationStackPresentationOptions</a></span><span class="p">?,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>
@@ -789,9 +786,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP18currentDestination3forAA0dE0_p25PresentationConfigurationQzAHRS_XPSg7SwiftUI0bcD6ColumnV_tF"></a>
+                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP18currentDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSg7SwiftUI0bcD6ColumnV_tF"></a>
                     <a name="//apple_ref/swift/Method/currentDestination(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP18currentDestination3forAA0dE0_p25PresentationConfigurationQzAHRS_XPSg7SwiftUI0bcD6ColumnV_tF">currentDestination(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP18currentDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSg7SwiftUI0bcD6ColumnV_tF">currentDestination(for:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -814,7 +811,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">currentDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">currentDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -847,9 +844,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP15rootDestination3forAA0dE0_p25PresentationConfigurationQzAHRS_XPSg7SwiftUI0bcD6ColumnV_tF"></a>
+                    <a name="/s:12Destinations34NavigationSplitViewDestinationableP15rootDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSg7SwiftUI0bcD6ColumnV_tF"></a>
                     <a name="//apple_ref/swift/Method/rootDestination(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP15rootDestination3forAA0dE0_p25PresentationConfigurationQzAHRS_XPSg7SwiftUI0bcD6ColumnV_tF">rootDestination(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations34NavigationSplitViewDestinationableP15rootDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSg7SwiftUI0bcD6ColumnV_tF">rootDestination(for:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -874,7 +871,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">rootDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">rootDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">NavigationSplitViewColumn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -937,9 +934,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzAMRS_XPyAJcSgtF"></a>
+                    <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF"></a>
                     <a name="//apple_ref/swift/Method/replaceChild(currentID:with:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p25PresentationConfigurationQzAMRS_XPyAJcSgtF">replaceChild(currentID:<wbr>with:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF">replaceChild(currentID:<wbr>with:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -957,7 +954,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -972,7 +969,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

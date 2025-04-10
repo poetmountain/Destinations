@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -483,7 +480,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationInternalState</span><span class="o">&lt;</span><span class="kt">InteractorType</span><span class="p">,</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">PresentationType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html">DestinationInternalStateable</a></span> <span class="k">where</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span><span class="p">,</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">PresentationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a></span><span class="p">,</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DestinationInternalState</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html">DestinationInternalStateable</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
 
                 </div>
               </div>
@@ -496,188 +493,6 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/UserInteractionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">UserInteractionType</span> <span class="o">=</span> <span class="kt">UserInteractionType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP0B4TypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/DestinationType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">DestinationType</span> <span class="o">=</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">DestinationType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/InteractorType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa">InteractorType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">InteractorType</span> <span class="o">=</span> <span class="kt">InteractorType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP7TabTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/TabType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP7TabTypeQa">TabType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">TabType</span> <span class="o">=</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">TabType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP16PresentationTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/PresentationType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP16PresentationTypeQa">PresentationType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt">PresentationType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP11ContentTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/ContentType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ContentType</span> <span class="o">=</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt">ContentType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa"></a>
-                    <a name="//apple_ref/swift/Alias/PresentationConfiguration" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">PresentationConfiguration</span> <span class="o">=</span> <span class="kt">PresentationConfiguration</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -708,9 +523,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations24DestinationInternalStateC25destinationConfigurationsAA03AppbF0Cyq_q1_GSgvp"></a>
+                    <a name="/s:12Destinations24DestinationInternalStateC25destinationConfigurationsAA03AppbF0Cyxq_q0_q1_GSgvp"></a>
                     <a name="//apple_ref/swift/Property/destinationConfigurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations24DestinationInternalStateC25destinationConfigurationsAA03AppbF0Cyq_q1_GSgvp">destinationConfigurations</a>
+                    <a class="token" href="#/s:12Destinations24DestinationInternalStateC25destinationConfigurationsAA03AppbF0Cyxq_q0_q1_GSgvp">destinationConfigurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -725,7 +540,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt">DestinationConfigurations</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -735,9 +550,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations24DestinationInternalStateC30systemNavigationConfigurationsAA03AppbG0CyAA06SystemF4TypeOq1_GSgvp"></a>
+                    <a name="/s:12Destinations24DestinationInternalStateC30systemNavigationConfigurationsAA03AppbG0CyAA06SystemF4TypeOq_q0_q1_GSgvp"></a>
                     <a name="//apple_ref/swift/Property/systemNavigationConfigurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations24DestinationInternalStateC30systemNavigationConfigurationsAA03AppbG0CyAA06SystemF4TypeOq1_GSgvp">systemNavigationConfigurations</a>
+                    <a class="token" href="#/s:12Destinations24DestinationInternalStateC30systemNavigationConfigurationsAA03AppbG0CyAA06SystemF4TypeOq_q0_q1_GSgvp">systemNavigationConfigurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -752,7 +567,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">systemNavigationConfigurations</span><span class="p">:</span> <span class="kt">NavigationConfigurations</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">systemNavigationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -805,7 +620,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interactors</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa">InteractorType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/AbstractInteractable.html">AbstractInteractable</a></span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interactors</span><span class="p">:</span> <span class="p">[</span><span class="kt">InteractorType</span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/AbstractInteractable.html">AbstractInteractable</a></span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -831,7 +646,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interfaceActions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interfaceActions</span><span class="p">:</span> <span class="p">[</span><span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -857,7 +672,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">systemNavigationActions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">systemNavigationActions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -883,7 +698,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interactorAssistants</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa">InteractorType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP25PresentationConfigurationQa">PresentationConfiguration</a></span><span class="o">.</span><span class="kt"><a href="../Classes/DestinationInternalState.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interactorAssistants</span><span class="p">:</span> <span class="p">[</span><span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt">InteractorType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -893,9 +708,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations24DestinationInternalStateCACyxq_q0_q1_Gycfc"></a>
+                    <a name="/s:12Destinations24DestinationInternalStateCACyxq_q0_q1_q2_Gycfc"></a>
                     <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations24DestinationInternalStateCACyxq_q0_q1_Gycfc">init()</a>
+                    <a class="token" href="#/s:12Destinations24DestinationInternalStateCACyxq_q0_q1_q2_Gycfc">init()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -925,7 +740,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

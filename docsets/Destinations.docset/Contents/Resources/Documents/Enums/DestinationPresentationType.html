@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -484,7 +481,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a></span><span class="p">,</span> <span class="kt">Equatable</span> <span class="k">where</span> <span class="kt">PresentationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a></span><span class="p">,</span> <span class="kt">Equatable</span> <span class="k">where</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span></code></pre>
 
                 </div>
               </div>
@@ -500,36 +497,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO03TabD0a"></a>
-                    <a name="//apple_ref/swift/Alias/TabType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO03TabD0a">TabType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An enum which defines types of tabs in a tab bar.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">TabType</span> <span class="o">=</span> <span class="kt">PresentationConfiguration</span><span class="o">.</span><span class="kt">TabType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO15navigationStackyACyxGAA010NavigationcD0O_tcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO15navigationStackyACyxq_q0_GAA010NavigationcD0O_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/navigationStack(type:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO15navigationStackyACyxGAA010NavigationcD0O_tcAEmAA0bC11ConfiguringRzlF">navigationStack(type:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO15navigationStackyACyxq_q0_GAA010NavigationcD0O_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF">navigationStack(type:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -573,9 +543,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO6tabBaryACyxG03TabD0Qz_tcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO6tabBaryACyxq_q0_Gq0__tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/tabBar(tab:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO6tabBaryACyxG03TabD0Qz_tcAEmAA0bC11ConfiguringRzlF">tabBar(tab:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO6tabBaryACyxq_q0_Gq0__tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF">tabBar(tab:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -592,7 +562,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">tabBar</span><span class="p">(</span><span class="nv">tab</span><span class="p">:</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html#/s:12Destinations27DestinationPresentationTypeO03TabD0a">TabType</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">tabBar</span><span class="p">(</span><span class="nv">tab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -621,9 +591,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO9splitViewyACyxGAA05SplitF6ColumnV_tcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO9splitViewyACyxq_q0_GAA05SplitF6ColumnV_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabK0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/splitView(column:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO9splitViewyACyxGAA05SplitF6ColumnV_tcAEmAA0bC11ConfiguringRzlF">splitView(column:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO9splitViewyACyxq_q0_GAA05SplitF6ColumnV_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabK0R0_r1_lF">splitView(column:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -669,9 +639,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO12addToCurrentyACyxGAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO12addToCurrentyACyxq_q0_GAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/addToCurrent" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO12addToCurrentyACyxGAEmAA0bC11ConfiguringRzlF">addToCurrent</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO12addToCurrentyACyxq_q0_GAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF">addToCurrent</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -696,9 +666,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO14replaceCurrentyACyxGAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO14replaceCurrentyACyxq_q0_GAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/replaceCurrent" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO14replaceCurrentyACyxGAEmAA0bC11ConfiguringRzlF">replaceCurrent</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO14replaceCurrentyACyxq_q0_GAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF">replaceCurrent</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -723,9 +693,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO5sheetyACyxGAA05SheetcD0O_AA0fC7OptionsVSgtcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO5sheetyACyxq_q0_GAA05SheetcD0O_AA0fC7OptionsVSgtcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/sheet(type:options:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO5sheetyACyxGAA05SheetcD0O_AA0fC7OptionsVSgtcAEmAA0bC11ConfiguringRzlF">sheet(type:<wbr>options:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO5sheetyACyxq_q0_GAA05SheetcD0O_AA0fC7OptionsVSgtcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabJ0R0_r1_lF">sheet(type:<wbr>options:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -781,9 +751,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO15destinationPathyACyxGSayxG_tcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO15destinationPathyACyxq_q0_GSayAA0bC0Cyxq_q0_GG_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/destinationPath(path:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO15destinationPathyACyxGSayxG_tcAEmAA0bC11ConfiguringRzlF">destinationPath(path:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO15destinationPathyACyxq_q0_GSayAA0bC0Cyxq_q0_GG_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF">destinationPath(path:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -803,7 +773,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">destinationPath</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="p">[</span><span class="kt">PresentationConfiguration</span><span class="p">])</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">destinationPath</span><span class="p">(</span><span class="nv">path</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">])</span></code></pre>
 
                         </div>
                       </div>
@@ -832,9 +802,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27DestinationPresentationTypeO6customyACyxGAA06CustomC0VyxG_tcAEmAA0bC11ConfiguringRzlF"></a>
+                    <a name="/s:12Destinations27DestinationPresentationTypeO6customyACyxq_q0_GAA06CustomC0Vyxq_q0_G_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF"></a>
                     <a name="//apple_ref/swift/Element/custom(presentation:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO6customyACyxGAA06CustomC0VyxG_tcAEmAA0bC11ConfiguringRzlF">custom(presentation:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations27DestinationPresentationTypeO6customyACyxq_q0_GAA06CustomC0Vyxq_q0_G_tcAEmAA08RoutableA0RzAA15ContentTypeableR_AA03TabI0R0_r1_lF">custom(presentation:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -854,7 +824,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">custom</span><span class="p">(</span><span class="nv">presentation</span><span class="p">:</span> <span class="kt"><a href="../Structs/CustomPresentation.html">CustomPresentation</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">custom</span><span class="p">(</span><span class="nv">presentation</span><span class="p">:</span> <span class="kt"><a href="../Structs/CustomPresentation.html">CustomPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -925,7 +895,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">nonisolated</span> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">nonisolated</span> <span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">DestinationPresentationType</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -940,7 +910,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

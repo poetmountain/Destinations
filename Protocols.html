@@ -226,9 +226,6 @@
                 <a class="nav-group-task-link" href="Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -253,7 +250,13 @@
                 <a class="nav-group-task-link" href="Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/Interactable.html">Interactable</a>
@@ -438,12 +441,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
@@ -692,7 +689,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -779,7 +776,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInterfacing</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInterfacing</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -807,7 +804,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInternalStateable</span><span class="o">&lt;</span><span class="kt">InteractorType</span><span class="p">,</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInternalStateable</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -837,35 +834,6 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationPathNavigating</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations34DestinationPresentationConfiguringP"></a>
-                    <a name="//apple_ref/swift/Protocol/DestinationPresentationConfiguring" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations34DestinationPresentationConfiguringP">DestinationPresentationConfiguring</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>This protocol represents a configuration object for the presentation of a Destination. Classes adopting this protocol should handle the presentation of Destinations within the system UI framework being used.</p>
-
-                        <a href="Protocols/DestinationPresentationConfiguring.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationPresentationConfiguring</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -963,7 +931,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Destinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt">Identifiable</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Destinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt">Identifiable</span></code></pre>
 
                         </div>
                       </div>
@@ -1022,7 +990,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupDestinationInternalStateable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupDestinationInternalStateable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1042,7 +1010,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This protocol represents a type of Destination which manages child Destinations, such as a <code>NavigationStack</code> in SwiftUI.</p>
+                        <p>This abstract protocol represents a type of Destination which manages child Destinations, such as a <code>NavigationStack</code> in SwiftUI.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>Protocols or classes that should take on group behavior should use <code><a href="Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a></code> for SwiftUI projects and <code><a href="Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a></code> for UIKit projects.</p>
+
+</div>
 
                         <a href="Protocols/GroupedDestinationable.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1051,7 +1024,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupedDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupedDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -1149,7 +1122,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This protocol represents a model which configures how an interactor is used with a Destination.</p>
+                        <p>This protocol represents a configuration for a specific action an Interactor should take.</p>
 
                         <a href="Protocols/InteractorConfiguring.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1310,6 +1283,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations26GroupedViewDestinationableP"></a>
+                    <a name="//apple_ref/swift/Protocol/GroupedViewDestinationable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This protocol represents a type of Destination which manages child Destinations in a SwiftUI project.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupedViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations32NavigatingDestinationInterfacingP"></a>
                     <a name="//apple_ref/swift/Protocol/NavigatingDestinationInterfacing" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations32NavigatingDestinationInterfacingP">NavigatingDestinationInterfacing</a>
@@ -1358,7 +1359,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingViewDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigatingDestinationInterfacing.html">NavigatingDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigatingDestinationInterfacing.html">NavigatingDestinationInterfacing</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1415,7 +1416,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigationSplitViewDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigationSplitViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations41NavigationSplitViewDestinationInterfacingP">NavigationSplitViewDestinationInterfacing</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1531,7 +1532,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarViewDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span><span class="o">.</span><span class="kt">TabType</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarViewDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarViewDestinationable.html">TabBarViewDestinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1560,7 +1561,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarViewDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span><span class="o">.</span><span class="kt">TabType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ViewType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarViewDestinationInterfacing.html">TabBarViewDestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1589,7 +1590,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationInterfacing</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationInterfacing.html">DestinationInterfacing</a></span><span class="p">,</span> <span class="kt">View</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationInterfacing.html">DestinationInterfacing</a></span><span class="p">,</span> <span class="kt">View</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationable.html">ViewDestinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1618,7 +1619,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationProviding</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationProviding</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1647,7 +1648,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1676,7 +1677,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewFlowable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationSwiftUICoordinator.html">DestinationSwiftUICoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt"><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewFlowable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationSwiftUICoordinator.html">DestinationSwiftUICoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1958,7 +1959,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerDestinationProviding</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerDestinationProviding</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1987,7 +1988,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Destinationable.html">Destinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -2016,7 +2017,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerFlowable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt"><a href="Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ControllerFlowable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Flowable.html">Flowable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">InterfaceCoordinator</span> <span class="o">==</span> <span class="kt"><a href="Classes/DestinationUIKitCoordinator.html">DestinationUIKitCoordinator</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -2055,6 +2056,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations32GroupedControllerDestinationableP"></a>
+                    <a name="//apple_ref/swift/Protocol/GroupedControllerDestinationable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This protocol represents a type of Destination which manages child Destinations in a UIKit project.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">GroupedControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations35NavigatingControllerDestinationableP"></a>
                     <a name="//apple_ref/swift/Protocol/NavigatingControllerDestinationable" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations35NavigatingControllerDestinationableP">NavigatingControllerDestinationable</a>
@@ -2074,7 +2103,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingControllerDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UINavigationController</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UINavigationController</span></code></pre>
 
                         </div>
                       </div>
@@ -2131,7 +2160,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">SplitViewControllerDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UISplitViewController</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">SplitViewControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt">UISplitViewController</span></code></pre>
 
                         </div>
                       </div>
@@ -2276,7 +2305,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarControllerDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">UITabBarController</span><span class="p">,</span> <span class="kt"><a href="Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span><span class="o">.</span><span class="kt">TabType</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarControllerDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">UITabBarController</span><span class="p">,</span> <span class="kt"><a href="Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -2305,7 +2334,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarControllerDestinationable</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/GroupedDestinationable.html">GroupedDestinationable</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabBarControllerDestinationInterfacing.html">TabBarControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span> <span class="o">==</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ControllerType</span><span class="o">.</span><span class="kt">TabType</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarControllerDestinationable</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -2320,7 +2349,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>

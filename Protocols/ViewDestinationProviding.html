@@ -228,9 +228,6 @@
                 <a class="nav-group-task-link" href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DestinationPresentationTypeable.html">DestinationPresentationTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -255,7 +252,13 @@
                 <a class="nav-group-task-link" href="../Protocols/GroupDestinationInternalStateable.html">GroupDestinationInternalStateable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations32GroupedControllerDestinationableP">GroupedControllerDestinationable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/GroupedDestinationable.html">GroupedDestinationable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations26GroupedViewDestinationableP">GroupedViewDestinationable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Interactable.html">Interactable</a>
@@ -442,12 +445,6 @@
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations37GroupCurrentDestinationChangedClosurea">GroupCurrentDestinationChangedClosure</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations32GroupedControllerDestinationablea">GroupedControllerDestinationable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations26GroupedViewDestinationablea">GroupedViewDestinationable</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:12Destinations25InteractorResponseClosurea">InteractorResponseClosure</a>
               </li>
               <li class="nav-group-task">
@@ -484,7 +481,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationProviding</span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewDestinationProviding</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationProviding.html">DestinationProviding</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationType</span> <span class="o">==</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -517,7 +514,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">PresentationType</span> <span class="o">=</span> <span class="kt"><a href="../Enums/DestinationPresentationType.html">DestinationPresentationType</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -527,9 +524,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations24ViewDestinationProvidingP05buildC024destinationPresentations010navigationG013configuration7appFlow0C0QzSgAA03AppC14ConfigurationsCyAI_19UserInteractionTypeQZAA0C12PresentationCy0cP0Qz07ContentP0Qz03TabP0QzGGSg_AMyAA016SystemNavigationP0OAXGSgAXqd__tAA0B8FlowableRd__AX0Q13ConfigurationRtzAXA4_Rtd__lF"></a>
+                    <a name="/s:12Destinations24ViewDestinationProvidingP05buildC024destinationPresentations010navigationG013configuration7appFlow0C0QzSgAA03AppC14ConfigurationsCyAI_19UserInteractionTypeQZ0cP0Qz07ContentP0Qz03TabP0QzGSg_AMyAA016SystemNavigationP0OAqsUGSgAA0C12PresentationCyAqsUGqd__tAA0B8FlowableRd__ARQyd__ASRSAPQyd__AQRSATQyd__AURSlF"></a>
                     <a name="//apple_ref/swift/Method/buildDestination(destinationPresentations:navigationPresentations:configuration:appFlow:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations24ViewDestinationProvidingP05buildC024destinationPresentations010navigationG013configuration7appFlow0C0QzSgAA03AppC14ConfigurationsCyAI_19UserInteractionTypeQZAA0C12PresentationCy0cP0Qz07ContentP0Qz03TabP0QzGGSg_AMyAA016SystemNavigationP0OAXGSgAXqd__tAA0B8FlowableRd__AX0Q13ConfigurationRtzAXA4_Rtd__lF">buildDestination(destinationPresentations:<wbr>navigationPresentations:<wbr>configuration:<wbr>appFlow:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations24ViewDestinationProvidingP05buildC024destinationPresentations010navigationG013configuration7appFlow0C0QzSgAA03AppC14ConfigurationsCyAI_19UserInteractionTypeQZ0cP0Qz07ContentP0Qz03TabP0QzGSg_AMyAA016SystemNavigationP0OAqsUGSgAA0C12PresentationCyAqsUGqd__tAA0B8FlowableRd__ARQyd__ASRSAPQyd__AQRSATQyd__AURSlF">buildDestination(destinationPresentations:<wbr>navigationPresentations:<wbr>configuration:<wbr>appFlow:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -545,7 +542,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">buildDestination</span><span class="p">(</span><span class="nv">destinationPresentations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">.</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">?,</span> <span class="nv">navigationPresentations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;&gt;</span><span class="p">?,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt">PresentationConfiguration</span><span class="p">,</span> <span class="nv">appFlow</span><span class="p">:</span> <span class="kd">some</span> <span class="kt"><a href="../Protocols/ViewFlowable.html">ViewFlowable</a></span><span class="o">&lt;</span><span class="kt">PresentationConfiguration</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Destination</span><span class="p">?</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">PresentationConfiguration</span> <span class="o">==</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">.</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">ContentType</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
+<span class="kd">func</span> <span class="nf">buildDestination</span><span class="p">(</span><span class="nv">destinationPresentations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">.</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?,</span> <span class="nv">navigationPresentations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">?,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">appFlow</span><span class="p">:</span> <span class="kd">some</span> <span class="kt"><a href="../Protocols/ViewFlowable.html">ViewFlowable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Destination</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -585,7 +582,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>A <code><a href="../Protocols/DestinationPresentationConfiguring.html">DestinationPresentationConfiguring</a></code> object which provides configuration data to construct the Destination.</p>
+                                  <p>A <code><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></code> object which provides configuration data to construct the Destination.</p>
                                 </div>
                               </td>
                             </tr>
@@ -619,7 +616,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2024 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
