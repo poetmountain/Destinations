@@ -9,7 +9,7 @@
 
 import Foundation
 
-/// This model is used to configure how an interactor is used in a Destination.
+/// This model is used to configure a specific action an Interactor should take.
 public struct InteractorConfiguration<InteractorType: InteractorTypeable, Interactor: AbstractInteractable>: InteractorConfiguring {
     public typealias ActionType = Interactor.Request.ActionType
     

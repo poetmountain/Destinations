@@ -12,8 +12,13 @@ import Foundation
 /// A protocol representing a user interface object that is handled by Destinations. This is typically a `View` in SwiftUI or a `UIViewController` in UIKit.
 @MainActor public protocol DestinationInterfacing<DestinationType, ContentType, TabType> {
     
+    /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
+    
+    /// An enum which defines the types of content that are available to this Destination interface.
     associatedtype ContentType: ContentTypeable
+    
+    /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.

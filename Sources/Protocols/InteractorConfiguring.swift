@@ -9,21 +9,22 @@
 
 import Foundation
 
-/// This protocol represents a model which configures how an interactor is used with a Destination.
+/// This protocol represents a configuration for a specific action an Interactor should take.
 @MainActor public protocol InteractorConfiguring<InteractorType> {
     
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
+    /// An enum which represents types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
     
+    /// A class type of the Interactor to be configured.
     associatedtype Interactor: AbstractInteractable
     
     /// An enum which defines types of actions for a particular Interactor.
     associatedtype ActionType: InteractorRequestActionTypeable
     
-    /// The type of interactor.
+    /// An enum type representing the kind of interactor to be configured.
     var interactorType: InteractorType { get }
     
-    /// The type of interactor request action.
+    /// An enum type representing the type of interactor request action.
     var actionType: ActionType { get }
     
     /// The type of interactor assistant associated with the interactor to be configured.

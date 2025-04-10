@@ -19,6 +19,8 @@ import UIKit
 
 public extension NavigatingControllerDestinationable {
     
+    /// Determines whether this Destination supports the `shouldSetDestinationAsCurrent` parameter of the `addChild` method. If this Destination should ignore requests to not make added children the current Destination, this property should be set to `false`. For `NavigatingControllerDestinationable`-conforming classes, the default is `false`.
+    /// - Returns: Returns whether the current Destination status should be ignored.
     var supportsIgnoringCurrentDestinationStatus: Bool {
         return false
     }
