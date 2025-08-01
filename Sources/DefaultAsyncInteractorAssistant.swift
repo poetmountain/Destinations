@@ -27,7 +27,7 @@ public struct DefaultAsyncInteractorAssistant<InteractorType: InteractorTypeable
         
         let request = Request(action: actionType)
         let result = await destination.performRequest(interactor: interactorType, request: request)
-        await destination.handleInteractorResult(result: result, for: request)
+        await destination.handleAsyncInteractorResult(result: result, for: request)
             
     }
 }

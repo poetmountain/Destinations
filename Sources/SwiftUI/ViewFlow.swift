@@ -118,6 +118,14 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             currentViewDestination = findSplitViewInViewHierarchy(currentDestination: current)
         }
         
+        // handle use case where the top-level Destination should be replaced
+        if configuration.presentationType == .replaceCurrent {
+            if activeDestinations.count == 1, let currentViewDestination {
+                removeDestination(destinationID: currentViewDestination.id)
+                rootDestination = newDestination
+            }
+        }
+        
         if var newDestination = newDestination {
             
             if let parentID = currentViewDestination?.parentDestinationID() ?? mutableConfiguration.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {

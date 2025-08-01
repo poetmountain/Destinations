@@ -22,8 +22,8 @@ struct ColorsListProvider: ControllerDestinationProviding, DestinationTypes {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .custom(ChooseColorFromListActionAssistant()))
         
         // interactor actions
-        let paginateAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(ColorsInteractorAssistant(actionType: .paginate)))
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        let paginateAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
         
         presentationsData = [.color(model: nil): colorSelection]
         interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]

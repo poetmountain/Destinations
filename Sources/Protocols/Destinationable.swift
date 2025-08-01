@@ -544,7 +544,7 @@ public extension Destinationable {
     
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error> {
         
-        guard let interactor = internalState.interactors[interactor] as? any AsyncInteractable<Request, Request.ResultData> else {
+        guard let interactor = internalState.interactors[interactor] as? any AsyncInteractable<Request> else {
             let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
             let message = String(format: template, "\(interactor)")
             

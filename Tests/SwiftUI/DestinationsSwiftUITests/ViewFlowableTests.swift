@@ -69,4 +69,19 @@ import Destinations
         }
     }
     
+    func test_replaceCurrent_for_root_destination() {
+        let startingDestination = PresentationConfiguration(destinationType: .home, presentationType: .replaceCurrent, assistantType: .basic)
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+                
+        let newDestination = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
+        appFlow.presentDestination(configuration: newDestination)
+        
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, .colorDetail)
+            XCTAssertEqual(appFlow.rootDestination?.type, .colorDetail)
+        } else {
+            XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
+        }
+    }
 }

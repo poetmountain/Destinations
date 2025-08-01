@@ -62,7 +62,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let startProvider = StartProvider()
         let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorNav])
         
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
         
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
         let colorContainerProvider = ColorDetailContainerProvider()
