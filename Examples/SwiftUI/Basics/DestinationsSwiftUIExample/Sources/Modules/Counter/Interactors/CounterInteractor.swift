@@ -33,7 +33,7 @@ actor CounterInteractor: AsyncInteractable {
         
     private var counter: Int = 0
     
-    private var isCounting = false
+    private(set) var isCounting = false
     
     let (stream, continuation) = AsyncStream.makeStream(of: Int.self)
 
@@ -69,7 +69,9 @@ actor CounterInteractor: AsyncInteractable {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: UInt64(1_000_000_000))
                 
-                continuation.yield(1)
+                if isCounting {
+                    continuation.yield(1)
+                }
             }
         }
     
@@ -80,8 +82,6 @@ actor CounterInteractor: AsyncInteractable {
     private func stopStream() {
         print("stopping stream")
         timer?.cancel()
-//        timer?.invalidate()
-//        timer = nil
         isCounting = false
     }
 }
