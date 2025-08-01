@@ -19,10 +19,14 @@ public protocol AbstractInteractable<Request>: AnyObject {
     
     /// This method can be called to prepare the Interactor for requests. Typically you might want to call this from ``Destinationable``'s `configureInteractor()` method.
     func prepareForRequests()
+    
+    /// When this method is called, this interactor's Destination is about to be removed from the Flow. Any resource references should be removed and in-progress tasks should be stopped. Implement this in your interactors to stop any current work.
+    func cleanupResources()
 }
 
 public extension AbstractInteractable {
     func prepareForRequests() {}
+    func cleanupResources() {}
 }
 
 /// A generic closure which provides a result to an Interactor request.

@@ -78,4 +78,10 @@ final class CounterDestination: ViewDestinationable, DestinationTypes {
     func prepareForPresentation() {
         
     }
+    
+    func cleanupResources() {
+        if let counterInteractor = self.interactor(for: .counter) {
+            counterInteractor.cleanupResources()
+        }
+    }
 }

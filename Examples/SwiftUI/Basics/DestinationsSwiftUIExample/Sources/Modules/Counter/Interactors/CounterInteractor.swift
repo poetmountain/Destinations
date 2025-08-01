@@ -24,8 +24,8 @@ struct CounterRequest: InteractorRequestConfiguring {
     var action: ActionType
 }
 
-final class CounterInteractor: Interactable {
-
+actor CounterInteractor: AsyncInteractable {
+    
     typealias Request = CounterRequest
     typealias Item = Request.Item
 
@@ -37,41 +37,51 @@ final class CounterInteractor: Interactable {
     
     let (stream, continuation) = AsyncStream.makeStream(of: Int.self)
 
-    private var timer: Timer?
+    private var timer: Task<Void, Never>?
     
     deinit {
-        stopStream()
-        continuation.finish()
+        cleanupResources()
     }
     
-    func perform(request: Request) {
-        
+    nonisolated func cleanupResources() {
+        Task { @MainActor [weak self] in
+            await self?.timer?.cancel()
+            self?.continuation.finish()
+        }
+    }
+    
+    func perform(request: CounterRequest) async -> Result<CounterRequest.ResultData, Error> {
         switch request.action {
             case .startCount:
                 startStream()
-
+                return .success(.count(value: counter))
             case .stopCount:
                 stopStream()
+                return .success(.count(value: counter))
         }
-        
     }
 
-    private func startStream() {
-        print("starting stream")
+    func startStream() {
         guard isCounting == false else { return }
+        print("starting stream")
         
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { [continuation] timer in            
-            continuation.yield(1)
-        })
+        timer = Task(priority: .utility) {
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: UInt64(1_000_000_000))
+                
+                continuation.yield(1)
+            }
+        }
+    
 
         isCounting = true
     }
 
-    nonisolated private func stopStream() {
+    private func stopStream() {
         print("stopping stream")
-
-        timer?.invalidate()
-        timer = nil
+        timer?.cancel()
+//        timer?.invalidate()
+//        timer = nil
         isCounting = false
     }
 }
