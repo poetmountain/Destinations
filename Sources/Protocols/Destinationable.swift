@@ -541,7 +541,7 @@ public extension Destinationable {
         }
     }
     
-    
+#if swift(>=6.1)
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error> {
         
         guard let interactor = internalState.interactors[interactor] as? any AsyncInteractable<Request> else {
@@ -554,7 +554,20 @@ public extension Destinationable {
         return await interactor.perform(request: request)
 
     }
-    
+#else
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error> {
+        
+        guard let interactor = internalState.interactors[interactor] as? any AsyncInteractable<Request, Request.ResultData> else {
+            let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
+            let message = String(format: template, "\(interactor)")
+            
+            return .failure(DestinationsError.interactorNotFound(message: message))
+        }
+        
+        return await interactor.perform(request: request)
+
+    }
+#endif
     
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) {
         
