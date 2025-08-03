@@ -74,6 +74,11 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         uiCoordinator?.baseController = baseController
     }
     
+    @available(*, deprecated, renamed: "assignBaseController(_:)", message: "This method has been deprecated and will be removed in a future version. Please use the assignBaseController(_:) method instead.")
+    public func assignRoot(rootController: any ControllerDestinationInterfacing) {
+        assignBaseController(rootController)
+    }
+    
     public func destination(for configuration: DestinationPresentation<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
         var existingDestination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
         let existingID: UUID? = configuration.actionTargetID
