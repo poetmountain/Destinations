@@ -1,3 +1,16 @@
+### 2.2.0
+#### Features
+* Added a `replaceRoot` presentation type. This type removes all active Destinations in the Flow and sets a new root Destination. This is useful in use cases such as a user signing out, where you need to remove all the current UI and present a new screen.
+* Added a `cleanupResources()` method to `AbstractInteractable` which is called when an Interactor's Destination is about to be removed from the Flow. You can implement this method in your Interactors to remove any resource references and stop any in-progress tasks.
+#### Fixes
+* Fixes to address Xcode 26 concurrency warnings
+* `AsyncInteractable` now conforms to the `ResultData` type from its Request
+* Fixed `DefaultAsyncInteractorAssistant` not calling `handleAsyncInteractorResult`; it was previously calling the non-asynchronous method version.
+* Fixed `replaceCurrent` presentation type not replacing single Views (`replaceCurrent` was not working when there was a single active Destination in a `ViewFlow`)
+* Updated example projects and tests
+#### Changes
+* The `assignRoot(rootController:)` method on `ControllerFlowable` is deprecated and will be removed in a future version. Please use the new `assignBaseController(_:)` method instead.
+
 ### 2.1.0
 * Fixes for Swift 6.1 compiler issues with generics and associated type complexity.
 
