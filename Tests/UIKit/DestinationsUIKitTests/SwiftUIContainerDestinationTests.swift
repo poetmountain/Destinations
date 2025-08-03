@@ -47,7 +47,7 @@ import UIKit
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
                 
@@ -82,7 +82,7 @@ import UIKit
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
                 

@@ -100,7 +100,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         super.viewDidLoad()
         
         appFlow = buildAppFlow()
-        appFlow?.assignRoot(rootController: self)
+        appFlow?.assignBaseController(self)
         appFlow?.start()
 
     }

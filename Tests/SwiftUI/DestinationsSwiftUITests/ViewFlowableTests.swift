@@ -80,6 +80,34 @@ import Destinations
         if let currentDestination = appFlow.currentDestination {
             XCTAssertEqual(currentDestination.type, .colorDetail)
             XCTAssertEqual(appFlow.rootDestination?.type, .colorDetail)
+            XCTAssertEqual(appFlow.activeDestinations.count, 1)
+        } else {
+            XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
+        }
+    }
+    
+    func test_replaceRoot() {
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+        
+        let path: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
+        ]
+        appFlow.presentDestinationPath(path: path)
+        
+        let newDestination = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceRoot, assistantType: .basic)
+        appFlow.presentDestination(configuration: newDestination)
+        
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, .colorDetail)
+            XCTAssertEqual(appFlow.rootDestination?.type, .colorDetail)
+            XCTAssertEqual(appFlow.activeDestinations.count, 1)
         } else {
             XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
         }

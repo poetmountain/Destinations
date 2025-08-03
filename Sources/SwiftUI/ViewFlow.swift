@@ -119,12 +119,12 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         }
         
         // handle use case where the top-level Destination should be replaced
-        if configuration.presentationType == .replaceCurrent {
-            if activeDestinations.count == 1, let currentViewDestination {
-                removeDestination(destinationID: currentViewDestination.id)
-                rootDestination = newDestination
+        if configuration.presentationType == .replaceRoot || (configuration.presentationType == .replaceCurrent && activeDestinations.count == 1) {
+            if let rootDestination, let newDestination {
+                replaceRootDestination(with: newDestination)
             }
         }
+        
         
         if var newDestination = newDestination {
             

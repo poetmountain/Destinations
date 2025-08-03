@@ -79,6 +79,11 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// - Parameter destinationIDs: An array of identifiers for the Destinations to remove.
     func removeDestinations(destinationIDs: [UUID])
     
+    /// Replaces the current root Destination with the supplied Destination.
+    /// - Parameters:
+    ///   - newDestination: The Destination which should be the new root.
+    func replaceRootDestination(with newDestination: any Destinationable<DestinationType, ContentType, TabType>)
+    
     /// Activates a presentation completion closure corresponding to the specified Destination and presentation identifiers.
     /// - Parameters:
     ///   - destinationID: The identifier of the Destination the closure is associated with.
@@ -214,6 +219,13 @@ public extension Flowable {
         }        
     }
     
+    func replaceRootDestination(with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
+        for activeDestination in activeDestinations.reversed() {
+            removeDestination(destinationID: activeDestination.id)
+        }
+
+        rootDestination = newDestination
+    }
     
     func activateCompletionClosure(for destinationID: UUID, presentationID: UUID, didComplete: Bool, isSystemNavigationAction: Bool = false) {
         

@@ -12,8 +12,8 @@ import UIKit
 /// This class coordinates the presentation of a Destination within the UIKit framework.
 @MainActor public final class DestinationUIKitCoordinator: NSObject, DestinationUIKitCoordinating {
     
-    /// A reference to the root `ControllerDestinationInterfacing` object in a UIKit app.
-    public var rootController: (any ControllerDestinationInterfacing)?
+    /// A reference to the base `ControllerDestinationInterfacing` object in a UIKit app.
+    public weak var baseController: (any ControllerDestinationInterfacing)?
     
     /// A closure which is called when a Destination should be removed from the ecosystem, typically after it's associated UI object is no longer being presented.
     public var removeDestinationClosure: RemoveDestinationFromFlowClosure?
@@ -25,13 +25,13 @@ import UIKit
     public weak var delegate: DestinationInterfaceCoordinatorDelegate?
     
     /// The initializer.
-    /// - Parameter rootController: A reference to the root `ControllerDestinationInterfacing` object in a UIKit app.
-    public init(rootController: (any ControllerDestinationInterfacing)? = nil) {
+    /// - Parameter baseController: A reference to the root `ControllerDestinationInterfacing` object in a UIKit app.
+    public init(baseController: (any ControllerDestinationInterfacing)? = nil) {
         super.init()
 
-        self.rootController = rootController
+        self.baseController = baseController
         
-        if let navController = rootController as? UINavigationController {
+        if let navController = baseController as? UINavigationController {
             navController.delegate = self
         }
         
@@ -55,11 +55,11 @@ import UIKit
         
         destinationToPresent = destination
             
-        configuration.handlePresentation(destinationToPresent: destination, rootController: rootController, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, removeDestinationClosure: removeDestinationClosure)
+        configuration.handlePresentation(destinationToPresent: destination, rootController: baseController, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, removeDestinationClosure: removeDestinationClosure)
         
         if let navController = newController?.navigationController {
             navController.delegate = self
-        } else if let navController = rootController as? UINavigationController {
+        } else if let navController = baseController as? UINavigationController {
             navController.delegate = self
         } else if let navController = newController as? UINavigationController, navController.delegate == nil {
             navController.delegate = self
@@ -74,7 +74,7 @@ import UIKit
     
     /// Handles movement along the navigation stack.
     func handleMovement(from fromVC: UIViewController, to toVC: UIViewController) {
-        guard let navController = fromVC.navigationController ?? rootController as? UINavigationController, fromVC != toVC else { return }
+        guard let navController = fromVC.navigationController ?? baseController as? UINavigationController, fromVC != toVC else { return }
         
         let fromIndex = navController.viewControllers.firstIndex { $0 == fromVC }
         let toIndex = navController.viewControllers.firstIndex { $0 == toVC }

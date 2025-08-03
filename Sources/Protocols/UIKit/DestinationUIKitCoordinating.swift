@@ -18,8 +18,8 @@ public protocol DestinationUIKitCoordinating: DestinationInterfaceCoordinating, 
     /// A delegate protocol object which can subscribe to this object to receive updates about the status of destination presentations.
     var delegate: DestinationInterfaceCoordinatorDelegate? { get set }
     
-    /// A reference to the root `ControllerDestinationInterfacing` object in a UIKit app.
-    var rootController: (any ControllerDestinationInterfacing)? { get set }
+    /// A reference to the base `ControllerDestinationInterfacing` object in a UIKit app.
+    var baseController: (any ControllerDestinationInterfacing)? { get set }
     
     /// The Destination that currently should be presented.
     var destinationToPresent: (any Destinationable)? { get set }

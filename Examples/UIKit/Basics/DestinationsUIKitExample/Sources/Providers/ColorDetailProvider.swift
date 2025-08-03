@@ -35,7 +35,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
         
         
         let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<DestinationType, AppContentType, TabType>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in
-            guard let destinationToPresent else {
+            guard destinationToPresent != nil else {
                 completionClosure?(false)
                 return
             }

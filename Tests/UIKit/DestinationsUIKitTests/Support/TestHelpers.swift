@@ -58,8 +58,8 @@ import Destinations
         ]
         
         let flow = ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)
-        if let rootController = navigationController as? any ControllerDestinationInterfacing {
-            flow.assignRoot(rootController: rootController)
+        if let baseController = navigationController as? any ControllerDestinationInterfacing {
+            flow.assignBaseController(baseController)
         }
         return flow
     }

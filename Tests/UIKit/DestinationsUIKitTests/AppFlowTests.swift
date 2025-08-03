@@ -206,7 +206,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
         
@@ -287,7 +287,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
         
@@ -327,7 +327,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
         
@@ -379,7 +379,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
                 
@@ -422,7 +422,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
         
@@ -501,7 +501,7 @@ import Destinations
         
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
         
@@ -513,6 +513,11 @@ import Destinations
         guard let newDestination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
             XCTFail("Destination was not presented")
             return
+        }
+        
+        if let splitView = appFlow.findSplitViewInViewHierarchy(currentDestination: newDestination) {
+            let secondaryColumnController = splitView.currentController()?.viewController(for: .secondary)
+            XCTAssertEqual(secondaryColumnController?.navigationController?.children.count, 3)
         }
                                     
         newDestination.currentController()?.performSystemNavigationBack()
@@ -554,7 +559,7 @@ import Destinations
 
         let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
         if let root = baseController {
-            appFlow.assignRoot(rootController: root)
+            appFlow.assignBaseController(root)
         }
         appFlow.start()
                 

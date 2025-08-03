@@ -255,6 +255,10 @@ import SwiftUI
                 } else {
                     completionClosure?(true)
                 }
+            
+            case .replaceRoot:
+                completionClosure?(true)
+
 
             case .sheet(type: .present, options: let options):
 
@@ -437,6 +441,14 @@ import SwiftUI
                 
                 completionClosure?(true)
                
+        case .replaceRoot:
+                guard let destinationToPresent, let rootController, let newController = destinationToPresent.currentController() else {
+                    completionClosure?(false)
+                    return
+                }
+
+            completionClosure?(true)
+                
         case .sheet(type: .present, options: let options):
             guard let destinationToPresent, let presentingController = currentDestination?.currentController(), let sheetController = destinationToPresent.currentController() else {
                 completionClosure?(false)

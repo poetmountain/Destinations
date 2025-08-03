@@ -54,9 +54,9 @@ import UIKit
     /// - Returns: Returns a navigator, if one was found.
     func findNearestNavigatorInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any NavigatingControllerDestinationable<DestinationType, ContentType, TabType>)?
     
-    /// Assigns a root controller to serve as the base controller of this Flow's Destinations.
-    /// - Parameter rootController: The root controller.
-    func assignRoot(rootController: any ControllerDestinationInterfacing)
+    /// Assigns a controller to serve as the base controller of this Flow's Destinations.
+    /// - Parameter baseController: The root controller.
+    func assignBaseController(_ baseController: any ControllerDestinationInterfacing)
 }
 
 public extension ControllerFlowable {
@@ -143,6 +143,15 @@ public extension ControllerFlowable {
                 DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
                 
                 if let destination {
+                    
+                    // handle use case where the top-level Destination should be replaced
+                    if configuration.presentationType == .replaceRoot {
+                        strongSelf.replaceRootDestination(with: destination)
+                        
+                    } else if (configuration.presentationType == .replaceCurrent && strongSelf.activeDestinations.count == 0) {
+                        strongSelf.rootDestination = destination
+                    }
+                    
                     strongSelf.updateActiveDestinations(with: destination)
                 }
                 

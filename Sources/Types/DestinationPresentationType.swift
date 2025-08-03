@@ -37,6 +37,9 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
     /// Replaces the currently presented Destination with a new Destination in system UI components which allow that.
     case replaceCurrent
     
+    /// Removes all active Destinations in the Flow and sets a new root Destination.
+    case replaceRoot
+    
     /// Defines the presentation of a sheet view.
     ///
     /// - Parameter type: An enum representing the state of the sheet.
@@ -68,6 +71,8 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
                 return "addToCurrent"
             case .replaceCurrent:
                 return "replaceCurrent"
+            case .replaceRoot:
+                return "replaceRoot"
             case .sheet(let type):
                 return "sheet"
             case .destinationPath(path: let path):
