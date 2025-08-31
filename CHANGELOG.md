@@ -1,3 +1,6 @@
+### 2.2.1
+* Action assistants can now modify a presentation's destination type by setting the `destinationType` property of an `InterfaceAction`'s `InterfaceActionData` object. One way to do this would be to pass in a Destination type via the `content` property of the `performInterfaceAction` method and assign that in the assistant. This change allows more runtime dynamic control of which presentations are presented from user interactions.
+
 ### 2.2.0
 #### Features
 * Added a `replaceRoot` presentation type. This type removes all active Destinations in the Flow and sets a new root Destination. This is useful in use cases such as a user signing out, where you need to remove all the current UI and present a new screen.
