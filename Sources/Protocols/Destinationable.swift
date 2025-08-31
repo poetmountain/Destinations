@@ -316,6 +316,10 @@ public extension Destinationable {
                     configuration.contentType = model
                 }
                 
+                if let destinationType = data.destinationType {
+                    configuration.destinationType = destinationType
+                }
+                
                 strongSelf.internalState.destinationConfigurations?.configurations[type] = configuration
                 
                 presentationClosure(configuration)
