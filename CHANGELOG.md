@@ -1,5 +1,9 @@
+### 2.2.2
+* Action assistants can now modify a presentation's presentation type by setting the `presentationType` property of an `InterfaceAction`'s `InterfaceActionData` object. One way to do this would be to pass in a presentation type via the `content` property of the `performInterfaceAction` method and assign that in the assistant. This change allows more runtime dynamic control of how Destinations are presented from user interactions, such as dynamically creating a path of multiple Destination presentations at runtime.
+* Presentations using the `destinationPath` presentation type to present multiple Views in a NavigationStack now animate by default in order to fix the NavigationStack sometimes not presenting all of the Views.
+
 ### 2.2.1
-* Action assistants can now modify a presentation's destination type by setting the `destinationType` property of an `InterfaceAction`'s `InterfaceActionData` object. One way to do this would be to pass in a Destination type via the `content` property of the `performInterfaceAction` method and assign that in the assistant. This change allows more runtime dynamic control of which presentations are presented from user interactions.
+* Action assistants can now modify a presentation's destination type by setting the `destinationType` property of an `InterfaceAction`'s `InterfaceActionData` object. One way to do this would be to pass in a Destination type via the `content` property of the `performInterfaceAction` method and assign that in the assistant. This change allows more runtime dynamic control of which Destinations are presented from user interactions.
 
 ### 2.2.0
 #### Features
