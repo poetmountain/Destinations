@@ -99,6 +99,17 @@ public extension ViewFlowable {
         return nil
     }
     
+    func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType? = nil) {
+        
+        destinationQueue = path
+        
+        let nextDestination = presentNextDestinationInQueue(contentToPass: contentToPass)
+        
+        if rootDestination == nil {
+            rootDestination = nextDestination
+        }
+    }
+    
     
     func defaultCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)? = nil) -> PresentationCompletionClosure? {
         

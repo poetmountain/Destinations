@@ -14,6 +14,9 @@ public struct InterfaceActionData<DestinationType: RoutableDestinations, Content
     /// The type of Destination.
     public var destinationType: DestinationType?
     
+    /// The presentation type.
+    public var presentationType: (any DestinationPresentationTypeable)?
+    
     /// A content type.
     public var contentType: ContentType?
     

@@ -320,6 +320,10 @@ public extension Destinationable {
                     configuration.destinationType = destinationType
                 }
                 
+                if let presentationType = data.presentationType as? DestinationPresentationType<DestinationType, ContentType, TabType> {
+                    configuration.presentationType = presentationType
+                }
+                
                 strongSelf.internalState.destinationConfigurations?.configurations[type] = configuration
                 
                 presentationClosure(configuration)
@@ -332,6 +336,7 @@ public extension Destinationable {
         container.userInteractionType = interactionType
         container.data.presentationID = configuration.id
         container.data.destinationType = configuration.destinationType
+        container.data.presentationType = configuration.presentationType
         container.data.contentType = configuration.contentType
         container.data.actionType = configuration.actionType
         
