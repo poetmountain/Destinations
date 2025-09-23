@@ -112,4 +112,28 @@ import Destinations
             XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
         }
     }
+    
+    func test_replaceRoot_with_destination_path() {
+        
+        let startingDestination = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+                
+        let path: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceRoot, assistantType: .basic),
+            PresentationConfiguration(destinationType: .home, presentationType: .navigationStack(type: .present),  assistantType: .basic)
+        ]
+        
+        let newDestination = PresentationConfiguration(presentationType: .destinationPath(path: path), assistantType: .basic)
+        appFlow.presentDestination(configuration: newDestination)
+        
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, .home)
+            XCTAssertEqual(appFlow.rootDestination?.type, .colorsList)
+            XCTAssertEqual(appFlow.activeDestinations.count, 2)
+        } else {
+            XCTFail("Expected destination to be .home, got \(type(of: appFlow.currentDestination))")
+        }
+    }
 }

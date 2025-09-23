@@ -141,24 +141,14 @@ public extension ControllerFlowable {
         
         return { [weak self, weak configuration, weak destination] didComplete in
             guard let strongSelf = self else { return }
-            //guard let destination else { return }
             guard let configuration else { return }
+            
+            if let destination {
+                strongSelf.updateActiveDestinations(with: destination)
+            }
             
             if didComplete == true {
                 DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                
-                if let destination {
-                    
-                    // handle use case where the top-level Destination should be replaced
-                    if configuration.presentationType == .replaceRoot {
-                        strongSelf.replaceRootDestination(with: destination)
-                        
-                    } else if (configuration.presentationType == .replaceCurrent && strongSelf.activeDestinations.count == 0) {
-                        strongSelf.rootDestination = destination
-                    }
-                    
-                    strongSelf.updateActiveDestinations(with: destination)
-                }
                 
                 if let destination, let groupedDestination = destination as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
                     let currentChildDestination = groupedDestination.currentChildDestination()

@@ -38,11 +38,46 @@ public extension NavigatingControllerDestinationable {
         }
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         
         navigateBackInStack()
         addChild(childDestination: newDestination)
         
+        removeDestinationFromFlowClosure?(currentID)
+    }
+    
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) {
+        guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
+        
+        DestinationsSupport.logger.log("Removing NavigationStack child \(childDestination.id) : \(childDestination.type)", level: .verbose)
+        
+        childDestination.cleanupResources()
+
+        if let groupedChild = childDestination as? any GroupedDestinationable {
+            groupedChild.removeAllChildren()
+        }
+                
+        groupInternalState.childDestinations.remove(at: childIndex)
+        
+        if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
+            groupInternalState.currentChildDestination = nil
+        }
+        
+        
+        childDestination.removeAssociatedInterface()
+
+        groupInternalState.childWasRemovedClosure?(identifier)
+        
+        // find and set new active child destination
+        if let navController = self.currentController() as? UINavigationController, let lastController = navController.viewControllers.last as? any ControllerDestinationInterfacing, let lastDestination = lastController.destination() as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+            navController.popViewController(animated: false)
+            groupInternalState.currentChildDestination = lastDestination
+        }
+        
+        groupInternalState.currentDestinationChangedClosure?(groupInternalState.currentChildDestination?.id)
+        
+        removeDestinationFromFlowClosure?(identifier)
+
     }
     
     func navigateBackInStack(presentationID: UUID? = nil) {

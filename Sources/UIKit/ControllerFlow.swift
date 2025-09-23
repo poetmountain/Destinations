@@ -37,7 +37,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     
     /// The starting Destination in the Flow.
     public var startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>?
-    
+        
     /// The initializer.
     /// - Parameters:
     ///   - destinationProviders: A dictionary of Destination providers whose keys are an enum of Destination types. The Destination type represents the type of Destination each provider can provide.
@@ -107,7 +107,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             self.presentDestinationPath(path: path, contentToPass: configuration.contentType)
             return nil
         }
-        
+                
         var mutableConfiguration = configuration
         var parentOfCurrentDestination: (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
         
@@ -136,13 +136,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             tabDestination = findTabBarInViewHierarchy(currentDestination: currentDestination)
         }
         
-        if configuration.presentationType == .replaceRoot || (configuration.presentationType == .replaceCurrent && activeDestinations.count == 1) {
-            if let newDestination = newDestination as? any ControllerDestinationable, let newController = newDestination.currentController() {
-                uiCoordinator?.baseController?.attach(viewController: newController)
-            }
-        }
-        
-        if var newDestination {
+        if var newDestination = newDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let newController = newDestination.currentController() {
 
             if let tabController = newDestination.currentController() as? UITabBarController {
                 tabController.delegate = self
@@ -152,7 +146,21 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
                 mutableConfiguration.tabBarControllerDestination = tabDestination
             }
             
+            if rootDestination == nil {
+                rootDestination = newDestination
+            }
+            
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
+            
+            updateDestination(destination: newDestination)
+
+            // handle use case where the top-level Destination should be replaced
+            if configuration.presentationType == .replaceRoot || (configuration.presentationType == .replaceCurrent && activeDestinations.count == 1) {
+                
+                replaceRootDestination(with: newDestination)
+
+                uiCoordinator?.baseController?.attach(viewController: newController)
+            }
             
             uiCoordinator?.presentControllerDestination(destination: newDestination, currentDestination: currentDestination, parentOfCurrentDestination: parentOfCurrentDestination, tabBarDestinationInViewHiearchy: tabDestination, configuration: mutableConfiguration)
             

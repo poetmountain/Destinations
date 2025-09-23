@@ -29,7 +29,7 @@ public struct DestinationDisappearModifier<DestinationType: RoutableDestinations
     ///   - destination: The Destination that is disappearing.
     ///   - navigationDestination: The Destination whose `View` contains a `NavigationStack`.
     ///   - action: An optional action to perform when the button is tapped.
-    public init(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) {
+    public init(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: (any NavigatingViewDestinationable)? = nil, action: (() -> Void)? = nil) {
         self.destination = destination
         self.navigationDestination = navigationDestination
         self.presentationID = destination.systemNavigationPresentation(for: .navigateBackInStack)?.id
@@ -40,19 +40,20 @@ public struct DestinationDisappearModifier<DestinationType: RoutableDestinations
         content
             .onDisappear {
 
-                guard let destination, let presentationID, destination.isSystemNavigating() == true else { return }
+                guard let destination else { return }
                 
                 DestinationsSupport.logger.log("Destination is disappearing \(destination.description)", level: .verbose)
                 
                 disappearanceAction?()
 
-                navigationDestination?.removeChild(identifier: destination.id)
-                
-                
-                if let presentation = destination.systemNavigationPresentation(presentationID: presentationID), presentation.shouldDelayCompletionActivation {
+                if destination.isSystemNavigating() == true {
+                    navigationDestination?.removeChild(identifier: destination.id, removeDestinationFromFlowClosure: nil)
                     
-                    presentation.completionClosure?(true)
-                    
+                    if let presentationID, let presentation = destination.systemNavigationPresentation(presentationID: presentationID), presentation.shouldDelayCompletionActivation {
+                        
+                        presentation.completionClosure?(true)
+                        
+                    }
                 }
                 
             }
@@ -68,7 +69,7 @@ public extension View {
     ///   - navigationDestination: A Destination whose `View` contains a `NavigationStack`.
     ///   - action: An optional action to perform when the `View` disappears.
     /// - Returns: A `View` which runs the removal logic and optional action when it disappears.
-    public func onDestinationDisappear<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: any NavigatingViewDestinationable, action: (() -> Void)? = nil) -> some View {
+    public func onDestinationDisappear<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: (any NavigatingViewDestinationable)? = nil, action: (() -> Void)? = nil) -> some View {
         modifier(DestinationDisappearModifier<DestinationType, ContentType, TabType>(destination: destination, navigationDestination: navigationDestination, action: action))
     }
 }

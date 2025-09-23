@@ -37,7 +37,7 @@ import Destinations
         groupDestination.addChild(childDestination: childDestination)
         groupDestination.updateCurrentDestination(destinationID: childDestination.id)
         
-        groupDestination.removeChild(identifier: childDestination.id)
+        groupDestination.removeChild(identifier: childDestination.id, removeDestinationFromFlowClosure: nil)
         
         XCTAssertFalse(groupDestination.childDestinations().contains(where: { $0.id == childDestination.id }), "Expected that the group no longer contained the child, but it was still present..")
         

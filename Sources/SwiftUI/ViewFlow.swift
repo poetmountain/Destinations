@@ -10,6 +10,7 @@
 import SwiftUI
 
 /// A concrete Flow class designed to be used to manage Destinations flows within the SwiftUI framework. In most cases creating a custom Flow object is unnecessary, and this class can be used as-is in your SwiftUI-based app.
+@Observable
 public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabTypeable, ContentType: ContentTypeable>: ViewFlowable {
         
     /// A type of object that coordinates the presentation of a Destination within a UI framework.
@@ -65,7 +66,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         let existingID: UUID? = configuration.actionTargetID
         
         if let existingID {
-            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID }) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+            if configuration.actionType == .presentation, let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID && $0.type == configuration.destinationType }) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                 existingDestination = activeDestination
                 
             } else if case .sheet(type: .dismiss, options: _) = configuration.presentationType,  let activeDestination = activeDestinations.first(where: { $0.parentDestinationID() == existingID || $0.id == existingID }) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
@@ -87,14 +88,16 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
     
     
     @discardableResult public func presentDestination(configuration: DestinationPresentation<DestinationType, ContentType, TabType>) ->  (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
-        DestinationsSupport.logger.log("⤴️ Presenting destination \(String(describing: configuration.destinationType)) via \(configuration.presentationType)")
-        
+
         if case DestinationPresentationType.destinationPath(path: let path) = configuration.presentationType {
+            DestinationsSupport.logger.log("⤴️ Presenting destination destinationPath: \(path.compactMap { $0.destinationType })")
             self.presentDestinationPath(path: path, contentToPass: configuration.contentType)
             return nil
+        } else {
+            let destinationType = configuration.destinationType?.rawValue ?? "none"
+            DestinationsSupport.logger.log("⤴️ Presenting destination \(destinationType) via \(configuration.presentationType)")
         }
-        
-        
+
         var mutableConfiguration = configuration
         var parentOfCurrentDestination: (any ViewDestinationable)?
         
@@ -102,7 +105,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             parentOfCurrentDestination = parent
         }
         
-        let newDestination = self.destination(for: mutableConfiguration)
+        var newDestination = self.destination(for: mutableConfiguration)
 
         var currentViewDestination = currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>
         
@@ -118,13 +121,6 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             currentViewDestination = findSplitViewInViewHierarchy(currentDestination: current)
         }
         
-        // handle use case where the top-level Destination should be replaced
-        if configuration.presentationType == .replaceRoot || (configuration.presentationType == .replaceCurrent && activeDestinations.count == 1) {
-            if let rootDestination, let newDestination {
-                replaceRootDestination(with: newDestination)
-            }
-        }
-        
         
         if var newDestination = newDestination {
             
@@ -136,19 +132,27 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 mutableConfiguration.tabBarDestination = tabDestination
             }
             
+            if rootDestination == nil {
+                rootDestination = newDestination
+            }
+            
             if case DestinationPresentationType.navigationStack(type: .present) = mutableConfiguration.presentationType {
                 if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     parentOfCurrentDestination = navDestination
                 }
             }
-            
-                    
+      
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
 
             updateDestination(destination: newDestination)
             
+            // handle use case where the top-level Destination should be replaced
+            if configuration.presentationType == .replaceRoot || (configuration.presentationType == .replaceCurrent && activeDestinations.count == 1) {
+                
+                replaceRootDestination(with: newDestination)
+            }
+        
             uiCoordinator?.presentViewDestination(destination: newDestination, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: mutableConfiguration)
-            
             
             return newDestination
             

@@ -135,18 +135,25 @@ public extension GroupedDestinationable {
 
     }
     
-    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) {
         guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
 
         if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
-            DestinationsSupport.logger.log("Removing current child \(identifier) from \(Self.self)", level: .verbose)
+            DestinationsSupport.logger.log("hey Removing current child \(currentChildDestination.type) from \(Self.self)", level: .verbose)
             groupInternalState.currentChildDestination = nil
         }
         
         DestinationsSupport.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
 
+        childDestination.cleanupResources()
+
+        if let destination = childDestination as? any GroupedDestinationable<DestinationType, ContentType, TabType> {
+            destination.removeAllChildren()
+        }
+        
         groupInternalState.childDestinations.remove(at: childIndex)
     
+        childDestination.removeAssociatedInterface()
 
         groupInternalState.childWasRemovedClosure?(identifier)
         
@@ -155,8 +162,8 @@ public extension GroupedDestinationable {
     }
     
     func removeAllChildren() {
-        for childDestination in groupInternalState.childDestinations {
-            removeChild(identifier: childDestination.id)
+        for childDestination in groupInternalState.childDestinations.reversed() {
+            removeChild(identifier: childDestination.id, removeDestinationFromFlowClosure: nil)
         }
     }
     

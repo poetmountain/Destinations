@@ -87,7 +87,7 @@ public extension ViewFlowable {
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
-                DestinationsSupport.logger.log("⏭️ Presenting next queue \(destinationType).")
+                DestinationsSupport.logger.log("⏭️ Presenting next in queue: \(destinationType).")
             }
             
             if nextPresentation.contentType == nil {
@@ -100,14 +100,14 @@ public extension ViewFlowable {
     }
     
     func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType? = nil) {
-        
+        guard path.count > 0 else { return }
+
         destinationQueue = path
         
-        let nextDestination = presentNextDestinationInQueue(contentToPass: contentToPass)
+        let presentation = destinationQueue.first
         
-        if rootDestination == nil {
-            rootDestination = nextDestination
-        }
+        presentNextDestinationInQueue(contentToPass: contentToPass)
+        
     }
     
     
@@ -115,12 +115,11 @@ public extension ViewFlowable {
         
         return { [weak self, weak configuration, weak destination] didComplete in
             guard let strongSelf = self else { return }
-            //guard let destination else { return }
             guard let configuration else { return }
             
             if didComplete == true {
                 DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                
+                                
                 if let destination {
                     strongSelf.updateActiveDestinations(with: destination)
                 }
@@ -152,7 +151,8 @@ public extension ViewFlowable {
                     strongSelf.uiCoordinator?.destinationToPresent = nil
 
                     strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
-                                        
+                    
+                    
                 } else {
                     if let destination {
                         strongSelf.updateCurrentDestination(destination: destination)
@@ -293,8 +293,11 @@ public extension ViewFlowable {
     /// A `ViewBuilder` that returns a strongly-typed `View` associated with the Flow's starting Destination.
     /// - Returns: A strongly-typed `View` associated with the Flow's starting Destination.
     @ViewBuilder func startingDestinationView() -> (some View)? {
-        if let destination = rootDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+        if let destination = rootDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let view = destination.currentView() {
+            let _ = DestinationsSupport.logger.log("Adding new root view \(destination.type) :: \(destination.id)", level: .verbose)
+            
             destinationView(for: destination.id)
+                .id(destination.id)
         }
     }
 }

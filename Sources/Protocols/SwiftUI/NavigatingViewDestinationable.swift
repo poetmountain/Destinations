@@ -39,11 +39,12 @@ public extension NavigatingViewDestinationable {
         
     }
     
-    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>) {
-
+    func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
+        
         navigateBackInStack()
         addChild(childDestination: newDestination)
         
+        removeDestinationFromFlowClosure?(currentID)
     }
     
     func navigateBackInStack(previousPresentationID: UUID? = nil) {
@@ -54,27 +55,39 @@ public extension NavigatingViewDestinationable {
         return view?.destinationState.navigator
     }
     
-    func removeChild(identifier: UUID) {
+    func removeAllChildren() {
+        
+        navigator()?.removeAll()
+
+        for childDestination in groupInternalState.childDestinations.reversed() {
+            removeChild(identifier: childDestination.id, removeDestinationFromFlowClosure: nil)
+        }
+        
+
+    }
+    
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) {
         guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
         
-        DestinationsSupport.logger.log("Removing child \(childDestination.id) : \(childDestination.type)", level: .verbose)
+        DestinationsSupport.logger.log("Removing NavigationStack child \(childDestination.id) : \(childDestination.type)", level: .verbose)
+        
+        childDestination.cleanupResources()
+
+        // remove presentationID from navigator so that it doesn't create a false positive disappearance
+        navigator()?.currentPresentationID = nil
         
         if let groupedChild = childDestination as? any GroupedViewDestinationable {
             groupedChild.removeAllChildren()
         }
+                
+        groupInternalState.childDestinations.remove(at: childIndex)
         
         if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
             groupInternalState.currentChildDestination = nil
         }
         
-        childDestination.cleanupResources()
         childDestination.removeAssociatedInterface()
-        
-        groupInternalState.childDestinations.remove(at: childIndex)
 
-        // remove presentationID from navigator so that it doesn't create a false positive disappearance
-        navigator()?.currentPresentationID = nil
-        
         groupInternalState.childWasRemovedClosure?(identifier)
         
         // find and set new active child destination
@@ -83,6 +96,9 @@ public extension NavigatingViewDestinationable {
         }
         
         groupInternalState.currentDestinationChangedClosure?(groupInternalState.currentChildDestination?.id)
+        
+        removeDestinationFromFlowClosure?(identifier)
+
     }
     
     // default implementation

@@ -82,10 +82,12 @@ public extension ViewDestinationable {
     }
 
     func assignAssociatedView(view: ViewType) {
+        DestinationsSupport.logger.log("assign view for \(type)")
         self.view = view
     }
     
     func removeAssociatedInterface() {
+        DestinationsSupport.logger.log("remove view for \(type)")
         self.view = nil
     }
 }

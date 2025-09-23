@@ -38,7 +38,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     
     public var selectedTab: TabModel<TabType> {
         didSet {
-            print("update selected tab")
             selectedTabUpdatedClosure?(selectedTab)
         }
     }

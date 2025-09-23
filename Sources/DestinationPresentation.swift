@@ -68,7 +68,7 @@ import SwiftUI
     public var parentDestinationID: UUID?
     
     /// The ``DestinationPathNavigating`` object associated with the Destination to be presented.
-    public var navigator: (any DestinationPathNavigating)?
+    public weak var navigator: (any DestinationPathNavigating)?
     
     /// An options model that configures how a Destination is presented within a navigation stack, either for SwiftUI's `NavigationStack` or UIKit's `UINavigationController`. This includes the ability to disable the system animation when the Destination is presented.
     public var navigationStackOptions: NavigationStackPresentationOptions?
@@ -96,6 +96,8 @@ import SwiftUI
     /// A completion closure which should be run upon completion of the presentation of the Destination.
     public var completionClosure: ((Bool) -> Void)?
     
+    public var removalClosure: (() -> Void)?
+
     /// Initializer.
     /// - Parameters:
     ///   - destinationType: The type of Destination to present.
@@ -232,17 +234,7 @@ import SwiftUI
                 
             case .replaceCurrent:
                 
-                if let currentDestination, let navDestination = parentOfCurrentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
-                    
-                    if let destinationToPresent {
-                        navDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
-                        completionClosure?(true)
-                        
-                    } else {
-                        completionClosure?(false)
-                    }
-                    
-                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
                     if let destinationToPresent {
                         groupedDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
 
@@ -257,9 +249,16 @@ import SwiftUI
                 }
             
             case .replaceRoot:
-                completionClosure?(true)
-
-
+                if let currentDestination, let navDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                    if let destinationToPresent {
+                        navDestination.replaceChild(currentID: currentDestination.id, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
+                        
+                        completionClosure?(true)
+                    }
+                } else {
+                    completionClosure?(true)
+                }
+                
             case .sheet(type: .present, options: let options):
 
                 if let destinationToPresent, let view = destinationToPresent.currentView(), let currentDestination {
@@ -431,7 +430,7 @@ import SwiftUI
                         removeDestinationClosure?(currentDestination.id)
                     }
                     
-                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+                } else if let currentDestination, let groupedDestination = parentOfCurrentDestination as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
                     let currentID = currentDestination.id
                     groupedDestination.replaceChild(currentID: currentID, with: destinationToPresent, removeDestinationFromFlowClosure: removeDestinationClosure)
                     
@@ -446,8 +445,8 @@ import SwiftUI
                     completionClosure?(false)
                     return
                 }
-
-            completionClosure?(true)
+                
+                completionClosure?(true)
                 
         case .sheet(type: .present, options: let options):
             guard let destinationToPresent, let presentingController = currentDestination?.currentController(), let sheetController = destinationToPresent.currentController() else {

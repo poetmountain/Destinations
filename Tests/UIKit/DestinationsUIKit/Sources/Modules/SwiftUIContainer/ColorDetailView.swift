@@ -14,7 +14,7 @@ struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
     typealias UserInteractionType = ColorDetailSwiftUIDestination.UserInteractions
     typealias Destination = ColorDetailSwiftUIDestination
         
-    @State var destinationState: NavigationDestinationInterfaceState<Destination>
+    @State var destinationState: DestinationInterfaceState<Destination>
 
     @State var areDatasourcesSetup = false
             
@@ -22,7 +22,7 @@ struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
     
 
     init(destination: Destination, model: ColorViewModel? = nil) {
-        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+        self.destinationState = DestinationInterfaceState(destination: destination)
         
         if let model {
             _colorModel = State.init(initialValue: model)

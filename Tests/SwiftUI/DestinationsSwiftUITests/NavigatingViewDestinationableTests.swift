@@ -38,7 +38,7 @@ import Destinations
         
         navDestination.addChild(childDestination: destination)
         
-        navDestination.removeChild(identifier: destination.id)
+        navDestination.removeChild(identifier: destination.id, removeDestinationFromFlowClosure: nil)
 
         XCTAssertEqual(navDestination.childDestinations().count, 0)
         

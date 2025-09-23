@@ -243,7 +243,7 @@ public extension NavigationSplitViewDestinationable {
         destination.assignChildRemovedClosure { [weak self] destinationID in
             DestinationsSupport.logger.log("Child was removed closure", level: .verbose)
 
-            self?.removeChild(identifier: destinationID)
+            self?.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
 
         destination.assignCurrentDestinationChangedClosure { [weak self, weak destination] destinationID in

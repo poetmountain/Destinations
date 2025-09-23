@@ -226,8 +226,9 @@ public extension TabBarViewDestinationable {
     
     func updateChildren() {
         let children = groupInternalState.childDestinations.compactMap { $0.id }
-        updateTabViews(destinationIDs: children, for: activeTabs)
-        
+        if children.count > 0 {
+            updateTabViews(destinationIDs: children, for: activeTabs)
+        }
     }
     
     func updateTabViews(destinationIDs: [UUID], for tabs: [TabModel<TabType>]) {
@@ -264,7 +265,7 @@ public extension TabBarViewDestinationable {
         destination.assignChildRemovedClosure { [weak self] destinationID in
             DestinationsSupport.logger.log("Child was removed closure", level: .verbose)
 
-            self?.removeChild(identifier: destinationID)
+            self?.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
 
         destination.assignCurrentDestinationChangedClosure { [weak self, weak destination] destinationID in

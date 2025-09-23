@@ -141,7 +141,7 @@ import Destinations
         XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, secondDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
         
         navigatorDestination.navigateBackInStack()
-        navigatorDestination.removeChild(identifier: secondDestination.id)
+        navigatorDestination.removeChild(identifier: secondDestination.id, removeDestinationFromFlowClosure: nil)
         
         XCTAssertEqual(splitViewDestination.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: splitViewDestination.currentChildDestination()?.type))")
     }

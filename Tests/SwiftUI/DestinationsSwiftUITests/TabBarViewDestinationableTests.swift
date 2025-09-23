@@ -205,12 +205,12 @@ import Destinations
         XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, thirdDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
         
         navigationStackDestination.navigateBackInStack()
-        navigationStackDestination.removeChild(identifier: thirdDestination.id)
+        navigationStackDestination.removeChild(identifier: thirdDestination.id, removeDestinationFromFlowClosure: nil)
         
         XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, childDestination.id, "Expected the child Destination to be the current one, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
         
         navigationStackDestination.navigateBackInStack()
-        navigationStackDestination.removeChild(identifier: childDestination.id)
+        navigationStackDestination.removeChild(identifier: childDestination.id, removeDestinationFromFlowClosure: nil)
 
         XCTAssertEqual(tabsDestination?.currentChildDestination()?.id, navigationStackDestination.id, "Expected the child Destination to be the NavigationStack Destination, but the current is \(String(describing: tabsDestination?.currentChildDestination()?.type))")
     }

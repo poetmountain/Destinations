@@ -38,6 +38,11 @@ import Foundation
     /// - Returns: A `UUID` identifier of the previous path element.
     func previousPathElement() -> UUID?
     
+    /// Returns the index of the supplied element identifier, it is is present in the path.
+    /// - Parameter element: The identifier
+    /// - Returns: The position of the element, if it exists in the path.
+    func index(of identifier: UUID) -> Int?
+    
     /// Removes all path elements from the navigation path.
     func removeAll()
 }
@@ -54,10 +59,9 @@ public extension DestinationPathNavigating {
     }
     
     func backToPreviousPathElement(previousPresentationID: UUID? = nil) {
-        if navigationPath.count > 0 {
-            currentPresentationID = previousPresentationID
-            navigationPath.removeLast()
-        }
+        guard navigationPath.count > 0 else { return }
+        currentPresentationID = previousPresentationID
+        navigationPath.removeLast()
     }
     
     func removeAll() {
@@ -72,5 +76,9 @@ public extension DestinationPathNavigating {
             return navigationPath[previousIndex]
         }
         return nil
+    }
+    
+    func index(of identifier: UUID) -> Int? {
+        return navigationPath.firstIndex(of: identifier)
     }
 }
