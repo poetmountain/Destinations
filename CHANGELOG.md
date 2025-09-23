@@ -1,3 +1,7 @@
+### 2.2.3
+* Fixes for `replaceRoot` with `destinationPath` presentation types in SwiftUI and UIKit objects.
+* Fixed `NavigatingViewDestinationable`'s `replaceChild` not being called for `replaceCurrent` presentations.
+
 ### 2.2.2
 * Action assistants can now modify a presentation's presentation type by setting the `presentationType` property of an `InterfaceAction`'s `InterfaceActionData` object. One way to do this would be to pass in a presentation type via the `content` property of the `performInterfaceAction` method and assign that in the assistant. This change allows more runtime dynamic control of how Destinations are presented from user interactions, such as dynamically creating a path of multiple Destination presentations at runtime.
 * Presentations using the `destinationPath` presentation type to present multiple Views in a NavigationStack now animate by default in order to fix the NavigationStack sometimes not presenting all of the Views.
