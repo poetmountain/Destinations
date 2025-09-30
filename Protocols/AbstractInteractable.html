@@ -186,6 +186,9 @@
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
               </li>
               <li class="nav-group-task">
@@ -511,7 +514,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A configuration model which defines an interactor request.</p>
+                        <p>A configuration model which defines an Interactor request.</p>
 
                       </div>
                       <div class="declaration">
@@ -553,6 +556,40 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">prepareForRequests</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations20AbstractInteractableP16cleanupResourcesyyF"></a>
+                    <a name="//apple_ref/swift/Method/cleanupResources()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations20AbstractInteractableP16cleanupResourcesyyF">cleanupResources()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>When this method is called, this Interactor&rsquo;s Destination is about to be removed from the Flow. You can implement this method in your Interactors to remove any resource references and stop any in-progress tasks.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">cleanupResources</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

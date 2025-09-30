@@ -186,6 +186,9 @@
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
               </li>
               <li class="nav-group-task">
@@ -616,9 +619,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p11ContentTypeQzALRS_011DestinationM0QzANRS03TabM0QzAPRSXPtF"></a>
-                    <a name="//apple_ref/swift/Method/replaceChild(currentID:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35NavigatingControllerDestinationablePAAE12replaceChild9currentID4withy10Foundation4UUIDV_AA0D0_p11ContentTypeQzALRS_011DestinationM0QzANRS03TabM0QzAPRSXPtF">replaceChild(currentID:<wbr>with:<wbr>)</a>
+                    <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/replaceChild(currentID:with:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF">replaceChild(currentID:<wbr>with:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -629,15 +632,44 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/removeChild(identifier:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF">removeChild(identifier:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeChild</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>

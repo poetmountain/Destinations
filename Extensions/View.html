@@ -38,7 +38,7 @@
       <img class="carat" src="../img/carat.png" alt=""/>
       <a class="breadcrumb" href="../Extensions.html">Extensions</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      SwiftUICore.View Extension Reference
+      SwiftUI.View Extension Reference
     </p>
 
     <div class="content-wrapper">
@@ -181,6 +181,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractable.html">AsyncInteractable</a>
@@ -495,9 +498,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7SwiftUI4ViewP12DestinationsE12goBackButton11buttonImage15selectionActionQrAA0I0VSg_yycSgtF"></a>
-                    <a name="//apple_ref/swift/Method/goBackButton(buttonImage:selectionAction:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP12DestinationsE12goBackButton11buttonImage15selectionActionQrAA0I0VSg_yycSgtF">goBackButton(buttonImage:<wbr>selectionAction:<wbr>)</a>
+                    <a name="/s:7SwiftUI4ViewP12DestinationsE12goBackButton11buttonImage18useGlassBackground15selectionActionQrAA0I0VSg_SbSgyycSgtF"></a>
+                    <a name="//apple_ref/swift/Method/goBackButton(buttonImage:useGlassBackground:selectionAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP12DestinationsE12goBackButton11buttonImage18useGlassBackground15selectionActionQrAA0I0VSg_SbSgyycSgtF">goBackButton(buttonImage:<wbr>useGlassBackground:<wbr>selectionAction:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -513,7 +516,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="nf">goBackButton</span><span class="p">(</span><span class="nv">buttonImage</span><span class="p">:</span> <span class="kt">Image</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">selectionAction</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kd">some</span> <span class="kt">View</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">goBackButton</span><span class="p">(</span><span class="nv">buttonImage</span><span class="p">:</span> <span class="kt">Image</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">useGlassBackground</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">selectionAction</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kd">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
                       </div>
@@ -530,6 +533,18 @@
                               <td>
                                 <div>
                                   <p>The button image to show for the back button.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>useGlassBackground</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Determines whether the Liquid Glass background should be shown in iOS 26. The default visibility is <code>automatic</code>.</p>
                                 </div>
                               </td>
                             </tr>
@@ -558,9 +573,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7SwiftUI4ViewP12DestinationsE22onDestinationDisappear11destination010navigationF06actionQrAD0C15Destinationable_pqd_0_11ContentTypeRts_qd__0fM0Rtsqd_1_03TabM0RtsXP_AD010NavigatingcK0_pyycSgtAD08RoutableD0Rd__AD0L8TypeableRd_0_AD0nQ0Rd_1_r1_lF"></a>
+                    <a name="/s:7SwiftUI4ViewP12DestinationsE22onDestinationDisappear11destination010navigationF06actionQrAD0C15Destinationable_pqd_0_11ContentTypeRts_qd__0fM0Rtsqd_1_03TabM0RtsXP_AD010NavigatingcK0_pSgyycSgtAD08RoutableD0Rd__AD0L8TypeableRd_0_AD0nQ0Rd_1_r1_lF"></a>
                     <a name="//apple_ref/swift/Method/onDestinationDisappear(destination:navigationDestination:action:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP12DestinationsE22onDestinationDisappear11destination010navigationF06actionQrAD0C15Destinationable_pqd_0_11ContentTypeRts_qd__0fM0Rtsqd_1_03TabM0RtsXP_AD010NavigatingcK0_pyycSgtAD08RoutableD0Rd__AD0L8TypeableRd_0_AD0nQ0Rd_1_r1_lF">onDestinationDisappear(destination:<wbr>navigationDestination:<wbr>action:<wbr>)</a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP12DestinationsE22onDestinationDisappear11destination010navigationF06actionQrAD0C15Destinationable_pqd_0_11ContentTypeRts_qd__0fM0Rtsqd_1_03TabM0RtsXP_AD010NavigatingcK0_pSgyycSgtAD08RoutableD0Rd__AD0L8TypeableRd_0_AD0nQ0Rd_1_r1_lF">onDestinationDisappear(destination:<wbr>navigationDestination:<wbr>action:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -576,7 +591,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">onDestinationDisappear</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">navigationDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/NavigatingViewDestinationable.html">NavigatingViewDestinationable</a></span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kd">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">onDestinationDisappear</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">navigationDestination</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/NavigatingViewDestinationable.html">NavigatingViewDestinationable</a></span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="p">(()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kd">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span></code></pre>
 
                         </div>
                       </div>
