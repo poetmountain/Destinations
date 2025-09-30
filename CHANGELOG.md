@@ -1,3 +1,6 @@
+### 2.2.4
+* Added ability to turn off the iOS 26 Liquid Glass background in BackNavigationModifier's back button.
+
 ### 2.2.3
 * Fixes for `replaceRoot` with `destinationPath` presentation types in SwiftUI and UIKit objects.
 * Fixed `NavigatingViewDestinationable`'s `replaceChild` not being called for `replaceCurrent` presentations.
