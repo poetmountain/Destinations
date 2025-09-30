@@ -18,26 +18,49 @@ public struct BackNavigationModifier: ViewModifier {
     /// An optional action to perform when the button is tapped.
     public var selectionAction: (() -> Void)?
     
+    public var glassBackgroundVisibility: Visibility = .automatic
+    
     /// The initializer.
     /// - Parameters:
     ///   - buttonImage: The button image to show for the back button.
+    ///   - useGlassBackground: Determines whether the Liquid Glass background should be shown in iOS 26. The default visibility is `automatic`.
     ///   - selectionAction: An optional action to perform when the button is tapped.
-    public init(buttonImage: Image? = nil, selectionAction: (() -> Void)? = nil) {
+    public init(buttonImage: Image? = nil, useGlassBackground: Bool? = nil, selectionAction: (() -> Void)? = nil) {
         if let buttonImage {
             self.buttonImage = buttonImage
         }
+        if let useGlassBackground {
+            self.glassBackgroundVisibility = useGlassBackground ? .visible : .hidden
+        }
+        
         self.selectionAction = selectionAction
     }
     
     public func body(content: Content) -> some View {
         content
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                if #available(iOS 26.0, *) {
+                    buildBackButton()
+                        .sharedBackgroundVisibility(glassBackgroundVisibility)
+                    
+                } else {
+                    buildBackButton()
+                }
+                
+            }
+    }
+    
+    @ViewBuilder func buildBackButton() -> ToolbarItemGroup<Button<Image>> {
+        return ToolbarItemGroup(placement: .topBarLeading) {
+            Button {
+                selectGoBack()
+            } label: {
+                buttonImage
+            }
+        }
+
         
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button(action : { [self] in
-            selectGoBack()
-        }){
-            buttonImage
-        })
     }
     
     func selectGoBack() {
@@ -51,10 +74,11 @@ public extension View {
     /// Adds a replacement button for `View`s being presented in a `NavigationStack`.
     /// - Parameters:
     ///   - buttonImage: The button image to show for the back button.
+    ///   - useGlassBackground: Determines whether the Liquid Glass background should be shown in iOS 26. The default visibility is `automatic`.
     ///   - selectionAction: An optional action to perform when the back button is tapped.
     /// - Returns: The `View` which provides the navigation bar customization.
-    public func goBackButton(buttonImage: Image? = nil, selectionAction: (() -> Void)?) -> some View {
-        modifier(BackNavigationModifier(buttonImage: buttonImage, selectionAction: selectionAction))
+    public func goBackButton(buttonImage: Image? = nil, useGlassBackground: Bool? = nil, selectionAction: (() -> Void)?) -> some View {
+        modifier(BackNavigationModifier(buttonImage: buttonImage, useGlassBackground: useGlassBackground, selectionAction: selectionAction))
     }
 
 }
