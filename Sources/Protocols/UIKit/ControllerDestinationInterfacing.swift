@@ -12,9 +12,6 @@ import UIKit
 /// A protocol representing UIViewControllers which conform to Destinations
 @MainActor public protocol ControllerDestinationInterfacing: DestinationInterfacing, UIViewController {
     
-    /// An enum which defines all routable Destinations in the app.
-    associatedtype DestinationType: RoutableDestinations
-    
     /// Moves back to the previous controller in a `UINavigationController`.
     func performSystemNavigationBack()
 

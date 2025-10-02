@@ -43,23 +43,24 @@ public struct BackNavigationModifier: ViewModifier {
                 if #available(iOS 26.0, *) {
                     buildBackButton()
                         .sharedBackgroundVisibility(glassBackgroundVisibility)
-                    
+
                 } else {
                     buildBackButton()
                 }
-                
+                    
             }
+            
     }
     
-    @ViewBuilder func buildBackButton() -> ToolbarItemGroup<Button<Image>> {
-        return ToolbarItemGroup(placement: .topBarLeading) {
+    func buildBackButton() -> some ToolbarContent {
+
+        ToolbarItem(placement: .topBarLeading) {
             Button {
                 selectGoBack()
             } label: {
                 buttonImage
             }
         }
-
         
     }
     
@@ -81,4 +82,16 @@ public extension View {
         modifier(BackNavigationModifier(buttonImage: buttonImage, useGlassBackground: useGlassBackground, selectionAction: selectionAction))
     }
 
+}
+
+public extension View {
+    func modify<T: View>(@ViewBuilder _ modifier: (Self) -> T) -> some View {
+        return modifier(self)
+    }
+}
+
+public extension ToolbarItemGroup {
+    func modify<T: View>(@ViewBuilder _ modifier: (Self) -> T) -> some View {
+        return modifier(self)
+    }
 }
