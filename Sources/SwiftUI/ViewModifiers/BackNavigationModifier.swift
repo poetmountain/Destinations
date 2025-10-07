@@ -40,10 +40,14 @@ public struct BackNavigationModifier: ViewModifier {
         content
             .navigationBarBackButtonHidden(true)
             .toolbar {
+
                 if #available(iOS 26.0, *) {
+#if swift(>=6.2)
                     buildBackButton()
                         .sharedBackgroundVisibility(glassBackgroundVisibility)
-
+#else
+                    buildBackButton()
+#endif
                 } else {
                     buildBackButton()
                 }

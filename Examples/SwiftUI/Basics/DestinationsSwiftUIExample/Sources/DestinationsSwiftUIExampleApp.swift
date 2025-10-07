@@ -70,8 +70,6 @@ struct DestinationsSwiftUIApp: App, DestinationTypes {
                     self.appFlow = buildAppFlow()
                     self.appFlow?.start()
                     
-                    print("root dest \(appFlow?.rootDestination?.type)")
-                    
                     hasStartedAppFlow = true
 
                 }

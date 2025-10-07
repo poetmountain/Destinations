@@ -26,7 +26,7 @@ public extension ControllerDestinationInterfacing {
             let destination = targetController.destination()
             options = SystemNavigationOptions(targetID: destination.id )
         } else {
-            let destinationID = destination().id
+            let destinationID = destination().parentDestinationID()
             options = SystemNavigationOptions(targetID: destinationID)
         }
         destination().performSystemNavigationAction(navigationType: .navigateBackInStack, options: options)

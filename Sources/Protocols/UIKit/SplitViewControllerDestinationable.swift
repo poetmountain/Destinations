@@ -108,8 +108,8 @@ public extension SplitViewControllerDestinationable {
     
     func currentDestination(for column: UISplitViewController.Column) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
 
-        if let splitViewController = self.currentController(), let columnController = splitViewController.viewController(for: column), let visibleController = columnController.navigationController?.visibleViewController as? any ControllerDestinationInterfacing {
-            return visibleController.destination() as? any ControllerDestinationable<DestinationType, ContentType, TabType>
+        if let splitViewController = self.currentController(), let columnController = splitViewController.viewController(for: column) as? any ControllerDestinationInterfacing {
+            return columnController.destination() as? any ControllerDestinationable<DestinationType, ContentType, TabType>
         }
         
         return nil
@@ -119,6 +119,19 @@ public extension SplitViewControllerDestinationable {
         guard let destinationID = destinationIDsForColumns[column] else { return nil }
         
         return childForIdentifier(destinationIdentifier: destinationID) as? any ControllerDestinationable<DestinationType, ContentType, TabType>
+    }
+    
+    func navigateBackInStack(presentationID: UUID? = nil) {
+
+        if let current = groupInternalState.childDestinations.last {
+            groupInternalState.childDestinations.removeAll(where: { $0.id == current.id })
+            groupInternalState.currentChildDestination = nil
+            DestinationsSupport.logger.log("splitview child dests \(groupInternalState.childDestinations.map { $0.id })")
+            
+            // set new active child destination
+            groupInternalState.currentChildDestination = groupInternalState.childDestinations.last
+            
+        }
     }
     
     /// Updates multiple Destinations in the specified columns. This is used internally by Destinations.

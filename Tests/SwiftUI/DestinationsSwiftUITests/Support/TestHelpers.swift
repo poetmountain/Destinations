@@ -59,11 +59,14 @@ public enum TestDestinationType: String, RoutableDestinations {
         let tabBarProvider = TabBarProvider()
         let splitViewProvider = SplitViewProvider(initialContent: splitViewColumns)
 
+        let tabs = startingTabs ?? [.palettes, .home]
+        
         var providers: [RouteDestinationType: any ViewDestinationProviding] = [
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
             .home: homeProvider,
-            .splitView: splitViewProvider
+            .splitView: splitViewProvider,
+            .tabBar(tabs: tabs): tabBarProvider
         ]
         
         if let startingTabs {

@@ -263,13 +263,11 @@ public extension TabBarViewDestinationable {
         DestinationsSupport.logger.log("Registering navigation closures for \(destination.description)", level: .verbose)
 
         destination.assignChildRemovedClosure { [weak self] destinationID in
-            DestinationsSupport.logger.log("Child was removed closure", level: .verbose)
 
             self?.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
 
         destination.assignCurrentDestinationChangedClosure { [weak self, weak destination] destinationID in
-            DestinationsSupport.logger.log("Current destination changed closure", level: .verbose)
 
             if let destinationID {
                 self?.updateCurrentDestination(destinationID: destinationID)

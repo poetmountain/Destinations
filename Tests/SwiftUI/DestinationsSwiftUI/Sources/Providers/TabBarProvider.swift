@@ -36,9 +36,7 @@ struct TabBarProvider: ViewDestinationProviding, DestinationTypes {
                 case .home:
                     tabContentType = .home
             }
-            let tabConfig = configuration
-            tabConfig.destinationType = tabContentType
-            
+            let tabConfig = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: tabContentType, presentationType: .tabBar(tab: tabType), assistantType: .basic)
             
             if let destination = appFlow.buildDestination(for: tabConfig) {
                 tabTypes.append(tabType)

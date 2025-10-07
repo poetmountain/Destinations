@@ -113,6 +113,39 @@ import Destinations
         }
     }
     
+    func test_add_to_navigation_stack_with_destination_path() {
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType =  .tabBar(tabs: startingTabs)
+ 
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes),  assistantType: .basic)
+        ]
+        
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+                
+        let path: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .magenta, name: "magenta")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .home, presentationType: .navigationStack(type: .present),  assistantType: .basic)
+        ]
+        
+        let newDestination = PresentationConfiguration(presentationType: .destinationPath(path: path), assistantType: .basic)
+        appFlow.presentDestination(configuration: newDestination)
+        
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let currentView = currentDestination.view {
+            XCTAssertEqual(currentDestination.type, .home)
+            XCTAssertEqual(appFlow.activeDestinations.count, 7)
+            XCTAssertTrue(currentView is HomeView)
+        } else {
+            XCTFail("Expected destination to be .home, got \(type(of: appFlow.currentDestination))")
+        }
+    }
+    
     func test_replaceRoot_with_destination_path() {
         
         let startingDestination = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
@@ -132,6 +165,34 @@ import Destinations
             XCTAssertEqual(currentDestination.type, .home)
             XCTAssertEqual(appFlow.rootDestination?.type, .colorsList)
             XCTAssertEqual(appFlow.activeDestinations.count, 2)
+        } else {
+            XCTFail("Expected destination to be .home, got \(type(of: appFlow.currentDestination))")
+        }
+    }
+    
+    func test_replaceRoot_with_destination_path_and_tabbar() {
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType =  .tabBar(tabs: startingTabs)
+ 
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceRoot, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+                
+        let path: [PresentationConfiguration] = [
+            startingDestination,
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .home, presentationType: .navigationStack(type: .present),  assistantType: .basic)
+        ]
+        
+        let newDestination = PresentationConfiguration(presentationType: .destinationPath(path: path), assistantType: .basic)
+        appFlow.presentDestination(configuration: newDestination)
+        
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, .home)
+            XCTAssertEqual(appFlow.rootDestination?.type, .tabBar(tabs: startingTabs))
+            XCTAssertEqual(appFlow.activeDestinations.count, 5, "Expected 6 active destinations, got \(appFlow.activeDestinations.map { $0.type })")
         } else {
             XCTFail("Expected destination to be .home, got \(type(of: appFlow.currentDestination))")
         }

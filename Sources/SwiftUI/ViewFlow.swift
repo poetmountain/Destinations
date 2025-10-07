@@ -10,8 +10,7 @@
 import SwiftUI
 
 /// A concrete Flow class designed to be used to manage Destinations flows within the SwiftUI framework. In most cases creating a custom Flow object is unnecessary, and this class can be used as-is in your SwiftUI-based app.
-@Observable
-public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabTypeable, ContentType: ContentTypeable>: ViewFlowable {
+public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabTypeable, ContentType: ContentTypeable>: ViewFlowable, ObservableObject {
         
     /// A type of object that coordinates the presentation of a Destination within a UI framework.
     public typealias InterfaceCoordinator = DestinationSwiftUICoordinator
@@ -24,7 +23,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             
     public var uiCoordinator: DestinationSwiftUICoordinator?
             
-    public var rootDestination: (any Destinationable<DestinationType, ContentType, TabType>)?
+    @Published public var rootDestination: (any Destinationable<DestinationType, ContentType, TabType>)?
 
     public var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] = []
     

@@ -88,7 +88,6 @@ public extension NavigatingControllerDestinationable {
         if let current = groupInternalState.currentChildDestination {
             groupInternalState.childDestinations.removeAll(where: { $0.id == current.id })
             groupInternalState.currentChildDestination = nil
-            DestinationsSupport.logger.log("child dests \(groupInternalState.childDestinations.map { $0.id })")
             
             // set new active child destination
             groupInternalState.currentChildDestination = groupInternalState.childDestinations.last

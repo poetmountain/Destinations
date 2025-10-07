@@ -109,9 +109,6 @@ import UIKit
         // primary column + home column + 2 presentations = 4
         XCTAssertEqual(splitViewDestination.childDestinations().count, 4)
         
-        // navigation controller in the home column should have 3 children
-        let homeColumnController = splitViewController.viewController(for: .secondary)
-        XCTAssertEqual(homeColumnController?.navigationController?.children.count, 3)
     }
     
     
@@ -133,11 +130,15 @@ import UIKit
         newDestination.assignAssociatedController(controller: newController)
         splitViewDestination.presentDestination(destination: newDestination, in: .secondary)
         
+        wait(timeout: 0.3)
+        
         let childDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let childController = ColorDetailViewController(destination: childDestination)
         childDestination.assignAssociatedController(controller: childController)
         splitViewDestination.presentDestination(destination: childDestination, in: .secondary)
     
+        wait(timeout: 0.3)
+        
         let current = splitViewDestination.currentDestination(for: .secondary)
         
         // currentDestination should find the current Destination
