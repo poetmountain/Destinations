@@ -1,3 +1,8 @@
+### 2.2.5
+* Fixed presenting a destination path in SwiftUI using replaceRoot with a navigation stack
+* Fixed SplitViewControllerDestinationable's currentDestination method in iOS 26 (there is an issue in iOS 26 where the navigationController property has no value for some controllers in a column)
+* Updated tests
+
 ### 2.2.4
 * Added ability to turn off the iOS 26 Liquid Glass background in BackNavigationModifier's back button.
 
