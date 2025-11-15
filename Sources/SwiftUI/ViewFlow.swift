@@ -152,7 +152,11 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             }
             
             // Called every time a Destination is newly presented (hence not when going back in a navigation stack)
-            if mutableConfiguration.presentationType != .navigationStack(type: .goBack) {
+            if case DestinationPresentationType.navigationStack(type: let navigationType) = mutableConfiguration.presentationType {
+                if navigationType == .present {
+                    newDestination.prepareForPresentation()
+                }
+            } else {
                 newDestination.prepareForPresentation()
             }
       
