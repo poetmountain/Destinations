@@ -37,7 +37,10 @@ public protocol SheetPresentationConfiguring: Identifiable, Equatable {
     var backgroundInteractionMode: PresentationBackgroundInteraction { get set }
     
     /// A closure to be run when a sheet is dismissed.
-    var dismissalClosure: SheetDismissalClosure? { get set }
+    var dismissedClosure: (() -> Void)? { get set }
+    
+    /// A closure set by and used by Destinations internally to perform a sheet dismissal.
+    var systemDismissalClosure: SheetDismissalClosure? { get set }
 
     /// Provides a new sheet.
     /// - Parameter sheet: A new sheet to be presented.

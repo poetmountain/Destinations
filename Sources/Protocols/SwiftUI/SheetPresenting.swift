@@ -24,7 +24,7 @@ import Foundation
     /// Dismisses a sheet that's currently presented.
     func dismissSheet()
     
-    /// Returns a closure designed to run when a sheet is dismissed.
+    /// Returns a closure that is used by Destinations internally to trigger the system sheet dismissal.
     /// - Parameter destination: The Destination presenting this sheet.
     /// - Returns: The ``SheetDismissalClosure`` closure.
     func sheetDismissalClosure<Destination: ViewDestinationable>(destination: Destination) -> SheetDismissalClosure
@@ -35,7 +35,7 @@ public extension SheetPresenting {
     func presentSheet(sheet: any Sheetable) {
         DestinationsSupport.logger.log("Presenting sheet \(sheet.description)", level: .verbose)
 
-        sheetPresentation.dismissalClosure = sheetDismissalClosure(destination: destination())
+        sheetPresentation.systemDismissalClosure = sheetDismissalClosure(destination: destination())
         sheetPresentation.updateSheet(sheet)
 
     }

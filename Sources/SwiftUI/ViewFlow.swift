@@ -138,7 +138,22 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             if case DestinationPresentationType.navigationStack(type: .present) = mutableConfiguration.presentationType {
                 if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     parentOfCurrentDestination = navDestination
+                    // assign the navigator presenting this Destination
+                    newDestination.setPresentingNavigator(navigator: navigator)
                 }
+            }
+            
+            if case DestinationPresentationType.tabBar(tab: let tab) = mutableConfiguration.presentationType {
+                if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
+                    parentOfCurrentDestination = navDestination
+                    // assign the navigator presenting this Destination
+                    newDestination.setPresentingNavigator(navigator: navigator)
+                }
+            }
+            
+            // Called every time a Destination is newly presented (hence not when going back in a navigation stack)
+            if mutableConfiguration.presentationType != .navigationStack(type: .goBack) {
+                newDestination.prepareForPresentation()
             }
       
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
@@ -151,6 +166,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 replaceRootDestination(with: newDestination)
             }
         
+
             uiCoordinator?.presentViewDestination(destination: newDestination, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: mutableConfiguration)
             
             return newDestination

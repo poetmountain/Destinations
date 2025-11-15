@@ -69,6 +69,75 @@ import Destinations
         }
     }
     
+    func test_moveBackInNavigationStack() {
+        
+        let startingType: RouteDestinationType = .colorsList
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant())))
+                
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
+        
+        if let lastDestination = appFlow.activeDestinations.last as? any ViewDestinationable {
+            print("moving back in stack from \(lastDestination.type)")
+            lastDestination.moveBackInNavigationStack()
+        } else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+        }
+                
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+            XCTAssertEqual(currentDestination.type, .colorsList, "Expected to go back in navigation stack and colors list would be the current Destination, but found \(currentDestination.type)")
+            
+            if let navigator = appFlow.findNavigatorInViewHierarchy(searchDestination: currentDestination) {
+                XCTAssertEqual(navigator.navigationPath.count, 0)
+            } else {
+                XCTFail("No navigator found")
+            }
+            
+        } else {
+            XCTFail("Expected to find a current Destination the app flow")
+
+        }
+    }
+    
+    func test_moveBackInNavigationStack_with_tabBar() {
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .custom(ChooseColorFromListActionAssistant())))
+                
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
+        
+        if let lastDestination = appFlow.activeDestinations.last as? any ViewDestinationable {
+            print("moving back in stack from \(lastDestination.type)")
+            lastDestination.moveBackInNavigationStack()
+        } else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+        }
+                
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+            XCTAssertEqual(currentDestination.type, .colorsList, "Expected to go back in navigation stack and colors list would be the current Destination, but found \(currentDestination.type)")
+            
+            if let navigator = appFlow.findNavigatorInViewHierarchy(searchDestination: currentDestination) {
+                XCTAssertEqual(navigator.navigationPath.count, 0)
+            } else {
+                XCTFail("No navigator found")
+            }
+            
+        } else {
+            XCTFail("Expected to find a current Destination the app flow")
+
+        }
+    }
+    
     func test_replaceCurrent_for_root_destination() {
         let startingDestination = PresentationConfiguration(destinationType: .home, presentationType: .replaceCurrent, assistantType: .basic)
         let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)

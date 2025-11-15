@@ -71,9 +71,7 @@ public extension ViewFlowable {
         
         if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             updateDestinationConfiguration(configuration: &configuration, destination: &destination)
-            
-            destination.prepareForPresentation()
-            
+                        
             return destination
         } else {
             return nil

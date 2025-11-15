@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-/// A closure run when a sheet is dismissed.
+/// A closure used internally by Destinations to trigger the system sheet dismissal.
 public typealias SheetDismissalClosure = () -> Void
 
 /// This SwiftUI `ViewModifier` manages the presentation of a sheet.
@@ -33,7 +33,8 @@ public struct SheetPresenter: ViewModifier {
         content
 
         .fullScreenCover(isPresented: $sheetPresentation.shouldPresentFullscreen) {
-            self.sheetPresentation.dismissalClosure?()
+            self.sheetPresentation.systemDismissalClosure?()
+            self.sheetPresentation.dismissedClosure?()
             self.sheetPresentation.removeCurrentSheet()
             
         } content: {
@@ -42,7 +43,8 @@ public struct SheetPresenter: ViewModifier {
         
         
         .sheet(isPresented: $sheetPresentation.shouldPresentSheet, onDismiss: {
-            self.sheetPresentation.dismissalClosure?()
+            self.sheetPresentation.systemDismissalClosure?()
+            self.sheetPresentation.dismissedClosure?()
             self.sheetPresentation.removeCurrentSheet()
             
         }, content: {

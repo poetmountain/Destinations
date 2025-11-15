@@ -182,6 +182,9 @@ public extension TabBarViewDestinationable {
             addChild(childDestination: destination)
         }
         
+        // Because tab Destinations aren't presented via the normal Flow, we need to call the Destination's `prepareForPresentation` method here
+        destination.prepareForPresentation()
+        
         if let navDestination = destination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
         }

@@ -1,3 +1,10 @@
+### 2.3.0
+* Added a new closure property `dismissedClosure` to `SheetPresentation`, enabling the ability to provide code that is run after a SwiftUI sheet is dismissed by Destinations.
+* Added the `moveBackInNavigationStack()` method to `ViewDestinationable`, enabling the ability to programmatically move back in a `NavigationStack`. Call this method from a Destination if you would like to move to the previous Destination in the navigation stack without the user tapping the Back button.
+* A reference to a `DestinationPathNavigating` navigator is now accessible from a Destination's internalState property when it's presented within a SwiftUI `NavigationStack` or a custom navigation object.
+* Fixed the default presentation completion closure not running when Destinations moves back in a SwiftUI `NavigationStack`.
+* Updated tests
+
 ### 2.2.5
 * Fixed presenting a destination path in SwiftUI using replaceRoot with a navigation stack
 * Fixed SplitViewControllerDestinationable's currentDestination method in iOS 26 (there is an issue in iOS 26 where the navigationController property has no value for some controllers in a column)

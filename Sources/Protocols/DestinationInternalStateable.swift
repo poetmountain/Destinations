@@ -51,4 +51,7 @@ public protocol DestinationInternalStateable<UserInteractionType, DestinationTyp
     /// A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated user interaction type.
     var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, ContentType>] { get set }
 
+    /// A reference to the associated navigator object, if this Destination was presented within a SwiftUI `NavigationStack` or a custom navigation object.
+    /// - Note: This property is unused with UIKit navigation controllers.
+    var navigator: (any DestinationPathNavigating)? { get set }
 }

@@ -29,5 +29,9 @@ public final class DestinationInternalState<UserInteractionType: UserInteraction
     public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
     public var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, ContentType>] = [:]
 
+    /// A weak reference to the associated navigator object, if this Destination was presented within a SwiftUI `NavigationStack` or a custom navigation object.
+    /// - Note: This property is unused with UIKit navigation controllers.
+    public weak var navigator: (any DestinationPathNavigating)?
+    
     public init() {}
 }

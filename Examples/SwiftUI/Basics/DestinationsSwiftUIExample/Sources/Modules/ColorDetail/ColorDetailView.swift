@@ -8,7 +8,6 @@
 
 import SwiftUI
 import Destinations
-import Combine
 
 struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, DestinationTypes {
     
@@ -34,6 +33,10 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
         
         if let sheetView {
             _sheetView = State.init(initialValue: sheetView)
+        }
+        
+        sheetPresentation.dismissedClosure = {
+            print("custom dismissed!")
         }
     }
     

@@ -154,7 +154,7 @@ import Foundation
     ///   - interactionType: The type of user interaction which this assistant should handle requests for.
     func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for interactionType: UserInteractionType)
 
-    /// This method is called automatically when a Destination is being built and configured for the first time. Put any setup actions or datasource retrieval calls here.
+    /// This method is called automatically when a Destination is presented, but before the UI is built. This is a great place to put any state setup actions or datasource retrieval calls here.
     func prepareForPresentation()
     
     /// Performs a request with the specified Interactor.

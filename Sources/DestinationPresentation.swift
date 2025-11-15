@@ -184,6 +184,8 @@ import SwiftUI
                             }
                         case .goBack:
                             navigationDestination.navigateBackInStack(previousPresentationID: id)
+                            completionClosure?(true)
+
                     }
                     
                 } else if let navigationDestination = destinationToPresent as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
@@ -192,6 +194,7 @@ import SwiftUI
                             completionClosure?(false)
                         case .goBack:
                             navigationDestination.navigateBackInStack(previousPresentationID: id)
+                            completionClosure?(true)
                     }
 
                 } else {
