@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -168,6 +168,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/View.html">View</a>
               </li>
@@ -498,6 +501,7 @@
 <li><code>tabBar(tab: TabType)</code> This presentation type will present a Destination in the specified tab of a tab bar component, such as a <code>UITabBarController</code> or SwiftUI&rsquo;s <code>TabView</code>. If no <code>destinationType</code> is present in the <code>DestinationPresentation</code> model, the specified tab will simply be selected, becoming the active tab within the interface.</li>
 <li><code>splitView(column: SplitViewColumn)</code> This presentation type will present a Destination in a column of a split view interface, such as a <code>UISplitViewController</code> or SwiftUI&rsquo;s <code>NavigationSplitView</code>.</li>
 <li><code>addToCurrent</code> This presentation type adds a Destination as a child of the currently-presented Destination. Note that this type only works with UIKit and utilizes <code>UIViewController</code>&lsquo;s <code>addChild</code> method.</li>
+<li><code>replaceRoot</code> This presentation type removes all Destinations that are currently presented and adds a new root Destination. This is useful in use cases such as a user signing out, where you need to remove all the current UI and present a new screen.</li>
 <li><code>replaceCurrent</code> This presentation type replaces the currently-presented Destination with a new Destination in system UI components which allow that.</li>
 <li><code>sheet(type: SheetPresentationType, options: SheetPresentationOptions?)</code> This presentation type presents (or dismisses) a Destination in a sheet. The <code>options</code> parameter allows you to customize how the sheet is presented, configuring SwiftUI-specific options with a <code><a href="../Structs/ViewSheetPresentationOptions.html">ViewSheetPresentationOptions</a></code> model and UIKit-specific options with a <code><a href="../Structs/ControllerSheetPresentationOptions.html">ControllerSheetPresentationOptions</a></code> model.</li>
 <li><code>destinationPath(path: [DestinationPresentation])</code> This presentation type presents a path of multiple Destination objects, useful for providing deep linking functionality or building complex state with one user interaction.</li>

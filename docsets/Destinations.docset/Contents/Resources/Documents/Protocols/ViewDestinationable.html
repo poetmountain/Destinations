@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -168,6 +168,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/View.html">View</a>
               </li>
@@ -737,6 +740,95 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations19ViewDestinationableP22setPresentingNavigator9navigatoryAA25DestinationPathNavigating_p_tF"></a>
+                    <a name="//apple_ref/swift/Method/setPresentingNavigator(navigator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations19ViewDestinationableP22setPresentingNavigator9navigatoryAA25DestinationPathNavigating_p_tF">setPresentingNavigator(navigator:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets a reference to the navigator presenting this Destination.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">setPresentingNavigator</span><span class="p">(</span><span class="nv">navigator</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>navigator</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A navigator object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations19ViewDestinationableP25moveBackInNavigationStackyyF"></a>
+                    <a name="//apple_ref/swift/Method/moveBackInNavigationStack()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations19ViewDestinationableP25moveBackInNavigationStackyyF">moveBackInNavigationStack()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Requests that the navigator presenting this Destination move to the previous Destination in the navigation path.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">moveBackInNavigationStack</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations15DestinationableP16assignInteractor10interactor3foryAA20AbstractInteractable_pqd__7RequestRts_XP_0D4TypeQztAA0dI11ConfiguringRd__lF"></a>
                     <a name="//apple_ref/swift/Method/assignInteractor(interactor:for:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations15DestinationableP16assignInteractor10interactor3foryAA20AbstractInteractable_pqd__7RequestRts_XP_0D4TypeQztAA0dI11ConfiguringRd__lF">assignInteractor(interactor:<wbr>for:<wbr>)</a>
@@ -818,6 +910,36 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">func</span> <span class="nf">updateSystemNavigationActions</span><span class="p">(</span><span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Enums/SystemNavigationType.html">SystemNavigationType</a></span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP22performInterfaceAction15interactionType7contenty015UserInteractionG0Qz_07ContentG0QzSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/performInterfaceAction(interactionType:content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP22performInterfaceAction15interactionType7contenty015UserInteractionG0Qz_07ContentG0QzSgtKF">performInterfaceAction(interactionType:<wbr>content:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">performInterfaceAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt">ContentType</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>

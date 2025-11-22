@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>InterfaceActionConfiguring Protocol Reference</title>
+    <title>ToolbarItemGroup Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/InterfaceActionConfiguring" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Extension/ToolbarItemGroup" class="dashAnchor"></a>
 
-    <a title="InterfaceActionConfiguring Protocol Reference"></a>
+    <a title="ToolbarItemGroup Extension Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -36,9 +36,9 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">Destinations</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      <a class="breadcrumb" href="../Protocols.html">Protocols</a>
+      <a class="breadcrumb" href="../Extensions.html">Extensions</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      InterfaceActionConfiguring Protocol Reference
+      SwiftUI.ToolbarItemGroup Extension Reference
     </p>
 
     <div class="content-wrapper">
@@ -482,17 +482,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>InterfaceActionConfiguring</h1>
+            <h1>ToolbarItemGroup</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">InterfaceActionConfiguring</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">ToolbarItemGroup</span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol represents an assistant which configures an <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> object that should present a Destination. This is typically used in conjunction with a Destination such as <code><a href="../Classes/ControllerDestination.html">ControllerDestination</a></code> or <code><a href="../Classes/ViewDestination.html">ViewDestination</a></code>.</p>
-
+            
           </div>
         </section>
 
@@ -503,9 +501,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations26InterfaceActionConfiguringP19UserInteractionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/UserInteractionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations26InterfaceActionConfiguringP19UserInteractionTypeQa">UserInteractionType</a>
+                    <a name="/s:7SwiftUI16ToolbarItemGroupV12DestinationsE6modifyyQrqd__ACyxGXEAA4ViewRd__lF"></a>
+                    <a name="//apple_ref/swift/Method/modify(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI16ToolbarItemGroupV12DestinationsE6modifyyQrqd__ACyxGXEAA4ViewRd__lF">modify(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -513,157 +511,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines user interaction types for a Destination.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">modify</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="kd">@ViewBuilder</span> <span class="n">_</span> <span class="nv">modifier</span><span class="p">:</span> <span class="p">(`</span><span class="nv">Self</span><span class="p">`)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kd">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">View</span></code></pre>
 
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations26InterfaceActionConfiguringP15DestinationTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/DestinationType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations26InterfaceActionConfiguringP15DestinationTypeQa">DestinationType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An enum which defines all routable Destinations in the app.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations26InterfaceActionConfiguringP11ContentTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/ContentType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations26InterfaceActionConfiguringP11ContentTypeQa">ContentType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An enum which defines the types of content that are able to be sent through Destinations.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations26InterfaceActionConfiguringP9configure09interfaceC015interactionType11destination7contentAA0bC0Vy015UserInteractionH0Qz011DestinationH0Qz07ContentH0QzGAQ_AlA15Destinationable_pAPSgtF"></a>
-                    <a name="//apple_ref/swift/Method/configure(interfaceAction:interactionType:destination:content:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations26InterfaceActionConfiguringP9configure09interfaceC015interactionType11destination7contentAA0bC0Vy015UserInteractionH0Qz011DestinationH0Qz07ContentH0QzGAQ_AlA15Destinationable_pAPSgtF">configure(interfaceAction:<wbr>interactionType:<wbr>destination:<wbr>content:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Configures and returns an interface action.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">configure</span><span class="p">(</span><span class="nv">interfaceAction</span><span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/InterfaceActionConfiguring.html#/s:12Destinations26InterfaceActionConfiguringP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>interfaceAction</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> object to configure and run.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>interactionType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The type of user interaction.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>destination</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The Destination object associated with the user interaction, used for configuring the <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> object.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>content</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Optional content to use when performing the <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code>.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The configured interface action.</p>
                       </div>
                     </section>
                   </div>
