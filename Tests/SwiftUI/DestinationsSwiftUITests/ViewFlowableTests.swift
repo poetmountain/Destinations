@@ -103,6 +103,41 @@ import Destinations
         }
     }
     
+    func test_navigationStack_type_goBack() {
+        
+        let startingType: RouteDestinationType = .colorsList
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant())))
+                
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
+        
+        if let lastDestination = appFlow.activeDestinations.last as? ColorDetailDestination {
+            print("moving back in stack from \(lastDestination.type)")
+            try? lastDestination.performInterfaceAction(interactionType: .goBack)
+            
+        } else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+        }
+                
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+            XCTAssertEqual(currentDestination.type, .colorsList, "Expected to go back in navigation stack and colors list would be the current Destination, but found \(currentDestination.type)")
+            
+            if let navigator = appFlow.findNavigatorInViewHierarchy(searchDestination: currentDestination) {
+                XCTAssertEqual(navigator.navigationPath.count, 0)
+            } else {
+                XCTFail("No navigator found")
+            }
+            
+        } else {
+            XCTFail("Expected to find a current Destination the app flow")
+
+        }
+    }
+    
     func test_moveBackInNavigationStack_with_tabBar() {
         
         let startingTabs: [AppTabType] = [.palettes, .home]

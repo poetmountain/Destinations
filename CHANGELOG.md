@@ -1,3 +1,6 @@
+### 2.3.1
+* Programmatically moving back in a SwiftUI `NavigationStack` may now also be accomplished by using a `DestinationPresentation` interface action with the `.navigationStack(type: .goBack)` presentation type.
+
 ### 2.3.0
 * Added a new closure property `dismissedClosure` to `SheetPresentation`, enabling the ability to provide code that is run after a SwiftUI sheet is dismissed by Destinations.
 * Added the `moveBackInNavigationStack()` method to `ViewDestinationable`, enabling the ability to programmatically move back in a `NavigationStack`. Call this method from a Destination if you would like to move to the previous Destination in the navigation stack without the user tapping the Back button.

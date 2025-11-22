@@ -17,11 +17,14 @@ struct CollectionDatasourceOptions {
 final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     enum UserInteractions: UserInteractionTypeable, Equatable {
         case color(model: ColorDetailSelectionModel)
+        case goBack
         
         var rawValue: String {
             switch self {
                 case .color(_):
                     return "color"
+                case .goBack:
+                    return "goBack"
             }
         }
         

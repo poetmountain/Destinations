@@ -87,6 +87,48 @@ public extension ViewDestinationable {
             }
         }
     }
+    
+    
+    func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
+        
+        guard var interfaceAction = internalState.interfaceActions[interactionType] else {
+            let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
+            let message = String(format: template, interactionType.rawValue, type.rawValue)
+            
+            throw DestinationsError.missingInterfaceAction(message: message)
+        }
+        
+        if let presentation = internalState.destinationConfigurations?.configuration(for: interactionType) {
+            
+            if case .navigationStack(type: let navigationType) = presentation.presentationType, navigationType == .goBack {
+                moveBackInNavigationStack()
+                return
+            }
+            
+            let assistant: (any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType>)
+            
+            switch presentation.assistantType {
+                case .basic:
+                    assistant = DefaultActionAssistant<UserInteractionType, DestinationType, ContentType>()
+                case .custom(let customAssistant):
+                    if let customAssistant = customAssistant as? any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType> {
+                        assistant = customAssistant
+                    } else {
+                        let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                        let message = String(format: template, self.type.rawValue)
+                        throw DestinationsError.missingInterfaceActionAssistant(message: message)
+                    }
+            }
+            
+            let configuredAction = assistant.configure(interfaceAction: interfaceAction, interactionType: interactionType, destination: self, content: content)
+            configuredAction()
+            
+        } else {
+            // if no presentation was found, this is probably an action for an interactor
+            interfaceAction.data.contentType = content
+            interfaceAction()
+        }
+    }
 
     func assignAssociatedView(view: ViewType) {
         self.view = view
