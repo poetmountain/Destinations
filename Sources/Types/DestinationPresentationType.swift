@@ -40,6 +40,11 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
     /// Removes all active Destinations in the Flow and sets a new root Destination.
     case replaceRoot
     
+    /// Finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another `View` higher in a `NavigationStack`.
+    ///
+    /// - Parameter destination: The type of Destination to find and present.
+    case moveToNearest(destination: DestinationType)
+    
     /// Defines the presentation of a sheet view.
     ///
     /// - Parameter type: An enum representing the state of the sheet.
@@ -61,11 +66,11 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
     
     nonisolated public var rawValue: String {
         switch self {
-            case .navigationStack(let type):
+            case .navigationStack(_):
                 return "navigationStack"
             case .splitView:
                 return "splitView"
-            case .tabBar(let tab):
+            case .tabBar(_):
                 return "tabBar"
             case .addToCurrent:
                 return "addToCurrent"
@@ -73,9 +78,11 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
                 return "replaceCurrent"
             case .replaceRoot:
                 return "replaceRoot"
-            case .sheet(let type):
+            case .moveToNearest(_):
+                return "moveToNearest"
+            case .sheet(_):
                 return "sheet"
-            case .destinationPath(path: let path):
+            case .destinationPath(path: _):
                 return "destinationPath"
             case .custom:
                 return "custom"

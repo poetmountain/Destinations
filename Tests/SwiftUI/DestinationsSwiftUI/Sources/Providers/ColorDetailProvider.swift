@@ -19,8 +19,9 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
     
     init() {
         let goBackAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), assistantType: .basic)
+        let moveToNearestAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .moveToNearest(destination: .colorsList), assistantType: .basic)
         
-        presentationsData = [.goBack: goBackAction]
+        presentationsData = [.goBack: goBackAction, .moveToNearest: moveToNearestAction]
     }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {

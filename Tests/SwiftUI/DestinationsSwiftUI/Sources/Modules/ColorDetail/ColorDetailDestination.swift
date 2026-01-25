@@ -18,6 +18,7 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     enum UserInteractions: UserInteractionTypeable, Equatable {
         case color(model: ColorDetailSelectionModel)
         case goBack
+        case moveToNearest
         
         var rawValue: String {
             switch self {
@@ -25,6 +26,8 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
                     return "color"
                 case .goBack:
                     return "goBack"
+                case .moveToNearest:
+                    return "moveToNearest"
             }
         }
         

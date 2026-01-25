@@ -41,7 +41,12 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
 
         self.uiCoordinator?.removeDestinationClosure = { [weak self]  (_ uuid: UUID) in
             guard let strongSelf = self else { return }
-            strongSelf.removeDestination(destinationID: uuid)
+            
+            if let destinationToRemove = strongSelf.destination(for: uuid) as? any ViewDestinationable, let parentID = destinationToRemove.parentDestinationID(), let parentDestination = strongSelf.destination(for: parentID), let navigationStackDestination = parentDestination as? NavigatingViewDestinationable {
+                navigationStackDestination.currentView()?.backToPreviousDestination(currentDestination: destinationToRemove)
+            } else {
+                strongSelf.removeDestination(destinationID: uuid)
+            }
         }
         self.uiCoordinator?.delegate = self
     }
@@ -102,6 +107,10 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         
         if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             parentOfCurrentDestination = parent
+        }
+        
+        if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
+            removeDestinationsBefore(nearest: destinationToVisit)            
         }
         
         var newDestination = self.destination(for: mutableConfiguration)
@@ -197,7 +206,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {
-            case .navigationStack(type: .goBack):
+            case .navigationStack(type: .goBack), .moveToNearest(destination: _):
                 closure = self.defaultNavigationBackCompletionClosure(configuration: configuration)
 
             case .sheet(type: .dismiss, options: _):
