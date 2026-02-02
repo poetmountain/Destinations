@@ -136,6 +136,81 @@ public extension ControllerFlowable {
         return nil
     }
     
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) {
+        // make sure that there's another Destination of this type higher in the UI stack
+        guard let firstDestination = activeDestinations.first(where: { $0.type == typeToFind }), firstDestination.id != currentDestination?.id else { return }
+        
+        if let current = self.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+            removeParentDestination(for: current, until: typeToFind)
+        }
+    }
+    
+    
+    func removeParentDestination(for destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, until type: DestinationType) {
+        
+        DestinationsSupport.logger.log("Removing parent destination \(destination.type) :: id \(destination.id)", level: .verbose)
+        DestinationsSupport.logger.log("parent id \(destination.parentDestinationID())", level: .verbose)
+
+        if let parentID = destination.parentDestinationID(), let parentDestination = self.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+            
+            if let navigationStackDestination = parentDestination as? NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+                if let targetIndex = navigationStackDestination.childDestinations().lastIndex(where: { $0.type == type }) {
+                    // target is within the same navigation stack as current Destination
+                    
+                    guard (targetIndex + 1 <= navigationStackDestination.childDestinations().count - 1) else { return }
+                    
+                    let removedElements = navigationStackDestination.childDestinations().suffix(from: targetIndex+1)
+                    
+                    
+                    
+                    DestinationsSupport.logger.log("Types to remove \(removedElements.map { $0.type })", level: .verbose)
+                    
+                    let removedElementIDs = removedElements.map(\.id)
+                    
+                    if removedElementIDs.count > 1 {
+                        
+                        print("destinations left \(navigationStackDestination.childDestinations().count) .... elements to remove \(removedElements.count)")
+                        let remainingDestinations = Array(navigationStackDestination.childDestinations().dropLast(removedElements.count))
+                        
+                        print("remaining destinations \(remainingDestinations)")
+                        
+
+                        
+                        removeDestinations(destinationIDs: removedElementIDs)
+                        
+                        if let remainingDestinations = remainingDestinations as? [any ControllerDestinationable<DestinationType, ContentType, TabType>] {
+                            let remainingControllers = remainingDestinations.compactMap { $0.currentController() }
+                            DestinationsSupport.logger.log("remaining controllers \(remainingControllers)", level: .verbose)
+
+                            navigationStackDestination.currentController()?.setViewControllers(remainingControllers, animated: true)
+                        }
+                        
+                        
+                    } else if let currentChild = navigationStackDestination.currentChildDestination() as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+                        currentChild.currentController()?.performSystemNavigationBack()
+                    }
+                    
+                    
+                } else {
+                    // target isn't in the navigation stack, so remove all stack elements and we'll try to find it above the stack
+                    let elementsToRemove = navigationStackDestination.childDestinations().map { $0.id }
+                    removeDestinations(destinationIDs: elementsToRemove)
+                    
+                    guard parentDestination.type != type else { return }
+                    removeParentDestination(for: parentDestination, until: type)
+                    
+                }
+
+                
+            } else {
+                removeDestination(destinationID: destination.id)
+                
+                guard parentDestination.type != type else { return }
+                removeParentDestination(for: parentDestination, until: type)
+            }
+            
+        }
+    }
     
     func defaultCompletionClosure(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, destination: (any Destinationable<DestinationType, ContentType, TabType>)? = nil) -> PresentationCompletionClosure? {
         

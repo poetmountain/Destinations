@@ -135,7 +135,7 @@ public extension GroupedDestinationable {
 
     }
     
-    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure?) {
+    func removeChild(identifier: UUID, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
 
         if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
@@ -146,10 +146,7 @@ public extension GroupedDestinationable {
         DestinationsSupport.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
 
         childDestination.cleanupResources()
-
-        if let destination = childDestination as? any GroupedDestinationable<DestinationType, ContentType, TabType> {
-            destination.removeAllChildren()
-        }
+        childDestination.removeAssociatedInterface()
         
         groupInternalState.childDestinations.remove(at: childIndex)
         groupInternalState.currentChildDestination = groupInternalState.childDestinations.last

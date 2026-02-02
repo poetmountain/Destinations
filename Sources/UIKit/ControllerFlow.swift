@@ -115,6 +115,11 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             parentOfCurrentDestination = parent
         }
         
+        if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
+            removeDestinationsBefore(nearest: destinationToVisit)
+            
+        }
+        
         let newDestination = self.destination(for: mutableConfiguration)
                 
         var currentDestination = currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>

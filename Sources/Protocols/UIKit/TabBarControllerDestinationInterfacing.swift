@@ -21,7 +21,7 @@ import UIKit
     /// - Parameters:
     ///   - tab: The tab to customize.
     ///   - navigationController: The navigation controller whose `tabItem` property should be customized.
-    func customizeTabItem(for tab: TabType, navigationController: UINavigationController)
+    func customizeTabItem(for tab: TabType, controller: UIViewController)
     
     /// Returns the `tabIndex` for the requested tab type.
     /// - Parameter tab: The tab type.
@@ -55,10 +55,11 @@ public extension TabBarControllerDestinationInterfacing {
     
     
     func currentController(for tab: TabType) -> (any ControllerDestinationInterfacing)? {
-        if let navController = destination().navControllersForTabs[tab] {
-            return navController.visibleViewController as? any ControllerDestinationInterfacing
-        }
-        return nil
+        
+        let currentDestination = destination().currentDestination(for: tab)
+        
+        return currentDestination?.currentController()
+
     }
 
 }

@@ -65,10 +65,6 @@ import UIKit
             navController.delegate = self
         }
         
-        if let tabBarDestinationInViewHiearchy {
-            tabBarDestinationInViewHiearchy.registerNavigationControllerDelegates(with: self)
-        }
-        
     }
 
     

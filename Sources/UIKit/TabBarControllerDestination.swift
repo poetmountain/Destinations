@@ -38,6 +38,7 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     
     public var selectedTab: TabModel<TabType> {
         didSet {
+            print("update selected tab")
             selectedTabUpdatedClosure?(selectedTab)
         }
     }
@@ -95,7 +96,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         self.internalState.parentDestinationID = parentDestinationID
         self.groupInternalState.currentChildDestination = tabDestinations.first
         
-        updateTabControllers(controllers: tabDestinations.map { $0.id }, for: tabModels)
         
         for (index, tab) in tabTypes.enumerated() {
             if let destination = tabDestinations[safe: index] {
@@ -106,29 +106,37 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
                 }
             }
         }
+        
+        updateTabControllers(destinations: tabDestinations, for: tabModels)
+
+    }
+    
+    public func updateTabControllers(destinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>], for tabs: [TabModel<TabType>]) {
+        
+        let destinationIDs = destinations.compactMap { $0.id }
+        
+        destinationIDsForTabs.removeAll()
+        for x in 0..<tabs.count {
+            let type = tabs[x].type
+            let destinationID = destinationIDs[x]
+            destinationIDsForTabs[type] = destinationID
+        }
+
+        activeTabs = tabs
+        
+        let childControllers = destinations.compactMap { $0.currentController() }
+        
+        currentController()?.setViewControllers(childControllers, animated: false)
+
+        for (index, destination) in destinations.enumerated() {
+            let tab = tabs[index]
+            if let tabType = tab.type as? ControllerType.TabType, let controller = destination.currentController() {
+                currentController()?.customizeTabItem(for: tabType, controller: controller)
+            }
+        }
     }
     
     public func prepareForPresentation() {
-    }
-
-    
-    
-    public func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
-        DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
-
-        if let navigationController = navControllersForTabs[tab], let controllerToPresent = destination.currentController() {
-            let shouldAnimate = presentationOptions?.shouldAnimate ?? true
-            navigationController.pushViewController(controllerToPresent, animated: shouldAnimate)
-            addChild(childDestination: destination)
-            
-            if shouldUpdateSelectedTab {
-                groupInternalState.currentChildDestination = destination
-                try updateSelectedTab(type: tab)
-            }
-            
-        } else if let currentDestination = self.currentDestination(for: tab) {
-            replaceChild(currentID: currentDestination.id, with: destination, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
-        }
     }
     
     public func updateSelectedTab(type: TabType) throws {
@@ -148,12 +156,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         
     }
     
-    public func updateChildren() {
-        let children = groupInternalState.childDestinations.compactMap { $0.id }
-        updateTabControllers(controllers: children, for: activeTabs)
-        
-    }
-    
     /// Sets up the `UINavigationController` containers for each tab. These navigation controllers are transparent to the Destinations ecosystem, but facilitate pushing a Destination onto a tab. This is used internally by Destinations.
     internal func setupTabsNavigationControllers() {
         
@@ -165,7 +167,7 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         
         for (tab, navController) in navControllersForTabs {
             if let tab = tab as? ControllerType.TabType {
-                controller?.customizeTabItem(for: tab, navigationController: navController)
+                controller?.customizeTabItem(for: tab, controller: navController)
             }
         }
 
@@ -180,24 +182,4 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
 
     }
     
-    /// Updates multiple Destinations in the specified tabs. This is used internally by Destinations.
-    /// - Parameters:
-    ///   - destinationIDs: An array of Destination identifiers
-    ///   - types: The tab types whose `UIViewController` stacks should be replaced.
-    internal func updateTabControllers(controllers: [UUID], for tabs: [TabModel<TabType>]) {
-        guard controllers.count == tabs.count else { return }
-        
-        activeTabs = tabs
-        destinationIDsForTabs.removeAll()
-        for x in 0..<tabs.count {
-            let type = tabs[x].type
-            let tabDestinationID = controllers[x]
-            destinationIDsForTabs[type] = tabDestinationID
-        }
-        
-        setupTabsNavigationControllers()
-        for tab in tabs {
-            addContentToNavigationController(tab: tab.type)
-        }
-    }
 }

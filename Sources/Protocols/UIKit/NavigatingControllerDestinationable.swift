@@ -38,6 +38,10 @@ public extension NavigatingControllerDestinationable {
         }
     }
     
+    func removeDestinations(destinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>]) {
+        
+    }
+    
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
         
         navigateBackInStack()
