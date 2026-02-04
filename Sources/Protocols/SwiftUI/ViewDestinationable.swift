@@ -14,6 +14,8 @@ import SwiftUI
     
     /// The type of `View` associated with this Destination.
     associatedtype ViewType: ViewDestinationInterfacing
+    
+    associatedtype DestinationType: RoutableDestinations
 
     /// The SwiftUI `View` associated with this Destination.
     var view: ViewType? { get set }

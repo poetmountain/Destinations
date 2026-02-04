@@ -34,6 +34,11 @@ import Foundation
     /// - Parameter previousPresentationID: An optional unique identifier of the previous destination.
     func backToPreviousPathElement(previousPresentationID: UUID?)
     
+    /// Removes all previous elements, from the current navigation element until the element matching the specified identifier.
+    /// - Parameter identifier: A `UUID` identifier that specifies which element should become the current identifer after removing elements ahead of it.
+    /// - Returns: An array representing the remaining navigation elements of the path after removals.
+    func backToElement(identifier: UUID) -> [UUID]
+    
     /// Returns the previous path element.
     /// - Returns: A `UUID` identifier of the previous path element.
     func previousPathElement() -> UUID?
@@ -62,6 +67,19 @@ public extension DestinationPathNavigating {
         guard navigationPath.count > 0 else { return }
         currentPresentationID = previousPresentationID
         navigationPath.removeLast()
+    }
+    
+    func backToElement(identifier: UUID) -> [UUID] {
+        guard navigationPath.count > 0 else { return [] }
+        currentPresentationID = identifier
+        if let targetIndex = index(of: identifier) {
+            let numToRemove = (navigationPath.count-1) - targetIndex
+            let removedElements = navigationPath.suffix(numToRemove)
+            navigationPath = Array(navigationPath[0...targetIndex])
+            return Array(removedElements)
+        }
+        
+        return []
     }
     
     func removeAll() {

@@ -27,7 +27,7 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
                 if let targetID = model.targetID {
                     closure.data.actionTargetID = targetID
                 }
-            case .goBack:
+            case .goBack, .moveToNearest:
                 break
         }
 

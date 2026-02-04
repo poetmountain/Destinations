@@ -1,3 +1,6 @@
+### 2.3.2
+* Added the `moveToNearest(destination: DestinationType)` presentation type for SwiftUI, which finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another `View` higher in a `NavigationStack`. Note that this presentation type is currently not implemented for UIKit-based Flows.
+
 ### 2.3.1
 * Programmatically moving back in a SwiftUI `NavigationStack` may now also be accomplished by using a `DestinationPresentation` interface action with the `.navigationStack(type: .goBack)` presentation type.
 
