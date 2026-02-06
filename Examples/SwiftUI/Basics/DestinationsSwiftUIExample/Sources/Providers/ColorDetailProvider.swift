@@ -20,7 +20,10 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
         let options = ViewSheetPresentationOptions(presentationMode: .sheet)
         let sheetPresent = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
         
-        presentationsData = [.colorDetailButton: sheetPresent]
+        let moveNearest = PresentationConfiguration(presentationType: .moveToNearest(destination: .colorDetail), assistantType: .basic)
+        
+        
+        presentationsData = [.colorDetailButton: moveNearest]
     }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {

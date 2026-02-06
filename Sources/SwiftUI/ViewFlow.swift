@@ -110,7 +110,12 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         }
         
         if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
-            removeDestinationsBefore(nearest: destinationToVisit)            
+            let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
+            
+            // assign the target ID of the destination to move to
+            if let targetDestination {
+                mutableConfiguration.actionTargetID = targetDestination.id
+            }
         }
         
         var newDestination = self.destination(for: mutableConfiguration)

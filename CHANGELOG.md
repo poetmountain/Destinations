@@ -1,3 +1,6 @@
+### 2.3.3
+* Fixed issue with `moveToNearest(destination: DestinationType)` presentation failing to set a `ViewFlow`'s `currentDestination`. 
+
 ### 2.3.2
 * Added the `moveToNearest(destination: DestinationType)` presentation type for SwiftUI, which finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another `View` higher in a `NavigationStack`. Note that this presentation type is currently not implemented for UIKit-based Flows.
 

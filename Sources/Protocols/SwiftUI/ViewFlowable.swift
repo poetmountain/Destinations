@@ -56,7 +56,8 @@ import SwiftUI
     
     /// Removes all Destinations higher in a UI stack until the specified type.
     /// - Parameter typeToFind: The type of Destination to stop the removal process at.
-    func removeDestinationsBefore(nearest typeToFind: DestinationType)
+    /// - Returns: The Destination located after the removed Destinations.
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// This method recursively removes parent Destinations until the supplied Destination type is found.
     /// - Parameters:
@@ -118,14 +119,16 @@ public extension ViewFlowable {
         
     }
     
-    func removeDestinationsBefore(nearest typeToFind: DestinationType) {
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
         
         // make sure that there's another Destination of this type higher in the UI stack
-        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) else { return }
+        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) as? any ViewDestinationable<DestinationType, ContentType, TabType> else { return nil }
         
         if let current = self.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             removeParentDestination(for: current, until: typeToFind)
         }
+        
+        return firstDestination
     }
     
     func removeParentDestination(for destination: any ViewDestinationable<DestinationType, ContentType, TabType>, until type: DestinationType) {
@@ -220,8 +223,6 @@ public extension ViewFlowable {
                     if let destination {
                         strongSelf.updateCurrentDestination(destination: destination)
                         strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
-                    } else {
-                        strongSelf.currentDestination = strongSelf.activeDestinations.last
                     }
                     
                     strongSelf.uiCoordinator?.destinationToPresent = nil

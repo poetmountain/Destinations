@@ -48,7 +48,7 @@ import SwiftUI
     public var destinationType: DestinationType?
     
     /// An enum type representing the way this Destination should be presented.
-    public var presentationType: DestinationPresentationType<DestinationType, ContentType, TabType>
+    public var presentationType: PresentationType
     
     /// An enum type representing the content to be used with this presentation.
     public var contentType: ContentType?
