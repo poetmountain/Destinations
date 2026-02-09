@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (98% documented)
       </p>
     
     
@@ -2002,7 +2002,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This method is called automatically when a Destination is presented, but before the UI is built. This is a great place to put any state setup actions or datasource retrieval calls here.</p>
+                        <p>This method is called automatically when a Destination is presented by a Flow for the first time, but before its associated UI is built. Implement this method in your Destination classes to put any initial state setup actions or datasource retrieval calls here that should only be run when a Destination is first created.</p>
+
+<blockquote>
+<p>Unlike <code><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP20prepareForAppearanceyyF">prepareForAppearance()</a></code>, this method is only called once on a Destination.</p>
+</blockquote>
 
                       </div>
                       <div class="declaration">
@@ -2011,6 +2015,84 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">func</span> <span class="nf">prepareForPresentation</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP20prepareForAppearanceyyF"></a>
+                    <a name="//apple_ref/swift/Method/prepareForAppearance()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP20prepareForAppearanceyyF">prepareForAppearance()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method is called automatically when a Destination becomes the active one, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination&rsquo;s UI element becomes active.</p>
+
+<blockquote>
+<p>This method is preferred and is often more reliable than using native UI hooks like <code>View</code>&lsquo;s <code>onAppear</code> modifier in SwiftUI projects.</p>
+</blockquote>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">prepareForAppearance</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP23prepareForDisappearanceyyF"></a>
+                    <a name="//apple_ref/swift/Method/prepareForDisappearance()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP23prepareForDisappearanceyyF">prepareForDisappearance()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method is called automatically when a Destination becomes inactive, prior to the associated UI element disappearing from screen. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination&rsquo;s UI element is no longer visible or the active element.</p>
+
+<blockquote>
+<p>This method is preferred and is often more reliable than using native UI hooks like <code>View</code>&lsquo;s <code>onDisappear</code> modifier in SwiftUI projects, and especially in cases where several UI elements may be added in quick succession in a <code>NavigationStack</code>.</p>
+</blockquote>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">prepareForDisappearance</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -2750,7 +2832,7 @@
     </div>
     <section class="footer">
       <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

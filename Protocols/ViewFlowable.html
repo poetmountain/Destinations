@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (98% documented)
       </p>
     
     
@@ -959,6 +959,130 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations12ViewFlowableP06removeA6Before7nearestAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationI0QzAJRS03TabI0QzALRSXPSgAJ_tF"></a>
+                    <a name="//apple_ref/swift/Method/removeDestinationsBefore(nearest:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP06removeA6Before7nearestAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationI0QzAJRS03TabI0QzALRSXPSgAJ_tF">removeDestinationsBefore(nearest:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes all Destinations higher in a UI stack until the specified type.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeDestinationsBefore</span><span class="p">(</span><span class="n">nearest</span> <span class="nv">typeToFind</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>typeToFind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of Destination to stop the removal process at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The Destination located after the removed Destinations.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations12ViewFlowableP23removeParentDestination3for5untilyAA0B15Destinationable_p11ContentTypeQzAIRS_0fK0QzAKRS03TabK0QzAMRSXP_AKtF"></a>
+                    <a name="//apple_ref/swift/Method/removeParentDestination(for:until:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations12ViewFlowableP23removeParentDestination3for5untilyAA0B15Destinationable_p11ContentTypeQzAIRS_0fK0QzAKRS03TabK0QzAMRSXP_AKtF">removeParentDestination(for:<wbr>until:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method recursively removes parent Destinations until the supplied Destination type is found.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeParentDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ViewDestinationable.html">ViewDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">until</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Destination whose parent should be removed.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of Destination to stop the removal process at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_p11ContentTypeQzAGRS_011DestinationK0QzAIRS0eK0QzAKRSXP_10Foundation4UUIDVtcyF"></a>
                     <a name="//apple_ref/swift/Method/defaultTabBarPresentationClosure()" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations12ViewFlowableP32defaultTabBarPresentationClosureyAA0B15Destinationable_p11ContentTypeQzAGRS_011DestinationK0QzAIRS0eK0QzAKRSXP_10Foundation4UUIDVtcyF">defaultTabBarPresentationClosure()</a>
@@ -1246,7 +1370,7 @@
     </div>
     <section class="footer">
       <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>

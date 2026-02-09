@@ -58,7 +58,7 @@
     },
     {
       "file": "/Users/brett/Documents/tech/poet+mountain/libs/Destinations/Sources/Protocols/DestinationPathNavigating.swift",
-      "line": 52,
+      "line": 57,
       "symbol": "DestinationPathNavigating.addPathElement(item:shouldAnimate:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
