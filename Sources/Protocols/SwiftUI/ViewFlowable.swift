@@ -220,7 +220,7 @@ public extension ViewFlowable {
                     
                     
                 } else {
-                    if let destination {
+                    if let destination, destination.id != strongSelf.currentDestination?.id {
                         strongSelf.updateCurrentDestination(destination: destination)
                         strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
                     }
@@ -246,6 +246,7 @@ public extension ViewFlowable {
                 if let parentID = configuration.parentDestinationID, let parentDestination = strongSelf.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
 
                     if let sheetID = configuration.actionTargetID {
+                        strongSelf.currentDestination?.prepareForDisappearance()
                         strongSelf.removeDestination(destinationID: sheetID)
                     }
                     
@@ -275,11 +276,16 @@ public extension ViewFlowable {
                 DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
 
                 if let oldID = configuration.currentDestinationID {
+                    if let oldDestination = strongSelf.destination(for: oldID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+                        oldDestination.prepareForDisappearance()
+                    }
                     strongSelf.removeDestination(destinationID: oldID)
                 }
                 
                 if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
-                    strongSelf.updateCurrentDestination(destination: targetDestination)
+                    if currentID != strongSelf.currentDestination?.id {
+                        strongSelf.updateCurrentDestination(destination: targetDestination)
+                    }
                     targetDestination.updateIsSystemNavigating(isNavigating: false)
 
                     strongSelf.logDestinationPresented(configuration: configuration)

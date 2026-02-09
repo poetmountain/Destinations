@@ -68,4 +68,12 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     func prepareForPresentation() {
     }
 
+    func prepareForAppearance() {
+        print("prepareForAppearance - \(self.type) : \(self.id.uuidString)")
+    }
+    
+    func prepareForDisappearance() {
+        print("prepareForDisappearance - \(self.type) : \(self.id.uuidString)")
+
+    }
 }

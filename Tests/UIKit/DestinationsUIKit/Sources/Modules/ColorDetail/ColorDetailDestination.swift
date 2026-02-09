@@ -50,6 +50,9 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
     
     public var parentDestinationID: UUID?
     
+    var didAppear: Bool = false
+    var didDisappear: Bool = false
+    
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
@@ -57,5 +60,17 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
     }
     
     func prepareForPresentation() {
+    }
+    
+    func prepareForAppearance() {
+        print("prepareForAppearance - \(self.type) : \(self.id.uuidString)")
+        didAppear = true
+        didDisappear = false
+    }
+    
+    func prepareForDisappearance() {
+        print("prepareForDisappearance - \(self.type) : \(self.id.uuidString)")
+        didAppear = false
+        didDisappear = true
     }
 }

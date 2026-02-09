@@ -50,6 +50,9 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         
         self.uiCoordinator?.removeDestinationClosure = { [weak self]  (_ removalID: UUID) in
             guard let strongSelf = self else { return }
+            if let oldDestination = strongSelf.destination(for: removalID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+                oldDestination.prepareForDisappearance()
+            }
             strongSelf.removeDestination(destinationID: removalID)
         }
         self.uiCoordinator?.delegate = self

@@ -9,7 +9,7 @@
 import SwiftUI
 import Destinations
 
-public struct DynamicView<Content: View>: ViewDestinationInterfacing, DestinationTypes {
+struct DynamicView<Content: View>: ViewDestinationInterfacing, DestinationTypes {
         
     public enum UserInteractions: UserInteractionTypeable {
         public var rawValue: String {
@@ -18,7 +18,7 @@ public struct DynamicView<Content: View>: ViewDestinationInterfacing, Destinatio
         
     }
 
-    public typealias Destination = DynamicDestination
+    typealias Destination = DynamicDestination
 
     @State public var destinationState: DestinationInterfaceState<Destination>
 

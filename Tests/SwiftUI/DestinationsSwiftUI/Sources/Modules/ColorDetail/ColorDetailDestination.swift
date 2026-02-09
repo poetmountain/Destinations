@@ -58,8 +58,9 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
 
     var items: [ColorViewModel] = []
 
-    private(set) var listID: UUID = UUID()
-
+    var didAppear: Bool = false
+    var didDisappear: Bool = false
+    
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
@@ -67,5 +68,17 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     }
 
     func prepareForPresentation() {
+    }
+    
+    func prepareForAppearance() {
+        print("prepareForAppearance - \(self.type) : \(self.id.uuidString)")
+        didAppear = true
+        didDisappear = false
+    }
+    
+    func prepareForDisappearance() {
+        print("prepareForDisappearance - \(self.type) : \(self.id.uuidString)")
+        didAppear = false
+        didDisappear = true
     }
 }

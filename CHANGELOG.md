@@ -1,3 +1,7 @@
+### 2.3.4
+* Added `prepareForAppearance()` and `prepareForDisappearance()` Destination methods. These methods can be implemented in your Destination classes to call setup or teardown tasks when a Destination's UI element is presented or removed from the screen, and are generally more reliable than using native UI hooks.
+* Updated tests
+
 ### 2.3.3
 * Fixed issue with `moveToNearest(destination: DestinationType)` presentation failing to set a `ViewFlow`'s `currentDestination`. 
 

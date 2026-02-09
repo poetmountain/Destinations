@@ -143,7 +143,14 @@ public extension Flowable {
     
     func updateCurrentDestination(destination: any Destinationable<DestinationType, ContentType, TabType>) {
         uiCoordinator?.destinationToPresent = nil
+        DestinationsSupport.logger.log("Old destination \(currentDestination?.id.uuidString) : New dest \(destination.id.uuidString)", level: .verbose)
+
+        currentDestination?.prepareForDisappearance()
+        
         currentDestination = destination
+        
+        destination.prepareForAppearance()
+        
         DestinationsSupport.logger.log("🔄 Updated current destination to \(destination.type).")
     }
     

@@ -65,6 +65,37 @@ import Destinations
 
     }
     
+    
+    func test_presentDestination_appearance_methods() {
+
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination, startingTabs: startingTabs)
+        appFlow.start()
+        
+        wait(timeout: 0.3)
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic))
+        
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+        } else {
+            XCTFail()
+        }
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .home, presentationType: .navigationStack(type: .present), assistantType: .basic))
+        
+        let destinationsCount = appFlow.activeDestinations.count
+        if let presentedDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didDisappear)
+        } else {
+            XCTFail()
+        }
+
+    }
+    
     func test_destination_retrieval() {
         let startingType: RouteDestinationType = .colorDetail
         let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)

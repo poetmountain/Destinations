@@ -154,8 +154,20 @@ import Foundation
     ///   - interactionType: The type of user interaction which this assistant should handle requests for.
     func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for interactionType: UserInteractionType)
 
-    /// This method is called automatically when a Destination is presented, but before the UI is built. This is a great place to put any state setup actions or datasource retrieval calls here.
+    /// This method is called automatically when a Destination is presented by a Flow for the first time, but before its associated UI is built. Implement this method in your Destination classes to put any initial state setup actions or datasource retrieval calls here that should only be run when a Destination is first created.
+    ///
+    /// > Unlike ``prepareForAppearance()``, this method is only called once on a Destination.
     func prepareForPresentation()
+    
+    /// This method is called automatically when a Destination becomes the active one, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination's UI element becomes active.
+    ///
+    /// > This method is preferred and is often more reliable than using native UI hooks like `View`'s `onAppear` modifier in SwiftUI projects.
+    func prepareForAppearance()
+    
+    /// This method is called automatically when a Destination becomes inactive, prior to the associated UI element disappearing from screen. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination's UI element is no longer visible or the active element.
+    ///
+    /// > This method is preferred and is often more reliable than using native UI hooks like `View`'s `onDisappear` modifier in SwiftUI projects, and especially in cases where several UI elements may be added in quick succession in a `NavigationStack`.
+    func prepareForDisappearance()
     
     /// Performs a request with the specified Interactor.
     /// - Parameters:
@@ -223,6 +235,10 @@ import Foundation
 
 // default function implementations
 public extension Destinationable {
+    
+    func prepareForAppearance() {}
+    
+    func prepareForDisappearance() {}
     
     internal func setupInternalState() {
         internalState = DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>()
