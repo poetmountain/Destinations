@@ -116,6 +116,8 @@ public extension NavigationSplitViewDestinationable {
         } else {
             addChild(childDestination: destination)
         }
+        
+        destination.prepareForPresentation()
                 
         switch column {
             case .sidebar:
@@ -148,7 +150,7 @@ public extension NavigationSplitViewDestinationable {
             return
         }
         
-        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ViewDestinationable, let currentColumn = column(destinationID: currentID) else {
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentColumn = column(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -184,12 +186,9 @@ public extension NavigationSplitViewDestinationable {
         
         if let navDestination = newDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
             registerNavigationClosures(for: navDestination)
-        }
-        
-        if let newDestination = newDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+        } else {
             updateSplitView(destination: newDestination, for: currentColumn)
         }
-        
     }
     
     func column(destinationID: UUID) -> NavigationSplitViewColumn? {

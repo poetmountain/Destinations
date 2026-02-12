@@ -107,22 +107,61 @@ import Destinations
         let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController)
         appFlow.start()
         
-        wait(timeout: 0.1)
+        wait(timeout: 0.3)
         
-        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic))
+        let path: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
+        ]
         
-
+        appFlow.presentDestinationPath(path: path)
+        
+        wait(timeout: 0.3)
+        
         if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
             XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
         } else {
             XCTFail()
         }
-                
-        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic))
-        
+
+        // old destination presented by path should have "wasActive" as false
         let destinationsCount = appFlow.activeDestinations.count
-        if let presentedDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination {
-            XCTAssertTrue(presentedDestination.didDisappear)
+        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination {
+            XCTAssertTrue(oldDestination.didDisappear)
+            XCTAssertFalse(oldDestination.isVisible)
+            XCTAssertFalse(oldDestination.wasVisible)
+        } else {
+            XCTFail()
+        }
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+
+        wait(timeout: 0.1)
+
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
+        } else {
+            XCTFail()
+        }
+        
+        // single addition should have "wasActive" as true
+        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailDestination {
+            XCTAssertTrue(oldDestination.didDisappear)
+            XCTAssertFalse(oldDestination.isVisible)
+            XCTAssertTrue(oldDestination.wasVisible)
+        } else {
+            XCTFail()
+        }
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .yellow, name: "yellow")), assistantType: .basic))
+        
+        wait(timeout: 0.1)
+
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
         } else {
             XCTFail()
         }

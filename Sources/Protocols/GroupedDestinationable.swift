@@ -145,8 +145,6 @@ public extension GroupedDestinationable {
         
         DestinationsSupport.logger.log("Removing child \(identifier) from children array in \(Self.self)", level: .verbose)
 
-        childDestination.cleanupResources()
-
         if let destination = childDestination as? any GroupedDestinationable<DestinationType, ContentType, TabType> {
             destination.removeAllChildren()
         }

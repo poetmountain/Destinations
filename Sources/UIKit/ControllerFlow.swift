@@ -35,6 +35,8 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
 
     public var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] = []
     
+    public var isPresentingDestinationPath: Bool = false
+
     /// The starting Destination in the Flow.
     public var startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>?
         
@@ -51,7 +53,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         self.uiCoordinator?.removeDestinationClosure = { [weak self]  (_ removalID: UUID) in
             guard let strongSelf = self else { return }
             if let oldDestination = strongSelf.destination(for: removalID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
-                oldDestination.prepareForDisappearance()
+                oldDestination.prepareForDisappearance(wasVisible: true)
             }
             strongSelf.removeDestination(destinationID: removalID)
         }

@@ -120,7 +120,12 @@ public extension ControllerFlowable {
     }
 
     @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
-        guard destinationQueue.count > 0 else { return nil }
+        guard destinationQueue.count > 0 else {
+            isPresentingDestinationPath = false
+            return nil
+        }
+        
+        isPresentingDestinationPath = true
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
@@ -263,7 +268,7 @@ public extension ControllerFlowable {
 
                 if let oldID = configuration.currentDestinationID {
                     if let oldDestination = strongSelf.destination(for: oldID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
-                        oldDestination.prepareForDisappearance()
+                        oldDestination.prepareForDisappearance(wasVisible: true)
                     }
                     strongSelf.removeDestination(destinationID: oldID)
                 }

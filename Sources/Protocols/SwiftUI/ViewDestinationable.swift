@@ -40,7 +40,8 @@ import SwiftUI
     func setPresentingNavigator(navigator: any DestinationPathNavigating)
     
     /// Requests that the navigator presenting this Destination move to the previous Destination in the navigation path.
-    func moveBackInNavigationStack()    
+    func moveBackInNavigationStack()
+    
 }
 
 public extension ViewDestinationable {
@@ -73,7 +74,7 @@ public extension ViewDestinationable {
     
     func updateInterfaceActions(actions: [InterfaceAction<UserInteractionType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<UserInteractionType, DestinationType, ContentType>, let interactionType = action.userInteractionType {
+            if let interactionType = action.userInteractionType {
                 handleThrowable { [weak self] in
                     try self?.addInterfaceAction(action: action)
                 }

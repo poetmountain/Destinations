@@ -27,6 +27,8 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
 
     public var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] = []
     
+    public var isPresentingDestinationPath: Bool = false
+    
     /// The starting Destination in the Flow.
     public var startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>?
     

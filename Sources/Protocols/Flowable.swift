@@ -47,6 +47,9 @@ public typealias PresentationCompletionClosure = ((_ didComplete: Bool) -> Void)
     /// A queue of Destination presentations to be presented in serial order, used with the ``presentDestinationPath`` method.
     var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
     
+    /// Represents whether a sequence of Destination presentations are currently being presented from the ``destinationpath`` presentation type.
+    var isPresentingDestinationPath: Bool { get set }
+    
     /// Starts the presentation of the Destination defined by the `startingDestination` configuration object.
     func start()
     
@@ -143,13 +146,14 @@ public extension Flowable {
     
     func updateCurrentDestination(destination: any Destinationable<DestinationType, ContentType, TabType>) {
         uiCoordinator?.destinationToPresent = nil
-        DestinationsSupport.logger.log("Old destination \(currentDestination?.id.uuidString) : New dest \(destination.id.uuidString)", level: .verbose)
-
-        currentDestination?.prepareForDisappearance()
+ 
+        let isPreviousFinal = (isPresentingDestinationPath == false)
+        currentDestination?.prepareForDisappearance(wasVisible: isPreviousFinal)
         
         currentDestination = destination
         
-        destination.prepareForAppearance()
+        let isFinalDestination = destinationQueue.count == 0
+        destination.prepareForAppearance(isVisible: isFinalDestination)
         
         DestinationsSupport.logger.log("🔄 Updated current destination to \(destination.type).")
     }
@@ -169,6 +173,11 @@ public extension Flowable {
     
     func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType? = nil) {
         
+        guard path.count > 0 else {
+            isPresentingDestinationPath = false
+            return
+        }
+                
         destinationQueue = path
         
         // By default, navigation controller push animations are turned off for path presentations

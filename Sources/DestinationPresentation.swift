@@ -214,7 +214,7 @@ import SwiftUI
                 
             case .tabBar(tab: let tab):
 
-                if let tabBarDestination, let currentDestination {
+                if let tabBarDestination {
                     do {
                         if let destinationToPresent {
                             try tabBarDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true, presentationOptions: navigationStackOptions, removeDestinationFromFlowClosure: removeDestinationClosure)
@@ -263,7 +263,7 @@ import SwiftUI
                     completionClosure?(true)
                 }
                 
-            case .moveToNearest(destination: let destinationToVisit):
+            case .moveToNearest(destination: _):
                 completionClosure?(true)
                 
             case .sheet(type: .present, options: let options):
@@ -282,7 +282,7 @@ import SwiftUI
                 } else {
                     completionClosure?(false)
                 }
-            case .sheet(type: .dismiss, options: let options):
+            case .sheet(type: .dismiss, options: _):
                 if let parentOfCurrentDestination {
                     parentOfCurrentDestination.dismissSheet()
                     completionClosure?(true)
@@ -387,7 +387,7 @@ import SwiftUI
                 
                 
         case .tabBar(let tab):
-            if let tabBarControllerDestination, let currentDestination {
+            if let tabBarControllerDestination {
                     do {
                         if let destinationToPresent {
                             try tabBarControllerDestination.presentDestination(destination: destinationToPresent, in: tab, shouldUpdateSelectedTab: true, presentationOptions: navigationStackOptions, removeDestinationFromFlowClosure: removeDestinationClosure)
@@ -448,7 +448,7 @@ import SwiftUI
                 completionClosure?(true)
                
         case .replaceRoot:
-                guard let destinationToPresent, let rootController, let newController = destinationToPresent.currentController() else {
+                guard let destinationToPresent, let newController = destinationToPresent.currentController(), rootController != nil else {
                     completionClosure?(false)
                     return
                 }

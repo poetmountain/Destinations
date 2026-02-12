@@ -159,15 +159,19 @@ import Foundation
     /// > Unlike ``prepareForAppearance()``, this method is only called once on a Destination.
     func prepareForPresentation()
     
-    /// This method is called automatically when a Destination becomes the active one, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination's UI element becomes active.
+    /// This method is called automatically when a Destination is about to be presented by a Flow, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination's UI element becomes active.
     ///
     /// > This method is preferred and is often more reliable than using native UI hooks like `View`'s `onAppear` modifier in SwiftUI projects.
-    func prepareForAppearance()
+    /// - Parameters:
+    ///   - isVisible: Represents whether this Destination will actually be visible on-screen when it is presented. If this Destination was presented within the middle of a Destination path presentation, it would be `false`. This is useful for instance if you wish to avoid calling setup tasks unless it is the final Destination in a path presentation.
+    func prepareForAppearance(isVisible: Bool)
     
-    /// This method is called automatically when a Destination becomes inactive, prior to the associated UI element disappearing from screen. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination's UI element is no longer visible or the active element.
+    /// This method is called automatically when a Destination is about to become inactive. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination's UI element is no longer visible or the active element.
     ///
     /// > This method is preferred and is often more reliable than using native UI hooks like `View`'s `onDisappear` modifier in SwiftUI projects, and especially in cases where several UI elements may be added in quick succession in a `NavigationStack`.
-    func prepareForDisappearance()
+    /// - Parameters:
+    ///   - wasVisible: Represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a Destination path presentation, it would be `false`.
+    func prepareForDisappearance(wasVisible: Bool)
     
     /// Performs a request with the specified Interactor.
     /// - Parameters:
@@ -236,9 +240,9 @@ import Foundation
 // default function implementations
 public extension Destinationable {
     
-    func prepareForAppearance() {}
+    func prepareForAppearance(isVisible: Bool) {}
     
-    func prepareForDisappearance() {}
+    func prepareForDisappearance(wasVisible: Bool) {}
     
     internal func setupInternalState() {
         internalState = DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>()
@@ -264,11 +268,7 @@ public extension Destinationable {
     }
     
     func presentation(for interactionType: UserInteractionType) -> (DestinationPresentation<DestinationType, ContentType, TabType>)? {
-        do {
-            return try internalState.destinationConfigurations?.configuration(for: interactionType)
-        } catch {
-            return nil
-        }
+        return try internalState.destinationConfigurations?.configuration(for: interactionType)
     }
     
     func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType) {}

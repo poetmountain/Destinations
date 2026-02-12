@@ -1,3 +1,9 @@
+### 2.3.5
+* Added an `isVisible` parameter to `Destinationable`'s `prepareForAppearance()` method. It represents whether this Destination will actually be visible on-screen when it is presented. If this Destination was presented within the middle of a destination path presentation, it would be `false`. This is useful for instance if you wish to avoid calling setup tasks unless it is the final Destination in a path presentation.
+* Added a `wasVisible` parameter to `Destinationable`'s `prepareForDisappearance()` method. It represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a destination path presentation, it would be `false`.
+* Fixed `cleanupResources()` being called twice in some cases on Destinations that implement it.
+* Fixed `NavigationSplitViewDestinationable` not calling `prepareForPresentation()` when presenting Destinations.
+
 ### 2.3.4
 * Added `prepareForAppearance()` and `prepareForDisappearance()` Destination methods. These methods can be implemented in your Destination classes to call setup or teardown tasks when a Destination's UI element is presented or removed from the screen, and are generally more reliable than using native UI hooks.
 * Updated tests
