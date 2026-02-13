@@ -96,6 +96,77 @@ import Destinations
         moveToDetailView(startingType: .colorsList, appFlow: appFlow)
     }
     
+    func test_presentation_appearance_methods() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        let startingDestination = PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceCurrent, assistantType: .basic)
+        let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController)
+        appFlow.start()
+        
+        wait(timeout: 0.3)
+        
+        let path: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
+        ]
+        
+        appFlow.presentDestinationPath(path: path)
+        
+        wait(timeout: 0.3)
+        
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
+        } else {
+            XCTFail()
+        }
+
+        // old destination presented by path should have "wasActive" as false
+        let destinationsCount = appFlow.activeDestinations.count
+        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination {
+            XCTAssertTrue(oldDestination.didDisappear)
+            XCTAssertFalse(oldDestination.isVisible)
+            XCTAssertFalse(oldDestination.wasVisible)
+        } else {
+            XCTFail()
+        }
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic))
+
+        wait(timeout: 0.1)
+
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
+        } else {
+            XCTFail()
+        }
+        
+        // single addition should have "wasActive" as true
+        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailDestination {
+            XCTAssertTrue(oldDestination.didDisappear)
+            XCTAssertFalse(oldDestination.isVisible)
+            XCTAssertTrue(oldDestination.wasVisible)
+        } else {
+            XCTFail()
+        }
+        
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .yellow, name: "yellow")), assistantType: .basic))
+        
+        wait(timeout: 0.1)
+
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
+            XCTAssertTrue(presentedDestination.didAppear)
+            XCTAssertTrue(presentedDestination.isVisible)
+        } else {
+            XCTFail()
+        }
+    }
+    
     func test_navbar_move_back_from_detail_to_parent_VC() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
@@ -520,9 +591,8 @@ import Destinations
         }
         wait(timeout: 0.3)
 
-        var secondaryDestination = splitView.currentDestination(for: .secondary)
+        let secondaryDestination = splitView.currentDestination(for: .secondary)
         XCTAssertEqual(secondaryDestination?.type, .colorDetail)
-        print("new color detail id \(secondaryDestination?.id)")
         XCTAssertEqual(splitView.groupInternalState.childDestinations.count, 4)
     
                                     

@@ -1,3 +1,19 @@
+### 2.3.5
+* Added an `isVisible` parameter to `Destinationable`'s `prepareForAppearance()` method. It represents whether this Destination will actually be visible on-screen when it is presented. If this Destination was presented within the middle of a destination path presentation, it would be `false`. This is useful for instance if you wish to avoid calling setup tasks unless it is the final Destination in a path presentation.
+* Added a `wasVisible` parameter to `Destinationable`'s `prepareForDisappearance()` method. It represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a destination path presentation, it would be `false`.
+* Fixed `cleanupResources()` being called twice in some cases on Destinations that implement it.
+* Fixed `NavigationSplitViewDestinationable` not calling `prepareForPresentation()` when presenting Destinations.
+
+### 2.3.4
+* Added `prepareForAppearance()` and `prepareForDisappearance()` Destination methods. These methods can be implemented in your Destination classes to call setup or teardown tasks when a Destination's UI element is presented or removed from the screen, and are generally more reliable than using native UI hooks.
+* Updated tests
+
+### 2.3.3
+* Fixed issue with `moveToNearest(destination: DestinationType)` presentation failing to set a `ViewFlow`'s `currentDestination`. 
+
+### 2.3.2
+* Added the `moveToNearest(destination: DestinationType)` presentation type for SwiftUI, which finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another `View` higher in a `NavigationStack`. Note that this presentation type is currently not implemented for UIKit-based Flows.
+
 ### 2.3.1
 * Programmatically moving back in a SwiftUI `NavigationStack` may now also be accomplished by using a `DestinationPresentation` interface action with the `.navigationStack(type: .goBack)` presentation type.
 

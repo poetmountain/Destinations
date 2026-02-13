@@ -120,7 +120,12 @@ public extension ControllerFlowable {
     }
 
     @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
-        guard destinationQueue.count > 0 else { return nil }
+        guard destinationQueue.count > 0 else {
+            isPresentingDestinationPath = false
+            return nil
+        }
+        
+        isPresentingDestinationPath = true
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
@@ -264,7 +269,7 @@ public extension ControllerFlowable {
                     strongSelf.presentNextDestinationInQueue(contentToPass: configuration.contentType)
                                         
                 } else {
-                    if let destination {
+                    if let destination, destination.id != strongSelf.currentDestination?.id {
                         strongSelf.updateCurrentDestination(destination: destination)
                         strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
                     }
@@ -337,12 +342,16 @@ public extension ControllerFlowable {
                 DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
 
                 if let oldID = configuration.currentDestinationID {
-                    
+                    if let oldDestination = strongSelf.destination(for: oldID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+                        oldDestination.prepareForDisappearance(wasVisible: true)
+                    }
                     strongSelf.removeDestination(destinationID: oldID)
                 }
                 
                 if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
-                    strongSelf.updateCurrentDestination(destination: targetDestination)
+                    if currentID != strongSelf.currentDestination?.id {
+                        strongSelf.updateCurrentDestination(destination: targetDestination)
+                    }
                     targetDestination.updateIsSystemNavigating(isNavigating: false)
                     
                     // Because TabBarControllerDestinationable objects currently use raw UINavigationControllers to supply a navigation stack
@@ -351,8 +360,8 @@ public extension ControllerFlowable {
                         tabBar.updateCurrentDestination(destinationID: targetDestination.id)
                     }
                     
-                    // Because SplitViewDestinationable objects currently use UISplitViewController to auto-create navigation controllers
-                    // We have to manually update the SplitViewDestination's current Destination here
+                    // Because SplitViewControllerDestinationable objects currently use UISplitViewController to auto-create navigation controllers
+                    // We have to manually update the SplitViewControllerDestination's current Destination here
                     if let splitView = self?.findSplitViewInViewHierarchy(currentDestination: targetDestination) {
                         splitView.updateCurrentDestination(destinationID: targetDestination.id)
                     }

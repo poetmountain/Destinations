@@ -193,7 +193,7 @@ public extension TabBarViewDestinationable {
     }
     
     func replaceChild(currentID: UUID, with newDestination: any Destinationable<DestinationType, ContentType, TabType>, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) {
-        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let destinationToReplace = groupInternalState.childDestinations[safe: currentIndex] as? any ViewDestinationable, let tabToReplace = tab(destinationID: currentID) else {
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let tabToReplace = tab(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))

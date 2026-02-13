@@ -9,7 +9,7 @@
 import Destinations
 import SwiftUI
 
-public final class DynamicDestination: DestinationTypes, ViewDestinationable {
+final class DynamicDestination: DestinationTypes, ViewDestinationable {
         
     public typealias ViewType = DynamicView<AnyView>
     public typealias UserInteractionType = UserInteractions

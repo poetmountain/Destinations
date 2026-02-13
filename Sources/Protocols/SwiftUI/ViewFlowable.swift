@@ -56,7 +56,8 @@ import SwiftUI
     
     /// Removes all Destinations higher in a UI stack until the specified type.
     /// - Parameter typeToFind: The type of Destination to stop the removal process at.
-    func removeDestinationsBefore(nearest typeToFind: DestinationType)
+    /// - Returns: The Destination located after the removed Destinations.
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)?
     
     /// This method recursively removes parent Destinations until the supplied Destination type is found.
     /// - Parameters:
@@ -91,7 +92,12 @@ public extension ViewFlowable {
     
 
     @discardableResult func presentNextDestinationInQueue(contentToPass: ContentType? = nil) -> (any Destinationable<DestinationType, ContentType, TabType>)? {
-        guard destinationQueue.count > 0 else { return nil }
+        guard destinationQueue.count > 0 else {
+            isPresentingDestinationPath = false
+            return nil
+        }
+        
+        isPresentingDestinationPath = true
         
         if let nextPresentation = destinationQueue.popFirst() {
             if let destinationType = nextPresentation.destinationType {
@@ -108,24 +114,29 @@ public extension ViewFlowable {
     }
     
     func presentDestinationPath(path: [DestinationPresentation<DestinationType, ContentType, TabType>], contentToPass: ContentType? = nil) {
-        guard path.count > 0 else { return }
+        guard path.count > 0 else {
+            isPresentingDestinationPath = false
+            return
+        }
+        
+        isPresentingDestinationPath = true
 
         destinationQueue = path
-        
-        let presentation = destinationQueue.first
-        
+                
         presentNextDestinationInQueue(contentToPass: contentToPass)
         
     }
     
-    func removeDestinationsBefore(nearest typeToFind: DestinationType) {
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ViewDestinationable<DestinationType, ContentType, TabType>)? {
         
         // make sure that there's another Destination of this type higher in the UI stack
-        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) else { return }
+        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) as? any ViewDestinationable<DestinationType, ContentType, TabType> else { return nil }
         
         if let current = self.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             removeParentDestination(for: current, until: typeToFind)
         }
+        
+        return firstDestination
     }
     
     func removeParentDestination(for destination: any ViewDestinationable<DestinationType, ContentType, TabType>, until type: DestinationType) {
@@ -134,7 +145,7 @@ public extension ViewFlowable {
 
         if let parentID = destination.parentDestinationID(), let parentDestination = self.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             
-            if let navigationStackDestination = parentDestination as? NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navigationStackDestination.navigator() {
+            if let navigationStackDestination = parentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navigationStackDestination.navigator() {
                 
                 if let target = navigationStackDestination.childDestinations().last(where: { $0.type == type && $0.id != destination.id }) {
                     // target is within the same navigation stack as current Destination
@@ -182,7 +193,7 @@ public extension ViewFlowable {
             
             if didComplete == true {
                 DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                                
+                
                 if let destination {
                     strongSelf.updateActiveDestinations(with: destination)
                 }
@@ -217,11 +228,9 @@ public extension ViewFlowable {
                     
                     
                 } else {
-                    if let destination {
+                    if let destination, destination.id != strongSelf.currentDestination?.id {
                         strongSelf.updateCurrentDestination(destination: destination)
                         strongSelf.logDestinationPresented(destination: destination, configuration: configuration)
-                    } else {
-                        strongSelf.currentDestination = strongSelf.activeDestinations.last
                     }
                     
                     strongSelf.uiCoordinator?.destinationToPresent = nil
@@ -245,6 +254,7 @@ public extension ViewFlowable {
                 if let parentID = configuration.parentDestinationID, let parentDestination = strongSelf.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
 
                     if let sheetID = configuration.actionTargetID {
+                        strongSelf.currentDestination?.prepareForDisappearance(wasVisible: true)
                         strongSelf.removeDestination(destinationID: sheetID)
                     }
                     
@@ -274,11 +284,16 @@ public extension ViewFlowable {
                 DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
 
                 if let oldID = configuration.currentDestinationID {
+                    if let oldDestination = strongSelf.destination(for: oldID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+                        oldDestination.prepareForDisappearance(wasVisible: true)
+                    }
                     strongSelf.removeDestination(destinationID: oldID)
                 }
                 
                 if let currentID = configuration.actionTargetID, let targetDestination = strongSelf.destination(for: currentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
-                    strongSelf.updateCurrentDestination(destination: targetDestination)
+                    if currentID != strongSelf.currentDestination?.id {
+                        strongSelf.updateCurrentDestination(destination: targetDestination)
+                    }
                     targetDestination.updateIsSystemNavigating(isNavigating: false)
 
                     strongSelf.logDestinationPresented(configuration: configuration)

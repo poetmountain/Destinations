@@ -52,31 +52,31 @@ import Foundation
     public static func errorMessage(for error: DestinationsError) -> String {
         
         switch error {
-            case .tabNotFound(let message):
+            case .tabNotFound(_):
                 return "Tried to update the selected tab type to %@, but it doesn't exist in the active tabs."
                 
-            case .interactorNotFound(let message):
+            case .interactorNotFound(_):
                 return "Error: The requested interactor %@ was not found."
                 
-            case .childDestinationNotFound(message: let message):
+            case .childDestinationNotFound(message: _):
                 return "Error: Could not find child Destination of type %@."
                 
-            case .unsupportedInteractorActionType(let message):
+            case .unsupportedInteractorActionType(_):
                 return "Error: Unsupported interactor action type."
                 
-            case .missingInterfaceAction(let message):
+            case .missingInterfaceAction(_):
                 return "Error: No appropriate InterfaceAction was found while trying to perform a \"%@\" InterfaceAction from Destination %@."
                 
-            case .missingInterfaceActionAssistant(let message):
+            case .missingInterfaceActionAssistant(_):
                 return "Error: No interactor assistant was found while constructing Interface action closure for type %@."
                 
-            case .undefinedSplitViewColumnType(message: let message):
+            case .undefinedSplitViewColumnType(message: _):
                 return "Error: A column type for %@ was undefined in a SplitViewColumn model."
                 
-            case .duplicateUserInteractionTypeUsed(message: let message):
+            case .duplicateUserInteractionTypeUsed(message: _):
                 return "Error: An existing InterfaceAction already exists for the \"%@\" user interaction type."
                 
-            case .incompatibleType(message: let message):
+            case .incompatibleType(message: _):
                 return "Error: An incompatible type %@ was passed in as a parameter."
         }
     }

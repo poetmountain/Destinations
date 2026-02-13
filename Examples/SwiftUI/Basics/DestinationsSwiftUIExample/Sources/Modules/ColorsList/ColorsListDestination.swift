@@ -98,4 +98,5 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
             try self.performInterfaceAction(interactionType: .retrieveInitialColors)
         })
     }
+    
 }

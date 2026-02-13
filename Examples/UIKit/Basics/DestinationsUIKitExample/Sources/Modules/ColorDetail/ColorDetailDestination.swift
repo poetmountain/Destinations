@@ -58,5 +58,13 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
     func prepareForPresentation() {
     }
     
+    func prepareForAppearance(isVisible: Bool) {
+        print("prepareForAppearance - \(self.type) : is visible \(isVisible) : \(self.id.uuidString)")
+    }
+    
+    func prepareForDisappearance(wasVisible: Bool) {
+        print("prepareForDisappearance - \(self.type) : was visible \(wasVisible) : \(self.id.uuidString)")
+
+    }
 
 }

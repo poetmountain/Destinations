@@ -71,8 +71,6 @@ public extension NavigatingViewDestinationable {
         
         DestinationsSupport.logger.log("Removing NavigationStack child \(childDestination.id) : \(childDestination.type)", level: .verbose)
         
-        childDestination.cleanupResources()
-
         // remove presentationID from navigator so that it doesn't create a false positive disappearance
         navigator()?.currentPresentationID = nil
         

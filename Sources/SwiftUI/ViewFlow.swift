@@ -27,6 +27,8 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
 
     public var destinationQueue: [DestinationPresentation<DestinationType, ContentType, TabType>] = []
     
+    public var isPresentingDestinationPath: Bool = false
+    
     /// The starting Destination in the Flow.
     public var startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>?
     
@@ -110,7 +112,12 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         }
         
         if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
-            removeDestinationsBefore(nearest: destinationToVisit)            
+            let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
+            
+            // assign the target ID of the destination to move to
+            if let targetDestination {
+                mutableConfiguration.actionTargetID = targetDestination.id
+            }
         }
         
         var newDestination = self.destination(for: mutableConfiguration)

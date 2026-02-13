@@ -32,7 +32,6 @@ struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
                 }
                 .listStyle(.plain)
                 .id(destination().listID)
-                
                 .onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
                     if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
                         destinationState?.destination.handleThrowable(closure: {
