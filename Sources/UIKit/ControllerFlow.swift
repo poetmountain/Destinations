@@ -121,8 +121,12 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         }
         
         if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
-            removeDestinationsBefore(nearest: destinationToVisit)
+            let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
             
+            // assign the target ID of the destination to move to
+            if let targetDestination {
+                mutableConfiguration.actionTargetID = targetDestination.id
+            }
         }
         
         let newDestination = self.destination(for: mutableConfiguration)
@@ -158,6 +162,15 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             
             if rootDestination == nil {
                 rootDestination = newDestination
+            }
+            
+            // Called every time a Destination is newly presented (hence not when going back in a navigation stack)
+            if case DestinationPresentationType.navigationStack(type: let navigationType) = mutableConfiguration.presentationType {
+                if navigationType == .present {
+                    newDestination.prepareForPresentation()
+                }
+            } else {
+                newDestination.prepareForPresentation()
             }
             
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)

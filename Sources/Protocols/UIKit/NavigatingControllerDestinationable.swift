@@ -32,6 +32,8 @@ public extension NavigatingControllerDestinationable {
         // shouldSetDestinationAsCurrent is ignored for NavigationControllers because a new Destination should always become the current one
         groupInternalState.currentChildDestination = childDestination
 
+        print("controllers after adding to nav \(groupInternalState.childDestinations.map { $0.type })")
+        
         if let newDestination = childDestination as? any ControllerDestinationable, let newController = newDestination.currentController() {
             let shouldAnimate = shouldAnimate ?? true
             controller?.pushViewController(newController, animated: shouldAnimate)

@@ -53,7 +53,7 @@ actor ColorsDatasource: AsyncDatasourceable {
     
 
     func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
-        
+        print("retrieve colors....")
         let red = ColorModel(color: UIColor.systemRed, name: "red")
         let yellow = ColorModel(color: UIColor.systemYellow, name: "yellow")
         let blue = ColorModel(color: UIColor.systemBlue, name: "blue")

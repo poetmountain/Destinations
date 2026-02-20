@@ -456,7 +456,7 @@ import SwiftUI
                 completionClosure?(true)
                 
         case .moveToNearest(destination: let destinationToVisit):
-            completionClosure?(false)
+            completionClosure?(true)
                 
         case .sheet(type: .present, options: let options):
             guard let destinationToPresent, let presentingController = currentDestination?.currentController(), let sheetController = destinationToPresent.currentController() else {

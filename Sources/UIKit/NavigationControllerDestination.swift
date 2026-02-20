@@ -58,3 +58,58 @@ extension NavigationControllerDestination: @preconcurrency CustomStringConvertib
         return "\(Self.self) : \(type) : \(id)"
     }
 }
+
+public final class DefaultNavigationController<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: UINavigationController, NavigationControllerDestinationInterfacing {
+        
+    public typealias Destination = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias InteractorType = InteractorType
+    public typealias UserInteractionType = UserInteractionType
+    public typealias ControllerType = DefaultNavigationController
+
+    public var destinationState: DestinationInterfaceState<Destination>
+        
+    public init(destination: Destination) {
+        self.destinationState = DestinationInterfaceState(destination: destination)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
+public final class DefaultNavigationControllerDestination<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
+
+    public typealias ControllerType = DefaultNavigationController<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+
+    /// A unique identifier.
+    public let id = UUID()
+
+    /// This enum value conforming to ``RoutableDestinations`` represents a specific Destination type.
+    public var type: DestinationType
+    
+    /// The `UIViewController` class associated with this Destination.
+    public var controller: ControllerType?
+
+    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
+
+
+    /// The initializer.
+    /// - Parameters:
+    ///   - destinationType: The type of Destination.
+    ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
+    ///   - navigationConfigurations: The system navigation events associated with this Destination.
+    ///   - parentDestination: The identifier of the parent Destination.
+    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
+        self.type = destinationType
+        self.internalState.parentDestinationID = parentDestination
+        self.internalState.destinationConfigurations = destinationConfigurations
+        self.internalState.systemNavigationConfigurations = navigationConfigurations
+
+    }
+
+    public func prepareForPresentation() {
+    }
+}

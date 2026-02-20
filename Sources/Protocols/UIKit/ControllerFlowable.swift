@@ -74,8 +74,6 @@ public extension ControllerFlowable {
         
         if var destination = provider?.buildAndConfigureDestination(for: configuration, appFlow: self) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             updateDestinationConfiguration(configuration: &configuration, destination: &destination)
-
-            destination.prepareForPresentation()
             
             return destination
         } else {
@@ -141,13 +139,15 @@ public extension ControllerFlowable {
         return nil
     }
     
-    func removeDestinationsBefore(nearest typeToFind: DestinationType) {
+    func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
         // make sure that there's another Destination of this type higher in the UI stack
-        guard let firstDestination = activeDestinations.first(where: { $0.type == typeToFind }), firstDestination.id != currentDestination?.id else { return }
+        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) as? any ControllerDestinationable<DestinationType, ContentType, TabType> else { return nil }
         
         if let current = self.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             removeParentDestination(for: current, until: typeToFind)
         }
+        
+        return firstDestination
     }
     
     

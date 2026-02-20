@@ -238,8 +238,8 @@ public extension Flowable {
         } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
             parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
             
-        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
-            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
+//        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
+//            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
                     
         if let index = activeDestinations.firstIndex(where: { $0.id == destinationID }) {

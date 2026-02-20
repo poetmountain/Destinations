@@ -44,7 +44,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
             
         })), assistantType: .basic)
         
-        let goBackPresent = PresentationConfiguration(presentationType: .moveToNearest(destination: .colorsList), assistantType: .basic)
+        let goBackPresent = PresentationConfiguration(presentationType: .moveToNearest(destination: .home), assistantType: .basic)
 
         
         presentationsData = [.colorDetailButton(model: nil): goBackPresent, .customDetailButton(model: nil): customSheetPresent]

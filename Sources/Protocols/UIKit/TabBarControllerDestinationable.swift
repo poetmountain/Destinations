@@ -15,6 +15,9 @@ public typealias TabBarControllerSelectedTabUpdatedClosure<TabType: TabTypeable>
 /// This protocol represents a Destination whose interface is a `UITabBarController`.
 @MainActor public protocol TabBarControllerDestinationable<DestinationType, ContentType, TabType>: GroupedControllerDestinationable {
     
+    /// A dictionary of UINavigationControllers whose keys are their associated tab types.
+     var navControllersForTabs: [TabType: UINavigationController] { get set }
+     
     /// A dictionary of Destination identifiers whose keys are their associated tab types.
     var destinationIDsForTabs: [TabType: UUID] { get set }
 
@@ -141,6 +144,7 @@ public extension TabBarControllerDestinationable {
         DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
 
         let currentTabDestination = rootDestination(for: tab)
+        
         DestinationsSupport.logger.log("current tab dest \(currentTabDestination?.type)")
         
         if shouldUpdateSelectedTab {
@@ -151,13 +155,18 @@ public extension TabBarControllerDestinationable {
         // If the current Destination is a UINavigationController, add the presented Destination to it
         // Otherwise replace the current UIViewController with the new one
         if let navDestination = currentTabDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+            print("current dest is nav so add child \(destination.type)")
             addChild(childDestination: destination)
+            destination.setParentID(id: navDestination.id)
             let shouldAnimate = presentationOptions?.shouldAnimate ?? true
             navDestination.addChild(childDestination: destination, shouldAnimate: shouldAnimate)
             
         } else if let currentTabDestination {
+            print("current dest is \(currentTabDestination.type) so replace child \(destination.type)")
             replaceChild(currentID: currentTabDestination.id, with: destination, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
         } else {
+            print("current dest is unknown so add child \(destination.type) to tabs")
+
             addChild(childDestination: destination)
             //updateTabController(destinationID: destination.id, for: tab)
 
@@ -222,6 +231,14 @@ public extension TabBarControllerDestinationable {
         selectedTabUpdatedClosure = closure
     }
     
+    /// Adds the children Destination controllers to each tab's UINavigationController stack. This is used internally by Destinations.
+    internal func addContentToNavigationController(tab: TabType) {
+
+        if let controllerID = destinationIDsForTabs[tab], let tabDestination = groupInternalState.childDestinations.first(where: { $0.id == controllerID }) as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let controller = tabDestination.currentController(), let navigationController = navControllersForTabs[tab] {
+            navigationController.setViewControllers([controller], animated: false)
+        }
+    }
+    
     func updateChildren() {
         if let childDestinations = groupInternalState.childDestinations as? [any ControllerDestinationable<DestinationType, ContentType, TabType>] {
             updateTabControllers(destinations: childDestinations, for: activeTabs)
@@ -263,7 +280,7 @@ public extension TabBarControllerDestinationable {
         destination.assignChildRemovedClosure { [weak self] destinationID in
             DestinationsSupport.logger.log("Child was removed closure", level: .verbose)
 
-            self?.removeChild(identifier: destinationID)
+            self?.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
 
         destination.assignCurrentDestinationChangedClosure { [weak self, weak destination] destinationID in

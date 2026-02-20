@@ -82,6 +82,8 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         
         if let selectedModel {
             self.selectedTab = selectedModel
+        } else if let first = tabModels.first {
+            self.selectedTab = first
         } else {
             DestinationsSupport.logger.log("The specified selectedTab type was not found in the supplied tabs array. Initialization of TabViewDestination failed.", category: .error)
             return nil
@@ -95,7 +97,8 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         self.internalState.systemNavigationConfigurations = navigationConfigurations
         self.internalState.parentDestinationID = parentDestinationID
         self.groupInternalState.currentChildDestination = tabDestinations.first
-        
+
+        updateTabControllers(destinations: tabDestinations, for: tabModels)
         
         for (index, tab) in tabTypes.enumerated() {
             if let destination = tabDestinations[safe: index] {
@@ -107,8 +110,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
             }
         }
         
-        updateTabControllers(destinations: tabDestinations, for: tabModels)
-
     }
     
     public func updateTabControllers(destinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>], for tabs: [TabModel<TabType>]) {
@@ -181,5 +182,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         controller?.setViewControllers(tabs, animated: false)
 
     }
+    
     
 }

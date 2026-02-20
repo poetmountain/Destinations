@@ -20,6 +20,7 @@ public enum RouteDestinationType: RoutableDestinations {
     case tabBar(tabs: [AppTabType])
     case sheet
     case swiftUI
+    case navigationController
     
     public var rawValue: String {
         switch self {
@@ -37,6 +38,8 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "sheet"
             case .swiftUI:
                 return "swiftUI"
+            case .navigationController:
+                return "navigationController"
         }
     }
     

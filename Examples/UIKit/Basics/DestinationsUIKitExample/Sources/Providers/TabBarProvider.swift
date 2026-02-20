@@ -30,7 +30,7 @@ struct TabBarProvider: ControllerDestinationProviding, DestinationTypes {
             let tabContentType: RouteDestinationType
             switch tabType {
                 case .palettes:
-                    tabContentType = .colorsList
+                    tabContentType = .navigationController
                 case .home:
                     tabContentType = .home
                 case .swiftUI:
