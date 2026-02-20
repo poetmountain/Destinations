@@ -147,7 +147,7 @@ public extension ViewFlowable {
             
             if let navigationStackDestination = parentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navigationStackDestination.navigator() {
                 
-                if let target = navigationStackDestination.childDestinations().last(where: { $0.type == type && $0.id != destination.id }) {
+                if let childDestinations = navigationStackDestination.childDestinations() as? [any ViewDestinationable<DestinationType, ContentType, TabType>], let target = childDestinations.last(where: { $0.type == type && $0.id != destination.id }) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                     // target is within the same navigation stack as current Destination
                     
                     let removedElements = navigator.backToElement(identifier: target.id)
@@ -155,7 +155,7 @@ public extension ViewFlowable {
                     if removedElements.count >= 1 {
                         removeDestinations(destinationIDs: removedElements)
                     } else if removedElements.count == 1 {
-                        navigationStackDestination.currentView()?.backToPreviousDestination(currentDestination: destination)
+                        destination.moveBackInNavigationStack()
                     }
 
                 } else {

@@ -44,7 +44,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         self.uiCoordinator?.removeDestinationClosure = { [weak self]  (_ uuid: UUID) in
             guard let strongSelf = self else { return }
             
-            if let destinationToRemove = strongSelf.destination(for: uuid) as? any ViewDestinationable, let parentID = destinationToRemove.parentDestinationID(), let parentDestination = strongSelf.destination(for: parentID), let navigationStackDestination = parentDestination as? NavigatingViewDestinationable {
+            if let destinationToRemove = strongSelf.destination(for: uuid) as? any ViewDestinationable, let parentID = destinationToRemove.parentDestinationID(), let parentDestination = strongSelf.destination(for: parentID), let navigationStackDestination = parentDestination as? any NavigatingViewDestinationable {
                 navigationStackDestination.currentView()?.backToPreviousDestination(currentDestination: destinationToRemove)
             } else {
                 strongSelf.removeDestination(destinationID: uuid)
