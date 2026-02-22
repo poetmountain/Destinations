@@ -2005,7 +2005,7 @@
                         <p>This method is called automatically when a Destination is presented by a Flow for the first time, but before its associated UI is built. Implement this method in your Destination classes to put any initial state setup actions or datasource retrieval calls here that should only be run when a Destination is first created.</p>
 
 <blockquote>
-<p>Unlike <code><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP20prepareForAppearanceyyF">prepareForAppearance()</a></code>, this method is only called once on a Destination.</p>
+<p>Unlike <code>prepareForAppearance()</code>, this method is only called once on a Destination.</p>
 </blockquote>
 
                       </div>
@@ -2024,9 +2024,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP20prepareForAppearanceyyF"></a>
-                    <a name="//apple_ref/swift/Method/prepareForAppearance()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP20prepareForAppearanceyyF">prepareForAppearance()</a>
+                    <a name="/s:12Destinations15DestinationableP20prepareForAppearance9isVisibleySb_tF"></a>
+                    <a name="//apple_ref/swift/Method/prepareForAppearance(isVisible:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP20prepareForAppearance9isVisibleySb_tF">prepareForAppearance(isVisible:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -2037,7 +2037,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This method is called automatically when a Destination becomes the active one, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination&rsquo;s UI element becomes active.</p>
+                        <p>This method is called automatically when a Destination is about to be presented by a Flow, prior to the associated UI element appearing on-screen. Implement this method in your Destination classes to place any setup tasks that need to be run each time the Destination&rsquo;s UI element becomes active.</p>
 
 <blockquote>
 <p>This method is preferred and is often more reliable than using native UI hooks like <code>View</code>&lsquo;s <code>onAppear</code> modifier in SwiftUI projects.</p>
@@ -2053,9 +2053,28 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">prepareForAppearance</span><span class="p">()</span></code></pre>
+<span class="kd">func</span> <span class="nf">prepareForAppearance</span><span class="p">(</span><span class="nv">isVisible</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>isVisible</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Represents whether this Destination will actually be visible on-screen when it is presented. If this Destination was presented within the middle of a Destination path presentation, it would be <code>false</code>. This is useful for instance if you wish to avoid calling setup tasks unless it is the final Destination in a path presentation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -2063,9 +2082,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP23prepareForDisappearanceyyF"></a>
-                    <a name="//apple_ref/swift/Method/prepareForDisappearance()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP23prepareForDisappearanceyyF">prepareForDisappearance()</a>
+                    <a name="/s:12Destinations15DestinationableP23prepareForDisappearance10wasVisibleySb_tF"></a>
+                    <a name="//apple_ref/swift/Method/prepareForDisappearance(wasVisible:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP23prepareForDisappearance10wasVisibleySb_tF">prepareForDisappearance(wasVisible:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -2076,7 +2095,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This method is called automatically when a Destination becomes inactive, prior to the associated UI element disappearing from screen. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination&rsquo;s UI element is no longer visible or the active element.</p>
+                        <p>This method is called automatically when a Destination is about to become inactive. Implement this method in your Destination classes to place any teardown tasks that need to be run each time the Destination&rsquo;s UI element is no longer visible or the active element.</p>
 
 <blockquote>
 <p>This method is preferred and is often more reliable than using native UI hooks like <code>View</code>&lsquo;s <code>onDisappear</code> modifier in SwiftUI projects, and especially in cases where several UI elements may be added in quick succession in a <code>NavigationStack</code>.</p>
@@ -2092,9 +2111,28 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">prepareForDisappearance</span><span class="p">()</span></code></pre>
+<span class="kd">func</span> <span class="nf">prepareForDisappearance</span><span class="p">(</span><span class="nv">wasVisible</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>wasVisible</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a Destination path presentation, it would be <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

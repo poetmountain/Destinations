@@ -1355,7 +1355,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingDestinationInterfacing</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">DestinationState</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">NavigatingDestinationInterfacing</span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a></span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">DestinationState</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a></span></code></pre>
 
                         </div>
                       </div>
