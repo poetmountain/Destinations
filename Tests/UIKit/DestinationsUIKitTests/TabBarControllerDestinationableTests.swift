@@ -121,26 +121,6 @@ import UIKit
         XCTAssertEqual(tabsDestination?.selectedTab.type, TabType.home)
     }
     
-    func test_registerNavigationControllerDelegates() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let colorsController = TestColorsViewController(destination: colors)
-        colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let homeController = ColorDetailViewController(destination: home)
-        home.assignAssociatedController(controller: homeController)
-        
-        let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
-        let tabsController = AppTabBarController(destination: tabsDestination!)
-        tabsDestination?.assignAssociatedController(controller: tabsController)
-        tabsDestination?.updateChildren()
-        
-        let coordinator = DestinationUIKitCoordinator()
-        tabsDestination?.registerNavigationControllerDelegates(with: coordinator)
-        
-        XCTAssertNotNil(tabsDestination?.navControllersForTabs[.home]?.delegate)
-    }
-    
     func test_replaceChild() {
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
@@ -301,7 +281,7 @@ import UIKit
         
         let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
 
-        tabsDestination?.updateTabControllers(controllers: [colors.id, newDestination.id], for: [TabModel(type: TabType.palettes), TabModel(type: TabType.home)])
+        tabsDestination?.updateTabControllers(destinations: [colors, newDestination], for: [TabModel(type: TabType.palettes), TabModel(type: TabType.home)])
         
         XCTAssertEqual(tabsDestination?.destinationIDsForTabs[.home], newDestination.id)
 
@@ -321,8 +301,7 @@ import UIKit
         tabsDestination?.assignAssociatedController(controller: tabsController)
         
         let tabModels = startingTabs.map { TabModel(type: $0) }
-        let childDestinationIDs = [colors.id, home.id]
-        tabsDestination?.updateTabControllers(controllers: childDestinationIDs, for: tabModels)
+        tabsDestination?.updateTabControllers(destinations: [colors, home], for: tabModels)
 
         if let controller = try? XCTUnwrap(tabsDestination?.navControllersForTabs[.home]?.viewControllers.first as? any ControllerDestinationInterfacing) {
             XCTAssertEqual(controller.destination().id, home.id)

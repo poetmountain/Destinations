@@ -398,8 +398,8 @@ final class TestTabBarController: UITabBarController, TabBarControllerDestinatio
     }
     
     
-    func customizeTabItem(for tab: TabType, navigationController: UINavigationController) {
-        navigationController.tabBarItem = UITabBarItem(title: tab.tabName,
+    func customizeTabItem(for tab: TabType, controller: UIViewController) {
+        controller.tabBarItem = UITabBarItem(title: tab.tabName,
                                             image: nil,
                                             selectedImage: nil)
                                 .tabBarItemShowingOnlyText()
