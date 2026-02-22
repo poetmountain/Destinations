@@ -1,3 +1,6 @@
+### 2.3.6
+* Fixed compilation failure for Archive builds introduced in version 2.3.2.
+
 ### 2.3.5
 * Added an `isVisible` parameter to `Destinationable`'s `prepareForAppearance()` method. It represents whether this Destination will actually be visible on-screen when it is presented. If this Destination was presented within the middle of a destination path presentation, it would be `false`. This is useful for instance if you wish to avoid calling setup tasks unless it is the final Destination in a path presentation.
 * Added a `wasVisible` parameter to `Destinationable`'s `prepareForDisappearance()` method. It represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a destination path presentation, it would be `false`.
