@@ -25,6 +25,9 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
                 }
             case .color:
                 break
+            case .moveToNearest:
+                print("moving to nearest..")
+                break
         }
 
 

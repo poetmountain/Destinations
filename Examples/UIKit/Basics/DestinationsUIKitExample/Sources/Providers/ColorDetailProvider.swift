@@ -44,10 +44,7 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
             
         })), assistantType: .basic)
         
-        let goBackPresent = PresentationConfiguration(presentationType: .moveToNearest(destination: .home), assistantType: .basic)
-
-        
-        presentationsData = [.colorDetailButton(model: nil): goBackPresent, .customDetailButton(model: nil): customSheetPresent]
+        presentationsData = [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent]
     }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {

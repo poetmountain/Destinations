@@ -15,6 +15,7 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
         case color
         case colorDetailButton(model: ColorViewModel?)
         case customDetailButton(model: ColorViewModel?)
+        case moveToNearest
 
         var rawValue: String {
             switch self {
@@ -24,6 +25,8 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
                     return "colorDetailButton"
                 case .customDetailButton(_):
                     return "customDetailButton"
+                case .moveToNearest:
+                    return "moveToNearest"
             }
         }
         

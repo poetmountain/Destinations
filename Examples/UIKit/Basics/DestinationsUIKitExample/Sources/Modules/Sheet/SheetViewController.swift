@@ -25,10 +25,10 @@ final class SheetViewController: UINavigationController, NavigationControllerDes
     typealias InteractorType = AppInteractorType
     typealias Destination = SheetDestination
         
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
 
     init(destination: Destination, rootController: UIViewController) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(rootViewController: rootController)
     }
     

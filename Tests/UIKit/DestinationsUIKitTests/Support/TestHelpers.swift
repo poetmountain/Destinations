@@ -48,13 +48,15 @@ import Destinations
         let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton(model: nil): sheetPresent])
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent, .replaceView: replaceColor])
         let tabBarProvider = TabBarProvider()
+        let navigationProvider = NavigationControllerProvider()
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
             .home: homeProvider,
-            .tabBar(tabs: startingTabs): tabBarProvider
+            .tabBar(tabs: startingTabs): tabBarProvider,
+            .navController: navigationProvider
         ]
         
         let flow = ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)
@@ -105,7 +107,7 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
             let tabContentType: RouteDestinationType
             switch tabType {
                 case .palettes:
-                    tabContentType = .colorsList
+                    tabContentType = .navController
                 case .home:
                     tabContentType = .home
             }
@@ -312,10 +314,10 @@ final class TestViewController: UIViewController, ControllerDestinationInterfaci
     typealias Destination = ControllerDestination<TestViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
 
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -334,10 +336,10 @@ final class TestGroupViewController: UINavigationController, NavigationControlle
     typealias ContentType = TestGroupDestination.ContentType
     typealias Destination = TestGroupDestination
 
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -363,10 +365,10 @@ final class TestTabBarController: UITabBarController, TabBarControllerDestinatio
     typealias TabType = TestTabType
     typealias Destination = TabBarControllerDestination<TestTabBarController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
 
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -65,7 +65,7 @@ public extension DestinationPathNavigating {
     
     func backToPreviousPathElement(previousPresentationID: UUID? = nil) {
         guard navigationPath.count > 0 else { return }
-        currentPresentationID = previousPresentationID
+        currentPresentationID = previousPresentationID ?? previousPathElement()
         navigationPath.removeLast()
     }
     

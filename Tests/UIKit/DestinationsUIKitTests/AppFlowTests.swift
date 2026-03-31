@@ -87,7 +87,11 @@ import Destinations
         }
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
-        let startingDestination = PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceCurrent, assistantType: .basic)
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .navigationStack(type: .present), assistantType: .basic)
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController)
         appFlow.start()
         
@@ -232,45 +236,26 @@ import Destinations
             return
         }
         
-        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
-        let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController, startingTabs: startingTabs)
-        appFlow.start()
-        
-        wait(timeout: 0.1)
-        
-        moveToDetailView(startingType: startingType, appFlow: appFlow)
-    }
-    
-    func test_tabbar_load_in_other_tab() {
-        guard let sceneDelegate else {
-            XCTFail("No scene delegate present")
-            return
-        }
-        
-        let startingTabs: [AppTabType] = [.palettes, .home]
-        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationStack(type: .present), assistantType: .basic)
+        let startPath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
-        let detailColor = ColorViewModel(colorID: UUID(), color: .red, name: "red")
-        let modelToPass = ColorViewModel(colorID: UUID(), color: .purple, name: "purple")
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: detailColor), assistantType: .basic)
-        let showInOtherTabAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .home), contentType: .color(model: modelToPass), assistantType: .basic)
-
-        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
-        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
-        
-        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.UserInteractions.colorDetailButton(model: nil): showInOtherTabAction])
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
         let homeProvider = HomeProvider()
         let tabBarProvider = TestTabBarProvider()
+        let navProvider = NavigationControllerProvider()
         
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             startingType: tabBarProvider,
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
-            .home: homeProvider
+            .home: homeProvider,
+            .navController: navProvider
         ]
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
@@ -281,40 +266,88 @@ import Destinations
         }
         appFlow.start()
         
-        wait(timeout: 0.1)
+        wait(timeout: 0.3)
         
-        if let currentDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let controller = currentDestination.currentController() as? TestColorsViewController {
+        appFlow.presentDestination(configuration: DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic))
+        
+        wait(timeout: 0.3)
+        
+        moveToDetailView(startingType: startingType, appFlow: appFlow)
+        
+        if let tabDestination = appFlow.rootDestination as? any TabBarControllerDestinationable<DestinationType, ContentType, TabType>, let navDestinationID = tabDestination.destinationIDsForTabs[TabType.palettes] {
+            XCTAssert(appFlow.currentDestination?.parentDestinationID() == navDestinationID, "expected parent UUID to equal nav controller \(navDestinationID), got \(String(describing: appFlow.currentDestination?.parentDestinationID()))")
+        }
+        
+  
+    }
+    
+    func test_tabbar_pass_model_in_tab() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let tabBarProvider = TestTabBarProvider()
+        let navProvider = NavigationControllerProvider()
+        
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            startingType: tabBarProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider,
+            .navController: navProvider
+        ]
+        
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+        
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        if let root = baseController {
+            appFlow.assignBaseController(root)
+        }
+        appFlow.start()
+
+        let detailColor = ColorViewModel(colorID: UUID(), color: .red, name: "red")
+        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: detailColor), assistantType: .basic)
+   
+        wait(timeout: 0.3)
+        
+        appFlow.presentDestination(configuration: DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic))
+        
+        wait(timeout: 0.3)
+        
+        if let currentDestination = appFlow.currentDestination as? TestColorsDestination, let controller = currentDestination.currentController() {
             controller.prepareForFirstAppearance()
             wait(timeout: 0.1)
 
-            let indexpath = IndexPath(item: 1, section: 0)
-            controller.selectCell(at: indexpath)
+            appFlow.presentDestination(configuration: colorSelection)
             
-            wait(timeout: 0.7)
+            wait(timeout: 0.3)
 
             if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
                 XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
                 
-
-                wait(timeout: 0.7)
                 
                 if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
                     if let newController = try? XCTUnwrap(newDestination.currentController() as? ColorDetailViewController, "couldn't find colorDetail") {
      
                         newController.prepareForFirstAppearance()
-                        wait(timeout: 0.7)
-
-                        newController.handleDetailTap()
-                        wait(timeout: 1.0)
-
+                        
+     
                         if let tabDestination = appFlow.findTabBarInViewHierarchy(currentDestination: newDestination), let tabController = try? XCTUnwrap(tabDestination.currentController() as? AppTabBarController, "couldn't find tab controller") {
     
 
-                            XCTAssert(tabController.selectedIndex == tabController.tabIndex(for: AppTabType.home), "expected home tab selected, but found \(tabController.selectedIndex)")
-                            XCTAssert(tabController.currentController(for: AppTabType.home) is ColorDetailViewController, "expected ColorDetailVC for home tab, found \(String(describing: tabController.destination().destinationIDsForTabs[AppTabType.home]))")
+                            XCTAssert(tabController.selectedIndex == tabController.tabIndex(for: AppTabType.palettes), "expected Palettes tab selected, but found \(tabController.selectedIndex)")
+                            XCTAssert(tabController.currentController(for: AppTabType.palettes) is ColorDetailViewController, "expected ColorDetailVC for palettes tab, found \(String(describing: tabController.destination().destinationIDsForTabs[AppTabType.palettes]))")
                             
-                            if let detailController = try? XCTUnwrap(tabController.currentController(for: AppTabType.home) as? ColorDetailViewController, "couldn't find tab detail controller") {
-                                XCTAssert(detailController.colorModel == modelToPass, "expected \(modelToPass), got \(String(describing: detailController.colorModel))")
+                            if let detailController = try? XCTUnwrap(tabController.currentController(for: AppTabType.palettes) as? ColorDetailViewController, "couldn't find tab detail controller") {
+                                XCTAssert(detailController.colorModel == detailColor, "expected \(detailColor), got \(String(describing: detailController.colorModel))")
                             }
 
                         }
@@ -327,7 +360,7 @@ import Destinations
                 XCTFail("no tapped model found")
             }
         } else {
-            XCTFail("expected \(startingType) to be TestColorsViewController, found \(String(describing: appFlow.currentDestination?.type)) instead")
+            XCTFail("expected current destination to be TestColors, found \(String(describing: appFlow.currentDestination?.type)) instead")
         }
     }
     
@@ -471,8 +504,12 @@ import Destinations
         
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
-        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .navigationStack(type: .present), assistantType: .basic)
-
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .navigationStack(type: .present), assistantType: .basic)
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+        
         let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
 
         let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
@@ -481,12 +518,14 @@ import Destinations
         let colorDetailProvider = ColorDetailProvider()
         let homeProvider = HomeProvider()
         let tabBarProvider = TestTabBarProvider()
+        let navProvider = NavigationControllerProvider()
         
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             startingType: tabBarProvider,
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
-            .home: homeProvider
+            .home: homeProvider,
+            .navController: navProvider
         ]
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
@@ -503,10 +542,10 @@ import Destinations
             controller.prepareForFirstAppearance()
             wait(timeout: 0.1)
 
-            let indexpath = IndexPath(item: 1, section: 0)
-            controller.selectCell(at: indexpath)
+            let pickColor = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
+            appFlow.presentDestination(configuration: pickColor)
             
-            wait(timeout: 0.7)
+            wait(timeout: 0.3)
 
             if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
                 XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
@@ -542,7 +581,7 @@ import Destinations
     }
     
     
-    func test_move_back_in_splitview_controller() {
+    func test_moveBackInNavigationStack() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
             return
@@ -550,21 +589,21 @@ import Destinations
         
         let startPath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: .splitView, presentationType: .addToCurrent, assistantType: .basic)
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .navigationStack(type: .present), assistantType: .basic)
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
         let startProvider = StartProvider()
         let colorsListProvider = TestColorsListProvider()
         let colorDetailProvider = ColorDetailProvider()
+        let navProvider = NavigationControllerProvider()
         let homeProvider = HomeProvider()
-        let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorDetail])
         
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
-            .splitView: splitViewProvider,
             .colorsList: colorsListProvider,
             .colorDetail: colorDetailProvider,
+            .navController: navProvider,
             .home: homeProvider
         ]
         
@@ -576,38 +615,48 @@ import Destinations
         }
         appFlow.start()
         
-        guard let currentDestination = appFlow.currentDestination as? any ControllerDestinationable, let splitView = appFlow.findSplitViewInViewHierarchy(currentDestination: currentDestination) else {
-            XCTFail("SplitView was not presented")
+        guard let navDestination = appFlow.rootDestination as? any NavigatingControllerDestinationable<DestinationType, AppContentType, TabType> else {
+            XCTFail("Could not find Navigation Controller destination")
             return
         }
 
-        let home = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .home, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), assistantType: .basic))
+        let home = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .home, presentationType: .navigationStack(type: .present), assistantType: .basic))
         wait(timeout: 0.3)
 
 
-        guard let newDestination = appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) else {
+        guard appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .green, name: "green")), assistantType: .basic)) != nil else {
             XCTFail("Destination was not presented")
             return
         }
         wait(timeout: 0.3)
 
-        let secondaryDestination = splitView.currentDestination(for: .secondary)
+        print("current children before going back \(navDestination.groupInternalState.childDestinations.map { $0.type })")
+
+        let secondaryDestination = navDestination.currentChildDestination() as? any ControllerDestinationable<DestinationType, AppContentType, TabType>
         XCTAssertEqual(secondaryDestination?.type, .colorDetail)
-        XCTAssertEqual(splitView.groupInternalState.childDestinations.count, 4)
-    
-                                    
-        newDestination.currentController()?.performSystemNavigationBack()
+        XCTAssertEqual(navDestination.navigator()?.navigationPath.count, 3)
+
+        if let lastDestination = appFlow.activeDestinations.last as? any ControllerDestinationable {
+            print("moving back in stack from \(lastDestination.type)")
+            lastDestination.moveBackInNavigationStack()
+        } else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+        }
+                
         wait(timeout: 0.7)
 
         // we moved back one in the navigation stack so there should only be 3 group children now
-        XCTAssertEqual(splitView.groupInternalState.childDestinations.count, 3)
-
-        // the current child of the SplitViewDestination should now be the home Destination
-        let afterBackDestination = splitView.currentChildDestination()
+        XCTAssertEqual(navDestination.groupInternalState.childDestinations.count, 2)
+        XCTAssertEqual(navDestination.navigator()?.navigationPath.count, 2)
         
-        print("current children \(splitView.groupInternalState.childDestinations.map { $0.type })")
-
-        XCTAssertEqual(afterBackDestination?.id, home?.id, "Expected currentChildDestination to be the previous Destination (home), but found \(String(describing: afterBackDestination?.type))")
+        // the current child of the SplitViewDestination should now be the home Destination
+        let afterBackDestination = navDestination.childDestinations().last
+        
+        print("current children after \(navDestination.groupInternalState.childDestinations.map { $0.type })")
+        print("current IDs after \(navDestination.groupInternalState.childDestinations.map { $0.id })")
+        print("navigator path \(navDestination.navigator()?.navigationPath)")
+        
+        XCTAssertEqual(afterBackDestination?.type, home?.type, "Expected currentChildDestination to be the previous Destination \(String(describing: home?.type)), but found \(String(describing: afterBackDestination?.type))")
 
         
     }
@@ -677,27 +726,28 @@ extension AppFlowTests {
     
     func moveToDetailView(startingType: RouteDestinationType, appFlow: ControllerFlow<DestinationType, TabType, ContentType>) {
         
-        if let currentDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let controller = currentDestination.currentController() as? TestColorsViewController {
+        if let currentDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let controller = currentDestination.currentController() {
             controller.prepareForFirstAppearance()
             wait(timeout: 0.1)
-
-            let indexpath = IndexPath(item: 1, section: 0)
-            let modelToTap = controller.model(for: indexpath)
-            controller.selectCell(at: indexpath)
             
-            if let modelToTap = modelToTap, let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable {
+            XCTAssert(currentDestination.type == .colorsList, "expected current type colorsList, but got \(currentDestination.type) instead")
+
+            let pickColor = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
+            appFlow.presentDestination(configuration: pickColor)
+            
+            wait(timeout: 0.3)
+
+            if let newDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let newController = newDestination.currentController() {
+                newController.prepareForFirstAppearance()
+                wait(timeout: 0.1)
+
                 XCTAssert(newDestination.type == .colorDetail, "expected current type detail, but got \(newDestination.type) instead")
                 
-                XCTAssert(newDestination.parentDestinationID() == currentDestination.id, "expected parent UUID to equal Colors list, got \(String(describing: newDestination.parentDestinationID()))")
-                
-                if let newController = newDestination.currentController() as? ColorDetailViewController {
-                    XCTAssert(newController.colorModel == modelToTap, "expected same color model, got \(String(describing: newController.colorModel))")
-                }
             } else {
                 XCTFail("no tapped model found")
             }
         } else {
-            XCTFail("expected \(startingType), found \(String(describing: appFlow.currentDestination?.type)) instead")
+            XCTFail("expected colorsList, found \(String(describing: appFlow.currentDestination?.type)) instead")
         }
     }
 }

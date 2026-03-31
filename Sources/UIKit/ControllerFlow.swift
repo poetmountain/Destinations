@@ -126,6 +126,8 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             // assign the target ID of the destination to move to
             if let targetDestination {
                 mutableConfiguration.actionTargetID = targetDestination.id
+            } else {
+                return nil
             }
         }
         
@@ -166,11 +168,26 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             
             // Called every time a Destination is newly presented (hence not when going back in a navigation stack)
             if case DestinationPresentationType.navigationStack(type: let navigationType) = mutableConfiguration.presentationType {
+                
+                if let currentDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+                    parentOfCurrentDestination = navDestination
+                    // assign the navigator presenting this Destination
+                    newDestination.setPresentingNavigator(navigator: navigator)
+                }
+                
                 if navigationType == .present {
                     newDestination.prepareForPresentation()
                 }
             } else {
                 newDestination.prepareForPresentation()
+            }
+            
+            if case DestinationPresentationType.tabBar(tab: let tab) = mutableConfiguration.presentationType {
+                if let currentDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+                    parentOfCurrentDestination = navDestination
+                    // assign the navigator presenting this Destination
+                    newDestination.setPresentingNavigator(navigator: navigator)
+                }
             }
             
             mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
@@ -210,7 +227,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {
-            case .navigationStack(type: .goBack):
+            case .navigationStack(type: .goBack), .moveToNearest(destination: _):
                 closure = self.defaultNavigationBackCompletionClosure(configuration: configuration)
 
             case .sheet(type: .dismiss, options: _):

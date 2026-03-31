@@ -66,10 +66,10 @@ public final class DefaultNavigationController<UserInteractionType: UserInteract
     public typealias UserInteractionType = UserInteractionType
     public typealias ControllerType = DefaultNavigationController
 
-    public var destinationState: DestinationInterfaceState<Destination>
+    public var destinationState: NavigationDestinationInterfaceState<Destination>
         
     public init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     

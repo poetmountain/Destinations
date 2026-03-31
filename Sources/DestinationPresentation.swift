@@ -325,13 +325,9 @@ import SwiftUI
                             navController.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             completionClosure?(true)
                             
-                        } else if let navController = currentDestination?.currentController()?.navigationController, let newController = destinationToPresent.currentController() {
-                            if let navController = navController as? any NavigationControllerDestinationInterfacing, let navDestination = navController.destination() as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
-                                navDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
-                            } else {
-                                let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
-                                navController.pushViewController(newController, animated: shouldAnimate)
-                            }
+                        } else if let navDestination = parentOfCurrentDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType>{
+                
+                            navDestination.addChild(childDestination: destinationToPresent, shouldSetDestinationAsCurrent: shouldSetDestinationAsCurrent, shouldAnimate: navigationStackOptions?.shouldAnimate)
                             
                             completionClosure?(true)
                             
@@ -355,7 +351,22 @@ import SwiftUI
                     }
                     
                 case .goBack:
-                    completionClosure?(true)
+                    
+                    if let navDestination = parentOfCurrentDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType>, let currentDestination {
+                        let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
+                        navDestination.currentController()?.popViewController(animated: shouldAnimate)
+                        navDestination.removeChild(identifier: currentDestination.id, removeDestinationFromFlowClosure: nil)
+                        completionClosure?(true)
+                        
+                    } else if let navController = rootController as? UINavigationController, let currentDestination {
+                        let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
+                        navController.popViewController(animated: shouldAnimate)
+                        completionClosure?(true)
+                        
+                    } else {
+                        completionClosure?(false)
+                    }
+                    
             }
             
                 

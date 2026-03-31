@@ -147,4 +147,57 @@ import UIKit
             XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
         }
     }
+    
+    func test_moveToNearest() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+        
+        let testDestinations = TestDestinations()
+
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+
+        let startingTabs: [AppTabType] = [.home, .palettes]
+        let tabsType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        
+        
+        let startPath: [PresentationConfiguration] = [
+            PresentationConfiguration(destinationType: tabsType, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .yellow, name: "yellow")), assistantType: .basic)
+
+        ]
+        let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
+        
+        let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController, startingTabs: startingTabs)
+        appFlow.start()
+        
+        wait(timeout: 0.3)
+               
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, .colorDetail)
+        } else {
+            XCTFail("Expected destination to be .colorDetail, got \(type(of: appFlow.currentDestination))")
+        }
+        XCTAssertEqual(appFlow.activeDestinations.count, 6)
+        
+        let destinationToFind = DestinationType.colorsList
+        let moveToNearest = PresentationConfiguration(presentationType: .moveToNearest(destination: destinationToFind), assistantType: .basic)
+        appFlow.presentDestination(configuration: moveToNearest)
+        
+        wait(timeout: 0.3)
+                   
+        XCTAssertEqual(appFlow.activeDestinations.count, 4)
+
+        if let currentDestination = appFlow.currentDestination {
+            XCTAssertEqual(currentDestination.type, destinationToFind, "Expected to go back to colorsList, but found \(currentDestination.type)")
+            
+        } else {
+            XCTFail("Expected to find a current Destination the app flow")
+
+        }
+        
+    }
 }

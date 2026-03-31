@@ -544,6 +544,8 @@ public extension Destinationable {
                         closure.data.actionTargetID = self.id
                     }
                     closure.data.parentID = self.id
+                    
+                    closure.data.presentationType = DestinationPresentationType<DestinationType, ContentType, TabType>.navigationStack(type: .goBack)
 
                 case .dismissSheet:
                     closure.data.currentDestinationID = self.id

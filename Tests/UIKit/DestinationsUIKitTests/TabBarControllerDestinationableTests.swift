@@ -147,7 +147,9 @@ import UIKit
             XCTAssertTrue(tabsDestination.childDestinations().contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
             XCTAssertFalse(tabsDestination.childDestinations().contains(where: { $0.id == home.id }), "Expected the old Destination to be removed from childDestinations")
             XCTAssertEqual(tabsDestination.currentChildDestination()?.id, newDestination.id, "Expected new Destination to be the current child, but found \(String(describing: tabsDestination.currentChildDestination()?.id))")
-            XCTAssertTrue(((tabsDestination.navControllersForTabs[.home]?.viewControllers.contains(where: { $0 == newController })) != nil))
+            
+            let homeTabController = tabsDestination.currentDestination(for: .home)
+            XCTAssertTrue(homeTabController?.id == newController.destination().id, "Expected Home nav controllers to be ColorDetailViewController, but instead the array is \(String(describing: homeTabController))")
         }
         
     }
@@ -196,15 +198,18 @@ import UIKit
         
         let startPath: [PresentationConfiguration] = [
             PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: tabsType, presentationType: .addToCurrent, assistantType: .basic)
+            PresentationConfiguration(destinationType: tabsType, presentationType: .addToCurrent, assistantType: .basic),
+            //PresentationConfiguration(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic),
+
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         
         let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController, startingTabs: startingTabs)
         appFlow.start()
         
-        
-        if let lastDestination = appFlow.activeDestinations.last as? any ControllerDestinationable & DestinationTypeable, let tabBar = appFlow.findTabBarInViewHierarchy(currentDestination: lastDestination) {
+        wait(timeout: 0.3)
+                
+        if let lastDestination = appFlow.activeDestinations.last as? any ControllerDestinationable, let tabBar = appFlow.findTabBarInViewHierarchy(currentDestination: lastDestination) {
             
             let homeDestination = tabBar.currentDestination(for: .home)
             XCTAssertNotNil(homeDestination)
@@ -232,20 +237,25 @@ import UIKit
         let tabsType: RouteDestinationType = .tabBar(tabs: startingTabs)
         
         let startPath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: tabsType, presentationType: .addToCurrent, assistantType: .basic)
+            PresentationConfiguration(destinationType: tabsType, presentationType: .replaceCurrent, assistantType: .basic),
+            PresentationConfiguration(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic)
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         
         let appFlow = testDestinations.buildAppFlow(startingDestination: startingDestination, navigationController: baseController, startingTabs: startingTabs)
         appFlow.start()
-        
-        let detailPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .basic)
 
+        wait(timeout: 0.3)
         
         if let lastDestination = appFlow.activeDestinations.last as? any ControllerDestinationable & DestinationTypeable, let tabBar = appFlow.findTabBarInViewHierarchy(currentDestination: lastDestination) {
             
+            let listID = tabBar.currentDestination(for: .palettes)?.id
+            
+            let detailPresentation = PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), assistantType: .basic)
             let detailDestination = appFlow.presentDestination(configuration: detailPresentation)
+            
+            wait(timeout: 0.3)
+            
             let detail = try! XCTUnwrap(detailDestination)
             XCTAssertEqual(detail.type, .colorDetail)
 
@@ -253,12 +263,14 @@ import UIKit
             XCTAssertEqual(current?.id, detail.id, "Expected to find Detail destination, but found \(String(describing: appFlow.destination(for: current!.id)?.description))")
             
             
-            if let listID = tabBar.destinationIDsForTabs[.palettes], let listDestination = appFlow.destination(for: listID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+            if let listID, let listDestination = appFlow.destination(for: listID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
                 XCTAssertEqual(listDestination.type, .colorsList)
                 
-                detailDestination?.currentController()?.performSystemNavigationBack()
-                                
-                XCTAssertEqual(tabBar.currentChildDestination()?.id, listID, "Expected to find ColorsList destination, but found \(String(describing: tabBar.currentChildDestination()?.description))")
+                detailDestination?.moveBackInNavigationStack()
+                      
+                wait(timeout: 0.5)
+
+                XCTAssertEqual(tabBar.currentDestination(for: .palettes)?.id, listID, "Expected to find ColorsList destination, but found \(String(describing: tabBar.currentChildDestination()?.description))")
                 
             } else {
                 XCTFail("Could not find list Destination")
@@ -285,59 +297,6 @@ import UIKit
         
         XCTAssertEqual(tabsDestination?.destinationIDsForTabs[.home], newDestination.id)
 
-    }
-    
-    func test_add_content_to_navigation_controllers() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let colorsController = TestColorsViewController(destination: colors)
-        colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let homeController = ColorDetailViewController(destination: home)
-        home.assignAssociatedController(controller: homeController)
-        
-        let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
-        let tabsController = AppTabBarController(destination: tabsDestination!)
-        tabsDestination?.assignAssociatedController(controller: tabsController)
-        
-        let tabModels = startingTabs.map { TabModel(type: $0) }
-        tabsDestination?.updateTabControllers(destinations: [colors, home], for: tabModels)
-
-        if let controller = try? XCTUnwrap(tabsDestination?.navControllersForTabs[.home]?.viewControllers.first as? any ControllerDestinationInterfacing) {
-            XCTAssertEqual(controller.destination().id, home.id)
-        }
-    }
-    
-    func test_setupTabsNavigationControllers() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let colorsController = TestColorsViewController(destination: colors)
-        colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let homeController = ColorDetailViewController(destination: home)
-        home.assignAssociatedController(controller: homeController)
-        
-        let startingTabs: [AppTabType] = [.palettes, .home]
-        let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
-        let tabsController = AppTabBarController(destination: tabsDestination!)
-        tabsDestination?.assignAssociatedController(controller: tabsController)
-        
-        // normally we would call `updateChildren` during setup, but it calls `setupTabs` on its own so we must do this manually
-        let tabModels = startingTabs.map { TabModel(type: $0) }
-        let childDestinationIDs = [colors.id, home.id]
-        tabsDestination?.activeTabs = tabModels
-        tabsDestination?.destinationIDsForTabs.removeAll()
-        for x in 0..<tabModels.count {
-            let type = tabModels[x].type
-            let tabDestinationID = childDestinationIDs[x]
-            tabsDestination?.destinationIDsForTabs[type] = tabDestinationID
-        }
-        
-        XCTAssertNil(tabsDestination?.controller?.viewControllers)
-
-        tabsDestination?.setupTabsNavigationControllers()
-        
-        XCTAssertEqual(tabsDestination?.controller?.viewControllers?.count, 2)
-        XCTAssertNotNil(tabsDestination?.navControllersForTabs[.home])
     }
     
 }

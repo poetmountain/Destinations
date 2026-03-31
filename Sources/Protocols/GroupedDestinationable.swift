@@ -152,6 +152,8 @@ public extension GroupedDestinationable {
         groupInternalState.childDestinations.remove(at: childIndex)
         groupInternalState.currentChildDestination = groupInternalState.childDestinations.last
         
+        DestinationsSupport.logger.log("New group current child \(groupInternalState.currentChildDestination?.type.rawValue)", level: .verbose)
+
         childDestination.removeAssociatedInterface()
 
         groupInternalState.childWasRemovedClosure?(identifier)

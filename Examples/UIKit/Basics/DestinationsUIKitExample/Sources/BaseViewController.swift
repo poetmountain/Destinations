@@ -50,16 +50,15 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let tabsType: RouteDestinationType = .tabBar(tabs: startingTabs)
         
         let startPath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
-            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: tabsType, presentationType: .navigationStack(type: .present), assistantType: .basic),
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: tabsType, presentationType: .replaceCurrent, assistantType: .basic),
             DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorsList, presentationType: .tabBar(tab: .palettes), assistantType: .basic)
         ]
         let startingDestination = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
         let homepath: [DestinationPresentation<DestinationType, AppContentType, TabType>] = [
             DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .home, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .cyan, name: "cyan")), assistantType: .basic),
-            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
+            DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .systemGreen, name: "green")), assistantType: .basic)
         ]
         let homePathPresent = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: homepath), assistantType: .basic)
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent])
@@ -69,6 +68,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let colorDetailProvider = ColorDetailProvider()
         let sheetViewProvider = SheetProvider()
         let tabBarProvider = TabBarProvider()
+        let navProvider = NavigationControllerProvider()
         
         let viewSetup: SwiftUIContainerProvider<ColorView>.SwiftUIViewSetupClosure = { (destination: SwiftUIContainerDestination<ColorView, ColorView.UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, content: ContentType?) in
             var colorModel: ColorViewModel?
@@ -84,8 +84,6 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let changeSwiftUIColor = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
         let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeColor: changeSwiftUIColor], viewSetup: viewSetup)
         
-        let navControllerProvider = NavigationControllerProvider()
-
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
             .colorsList: colorsListProvider,
@@ -94,7 +92,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             .sheet: sheetViewProvider,
             .swiftUI: swiftUIProvider,
             .tabBar(tabs: startingTabs): tabBarProvider,
-            .navigationController: navControllerProvider
+            .navigationController: navProvider
         ]
         
         return ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)
@@ -125,10 +123,10 @@ final class StartViewController: UINavigationController, NavigationControllerDes
     typealias UserInteractionType = UserInteractions
     typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
         
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
         
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -43,9 +43,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         }
     }
     
-    
-    public var navControllersForTabs: [TabType : UINavigationController] = [:]
-
     public var selectedTabUpdatedClosure: TabBarControllerSelectedTabUpdatedClosure<TabType>?
 
     
@@ -113,13 +110,14 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     }
     
     public func updateTabControllers(destinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>], for tabs: [TabModel<TabType>]) {
+        guard destinations.count == tabs.count else { return }
         
         let destinationIDs = destinations.compactMap { $0.id }
         
         destinationIDsForTabs.removeAll()
         for x in 0..<tabs.count {
             let type = tabs[x].type
-            let destinationID = destinationIDs[x]
+            let destinationID = destinationIDs[safe: x]
             destinationIDsForTabs[type] = destinationID
         }
 
@@ -150,37 +148,11 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
             }
         } else {
             let template = DestinationsSupport.errorMessage(for: .tabNotFound(message: ""))
-            let message = String(format: template, self.type.rawValue)
+            let message = String(format: template, type.tabName)
             
             throw DestinationsError.tabNotFound(message: message)
         }
         
-    }
-    
-    /// Sets up the `UINavigationController` containers for each tab. These navigation controllers are transparent to the Destinations ecosystem, but facilitate pushing a Destination onto a tab. This is used internally by Destinations.
-    internal func setupTabsNavigationControllers() {
-        
-        navControllersForTabs.removeAll()
-        for tab in activeTabs {
-            let navController = UINavigationController()
-            navControllersForTabs[tab.type] = navController
-        }
-        
-        for (tab, navController) in navControllersForTabs {
-            if let tab = tab as? ControllerType.TabType {
-                controller?.customizeTabItem(for: tab, controller: navController)
-            }
-        }
-
-        var tabs: [UINavigationController] = []
-        for tab in activeTabs {
-            if let navigationController = navControllersForTabs[tab.type] {
-                tabs.append(navigationController)
-            }
-        }
-
-        controller?.setViewControllers(tabs, animated: false)
-
     }
     
     

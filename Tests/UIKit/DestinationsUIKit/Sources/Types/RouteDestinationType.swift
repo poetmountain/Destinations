@@ -51,6 +51,7 @@ public enum RouteDestinationType: RoutableDestinations {
     case swiftUI
     case colorNav
     case colorDetailSwiftUI
+    case navController
     
     public var rawValue: String {
         switch self {
@@ -74,6 +75,8 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "colorNav"
             case .colorDetailSwiftUI:
                 return "colorDetailSwiftUI"
+            case .navController:
+                return "navigationController"
         }
     }
     

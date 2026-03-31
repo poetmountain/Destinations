@@ -212,7 +212,7 @@ public extension Flowable {
             removeDestinations(destinationIDs: children)
             destination.removeAllChildren()
             
-        } else if let destination = destination as? any TabBarViewDestinationable<DestinationType, ContentType, TabType> {
+        } else if let destination = destination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
             let children = destination.childDestinations().reversed().map { $0.id }
             removeDestinations(destinationIDs: children)
             destination.removeAllChildren()
@@ -228,18 +228,25 @@ public extension Flowable {
             destination.removeAllChildren()
         }
         
-        // if this Destination's parent is a Group, tell it to remove the child from itself
-        if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
+        if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any SplitViewControllerDestinationable<DestinationType, ContentType, TabType> {
             parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
             
+        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
+            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
+            
+        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
+            parent.navigator()?.backToPreviousPathElement(previousPresentationID: nil)
+
         } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any TabBarViewDestinationable<DestinationType, ContentType, TabType> {
             parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
             
-        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedViewDestinationable<DestinationType, ContentType, TabType> {
+        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any TabBarControllerDestinationable<DestinationType, ContentType, TabType> {
             parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
-            
-//        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedControllerDestinationable<DestinationType, ContentType, TabType> {
-//            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
+
+        } else if let parentID = destination.parentDestinationID(), let parent = self.destination(for: parentID) as? any GroupedDestinationable<DestinationType, ContentType, TabType> {
+            parent.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
+
         }
                     
         if let index = activeDestinations.firstIndex(where: { $0.id == destinationID }) {

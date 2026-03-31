@@ -44,6 +44,11 @@ import UIKit
     /// - Returns: Returns a Destination, if one was found.
     func findTabBarInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any TabBarControllerDestinationable<DestinationType, ContentType, TabType>)?
 
+    /// Finds the closest navigator in the view hierarchy to the provided Destination.
+    /// - Parameter currentDestination: The Destination to start searching at.
+    /// - Returns: Returns a navigator, if one was found.
+    func findNavigatorInViewHierarchy(searchDestination: any ControllerDestinationable) -> (any DestinationPathNavigating)?
+    
     /// Finds the closest Destination in the view hierarchy whose interface is a `UISplitViewController`.
     /// - Parameter currentDestination: The Destination to start searching at.
     /// - Returns: Returns a Destination, if one was found.
@@ -62,6 +67,14 @@ import UIKit
     /// - Parameter rootController: The root controller.
     @available(*, deprecated, renamed: "assignBaseController(_:)", message: "This method has been deprecated and will be removed in a future version. Please use the assignBaseController(_:) method instead.")
     func assignRoot(rootController: any ControllerDestinationInterfacing)
+    
+    
+    /// Finds the nearest Destination of the specified type in the UI hierarchy.
+    /// - Parameters:
+    ///   - typeToFind: The type of Destination to find.
+    ///   - currentLevel: The current hierarchy level to search at.
+    /// - Returns: A Destination of the specified type, if one was found.
+    func findNearestDestination(of typeToFind: DestinationType, currentLevel: any ControllerDestinationable<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
 }
 
 public extension ControllerFlowable {
@@ -88,6 +101,17 @@ public extension ControllerFlowable {
             
         } else if let parentID = currentDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             return findTabBarInViewHierarchy(currentDestination: parent)
+        }
+        return nil
+    }
+    
+    func findNavigatorInViewHierarchy(searchDestination: any ControllerDestinationable) -> (any DestinationPathNavigating)? {
+        
+        if let navDestination = searchDestination as? any NavigatingControllerDestinationable, let navigator = navDestination.navigator() {
+            return navigator
+            
+        } else if let parentID = searchDestination.parentDestinationID(), let parent = self.destination(for: parentID) as? any ControllerDestinationable {
+            return findNavigatorInViewHierarchy(searchDestination: parent)
         }
         return nil
     }
@@ -141,15 +165,35 @@ public extension ControllerFlowable {
     
     func removeDestinationsBefore(nearest typeToFind: DestinationType) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
         // make sure that there's another Destination of this type higher in the UI stack
-        guard let firstDestination = activeDestinations.last(where: { $0.type == typeToFind && $0.id != currentDestination?.id }) as? any ControllerDestinationable<DestinationType, ContentType, TabType> else { return nil }
+        guard let current = self.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let firstDestination = findNearestDestination(of: typeToFind, currentLevel: current) else { return nil }
         
-        if let current = self.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
-            removeParentDestination(for: current, until: typeToFind)
-        }
+        removeParentDestination(for: current, until: typeToFind)
         
         return firstDestination
     }
     
+    func findNearestDestination(of typeToFind: DestinationType, currentLevel: any ControllerDestinationable<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)? {
+        DestinationsSupport.logger.log("Find destination \(typeToFind) -- current level \(currentLevel.type)")
+
+        if (currentLevel.type == typeToFind && currentLevel.id != self.currentDestination?.id) {
+            return currentLevel
+  
+            
+        } else if let parentDestinationID = currentLevel.parentDestinationID(), let parentDestination = self.destination(for: parentDestinationID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+            
+            if let tabDestination = parentDestination as? any TabBarControllerDestinationable<DestinationType, ContentType, TabType> {
+                return tabDestination.findDestination(typeToFind: typeToFind, currentLevel: currentLevel)
+                
+            } else if let navDestination = parentDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+                return navDestination.findDestination(typeToFind: typeToFind, currentLevel: currentLevel)
+                
+            } else {
+                return findNearestDestination(of: typeToFind, currentLevel: parentDestination)
+            }
+        }
+        
+        return nil
+    }
     
     func removeParentDestination(for destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, until type: DestinationType) {
         
@@ -354,28 +398,13 @@ public extension ControllerFlowable {
                     }
                     targetDestination.updateIsSystemNavigating(isNavigating: false)
                     
-                    // Because TabBarControllerDestinationable objects currently use raw UINavigationControllers to supply a navigation stack
-                    // We have to manually update the tab bar's current Destination here
-                    if let tabBar = self?.findTabBarInViewHierarchy(currentDestination: targetDestination) {
-                        tabBar.updateCurrentDestination(destinationID: targetDestination.id)
-                    }
-                    
-                    // Because SplitViewControllerDestinationable objects currently use UISplitViewController to auto-create navigation controllers
-                    // We have to manually update the SplitViewControllerDestination's current Destination here
-                    if let splitView = self?.findSplitViewInViewHierarchy(currentDestination: targetDestination) {
-                        splitView.updateCurrentDestination(destinationID: targetDestination.id)
-                    }
                     
                     strongSelf.logDestinationPresented(configuration: configuration)
 
                 }
 
                 if let currentDestination = strongSelf.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let navController = currentDestination.currentController() as? UINavigationController ?? currentDestination.currentController()?.navigationController {
-                    if navController.viewControllers.count > 1 {
-                        navController.popViewController(animated: true)
-                    } else {
-                        navController.setViewControllers([], animated: true)
-                    }
+                    
                     currentDestination.updateIsSystemNavigating(isNavigating: false)
 
                 }

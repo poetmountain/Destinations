@@ -24,6 +24,14 @@ import UIKit
     /// Assigns a `UIViewController` instance to be associated with this Destination.
     /// - Parameter controller: The `UIViewController` that should be represented by this Destination.
     func assignAssociatedController(controller: ControllerType)
+    
+    /// Sets a reference to the navigator presenting this Destination.
+    /// - Parameter navigator: A navigator object.
+    func setPresentingNavigator(navigator: any DestinationPathNavigating)
+    
+    /// Requests that the navigator presenting this Destination move to the previous Destination in the navigation path.
+    func moveBackInNavigationStack()
+    
 }
 
 public extension ControllerDestinationable {
@@ -67,7 +75,28 @@ public extension ControllerDestinationable {
     func removeAssociatedInterface() {
         controller = nil
     }
+    
+    func setPresentingNavigator(navigator: any DestinationPathNavigating) {
+        internalState.navigator = navigator
+    }
 
+    func moveBackInNavigationStack() {
+        guard let navigator = internalState.navigator else {
+            DestinationsSupport.logger.log("Attempted to navigate back in stack, but no containing navigator was found.", category: .error, level: .error)
+            return
+        }
+        
+        var options: SystemNavigationOptions?
+        if let targetID = navigator.previousPathElement() {
+            options = SystemNavigationOptions(targetID: targetID)
+        } else if let parentID = parentDestinationID() {
+            options = SystemNavigationOptions(targetID: parentID)
+        } else {
+            options = SystemNavigationOptions(targetID: self.id)
+        }
+        
+        performSystemNavigationAction(navigationType: SystemNavigationType.navigateBackInStack, options: options)
+    }
 }
 
 

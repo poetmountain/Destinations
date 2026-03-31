@@ -56,10 +56,10 @@ final class StartViewController: UINavigationController, NavigationControllerDes
     typealias UserInteractionType = UserInteractions
     typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
         
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: NavigationDestinationInterfaceState<Destination>
         
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }
     

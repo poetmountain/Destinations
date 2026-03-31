@@ -10,7 +10,7 @@
 import UIKit
 
 /// A protocol representing UIViewControllers which conform to Destinations
-@MainActor public protocol ControllerDestinationInterfacing: DestinationInterfacing, UIViewController {
+@MainActor public protocol ControllerDestinationInterfacing: DestinationInterfacing, UIViewController where DestinationState: DestinationStateable<Destination> {
     
     /// Moves back to the previous controller in a `UINavigationController`.
     func performSystemNavigationBack()
@@ -36,6 +36,6 @@ public extension ControllerDestinationInterfacing {
 }
 
 /// This protocol represents a `UINavigationController` that is associated with a Destination.
-public protocol NavigationControllerDestinationInterfacing: ControllerDestinationInterfacing, UINavigationController {
+public protocol NavigationControllerDestinationInterfacing: ControllerDestinationInterfacing, UINavigationController where DestinationState: NavigationDestinationStateable<Destination> {
 
 }

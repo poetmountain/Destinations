@@ -49,16 +49,30 @@ import UIKit
         let homeController = HomeViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let nav = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
+        let controller = DefaultNavigationController(destination: nav)
+        nav.assignAssociatedController(controller: controller)
+        
+        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
-                
+               
+        splitViewDestination.presentDestination(destination: home, in: .secondary)
+        
+        wait(timeout: 0.3)
+        
+        print("before replaced \(splitViewDestination.childDestinations().map { $0.type })")
+
         let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
 
+        wait(timeout: 0.3)
+
         splitViewDestination.replaceChild(currentID: home.id, with: newDestination)
+        
+        print("after replaced \(splitViewDestination.childDestinations().map { $0.type })")
         
         // new Destination should be a child
         XCTAssertTrue(splitViewDestination.childDestinations().contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
@@ -116,14 +130,22 @@ import UIKit
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
+        
         let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let nav = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
+        let controller = DefaultNavigationController(destination: nav)
+        nav.assignAssociatedController(controller: controller)
+        
+        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
+        
+        splitViewDestination.presentDestination(destination: home, in: .secondary)
+        wait(timeout: 0.3)
         
         let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let newController = ColorDetailViewController(destination: newDestination)
