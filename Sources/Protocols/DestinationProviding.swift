@@ -45,6 +45,10 @@ import Foundation
     /// - Parameter destination: The Destination to have interactor assistants applied to.
     func assignInteractorAssistants(for destination: Destination)
     
+    /// This method runs preflight checks to verify that the Provider is configured correctly and is ready for providing Destinations. A failure of these checks can raise runtime asserts if there is an issue.
+    ///
+    /// > Note: This method is automatically called by ``ViewFlow`` and ``ControllerFlow`` when instantiated.
+    func prepareForProviding()
 }
 
 public extension DestinationProviding {
@@ -84,5 +88,47 @@ public extension DestinationProviding {
         for (interactionType, configuration) in interactorsData {
             configuration.assignInteractorAssistant(destination: destination, interactionType: interactionType)
         }
+    }
+}
+
+public extension DestinationProviding {
+    
+    func prepareForProviding() {
+        let missingInteraction = presentationsPreflight()
+        assert(missingInteraction == nil, "⚠️ \(Self.self) has no action assigned for user interaction type: \(missingInteraction?.rawValue ?? "unknown")")
+        
+        let sharedInteraction = verifyUserInteractionExclusivity()
+        assert(sharedInteraction == nil, "⚠️ \(Self.self) has the user interaction type \(sharedInteraction?.rawValue ?? "unknown") assigned to both a presentation and an interactor action.")
+    }
+    
+    /// Determines whether all user interactions have a presentation or interactor action assigned to them.
+    ///
+    /// > Note: This is automatically called by ``prepareForProviding()``.
+    /// - Returns: An optional `UserInteractionType` representing the first failing user interaction found.
+    internal func presentationsPreflight() -> Destination.UserInteractionType? {
+        
+        let presentationKeys = Set(presentationsData.keys)
+        let interactorKeys = Set(interactorsData.keys)
+        let registeredTypes = presentationKeys.union(interactorKeys)
+        let allTypes = Destination.UserInteractionType.allCases
+        let missingKeys = Set(allTypes).subtracting(registeredTypes)
+        return missingKeys.first
+
+    }
+    
+    /// Determines whether a `UserInteractionType` is assigned to both a presentation and an interactor action.
+    ///
+    /// > Note: This is automatically called by ``prepareForProviding()``.
+    /// - Returns: An optional `UserInteractionType` representing the first failing user interaction found.
+    internal func verifyUserInteractionExclusivity() -> Destination.UserInteractionType? {
+        let presentationKeys = Set(presentationsData.keys)
+        let interactorKeys = Set(interactorsData.keys)
+        
+        let sharedKeys = presentationKeys.intersection(interactorKeys)
+        if let firstShared = sharedKeys.first {
+            return firstShared
+        }
+        
+        return nil
     }
 }

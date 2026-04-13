@@ -58,6 +58,9 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             strongSelf.removeDestination(destinationID: removalID)
         }
         self.uiCoordinator?.delegate = self
+        
+        providersPreflight()
+        
     }
 
     public func start()  {

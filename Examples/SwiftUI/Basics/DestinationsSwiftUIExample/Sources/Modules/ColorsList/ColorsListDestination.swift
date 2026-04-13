@@ -32,6 +32,8 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
             }
         }
         
+        static let allCases: [UserInteractions] = [.color(model: nil), .retrieveInitialColors, .moreButton]
+        
         static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }

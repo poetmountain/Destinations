@@ -75,6 +75,9 @@ import UIKit
     ///   - currentLevel: The current hierarchy level to search at.
     /// - Returns: A Destination of the specified type, if one was found.
     func findNearestDestination(of typeToFind: DestinationType, currentLevel: any ControllerDestinationable<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
+    
+    /// This method raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. It is called automatically by ``ControllerFlow``.
+    func providersPreflight()
 }
 
 public extension ControllerFlowable {
@@ -453,5 +456,19 @@ public extension ControllerFlowable {
         } else if configuration.actionType == .systemNavigation {
             destination.updateSystemNavigationPresentation(presentation: configuration)
         }
+    }
+}
+
+public extension ControllerFlowable {
+    
+    func providersPreflight() {
+        let registeredRoutes = Set(destinationProviders.keys.map(\.rawValue))
+        let allRoutes = Set(DestinationType.allCases.map(\.rawValue))
+        let missingRoutes = allRoutes.subtracting(registeredRoutes)
+        
+        assert(missingRoutes.count == 0, "📍⚠️ Flow has no Provider assigned for routes: \(missingRoutes).")
+        
+        // Tell each Provider to run internal preflight checks
+        destinationProviders.values.forEach { $0.prepareForProviding() }
     }
 }

@@ -17,17 +17,17 @@ struct CollectionDatasourceOptions {
 final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
         
     enum UserInteractions: UserInteractionTypeable, Equatable {
-        case color(model: ColorDetailSelectionModel)
+        
         case colorDetailButton
         
         var rawValue: String {
             switch self {
-                case .color(_):
-                    return "color"
                 case .colorDetailButton:
                     return "colorDetailButton"
             }
         }
+        
+        static let allCases: [UserInteractions] = [.colorDetailButton]
         
         static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
             return lhs.rawValue == rhs.rawValue

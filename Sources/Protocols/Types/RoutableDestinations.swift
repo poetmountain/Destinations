@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an enum which defines Destination types for an app which can be routed to.
-public protocol RoutableDestinations: Hashable, Equatable {
+public protocol RoutableDestinations: Hashable, Equatable, CaseIterable {
     /// The String representation of the enum type.
     var rawValue: String { get }
     

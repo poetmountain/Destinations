@@ -20,14 +20,6 @@ struct ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes 
         closure.data.parentID = destination.id
 
         switch interactionType {
-            case .color(model: let model):
-                if let colorModel = model.color {
-                    contentType = .color(model: colorModel)
-                }
-                if let targetID = model.targetID {
-                    closure.data.actionTargetID = targetID
-                }
-                
             case .colorDetailButton:
                 if let content, case ContentType.dynamicView = content {
                     contentType = content

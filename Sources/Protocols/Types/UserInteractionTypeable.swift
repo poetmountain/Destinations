@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents enums which define user interaction types for a Destination's interface.
-public protocol UserInteractionTypeable: Hashable, Equatable {
+public protocol UserInteractionTypeable: Hashable, Equatable, CaseIterable {
     /// The String representation of the enum type.
     var rawValue: String { get }
 }

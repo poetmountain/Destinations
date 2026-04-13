@@ -51,6 +51,8 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             }
         }
         self.uiCoordinator?.delegate = self
+        
+        providersPreflight()        
     }
 
     public func start()  {

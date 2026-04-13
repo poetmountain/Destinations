@@ -68,6 +68,10 @@ import SwiftUI
     /// The default presentation closure run when a Destination is presented in the tab of a `TabView`.
     /// - Returns: A closure.
     func defaultTabBarPresentationClosure() -> ((_ destination: any ViewDestinationable<DestinationType, ContentType, TabType>, _ tabViewID: UUID) -> Void)
+    
+    
+    /// This method raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. It is called automatically by ``ViewFlow``.
+    func providersPreflight()
 }
 
 
@@ -447,4 +451,18 @@ public extension ViewFlowable {
         
     }
     
+}
+
+public extension ViewFlowable {
+    
+    func providersPreflight() {
+        let registeredRoutes = Set(destinationProviders.keys.map(\.rawValue))
+        let allRoutes = Set(DestinationType.allCases.map(\.rawValue))
+        let missingRoutes = allRoutes.subtracting(registeredRoutes)
+        
+        assert(missingRoutes.count == 0, "📍⚠️ Flow has no Provider assigned for routes: \(missingRoutes).")
+        
+        // Tell each Provider to run internal preflight checks
+        destinationProviders.values.forEach { $0.prepareForProviding() }
+    }
 }
