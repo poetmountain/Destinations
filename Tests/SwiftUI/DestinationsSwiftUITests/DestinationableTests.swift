@@ -18,14 +18,25 @@ import Destinations
 
 
     func test_access_presentation() {
+        let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .colorsList
         let startingPresentation = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
+        let colorDetailProvider = ColorDetailProvider()
+        let tabBarProvider = TabBarProvider()
+        let splitViewProvider = SplitViewProvider(initialContent: [.sidebar: .colorsList, .detail: .colorDetail])
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let providers: [RouteDestinationType: any ViewDestinationProviding] = [
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .tabBar(tabs: startingTabs): tabBarProvider,
+            .splitView: splitViewProvider
+        ]
+        
+        let appFlow = ViewFlow(destinationProviders: providers, startingDestination: startingPresentation, routesToIgnore: [.home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
@@ -44,7 +55,7 @@ import Destinations
 
         let colorsListProvider = ColorsListProvider()
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
@@ -64,7 +75,7 @@ import Destinations
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
@@ -88,7 +99,7 @@ import Destinations
 
         let colorsListProvider = ColorsListProvider()
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
@@ -116,7 +127,7 @@ import Destinations
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
@@ -142,7 +153,7 @@ import Destinations
 
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection])
         
-        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation)
+        let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {

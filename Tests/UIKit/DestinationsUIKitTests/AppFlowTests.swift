@@ -260,7 +260,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -307,7 +307,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -389,7 +389,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -429,7 +429,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -481,7 +481,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .sheet, .tabBar(tabs: []), .colorNav, .swiftUI])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -513,7 +513,8 @@ import Destinations
         let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
 
         let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
-        let colorsListProvider = TestColorsListProvider(presentationsData: [TestColorsDestination.UserInteractions.color(model: nil): replaceAction], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant(actionType: .paginate)))
+        let colorsListProvider = TestColorsListProvider(interactorsData: [.retrieveInitialColors: colorsListRetrieveAction, .moreButton: colorsListMoreButtonAction])
         
         let colorDetailProvider = ColorDetailProvider()
         let homeProvider = HomeProvider()
@@ -530,7 +531,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -609,7 +610,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .swiftUI, .tabBar(tabs: []), .sheet, .colorNav])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -683,7 +684,7 @@ import Destinations
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
 
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start, .colorsList, .home, .tabBar(tabs: [])])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }

@@ -29,12 +29,8 @@ import Destinations
             PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
         ]
         
-        let replaceColor = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(colorID: UUID(), color: .yellow, name: "yellow")), assistantType: .basic)
-
-
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
 
-        let homePathPresent = PresentationConfiguration(presentationType: .destinationPath(path: homepath), assistantType: .basic)
         let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .custom(ColorDetailActionAssistant()))
         
         let startProvider = StartProvider()
@@ -46,7 +42,7 @@ import Destinations
         let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
         
         let colorDetailProvider = ColorDetailProvider(presentationsData: [.colorDetailButton(model: nil): sheetPresent])
-        let homeProvider = HomeProvider(presentationsData: [.pathPresent: homePathPresent, .replaceView: replaceColor])
+        let homeProvider = HomeProvider()
         let tabBarProvider = TabBarProvider()
         let navigationProvider = NavigationControllerProvider()
 
@@ -59,7 +55,7 @@ import Destinations
             .navController: navigationProvider
         ]
         
-        let flow = ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)
+        let flow = ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet])
         if let baseController = navigationController as? any ControllerDestinationInterfacing {
             flow.assignBaseController(baseController)
         }
@@ -152,9 +148,17 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
     init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
+        } else {
+            let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
+            self.presentationsData[.color(model: nil)] = colorSelection
         }
         if let interactorsData {
             self.interactorsData = interactorsData
+        } else {
+            let paginateAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
+            let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
+            self.interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]
+
         }
     }
     
@@ -420,21 +424,6 @@ final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, 
         var contentType: ContentType?
         
         closure.data.parentID = destination.parentDestinationID()
-        
-        switch interactionType {
-            case .color(model: let model):
-                routeType = RouteDestinationType.colorDetail
-                
-                if let model {
-                    contentType = .color(model: model)
-                }
-                
-                closure.data.contentType = contentType
-                closure.data.parentID = destination.id
-                
-            case .moreButton, .retrieveInitialColors:
-                break
-        }
         
         
         if let contentType {

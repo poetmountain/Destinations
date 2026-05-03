@@ -20,21 +20,6 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, Dest
         
         closure.data.parentID = destination.parentDestinationID()
         
-        switch interactionType {
-            case .color(model: let model):
-                routeType = RouteDestinationType.colorDetail
-                
-                if let model {
-                    contentType = .color(model: model)
-                }
-                
-                closure.data.contentType = contentType
-                closure.data.parentID = destination.id
-                
-            case .moreButton, .retrieveInitialColors:
-                break
-        }
-        
         
         if let contentType {
             closure.data.contentType = contentType

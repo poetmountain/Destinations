@@ -52,7 +52,7 @@ public enum TestDestinationType: String, RoutableDestinations {
         let sheetPresent = PresentationConfiguration(destinationType: .colorsList, presentationType: .sheet(type: .present), assistantType: .basic)
              
         let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        let colorsListProvider = ColorsListProvider()
         
         let colorDetailProvider = ColorDetailProvider()
         let homeProvider = HomeProvider(presentationsData: [.pathPresent: sheetPresent])

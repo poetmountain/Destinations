@@ -36,6 +36,7 @@ extension AppContentType: Equatable {
     }
 }
 
+@AutoCaseIterable
 public enum RouteDestinationType: RoutableDestinations {
 
     public var id: String { rawValue }
@@ -43,7 +44,6 @@ public enum RouteDestinationType: RoutableDestinations {
     case colorsList
     case colorDetail
     case home
-    case dynamic
     case tabBar(tabs: [AppTabType])
     case splitView
     
@@ -55,8 +55,6 @@ public enum RouteDestinationType: RoutableDestinations {
                 return "colorDetail"
             case .home:
                 return "home"
-            case .dynamic:
-                return "dynamic"
             case .tabBar(_):
                 return "tabBar"
             case .splitView:

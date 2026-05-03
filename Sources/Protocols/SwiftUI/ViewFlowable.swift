@@ -71,7 +71,8 @@ import SwiftUI
     
     
     /// This method raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. It is called automatically by ``ViewFlow``.
-    func providersPreflight()
+    /// - Parameter routesToIgnore: An optional list of routes to ignore when checking for Provider assignments.
+    func providersPreflight(routesToIgnore: [DestinationType]?)
 }
 
 
@@ -455,10 +456,14 @@ public extension ViewFlowable {
 
 public extension ViewFlowable {
     
-    func providersPreflight() {
+    func providersPreflight(routesToIgnore: [DestinationType]? = nil) {
+
         let registeredRoutes = Set(destinationProviders.keys.map(\.rawValue))
         let allRoutes = Set(DestinationType.allCases.map(\.rawValue))
-        let missingRoutes = allRoutes.subtracting(registeredRoutes)
+        let ignoredRoutes = Set(routesToIgnore?.map(\.rawValue) ?? [])
+        let routesToCheck = allRoutes.subtracting(ignoredRoutes)
+        
+        let missingRoutes = routesToCheck.subtracting(registeredRoutes)
         
         assert(missingRoutes.count == 0, "📍⚠️ Flow has no Provider assigned for routes: \(missingRoutes).")
         

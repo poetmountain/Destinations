@@ -6,19 +6,13 @@
 //
 //  Licensed under MIT License. See LICENSE file in this repository.
 
-import UIKit
 import SwiftUI
 import Destinations
 
-
-
-public enum RouteDestinationType: RoutableDestinations, CaseIterable {
+@AutoCaseIterable
+public enum RouteDestinationType: RoutableDestinations {
 
     public var id: String { rawValue }
-
-    public static var allCases: [RouteDestinationType] {
-        return [.colorsList, .colorDetail, .home, .dynamic, .tabBar(tabs: []), .counter]
-    }
     
     case colorsList
     case colorDetail

@@ -17,6 +17,21 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
     public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
+    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil) {
+
+        if let presentationsData {
+            self.presentationsData = presentationsData
+        } else {
+            let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
+            self.presentationsData = [.color(model: nil): colorSelection]
+
+        }
+        
+        // interactor actions
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        
+        interactorsData = [.retrieveInitialColors: colorsListRetrieveAction]
+    }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         

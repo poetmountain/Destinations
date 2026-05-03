@@ -19,7 +19,7 @@ struct ColorDetailSelectionModel: Hashable {
 @Observable
 final class ColorsListDestination: DestinationTypes, ControllerDestinationable {
     
-    
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors

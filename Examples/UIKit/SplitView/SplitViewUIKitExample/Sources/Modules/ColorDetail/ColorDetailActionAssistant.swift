@@ -20,16 +20,6 @@ struct ColorDetailActionAssistant: InterfaceActionConfiguring, AppDestinationTyp
 
         closure.data.parentID = destination.id
 
-        switch interactionType {
-            case .colorDetailButton(model: let model), .customDetailButton(model: let model):
-                if let model, closure.data.contentType == nil {
-                    contentType = .color(model: model)
-                }
-            case .color:
-                break
-        }
-
-
         if let contentType = contentType {
             closure.data.contentType = contentType
         }

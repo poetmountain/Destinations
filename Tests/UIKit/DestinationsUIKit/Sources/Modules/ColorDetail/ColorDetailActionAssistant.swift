@@ -19,12 +19,10 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
         closure.data.parentID = destination.id
 
         switch interactionType {
-            case .colorDetailButton(model: let model), .customDetailButton(model: let model):
+            case .colorDetailButton(model: let model):
                 if let model, closure.data.contentType == nil {
                     contentType = .color(model: model)
                 }
-            case .color:
-                break
             case .moveToNearest:
                 print("moving to nearest..")
                 break

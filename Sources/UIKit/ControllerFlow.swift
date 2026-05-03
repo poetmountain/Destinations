@@ -44,7 +44,8 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     /// - Parameters:
     ///   - destinationProviders: A dictionary of Destination providers whose keys are an enum of Destination types. The Destination type represents the type of Destination each provider can provide.
     ///   - startingDestination: The starting Destination.
-    public init(destinationProviders: [DestinationType: any ControllerDestinationProviding], startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>) {
+    ///   - routesToIgnore: An optional list of routes to ignore when checking for Provider assignments.
+    public init(destinationProviders: [DestinationType: any ControllerDestinationProviding], startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>, routesToIgnore: [DestinationType]? = nil) {
         self.destinationProviders = destinationProviders
         self.startingDestination = startingDestination
 
@@ -59,7 +60,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         }
         self.uiCoordinator?.delegate = self
         
-        providersPreflight()
+        providersPreflight(routesToIgnore: routesToIgnore)
         
     }
 

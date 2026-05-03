@@ -13,20 +13,11 @@ import Destinations
 final class ColorNavDestination: NavigatingViewDestinationable, AppDestinationTypes {
         
     enum UserInteractions: UserInteractionTypeable {
-        case color
 
         var rawValue: String {
-            switch self {
-                case .color:
-                    return "color"
+            ""
+        }
 
-            }
-        }
-        
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
-        
         func hash(into hasher: inout Hasher) {
             hasher.combine(rawValue)
         }

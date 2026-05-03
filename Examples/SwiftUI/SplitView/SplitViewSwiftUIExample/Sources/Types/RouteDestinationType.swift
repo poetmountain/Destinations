@@ -14,15 +14,12 @@ public enum RouteDestinationType: RoutableDestinations {
     
     public var id: String { rawValue }
 
-    case start
     case splitView
     case colorsList
     case colorDetail
     
     public var rawValue: String {
         switch self {
-            case .start:
-                return "start"
             case .splitView:
                 return "splitView"
             case .colorsList:

@@ -13,14 +13,11 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
   
     enum UserInteractions: UserInteractionTypeable {
         case changeColor
-        case test
         
         var rawValue: String {
             switch self {
                 case .changeColor:
                     return "changeColor"
-                case .test:
-                    return "test"
             }
         }
         

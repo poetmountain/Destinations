@@ -34,35 +34,16 @@ extension AppContentType: Equatable {
     }
 }
 
-public enum RouteDestinationType: RoutableDestinations {
+public enum RouteDestinationType: String, RoutableDestinations {
     
     public var id: String { rawValue }
 
     case start
-    case splitView
     case swiftUI
+    case splitView
     case colorsList
     case colorNav
     case colorDetail
-    
-    public var rawValue: String {
-        switch self {
-            case .start:
-                return "start"
-            case .splitView:
-                return "splitView"
-            case .swiftUI:
-                return "swiftUI"
-            case .colorsList:
-                return "colorsList"
-            case .colorNav:
-                return "colorNav"
-            case .colorDetail:
-                return "colorDetail"
-        }
-    }
-    
-    
 }
 
 extension RouteDestinationType: Equatable {

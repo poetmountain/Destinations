@@ -26,9 +26,7 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
                     return "colorDetailButton"
             }
         }
-        
-        static let allCases: [UserInteractions] = [.colorDetailButton]
-        
+                
         static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }

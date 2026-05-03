@@ -16,6 +16,7 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
     typealias ViewType = ColorsListView
     typealias UserInteractionType = UserInteractions
 
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors
@@ -31,8 +32,6 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
                     return "moreButton"
             }
         }
-        
-        static let allCases: [UserInteractions] = [.color(model: nil), .retrieveInitialColors, .moreButton]
         
         static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
             return lhs.rawValue == rhs.rawValue

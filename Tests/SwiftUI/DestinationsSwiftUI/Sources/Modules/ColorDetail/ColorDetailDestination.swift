@@ -15,15 +15,13 @@ struct CollectionDatasourceOptions {
 
 @Observable
 final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable, Equatable {
-        case color(model: ColorDetailSelectionModel)
         case goBack
         case moveToNearest
         
         var rawValue: String {
             switch self {
-                case .color(_):
-                    return "color"
                 case .goBack:
                     return "goBack"
                 case .moveToNearest:

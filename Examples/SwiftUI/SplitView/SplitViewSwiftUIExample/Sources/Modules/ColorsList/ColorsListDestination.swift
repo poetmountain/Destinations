@@ -16,10 +16,10 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
     typealias ViewType = ColorsListView
     typealias UserInteractionType = UserInteractions
 
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors
-        case moreButton
         
         var rawValue: String {
             switch self {
@@ -27,8 +27,6 @@ final class ColorsListDestination: AppDestinationTypes, ViewDestinationable {
                     return "color"
                 case .retrieveInitialColors:
                     return "retrieveInitialColors"
-                case .moreButton:
-                    return "moreButton"
             }
         }
         

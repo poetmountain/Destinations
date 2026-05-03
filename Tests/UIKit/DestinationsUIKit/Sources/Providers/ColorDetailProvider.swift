@@ -21,10 +21,18 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
         
         if let presentationsData {
             self.presentationsData = presentationsData
+            
+        } else {
+            let modelToPass = ColorViewModel(colorID: UUID(), color: .purple, name: "purple")
+            let sheetButtonInteraction = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
+            self.presentationsData[.colorDetailButton(model: nil)] = sheetButtonInteraction
+
         }
         if let interactorsData {
             self.interactorsData = interactorsData
         }
+        
+
         
         let goBackAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), assistantType: .basic)
         let moveToNearestAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .moveToNearest(destination: .colorDetail), assistantType: .basic)

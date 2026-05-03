@@ -20,10 +20,10 @@ struct ColorDetailSelectionModel: Hashable {
 @Observable
 final class ColorsListDestination: AppDestinationTypes, ControllerDestinationable {
     
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors
-        case moreButton
         
         var rawValue: String {
             switch self {
@@ -31,8 +31,6 @@ final class ColorsListDestination: AppDestinationTypes, ControllerDestinationabl
                     return "color"
                 case .retrieveInitialColors:
                     return "retrieveInitialColors"
-                case .moreButton:
-                    return "moreButton"
             }
         }
         

@@ -11,20 +11,15 @@ import Destinations
 
 final class ColorDetailDestination: ControllerDestinationable, DestinationTypes {
     
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
-        case color
         case colorDetailButton(model: ColorViewModel?)
-        case customDetailButton(model: ColorViewModel?)
         case moveToNearest
 
         var rawValue: String {
             switch self {
-                case .color:
-                    return "color"
                 case .colorDetailButton(_):
                     return "colorDetailButton"
-                case .customDetailButton(_):
-                    return "customDetailButton"
                 case .moveToNearest:
                     return "moveToNearest"
             }

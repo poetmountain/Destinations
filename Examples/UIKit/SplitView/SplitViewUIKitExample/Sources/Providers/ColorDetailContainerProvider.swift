@@ -11,7 +11,6 @@ import Foundation
 import Destinations
 
 final class ColorDetailContainerProvider: ControllerDestinationProviding, AppDestinationTypes  {
-    
     public typealias Destination = SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     public typealias UserInteractionType = ColorNavDestination.UserInteractions
     public typealias InteractorType = ColorNavDestination.InteractorType
@@ -42,7 +41,7 @@ final class ColorDetailContainerProvider: ControllerDestinationProviding, AppDes
         let colorDetailProvider = ColorDetailProvider()
         
         
-        let providers: [RouteDestinationType: any ViewDestinationProviding] = [
+        let providers: [DestinationType: any ViewDestinationProviding] = [
             .colorNav: colorNavProvider,
             .colorDetail: colorDetailProvider
         ]
@@ -54,7 +53,7 @@ final class ColorDetailContainerProvider: ControllerDestinationProviding, AppDes
         
         let startingPresentation = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .destinationPath(path: startingPath), contentType: configuration.contentType, assistantType: .basic)
         
-        let viewFlow = ViewFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingPresentation)
+        let viewFlow = ViewFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingPresentation, routesToIgnore: [.swiftUI, .splitView, .start, .colorsList])
         
         parentDestination.viewFlow = viewFlow
         viewFlow.start()

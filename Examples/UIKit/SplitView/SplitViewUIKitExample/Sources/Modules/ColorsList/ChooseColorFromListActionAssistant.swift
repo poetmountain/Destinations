@@ -30,8 +30,6 @@ struct ChooseColorFromListActionAssistant: InterfaceActionConfiguring, AppDestin
                 closure.data.contentType = contentType
                 closure.data.parentID = destination.id
                 
-            case .moreButton:
-                break
             case .retrieveInitialColors:
                 break
         }

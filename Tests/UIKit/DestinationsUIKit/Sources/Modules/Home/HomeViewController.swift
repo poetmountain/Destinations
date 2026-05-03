@@ -35,27 +35,6 @@ final class HomeViewController: UIViewController, ControllerDestinationInterfaci
     private func setupUI() {
         view.backgroundColor = .systemIndigo
         
-        let button = PillButton()
-        button.titleLabel?.text = "Display nested path in other tab"
-        button.tapAction { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.handleButtonTap()
-        }
-        
-        view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
-        ])
-    }
-    
-    func handleButtonTap() {
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performInterfaceAction(interactionType: .pathPresent)
-        }
     }
 
 }

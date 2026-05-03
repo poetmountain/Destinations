@@ -12,27 +12,13 @@ import Destinations
 
 final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
 
-    
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
-        case color
-        case colorDetailButton(model: ColorViewModel?)
-        case customDetailButton(model: ColorViewModel?)
 
         var rawValue: String {
-            switch self {
-                case .color:
-                    return "color"
-                case .colorDetailButton(_):
-                    return "colorDetailButton"
-                case .customDetailButton(_):
-                    return "customDetailButton"
-            }
+            ""
         }
-        
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
-        
+   
         func hash(into hasher: inout Hasher) {
             hasher.combine(rawValue)
         }

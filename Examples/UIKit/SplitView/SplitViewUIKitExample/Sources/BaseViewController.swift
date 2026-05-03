@@ -49,8 +49,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
     func buildAppFlow() -> ControllerFlow<DestinationType, TabType, ContentType> {
                 
         let startPath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .start, presentationType: .replaceCurrent, assistantType: .basic),
-            PresentationConfiguration(destinationType: .splitView, presentationType: .addToCurrent, assistantType: .basic)
+            PresentationConfiguration(destinationType: .splitView, presentationType: .replaceCurrent, assistantType: .basic)
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
 
@@ -66,7 +65,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         
         let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
         let colorContainerProvider = ColorDetailContainerProvider()
-        
+
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
             .splitView: splitViewProvider,
@@ -74,7 +73,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             .colorNav: colorContainerProvider
         ]
         
-        return ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination)
+        return ControllerFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetail, .swiftUI])
     }
     
     

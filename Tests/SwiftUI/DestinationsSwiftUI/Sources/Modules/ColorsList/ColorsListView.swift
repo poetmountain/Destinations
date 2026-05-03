@@ -36,9 +36,6 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     .id(destination().listID)
                     
                     
-                    Button("Show More") {
-                        self.requestMoreButtonAction()
-                    }
                     .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
                     .foregroundStyle(.white)
                     .background(Color.blue)
@@ -80,13 +77,6 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
         .onDestinationDisappear(destination: destinationToBuild, navigationDestination: destination())
     }
     
-    
-    func requestMoreButtonAction() {
-        let destination = destination()
-        destination.handleThrowable { [weak destination] in
-            try destination?.performInterfaceAction(interactionType: .moreButton)
-        }
-    }
-    
+
 }
 

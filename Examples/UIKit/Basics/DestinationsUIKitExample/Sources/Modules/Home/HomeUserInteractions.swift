@@ -10,13 +10,10 @@ import Foundation
 import Destinations
 
 enum HomeUserInteractions: UserInteractionTypeable {
-    case replaceView
     case pathPresent
     
     var rawValue: String {
         switch self {
-            case .replaceView:
-                return "replaceView"
             case .pathPresent:
                 return "pathPresent"
         }

@@ -17,7 +17,7 @@ struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
     @State public var destinationState: DestinationInterfaceState<Destination>
 
     @State var areDatasourcesSetup = false
-        
+
     @State var selectedItem: ColorViewModel.ID?
 
     init(destination: Destination) {
@@ -38,12 +38,8 @@ struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
                             try destinationState?.destination.performInterfaceAction(interactionType: UserInteractionType.color(model: item))
                         })
                         
-                        Task {
-                            try? await Task.sleep(for: .milliseconds(80))
-                            selectedItem = nil
-                        }
                     }
-                    
+
                 })
             }
 

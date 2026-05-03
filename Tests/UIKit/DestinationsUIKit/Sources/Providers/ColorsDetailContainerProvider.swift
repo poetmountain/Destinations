@@ -39,7 +39,7 @@ struct ColorsDetailContainerProvider: ControllerDestinationProviding, Destinatio
         
         let startingPresentation = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .destinationPath(path: startingPath), contentType: configuration.contentType, assistantType: .basic)
         
-        let viewFlow = ViewFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingPresentation)
+        let viewFlow = ViewFlow<DestinationType, TabType, ContentType>(destinationProviders: providers, startingDestination: startingPresentation, routesToIgnore: [.colorDetailSwiftUI, .swiftUI, .sheet, .home, .start, .colorsList, .colorDetail, .tabBar(tabs: [])])
         
         parentDestination.viewFlow = viewFlow
         viewFlow.start()

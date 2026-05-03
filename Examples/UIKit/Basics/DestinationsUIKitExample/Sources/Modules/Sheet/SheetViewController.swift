@@ -11,13 +11,9 @@ import Destinations
 
 final class SheetViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
     enum UserInteractions: UserInteractionTypeable {
-        case color
         
         var rawValue: String {
-            switch self {
-                case .color:
-                    return "color"
-            }
+            ""
         }
     }
 

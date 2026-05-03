@@ -49,28 +49,15 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
             strongSelf.handleDetailTap()
         }
         
-        let customButton = PillButton()
-        customButton.titleLabel?.text = "Custom sheet"
-        customButton.backgroundColor = .init(white: 1.0, alpha: 0.9)
-        customButton.foregroundColor = .blue
-        customButton.tapAction { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.handleCustomDetailTap()
-        }
+    
         
         view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(customButton)
-        customButton.translatesAutoresizingMaskIntoConstraints = false
-    
+
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
-            customButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            customButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20),
-            customButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
         ])
 
     }
@@ -81,12 +68,6 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
             try self?.destination().performInterfaceAction(interactionType: .colorDetailButton(model: colorModel))
         }
     }
-    
-    func handleCustomDetailTap() {
-        guard let colorModel else { return }
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performInterfaceAction(interactionType: .customDetailButton(model: colorModel))
-        }
-    }
+
 
 }

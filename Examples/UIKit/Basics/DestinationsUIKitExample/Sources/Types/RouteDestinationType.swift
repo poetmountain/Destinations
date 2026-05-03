@@ -9,6 +9,7 @@
 import UIKit
 import Destinations
 
+@AutoCaseIterable
 public enum RouteDestinationType: RoutableDestinations {
     
     public var id: String { rawValue }

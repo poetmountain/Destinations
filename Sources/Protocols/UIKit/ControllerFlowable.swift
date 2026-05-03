@@ -77,7 +77,8 @@ import UIKit
     func findNearestDestination(of typeToFind: DestinationType, currentLevel: any ControllerDestinationable<DestinationType, ContentType, TabType>) -> (any ControllerDestinationable<DestinationType, ContentType, TabType>)?
     
     /// This method raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. It is called automatically by ``ControllerFlow``.
-    func providersPreflight()
+    /// - Parameter routesToIgnore: An optional list of routes to ignore when checking for Provider assignments.
+    func providersPreflight(routesToIgnore: [DestinationType]?)
 }
 
 public extension ControllerFlowable {
@@ -99,6 +100,9 @@ public extension ControllerFlowable {
     }
     
     func findTabBarInViewHierarchy(currentDestination: any ControllerDestinationable) -> (any TabBarControllerDestinationable<DestinationType, ContentType, TabType>)? {
+        
+        guard activeDestinations.first(where: { $0 is any TabBarControllerDestinationable<DestinationType, ContentType, TabType>}) != nil else { return nil }
+        
         if let tabDestination = currentDestination as? any TabBarControllerDestinationable<DestinationType, ContentType, TabType> {
             return tabDestination
             
@@ -461,10 +465,14 @@ public extension ControllerFlowable {
 
 public extension ControllerFlowable {
     
-    func providersPreflight() {
+    func providersPreflight(routesToIgnore: [DestinationType]? = nil) {
+        
         let registeredRoutes = Set(destinationProviders.keys.map(\.rawValue))
         let allRoutes = Set(DestinationType.allCases.map(\.rawValue))
-        let missingRoutes = allRoutes.subtracting(registeredRoutes)
+        let ignoredRoutes = Set(routesToIgnore?.map(\.rawValue) ?? [])
+        let routesToCheck = allRoutes.subtracting(ignoredRoutes)
+        
+        let missingRoutes = routesToCheck.subtracting(registeredRoutes)
         
         assert(missingRoutes.count == 0, "📍⚠️ Flow has no Provider assigned for routes: \(missingRoutes).")
         

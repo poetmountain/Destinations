@@ -25,8 +25,6 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
                 if let model, closure.data.contentType == nil {
                     contentType = .color(model: model)
                 }
-            case .color:
-                break
         }
 
 

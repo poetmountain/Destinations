@@ -12,7 +12,7 @@ import Destinations
 
 @Observable
 final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
-    
+    @AutoCaseIterable
     enum UserInteractions: UserInteractionTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors

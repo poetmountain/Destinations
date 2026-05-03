@@ -45,7 +45,7 @@ import UIKit
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.sheet, .home, .colorsList, .colorDetail, .tabBar(tabs: []), .colorDetailSwiftUI, .swiftUI])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
@@ -80,7 +80,7 @@ import UIKit
         
         let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
         
-        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination)
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.sheet, .home, .colorsList, .colorDetail, .tabBar(tabs: []), .colorDetailSwiftUI, .swiftUI])
         if let root = baseController {
             appFlow.assignBaseController(root)
         }
