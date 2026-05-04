@@ -16,11 +16,17 @@ public final class AppDestinationConfigurations<UserInteractionType: UserInterac
     /// A dictionary of presentation configuration objects, whose keys are a user interaction type they're associated with.
     public var configurations: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
     
+    /// A dictionary of interactor request configuration objects, whose keys are a user interaction type they're associated with.
+    public var interactorConfigurations: [UserInteractionType: any InteractorConfiguring] = [:]
+
     /// Initializer.
     /// - Parameter configurations: A dictionary of presentation configuration objects, whose keys are a user interaction type they're associated with.
-    public init(configurations: [UserInteractionType : DestinationPresentation<DestinationType, ContentType, TabType>]? = nil) {
+    public init(configurations: [UserInteractionType : DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorConfigurations: [UserInteractionType: any InteractorConfiguring]? = nil) {
         if let configurations {
             self.configurations = configurations
+        }
+        if let interactorConfigurations {
+            self.interactorConfigurations = interactorConfigurations
         }
     }
     
@@ -32,6 +38,10 @@ public final class AppDestinationConfigurations<UserInteractionType: UserInterac
         self.configurations[interactionType] = configuration
     }
     
+    public func addInteractorConfiguration(configuration: any InteractorConfiguring, for interactionType: UserInteractionType) {
+        self.interactorConfigurations[interactionType] = configuration
+    }
+    
     /// Returns a presentation configuration object based on its associated user interaction type.
     /// - Parameter interactionType: The user interaction type to find a configuration object for.
     /// - Returns: A presentation configuration, if one is found.
@@ -39,8 +49,13 @@ public final class AppDestinationConfigurations<UserInteractionType: UserInterac
         return configurations[interactionType]
     }
     
+    public func interactorConfiguration(for interactionType: UserInteractionType) -> (any InteractorConfiguring)? {
+        return interactorConfigurations[interactionType]
+    }
+    
     /// Removes all model objects from the ``configurations`` dictionary.
     public func removeAllConfigurations() {
         configurations.removeAll()
+        interactorConfigurations.removeAll()
     }
 }

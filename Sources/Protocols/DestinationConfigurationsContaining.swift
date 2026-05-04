@@ -30,18 +30,32 @@ public protocol DestinationConfigurationsContaining<UserInteractionType, Destina
     /// A dictionary of presentation configurations, using their associated user interaction types as keys.
     var configurations: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
         
+    /// A dictionary of interactor request configurations, using their associated user interaction types as keys.
+    var interactorConfigurations: [UserInteractionType: any InteractorConfiguring] { get set }
+    
     /// Adds a presentation configuration to this object's `configurations` dictionary.
     /// - Parameters:
     ///   - configuration: A presentation configuration to add.
     ///   - interactionType: The user interaction type to associate with this presentation.
     func addConfiguration(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, for interactionType: UserInteractionType)
     
+    /// Adds an interactor request configuration to this object's `interactorConfigurations` dictionary.
+    /// - Parameters:
+    ///   - configuration: An interactor request configuration to add.
+    ///   - interactionType: The user interaction type to associate with this interactor request.
+    func addInteractorConfiguration(configuration: any InteractorConfiguring, for interactionType: UserInteractionType)
+    
     /// Returns a presentation configuration object, or `nil` if one isn't found.
     /// - Parameter interactionType: The user interaction type associated with the configuration object to be found.
     /// - Returns: A `DestinationPresentation` object, or `nil` if the specified object was not found.
     func configuration(for interactionType: UserInteractionType) -> DestinationPresentation<DestinationType, ContentType, TabType>?
     
-    /// Removes all presentation configuration objects held in this object.
+    /// Returns an interactor request configuration object, or `nil` if one isn't found.
+    /// - Parameter interactionType: The user interaction type associated with the configuration object to be found.
+    /// - Returns: An object conforming to the `InteractorConfiguring` protocol, or `nil` if the specified object was not found.
+    func interactorConfiguration(for interactionType: UserInteractionType) -> (any InteractorConfiguring)?
+    
+    /// Removes all configurations held in this object.
     func removeAllConfigurations()
 }
 

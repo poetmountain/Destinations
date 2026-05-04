@@ -56,10 +56,18 @@ public extension DestinationProviding {
         
         let configurations = AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>()
         
+        // add configurations for Destination presentations
         for (interactionType, configuration) in presentationsData {
             let presentation = configuration.copy()
             if let interactionType = interactionType as? Destination.UserInteractionType {
                 configurations.addConfiguration(configuration: presentation, for: interactionType)
+            }
+        }
+        
+        // add configurations for Interactor requests
+        for (interactionType, configuration) in interactorsData {
+            if let interactionType = interactionType as? Destination.UserInteractionType {
+                configurations.addInteractorConfiguration(configuration: configuration, for: interactionType)
             }
         }
         
