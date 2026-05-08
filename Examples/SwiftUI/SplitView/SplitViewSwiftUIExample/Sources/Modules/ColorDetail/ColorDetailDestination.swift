@@ -16,12 +16,8 @@ struct CollectionDatasourceOptions {
 @Observable
 final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable, Equatable {
-        
-        var rawValue: String {
-            ""
-        }
-
+    enum UserInteractions: String, UserInteractionTypeable, Equatable {
+        case none
     }
     
     enum InteractorType: InteractorTypeable {

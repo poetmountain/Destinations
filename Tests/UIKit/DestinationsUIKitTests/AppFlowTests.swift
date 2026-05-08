@@ -512,8 +512,8 @@ import Destinations
         
         let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
 
-        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
-        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant(actionType: .paginate)))
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
         let colorsListProvider = TestColorsListProvider(interactorsData: [.retrieveInitialColors: colorsListRetrieveAction, .moreButton: colorsListMoreButtonAction])
         
         let colorDetailProvider = ColorDetailProvider()
@@ -655,7 +655,6 @@ import Destinations
         
         print("current children after \(navDestination.groupInternalState.childDestinations.map { $0.type })")
         print("current IDs after \(navDestination.groupInternalState.childDestinations.map { $0.id })")
-        print("navigator path \(navDestination.navigator()?.navigationPath)")
         
         XCTAssertEqual(afterBackDestination?.type, home?.type, "Expected currentChildDestination to be the previous Destination \(String(describing: home?.type)), but found \(String(describing: afterBackDestination?.type))")
 

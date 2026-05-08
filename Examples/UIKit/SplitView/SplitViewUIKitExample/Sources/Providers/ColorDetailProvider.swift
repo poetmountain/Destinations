@@ -27,6 +27,7 @@ final class ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
             self.interactorsData = interactorsData
         }
         
+        self.presentationsData[.none] = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .addToCurrent, assistantType: .basic)
     }
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {

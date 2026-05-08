@@ -31,11 +31,11 @@ public struct InteractorConfiguration<InteractorType: InteractorTypeable, Intera
         
         switch assistantType {
             case .basic:
-                var assistant = DefaultInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType, actionType: actionType)
+                var assistant = DefaultInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
                 destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
                 
             case .basicAsync:
-                var assistant = DefaultAsyncInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType, actionType: actionType)
+                var assistant = DefaultAsyncInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
                 destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
                 
             case .custom(let assistant):

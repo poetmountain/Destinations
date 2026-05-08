@@ -13,17 +13,14 @@ import Foundation
 public struct DefaultAsyncInteractorAssistant<InteractorType: InteractorTypeable, Request: InteractorRequestConfiguring, ContentType: ContentTypeable>: AsyncInteractorAssisting {
     
     public let interactorType: InteractorType
-    
-    public var actionType: Request.ActionType
-    
+        
     public var requestMethod: InteractorRequestMethod = .async
             
-    public init(interactorType: InteractorType, actionType: Request.ActionType) {
+    public init(interactorType: InteractorType) {
         self.interactorType = interactorType
-        self.actionType = actionType
     }
     
-    public func handleAsyncRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) async where Destination.InteractorType == InteractorType {
+    public func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType {
         
         let request = Request(action: actionType)
         let result = await destination.performRequest(interactor: interactorType, request: request)

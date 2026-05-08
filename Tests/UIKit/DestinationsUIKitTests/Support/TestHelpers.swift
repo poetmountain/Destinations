@@ -35,9 +35,9 @@ import Destinations
         
         let startProvider = StartProvider()
         
-        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
         
-        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant(actionType: .paginate)))
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
         
         let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
         
@@ -420,18 +420,13 @@ final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, 
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
         var closure = interfaceAction
         
-        var routeType: RouteDestinationType?
-        var contentType: ContentType?
+        var content: ContentType?
         
         closure.data.parentID = destination.parentDestinationID()
         
         
-        if let contentType {
-            closure.data.contentType = contentType
-        }
-        
-        if let routeType {
-            closure.data.destinationType = routeType
+        if let content {
+            closure.data.contentType = content
         }
         
         

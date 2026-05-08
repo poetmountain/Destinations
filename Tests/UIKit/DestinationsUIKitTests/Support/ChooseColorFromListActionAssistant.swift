@@ -14,21 +14,13 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, Dest
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
         var closure = interfaceAction
-        
-        var routeType: RouteDestinationType?
-        var contentType: ContentType?
-        
+                
         closure.data.parentID = destination.parentDestinationID()
         
         
-        if let contentType {
-            closure.data.contentType = contentType
+        if let content {
+            closure.data.contentType = content
         }
-        
-        if let routeType {
-            closure.data.destinationType = routeType
-        }
-        
         
         return closure
     }

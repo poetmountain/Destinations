@@ -16,8 +16,8 @@ struct CounterProvider: ViewDestinationProviding, DestinationTypes {
     public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     init() {
-        let startCountAction = InteractorConfiguration<CounterDestination.InteractorType, CounterInteractor>(interactorType: .counter, actionType: .startCount, assistantType: .custom(CounterInteractorAssistant(actionType: .startCount)))
-        let stopCountAction = InteractorConfiguration<CounterDestination.InteractorType, CounterInteractor>(interactorType: .counter, actionType: .stopCount, assistantType: .custom(CounterInteractorAssistant(actionType: .stopCount)))
+        let startCountAction = InteractorConfiguration<CounterDestination.InteractorType, CounterInteractor>(interactorType: .counter, actionType: .startCount, assistantType: .custom(CounterInteractorAssistant()))
+        let stopCountAction = InteractorConfiguration<CounterDestination.InteractorType, CounterInteractor>(interactorType: .counter, actionType: .stopCount, assistantType: .custom(CounterInteractorAssistant()))
         
         interactorsData = [.start: startCountAction, .stop: stopCountAction]
     }

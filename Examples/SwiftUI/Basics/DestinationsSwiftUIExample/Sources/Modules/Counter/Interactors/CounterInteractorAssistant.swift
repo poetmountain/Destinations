@@ -16,10 +16,9 @@ struct CounterInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
     typealias Request = CounterRequest
     
     let interactorType: InteractorType = .counter
-    let actionType: CounterRequest.ActionType
     let requestMethod: InteractorRequestMethod = .async
 
-    func handleAsyncRequest<Destination>(destination: Destination, content: AppContentType?) async where Destination : Destinationable, CounterDestination.InteractorType == Destination.InteractorType {
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: AppContentType?) async where Destination.InteractorType == InteractorType {
         
         let request = CounterRequest(action: actionType)
         _ = await destination.performRequest(interactor: interactorType, request: request)

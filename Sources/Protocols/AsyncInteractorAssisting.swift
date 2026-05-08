@@ -15,12 +15,25 @@ import Foundation
     /// Handles an async request to an Interactor.
     /// - Parameter destination: The Destination which the Interactor is associated with. This reference is used to make requests to the Interactor.
     /// - Parameter content: An optional content model used to make a request to the Interactor.
-    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) async where Destination.InteractorType == InteractorType
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType
 
 }
 
 public extension AsyncInteractorAssisting {
     var requestMethod: InteractorRequestMethod { .async }
 
-    func handleRequest<Destination: Destinationable>(destination: Destination, content: ContentType?) where Destination.InteractorType == InteractorType {}    
+    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType {}
+
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: any InteractorRequestActionTypeable, content: ContentType?) async where Destination.InteractorType == InteractorType {
+        
+        guard let actionType = actionType as? Request.ActionType else {
+            let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))
+            let message = String(format: template, "\(actionType)")
+            destination.logError(error: DestinationsError.childDestinationNotFound(message: message))
+            
+            return
+        }
+        
+        await handleAsyncRequest(destination: destination, actionType: actionType, content: content)
+    }
 }

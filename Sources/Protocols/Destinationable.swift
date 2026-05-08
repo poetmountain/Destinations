@@ -376,12 +376,12 @@ public extension Destinationable {
         var container = InterfaceAction<UserInteractionType, DestinationType, ContentType>(function: { [weak self] (type: UserInteractionType, data: InterfaceActionData<DestinationType, ContentType>) in
             guard let strongSelf = self else { return }
             
-            if let assistant = strongSelf.internalState.interactorAssistants[interactionType] {
+            if let assistant = strongSelf.internalState.interactorAssistants[interactionType], let configuration = strongSelf.internalState.destinationConfigurations?.interactorConfiguration(for: interactionType) as? any InteractorConfiguring<InteractorType> {
                 switch assistant.requestMethod {
                     case .async:
                         Task {
                             if let asyncAssistant = assistant as? any AsyncInteractorAssisting<InteractorType, ContentType> {
-                                await asyncAssistant.handleAsyncRequest(destination: strongSelf, content: data.contentType)
+                                await asyncAssistant.handleAsyncRequest(destination: strongSelf, actionType: configuration.actionType, content: data.contentType)
                                 
                             } else {
                                 let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
@@ -390,7 +390,7 @@ public extension Destinationable {
                             }
                         }
                     case .sync:
-                        assistant.handleRequest(destination: strongSelf, content: data.contentType)
+                        assistant.handleRequest(destination: strongSelf, actionType: configuration.actionType, content: data.contentType)
                 }
                 
                 

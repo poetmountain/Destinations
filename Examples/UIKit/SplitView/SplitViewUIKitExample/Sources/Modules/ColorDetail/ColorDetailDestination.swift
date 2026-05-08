@@ -13,11 +13,9 @@ import Destinations
 final class ColorDetailDestination: ViewDestinationable, AppDestinationTypes {
 
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable {
+    enum UserInteractions: String, UserInteractionTypeable {
 
-        var rawValue: String {
-            ""
-        }
+        case none
    
         func hash(into hasher: inout Hasher) {
             hasher.combine(rawValue)

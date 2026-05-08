@@ -28,7 +28,7 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
         }
         
         // interactor actions
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant(actionType: .retrieve)))
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant()))
         
         interactorsData = [.retrieveInitialColors: colorsListRetrieveAction]
     }
