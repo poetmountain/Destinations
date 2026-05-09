@@ -124,7 +124,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
             parentOfCurrentDestination = parent
         }
         
-        if case .moveToNearest(destination: let destinationToVisit) = configuration.presentationType {
+        if case .moveToNearest = configuration.presentationType, let destinationToVisit = configuration.destinationType {
             let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
             
             // assign the target ID of the destination to move to
@@ -231,7 +231,7 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         var closure: PresentationCompletionClosure?
         
         switch configuration.presentationType {
-            case .navigationStack(type: .goBack), .moveToNearest(destination: _):
+            case .navigationStack(type: .goBack), .moveToNearest:
                 closure = self.defaultNavigationBackCompletionClosure(configuration: configuration)
 
             case .sheet(type: .dismiss, options: _):

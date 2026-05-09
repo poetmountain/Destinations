@@ -263,7 +263,7 @@ import SwiftUI
                     completionClosure?(true)
                 }
                 
-            case .moveToNearest(destination: _):
+            case .moveToNearest:
                 completionClosure?(true)
                 
             case .sheet(type: .present, options: let options):
@@ -466,7 +466,7 @@ import SwiftUI
                 
                 completionClosure?(true)
                 
-        case .moveToNearest(destination: let destinationToVisit):
+        case .moveToNearest:
             completionClosure?(true)
                 
         case .sheet(type: .present, options: let options):

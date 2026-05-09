@@ -183,8 +183,9 @@ import UIKit
         }
         XCTAssertEqual(appFlow.activeDestinations.count, 6)
         
-        let destinationToFind = DestinationType.colorsList
-        let moveToNearest = PresentationConfiguration(presentationType: .moveToNearest(destination: destinationToFind), assistantType: .basic)
+        let destinationToFind: RouteDestinationType = .colorsList
+        
+        let moveToNearest = PresentationConfiguration(destinationType: destinationToFind, presentationType: .moveToNearest, assistantType: .basic)
         appFlow.presentDestination(configuration: moveToNearest)
         
         wait(timeout: 0.3)

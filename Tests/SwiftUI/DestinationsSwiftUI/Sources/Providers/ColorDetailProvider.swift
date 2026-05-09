@@ -19,7 +19,7 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
     
     init() {
         let goBackAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), assistantType: .basic)
-        let moveToNearestAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .moveToNearest(destination: .colorsList), assistantType: .basic)
+        let moveToNearestAction = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorsList, presentationType: .moveToNearest, assistantType: .basic)
         
         presentationsData = [.goBack: goBackAction, .moveToNearest: moveToNearestAction]
     }
