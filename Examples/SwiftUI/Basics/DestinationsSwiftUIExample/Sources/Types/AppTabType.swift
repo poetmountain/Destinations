@@ -40,7 +40,7 @@ public enum AppTabType: String, TabTypeable {
             case .home:
                 "house"
             case .counter:
-                "plus.arrow.trianglehead.clockwise"
+                "timer"
         }
     }
 
