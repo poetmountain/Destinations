@@ -34,8 +34,11 @@ import Foundation
                 DestinationsError.interactorNotFound(message: let message),
                 DestinationsError.childDestinationNotFound(message: let message),
                 DestinationsError.unsupportedInteractorActionType(message: let message),
+                DestinationsError.undefinedDestinationType(message: let message),
+                DestinationsError.undefinedSplitViewColumnType(message: let message),
                 DestinationsError.missingInterfaceAction(message: let message),
                 DestinationsError.missingInterfaceActionAssistant(message: let message),
+                DestinationsError.incompatibleType(message: let message),
                 DestinationsError.duplicateUserInteractionTypeUsed(message: let message):
                 
                 DestinationsSupport.logger.log(message, category: .error)
@@ -69,6 +72,9 @@ import Foundation
                 
             case .missingInterfaceActionAssistant(_):
                 return "Error: No interactor assistant was found while constructing Interface action closure for type %@."
+                
+            case .undefinedDestinationType(message: _):
+                return "Error: No appropriate Destination type was found while trying to perform a \"%@\" presentation type. Please verify that the DestinationPresentation that triggered this presentation has a value defined for the destinationType parameter."
                 
             case .undefinedSplitViewColumnType(message: _):
                 return "Error: A column type for %@ was undefined in a SplitViewColumn model."

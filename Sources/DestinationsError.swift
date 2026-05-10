@@ -42,6 +42,11 @@ public enum DestinationsError: Error, Hashable {
     /// - Parameter message: A message to be sent with the error.
     case missingInterfaceActionAssistant(message: String)
     
+    /// An error type denoting that a Destination type was not supplied with a presentation type that requires one.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case undefinedDestinationType(message: String)
+    
     /// An error type denoting that a column type for the UIKit or SwiftUI split view interface is undefined.
     ///
     /// - Parameter message: A message to be sent with the error.

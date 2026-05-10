@@ -125,6 +125,14 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
         }
         
         if case .moveToNearest = configuration.presentationType, let destinationToVisit = configuration.destinationType {
+            guard let destinationToVisit = configuration.destinationType else {
+                let template = DestinationsSupport.errorMessage(for: .undefinedDestinationType(message: ""))
+                let message = String(format: template, configuration.presentationType.rawValue)
+                DestinationsSupport.logError(error: DestinationsError.undefinedDestinationType(message: message))
+                
+                return nil
+            }
+            
             let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
             
             // assign the target ID of the destination to move to

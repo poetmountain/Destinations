@@ -40,7 +40,7 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
     /// Removes all active Destinations in the Flow and sets a new root Destination.
     case replaceRoot
     
-    /// Finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another `View` higher in a `NavigationStack`.
+    /// Finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another Destination's view higher in a `NavigationStack`.
     ///
     /// The target Destination type is specified via the ``DestinationPresentation/destinationType`` property of the associated ``DestinationPresentation`` model.
     case moveToNearest

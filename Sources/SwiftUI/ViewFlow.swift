@@ -114,7 +114,15 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             parentOfCurrentDestination = parent
         }
         
-        if case .moveToNearest = configuration.presentationType, let destinationToVisit = configuration.destinationType {
+        if case .moveToNearest = configuration.presentationType {
+            guard let destinationToVisit = configuration.destinationType else {
+                let template = DestinationsSupport.errorMessage(for: .undefinedDestinationType(message: ""))
+                let message = String(format: template, configuration.presentationType.rawValue)
+                DestinationsSupport.logError(error: DestinationsError.undefinedDestinationType(message: message))
+                
+                return nil
+            }
+            
             let targetDestination = removeDestinationsBefore(nearest: destinationToVisit)
             
             // assign the target ID of the destination to move to
