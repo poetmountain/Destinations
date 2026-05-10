@@ -63,12 +63,6 @@ import UIKit
     /// - Parameter baseController: The root controller.
     func assignBaseController(_ baseController: any ControllerDestinationInterfacing)
     
-    /// Assigns a root controller to serve as the base controller of this Flow's Destinations.
-    /// - Parameter rootController: The root controller.
-    @available(*, deprecated, renamed: "assignBaseController(_:)", message: "This method has been deprecated and will be removed in a future version. Please use the assignBaseController(_:) method instead.")
-    func assignRoot(rootController: any ControllerDestinationInterfacing)
-    
-    
     /// Finds the nearest Destination of the specified type in the UI hierarchy.
     /// - Parameters:
     ///   - typeToFind: The type of Destination to find.
