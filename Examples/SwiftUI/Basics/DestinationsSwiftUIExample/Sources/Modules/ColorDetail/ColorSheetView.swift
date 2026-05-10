@@ -48,7 +48,7 @@ struct ColorSheetView: View {
 
                 Spacer(minLength: 50)
                 
-                Rectangle()
+                Circle()
                     .fill(Color(colorModel?.color ?? .black))
                     .frame(width: 100, height: 100)
                 if let name = colorModel?.name {
