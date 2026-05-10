@@ -35,9 +35,7 @@ struct CounterView: ViewDestinationInterfacing, DestinationTypes {
             
             HStack {
                 Button("Start counter") {
-                    destination().handleThrowable(closure: {
-                        try destination().performInterfaceAction(interactionType: .start)
-                    })
+                    destination().handleStartButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)
@@ -45,9 +43,7 @@ struct CounterView: ViewDestinationInterfacing, DestinationTypes {
                 .clipShape(Capsule())
                 
                 Button("Stop counter") {
-                    destination().handleThrowable(closure: {
-                        try destination().performInterfaceAction(interactionType: .stop)
-                    })
+                    destination().handleStopButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)

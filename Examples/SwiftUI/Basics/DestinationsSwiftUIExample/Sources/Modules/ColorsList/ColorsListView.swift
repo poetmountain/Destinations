@@ -37,7 +37,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     
                     
                     Button("Show More") {
-                        self.requestMoreButtonAction()
+                        destination().handleRequestMoreButtonAction()
                     }
                     .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
                     .foregroundStyle(.white)
@@ -45,10 +45,10 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     .clipShape(Capsule())
                     .padding()
                     
-                    .onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
-                        if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
-                            destinationState?.destination.handleThrowable(closure: {
-                                try destinationState?.destination.performInterfaceAction(interactionType: UserInteractionType.color(model: item))
+                    .onChange(of: selectedItem, { [weak destination = destination()] oldValue, newValue in
+                        if let newValue, let item = destination?.items.first(where: { $0.id == newValue }) {
+                            destination?.handleThrowable(closure: {
+                                try destination?.performAction(for: .color(model: item))
                             })
                             
                             Task {
@@ -59,9 +59,9 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                         
                     })
                 }
-                .navigationDestination(for: UUID.self) { [weak destinationState] destinationID in
-                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
-                        buildView(for: destination)
+                .navigationDestination(for: UUID.self) { [weak destination = destination()] destinationID in
+                    if let destinationToBuild = destination?.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+                        buildView(for: destinationToBuild)
                     }
                 }
 
@@ -81,12 +81,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
     }
     
     
-    func requestMoreButtonAction() {
-        let destination = destination()
-        destination.handleThrowable { [weak destination] in
-            try destination?.performInterfaceAction(interactionType: .moreButton)
-        }
-    }
+
     
 }
 

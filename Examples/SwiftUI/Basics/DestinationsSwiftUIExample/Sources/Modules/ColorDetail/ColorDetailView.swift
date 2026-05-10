@@ -56,7 +56,7 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
                 guard let sheetView else { return }
                 
                 destination?.handleThrowable(closure: {
-                    try destination?.performInterfaceAction(interactionType: .colorDetailButton, content: .dynamicView(view: sheetView))
+                    try destination?.performAction(for: .colorDetailButton, content: .dynamicView(view: sheetView))
                 })
                 
             }, label: {

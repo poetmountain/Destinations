@@ -175,7 +175,7 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
         Task {
             if let model = await datasource.items[safe: indexPath.item] {
                 destination.handleThrowable { [weak destination] in
-                    try destination?.performInterfaceAction(interactionType: .color(model: model))
+                    try destination?.performAction(for: .color(model: model))
                 }
             }
         }

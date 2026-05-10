@@ -91,8 +91,7 @@ public extension ViewDestinationable {
         }
     }
     
-    
-    func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
+    func performAction(for interactionType: UserInteractionType, content: ContentType? = nil) throws {
         
         guard var interfaceAction = internalState.interfaceActions[interactionType] else {
             let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
@@ -131,6 +130,11 @@ public extension ViewDestinationable {
             interfaceAction.data.contentType = content
             interfaceAction()
         }
+    }
+    
+    @available(*, deprecated, renamed: "performAction(for:content:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.")
+    func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
+        try performAction(for: interactionType, content: content)
     }
 
     func assignAssociatedView(view: ViewType) {

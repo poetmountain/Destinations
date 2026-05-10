@@ -62,7 +62,10 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
             
             Button("Change color") {
                 hostingState.destination.handleThrowable { [weak hostingState] in
-                    try hostingState?.destination.performInterfaceAction(interactionType: .changeColor, content: .color(model: ColorViewModel(color: .systemGreen, name: "Green")))
+                    try hostingState?.destination.performAction(
+                        for: .changeColor,
+                        content: .color(model: ColorViewModel(color: .systemGreen, name: "Green"))
+                    )
                 }
             }
         }

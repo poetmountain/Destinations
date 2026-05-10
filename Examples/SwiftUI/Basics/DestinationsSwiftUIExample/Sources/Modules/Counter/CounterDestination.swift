@@ -74,6 +74,18 @@ final class CounterDestination: ViewDestinationable, DestinationTypes {
                 print("error \(error)")
         }
     }
+    
+    func handleStartButtonTapped() {
+        handleThrowable(closure: { [weak self = self] in
+            try self?.performAction(for: .start)
+        })
+    }
+    
+    func handleStopButtonTapped() {
+        handleThrowable(closure: { [weak self = self] in
+            try self?.performAction(for: .stop)
+        })
+    }
 
     func prepareForPresentation() {
         

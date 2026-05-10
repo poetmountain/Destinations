@@ -44,8 +44,8 @@ final class DynamicRouteDestination: DestinationTypes, NavigatingViewDestination
         handleThrowable { [weak self] in
             guard let strongSelf = self else { return }
             
-            try strongSelf.performInterfaceAction(
-                interactionType: .navigate,
+            try strongSelf.performAction(
+                for: .navigate,
                 content: .route(strongSelf.selectedRoute)
             )
         }

@@ -105,8 +105,8 @@ final class ColorsListDestination: AppDestinationTypes, ControllerDestinationabl
     func prepareForPresentation() {
         
         // load initial color models from datasource
-        handleThrowable(closure: {
-            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+        handleThrowable(closure: { [weak self] in
+            try self?.performAction(for: .retrieveInitialColors)
         })
     }
 

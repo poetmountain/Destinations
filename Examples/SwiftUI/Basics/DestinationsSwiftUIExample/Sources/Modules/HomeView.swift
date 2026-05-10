@@ -43,8 +43,8 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
         VStack {
             Text("Home View")
             Button("Link to path") {
-                destination().handleThrowable(closure: {
-                    try destination().performInterfaceAction(interactionType: .pathPresent)
+                destination().handleThrowable(closure: { [weak destination = destination()] in
+                    try destination?.performAction(for: .pathPresent)
                 })
             }
             .padding()

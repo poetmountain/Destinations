@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController, ControllerDestinationInterfaci
     
     func handleButtonTap() {
         destination().handleThrowable { [weak self] in
-            try self?.destination().performInterfaceAction(interactionType: .pathPresent)
+            try self?.destination().performAction(for: .pathPresent)
         }
     }
 

@@ -92,11 +92,17 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
         })
         .store(in: &cancellables)
     }
+    
+    func handleRequestMoreButtonAction() {
+        handleThrowable { [weak self = self] in
+            try self?.performAction(for: .moreButton)
+        }
+    }
 
     func prepareForPresentation() {
         
-        handleThrowable(closure: {
-            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+        handleThrowable(closure: { [weak self = self] in
+            try self?.performAction(for: .retrieveInitialColors)
         })
     }
     
