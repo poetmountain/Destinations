@@ -1,5 +1,5 @@
 # Destinations
-![Static Badge](https://img.shields.io/badge/Swift-6.0-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
+![Static Badge](https://img.shields.io/badge/Swift-6.0%20%7C%206.1%20%7C%206.2%20%7C%206.3-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
 
 Destinations is a Swift library for UIKit and SwiftUI that is designed to truly decouple your UI and manage navigation flow. It is based on a philosophy that emphasizes clear separation of concerns, that each significant `View` or `UIViewController` in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change. Destinations enables your user interfaces to focus again on the user.
 
@@ -14,8 +14,6 @@ Destinations is a Swift library for UIKit and SwiftUI that is designed to truly 
 ## Getting Started
 
 #### Get started with the **[user guide](Guides/UserGuide.md)** for detailed explanations and examples.
-
-If you're upgrading from a previous version of Destinations, check out the [2.0 Migration Guide](Guides/MigrationGuide2.0.md) for breaking changes.
 
 Also check out the [Examples projects](Examples) to see Destinations in action in UIKit and SwiftUI, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
 
@@ -41,12 +39,12 @@ In order for the NotesView containing the list of Notes to be aware of this user
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation])
 ```
 
-Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` user interaction type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that user interaction type to its Destination, along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performInteraceAction()` method)
+Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` user interaction type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that user interaction type to its Destination, along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performAction()` method)
 ```swift
-.onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
-	if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
-        destination().handleThrowable {
-            try self.destination().performInterfaceAction(interactionType: .displayNote, content: .note(model: item))
+.onChange(of: selectedItem, { [weak destination = destination()] oldValue, newValue in
+	if let newValue, let item = destination?.items.first(where: { $0.id == newValue }) {
+        destination?.handleThrowable {
+            try destination?.performAction(for: .displayNote, content: .note(model: item))
         }
 	}
 })
@@ -80,11 +78,11 @@ struct SelectNoteAssistant: InterfaceActionConfiguring {
 
 ## Making a Datasource Request
 
-Continuing our Notes example, let's hook up a datasource **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI -- datasource retrievals, system API requests, etc.
+Continuing our Notes example, let's hook up an **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI -- network retrievals, system API requests, etc.
 
-So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncDatasourceable` protocol and will be called when our Notes Destination makes a request by passing in a NotesRequest. The `action` types we switch on represent the possible actions that the Interactor supports. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
+So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncInteractable` protocol and will be called when our Notes Destination makes a request by passing in a NotesRequest. The `action` types we switch on represent the possible actions that the Interactor supports. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
 ```swift
-actor NotesDatasource: AsyncDatasourceable {
+actor NotesDatasource: AsyncInteractable {
     typealias Request = NotesRequest
     typealias Item = Request.Item
                 
@@ -94,7 +92,7 @@ actor NotesDatasource: AsyncDatasourceable {
     
         switch request.action {
             case .retrieve:
-                return await self.retrieveNotes(request: request)
+                return await retrieveNotes(request: request)
             default: break
         }
     }
@@ -126,16 +124,24 @@ let notesAction = InteractorConfiguration<NotesDestination.InteractorType, Notes
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation], interactorsData: [.retrieveNotes: notesAction])
 ```
 
-Connecting this interface action to the UI works just the same as with Destination presentations. In our case we want to make an initial retrieval from NotesDatasource when the NotesDestination is first presented so that the Notes list is populated with data. Fortunately there's a `prepareForPresentation()` method we can implement on NotesDestination and make this interface action request there. That method is a good place to put any kind of configuration or Interactor operations as its UI is being presented.
+Connecting this interface action to the UI works just the same as with Destination presentations. In our case we want to make an initial retrieval from NotesDatasource when the NotesDestination is first presented so that the Notes list is populated with data. Fortunately there's a `prepareForAppearance(isVisible: Bool)` method we can implement on NotesDestination and make this interface action request there. That method is a good place to put any kind of state configuration or Interactor operations as its UI is being presented.
 ```swift
-destination().handleThrowable {
-    try self.destination().performInterfaceAction(interactionType: .retrieveNotes)
+func prepareForAppearance(isVisible: Bool) {
+    if isVisible {
+       handleNotesRetrieval()
+    }
+}
+    
+func handleNotesRetrieval() {
+    handleThrowable { [weak self] in 
+        try self?.performAction(for: .retrieveNotes)
+    }
 }
 ```
 
-We've connected one side of the Interactor request flow for our Notes retrieval operation, but we still need to handle the result of the request. For an Interactor that conforms to `AsyncInteractable` or `AsyncDatasourceable` as the NotesDatasource does, the result is presented to the calling Destination's `handleInteractorResult()` method. So assuming we have an `items` array on NotesDestination which our NotesView list observes, we can write something like this:
+We've connected one side of the Interactor request flow for our Notes retrieval operation, but we still need to handle the result of the request. For an Interactor that conforms to `AsyncInteractable` as the NotesDatasource does the result is presented to the calling Destination's `handleAsyncInteractorResult()` method. So assuming we have an `items` array on NotesDestination which our NotesView list observes, we can write something like this:
 ```swift
-func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
     
     switch result {
         case .success(let content):
@@ -163,6 +169,11 @@ If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** an
 * Xcode 16.0+
 * iOS 17+
 * Swift 6.0 or above. It has been tested against Swift 6 Strict Concurrency.
+
+### Migration Guides
+
+* [2.0 Migration Guide](Guides/MigrationGuide2.0.md)
+* [3.0 Migration Guide](Guides/MigrationGuide3.0.md)
 
 ### Installation
 

@@ -8,7 +8,7 @@
 * Removed the need to pass in `actionType` to interactor assistant initializers.
 * Added an advanced usage example project which shows how to set up dynamic runtime routing.
 #### Changes
-* Renamed `Destinationable`'s to `performInterfaceAction` method to `performAction`. `performInterfaceAction` has been marked as deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.
+* Renamed `Destinationable`'s `performInterfaceAction` method to `performAction`. `performInterfaceAction` has been marked as deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.
 * In previous versions the `moveToNearest` presentation type had an associated value that defined the Destination type to move to. This has been removed and the type is now defined by the `DestinationPresentation`'s `destinationType` property.
 * Removed the deprecated `assignRoot` and `startItemsRetrieval` methods.
 

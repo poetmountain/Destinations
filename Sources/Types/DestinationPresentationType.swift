@@ -42,7 +42,16 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
     
     /// Finds the nearest Destination of the specified type in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another Destination's view higher in a `NavigationStack`.
     ///
-    /// The target Destination type is specified via the ``DestinationPresentation/destinationType`` property of the associated ``DestinationPresentation`` model.
+    /// > Important: The target Destination type is specified via the ``DestinationPresentation/destinationType`` property of the associated ``DestinationPresentation`` model and is required.
+    ///
+    /// Example:
+    /// ```swift
+    ///    let backToHome = DestinationPresentation<Destination.DestinationType, Destination.ContentType, Destination.TabType>(
+    ///       destinationType: .home,
+    ///       presentationType: .moveToNearest,
+    ///       assistantType: .basic
+    ///    )
+    /// ```
     case moveToNearest
     
     /// Defines the presentation of a sheet view.

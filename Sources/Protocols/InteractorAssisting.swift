@@ -24,9 +24,6 @@ import Foundation
     /// The type of Interactor.
     var interactorType: InteractorType { get }
     
-    /// The type of action requested of the Interactor.
-    //var actionType: Request.ActionType { get }
-    
     /// A type that represents whether the Interactor request should be made using concurrency or not.
     var requestMethod: InteractorRequestMethod { get }
       
