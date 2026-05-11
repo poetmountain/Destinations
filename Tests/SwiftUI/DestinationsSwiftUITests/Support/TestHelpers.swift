@@ -223,7 +223,7 @@ struct TestGroupView: NavigatingDestinationInterfacing, DestinationTypes {
         NavigationStack(path: $destinationState.navigator.navigationPath, root: {
             VStack {
                 Button("Test") {
-                    try? destination().performInterfaceAction(interactionType: .test)
+                    try? destination().performAction(for: .test)
                 }
             }
         })
@@ -302,7 +302,7 @@ struct TestView: ViewDestinationInterfacing, DestinationTypes {
     var body: some View {
         VStack {
             Button("Test") {
-                try? destination().performInterfaceAction(interactionType: UserInteractions.test)
+                try? destination().performAction(for: UserInteractions.test)
             }
         }
     }

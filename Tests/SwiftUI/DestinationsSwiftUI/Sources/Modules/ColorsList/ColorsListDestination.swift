@@ -92,7 +92,7 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
     func prepareForPresentation() {
         // retrieve initial colors
         handleThrowable(closure: {
-            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+            try self.performAction(for: .retrieveInitialColors)
         })
     }
 }

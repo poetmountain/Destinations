@@ -148,7 +148,7 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
     func requestMoreButtonAction() {
         
         destination().handleThrowable { [weak self] in
-            try self?.destination().performInterfaceAction(interactionType: .moreButton)
+            try self?.destination().performAction(for: .moreButton)
         } catchClosure: {
             print("catch triggered!")
         }
@@ -210,8 +210,8 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
 
        if let model = datasource.items[safe: indexPath.item] {
            
-           destination().handleThrowable(closure: {
-               try self.destination().performInterfaceAction(interactionType: .color(model: model))
+           destination().handleThrowable(closure: { [weak destination = destination()] in
+               try destination?.performAction(for: .color(model: model))
            })
            
        }

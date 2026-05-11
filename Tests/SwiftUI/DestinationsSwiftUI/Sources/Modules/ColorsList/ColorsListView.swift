@@ -45,7 +45,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     .onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
                         if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
                             destinationState?.destination.handleThrowable(closure: {
-                                try destinationState?.destination.performInterfaceAction(interactionType: UserInteractionType.color(model: item))
+                                try destinationState?.destination.performAction(for: UserInteractionType.color(model: item))
                             })
                             
                             Task {

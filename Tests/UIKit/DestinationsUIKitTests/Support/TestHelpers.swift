@@ -23,12 +23,6 @@ import Destinations
 
         let startingTabs: [AppTabType] = startingTabs ?? [.palettes, .home]
         
-        
-        let homepath: [PresentationConfiguration] = [
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .tabBar(tab: .palettes), contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic),
-            PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), contentType: .color(model: ColorViewModel(color: .orange, name: "orange")), assistantType: .basic)
-        ]
-        
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(TestChooseColorFromListActionAssistant()))
 
         let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present), assistantType: .custom(ColorDetailActionAssistant()))
@@ -419,11 +413,8 @@ final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, 
     
     func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
         var closure = interfaceAction
-        
-        var content: ContentType?
-        
+                
         closure.data.parentID = destination.parentDestinationID()
-        
         
         if let content {
             closure.data.contentType = content

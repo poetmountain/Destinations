@@ -44,7 +44,7 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
             Text("Home View")
             Button("Link to path") {
                 do {
-                    try destination().performInterfaceAction(interactionType: UserInteractions.pathPresent)
+                    try destination().performAction(for: UserInteractions.pathPresent)
                 } catch {
                     destination().logError(error: error)
                 }

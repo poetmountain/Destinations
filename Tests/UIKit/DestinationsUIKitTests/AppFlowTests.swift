@@ -510,8 +510,6 @@ import Destinations
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         
-        let replaceAction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, assistantType: .basic)
-
         let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
         let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
         let colorsListProvider = TestColorsListProvider(interactorsData: [.retrieveInitialColors: colorsListRetrieveAction, .moreButton: colorsListMoreButtonAction])

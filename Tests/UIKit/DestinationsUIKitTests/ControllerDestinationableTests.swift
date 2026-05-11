@@ -15,7 +15,6 @@ import UIKit
 
     
     func test_assignInteractor() {
-        let colorSelection = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let colorsListConfigs = AppDestinationConfigurations<TestColorsDestination.UserInteractions, DestinationType, AppContentType, TabType>(configurations: [:])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, AppContentType, TabType>(configurations: [:])
 

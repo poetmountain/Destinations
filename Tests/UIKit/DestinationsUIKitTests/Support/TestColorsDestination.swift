@@ -98,7 +98,7 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
     
     func prepareForPresentation() {
         handleThrowable(closure: {
-            try self.performInterfaceAction(interactionType: .retrieveInitialColors)
+            try self.performAction(for: .retrieveInitialColors)
         })
     }
 

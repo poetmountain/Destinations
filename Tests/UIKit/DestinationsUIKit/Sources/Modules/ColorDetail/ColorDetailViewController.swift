@@ -65,7 +65,7 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     func handleDetailTap() {
         guard let colorModel else { return }
         destination().handleThrowable { [weak self] in
-            try self?.destination().performInterfaceAction(interactionType: .colorDetailButton(model: colorModel))
+            try self?.destination().performAction(for: .colorDetailButton(model: colorModel))
         }
     }
 

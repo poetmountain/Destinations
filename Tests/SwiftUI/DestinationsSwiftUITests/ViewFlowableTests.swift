@@ -117,7 +117,7 @@ import Destinations
         
         if let lastDestination = appFlow.activeDestinations.last as? ColorDetailDestination {
             print("moving back in stack from \(lastDestination.type)")
-            try? lastDestination.performInterfaceAction(interactionType: .goBack)
+            try? lastDestination.performAction(for: .goBack)
             
         } else {
             XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
@@ -157,7 +157,7 @@ import Destinations
         XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
         
         if let lastDestination = appFlow.activeDestinations.last as? ColorDetailDestination {
-            try? lastDestination.performInterfaceAction(interactionType: .moveToNearest)
+            try? lastDestination.performAction(for: .moveToNearest)
             
         } else {
             XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
