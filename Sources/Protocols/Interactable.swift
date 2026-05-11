@@ -15,7 +15,7 @@ import Foundation
 ///
 ///  The concept of Interactors comes from [Clean Swift](https://clean-swift.com), used in its architecture as a way to move logic and datasource management out of view controllers. In Destinations, the `Interactable` protocol represents Interactor objects which provide an interface to perform some logic or data request, typically by interfacing with an backend API, handling system APIs, or some other self-contained work. `Datasourceable` inherits from this protocol and should be used for objects which specifically represent a datasource of some kind. There are also Actor-based async versions of these protocols available.
 ///
-///  Though requests to Interactors can be made using a Destination's `performRequest` method, in general one should use the `performInterfaceAction` method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.
+///  Though requests to Interactors can be made using a Destination's `performRequest` method, in general one should use the `performAction` method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.
 ///
 ///  The recommended way is to assign a user interaction type to your request and using an `InteractorAssisting`-conforming assistant to configure the request, leaving the Destination's interface free of associated business logic.
 ///
@@ -27,10 +27,10 @@ import Foundation
 ///  let colorsProvider = ColorsListProvider(interactorsData: [.moreButton: paginateAction])
 ///  ```
 ///
-/// And here is that user interaction type being called by a Destination's interface. Note that `performInterfaceAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
+/// And here is that user interaction type being called by a Destination's interface. Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
 /// ```swift
 /// destination().handleThrowable {
-///    try destination().performInterfaceAction(interactionType: .moreButton)
+///    try destination().performAction(interactionType: .moreButton)
 /// }
 /// ```
 public protocol Interactable<Request>: AbstractInteractable {

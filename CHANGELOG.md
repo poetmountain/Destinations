@@ -1,3 +1,17 @@
+### 3.0.0
+#### Features
+* Added the `moveToNearest` presentation type for SwiftUI and UIKit projects, which finds the nearest Destination of the type specified by the `DestinationPresentation`'s `destinationType` in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another view higher in a navigation stack.
+* Added runtime preflight checks to Flows to ensure they are properly configured. The `providersPreflight()` method on Flows raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. This method is called automatically and no user implementation is necessary. The initializer for `ViewFlow` and `ControllerFlow` include a `routesToIgnore` parameter in their initializers to provide Destination routes that should not be checked by this preflight code.
+* Added runtime preflight checks to Providers to ensure they are properly configured. The `prepareForProviding()` method on Providers verifies that the Provider is configured correctly and is ready for providing Destinations. It determines whether all user interactions have a presentation or interactor action assigned to them, as well as whether a `UserInteractionType` has been incorrectly assigned to both a presentation and an interactor action. A failure of these checks will raise runtime asserts if there is an issue. Both of these methods are called automatically and no user implementation is necessary.
+* Added an `AutoCaseIterable` macro to enable automatic conformance to `CaseIterable` to any enums you apply it to, even when an enum has cases with associated values. `RoutableDestinations` and `UserInteractionTypeable` protocols now require `CaseIterable` conformance, so adoption should be easier and eliminate the need to manually update an array of enum cases.
+* Interactor request configurations are now saved in `AppDestinationConfigurations` (accessible via `destinationConfigurations` property in  `Destinationable`'s `internalState`). This change allows the configurations to be accessed by the Destination at runtime. This allows for instance the action type of the Interactor request to be abstracted away from the Destination.
+* Removed the need to pass in `actionType` to interactor assistant initializers.
+* Added an advanced usage example project which shows how to set up dynamic runtime routing.
+#### Changes
+* Renamed `Destinationable`'s to `performInterfaceAction` method to `performAction`. `performInterfaceAction` has been marked as deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.
+* In previous versions the `moveToNearest` presentation type had an associated value that defined the Destination type to move to. This has been removed and the type is now defined by the `DestinationPresentation`'s `destinationType` property.
+* Removed the deprecated `assignRoot` and `startItemsRetrieval` methods.
+
 ### 2.3.6
 * Fixed compilation failure for Archive builds introduced in version 2.3.2.
 
