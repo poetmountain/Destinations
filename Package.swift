@@ -29,7 +29,7 @@ let package = Package(
             name: "Destinations",
             dependencies: ["AutomaticEnumCaseIterableMacro"],
             path: "Sources",
-            exclude: ["Macros"],
+            exclude: ["Macros"]
         ),
         .macro(
             name: "AutomaticEnumCaseIterableMacro",
@@ -40,7 +40,7 @@ let package = Package(
             path: "Sources/Macros",
             swiftSettings: [
                 .swiftLanguageMode(.v6),
-            ],
+            ]
         ),
         .testTarget(
             name: "DestinationsUIKitTests",
