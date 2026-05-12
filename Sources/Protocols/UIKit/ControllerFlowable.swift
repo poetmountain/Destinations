@@ -203,7 +203,7 @@ public extension ControllerFlowable {
 
         if let parentID = destination.parentDestinationID(), let parentDestination = self.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             
-            if let navigationStackDestination = parentDestination as? NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
+            if let navigationStackDestination = parentDestination as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
                 if let targetIndex = navigationStackDestination.childDestinations().lastIndex(where: { $0.type == type }) {
                     // target is within the same navigation stack as current Destination
                     
@@ -215,7 +215,7 @@ public extension ControllerFlowable {
                     
                     DestinationsSupport.logger.log("Types to remove \(removedElements.map { $0.type })", level: .verbose)
                     
-                    let removedElementIDs = removedElements.map(\.id)
+                    let removedElementIDs = removedElements.map { $0.id }
                     
                     if removedElementIDs.count > 1 {
                         
