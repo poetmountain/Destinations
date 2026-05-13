@@ -41,6 +41,9 @@ public struct BackNavigationModifier: ViewModifier {
             .navigationBarBackButtonHidden(true)
             .toolbar {
 
+#if os(visionOS)
+                buildBackButton()
+#else
                 if #available(iOS 26.0, *) {
 #if swift(>=6.2)
                     buildBackButton()
@@ -51,6 +54,7 @@ public struct BackNavigationModifier: ViewModifier {
                 } else {
                     buildBackButton()
                 }
+#endif
                     
             }
             
@@ -82,7 +86,7 @@ public extension View {
     ///   - useGlassBackground: Determines whether the Liquid Glass background should be shown in iOS 26. The default visibility is `automatic`.
     ///   - selectionAction: An optional action to perform when the back button is tapped.
     /// - Returns: The `View` which provides the navigation bar customization.
-    public func goBackButton(buttonImage: Image? = nil, useGlassBackground: Bool? = nil, selectionAction: (() -> Void)?) -> some View {
+    func goBackButton(buttonImage: Image? = nil, useGlassBackground: Bool? = nil, selectionAction: (() -> Void)?) -> some View {
         modifier(BackNavigationModifier(buttonImage: buttonImage, useGlassBackground: useGlassBackground, selectionAction: selectionAction))
     }
 
