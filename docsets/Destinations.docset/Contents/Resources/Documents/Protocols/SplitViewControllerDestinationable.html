@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -672,6 +686,64 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations34SplitViewControllerDestinationableP6column10containingSo07UISplitcD6ColumnVSg10Foundation4UUIDV_tF"></a>
+                    <a name="//apple_ref/swift/Method/column(containing:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations34SplitViewControllerDestinationableP6column10containingSo07UISplitcD6ColumnVSg10Foundation4UUIDV_tF">column(containing:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a column type that contains the specified Destination identifer in its view hierarchy.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">column</span><span class="p">(</span><span class="n">containing</span> <span class="nv">destinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UISplitViewController</span><span class="o">.</span><span class="kt">Column</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinationID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier of the Destination to find.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A split view column type, if the Destination was found in the column&rsquo;s view hierarchy.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations34SplitViewControllerDestinationableP18currentDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSgSo07UISplitcD6ColumnV_tF"></a>
                     <a name="//apple_ref/swift/Method/currentDestination(for:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations34SplitViewControllerDestinationableP18currentDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS03TabJ0QzALRSXPSgSo07UISplitcD6ColumnV_tF">currentDestination(for:<wbr>)</a>
@@ -790,6 +862,88 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations34SplitViewControllerDestinationableP15findDestination10typeToFind12currentLevel6columnAA0dE0_p11ContentTypeQzAJRS_0gO0QzALRS03TabO0QzANRSXPSgAL_AaH_pA2JRS_A2LRSA2NRSXPSo07UISplitcD6ColumnVtF"></a>
+                    <a name="//apple_ref/swift/Method/findDestination(typeToFind:currentLevel:column:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations34SplitViewControllerDestinationableP15findDestination10typeToFind12currentLevel6columnAA0dE0_p11ContentTypeQzAJRS_0gO0QzALRS03TabO0QzANRSXPSgAL_AaH_pA2JRS_A2LRSA2NRSXPSo07UISplitcD6ColumnVtF">findDestination(typeToFind:<wbr>currentLevel:<wbr>column:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Finds a Destination of the specified type within the children of this <code>UISplitViewController</code>.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">findDestination</span><span class="p">(</span><span class="nv">typeToFind</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="nv">currentLevel</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">column</span><span class="p">:</span> <span class="kt">UISplitViewController</span><span class="o">.</span><span class="kt">Column</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>typeToFind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of Destination to find.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current level of the view hierarchy to search at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>column</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The column of the <code>UISplitViewController</code> to search in.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A Destination of the specified type, if one was found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations22GroupedDestinationableP14updateChildrenyyF"></a>
                     <a name="//apple_ref/swift/Method/updateChildren()" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations22GroupedDestinationableP14updateChildrenyyF">updateChildren()</a>
@@ -841,6 +995,36 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/removeChild(identifier:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP11removeChild10identifier0D26DestinationFromFlowClosurey10Foundation4UUIDV_yAIcSgtF">removeChild(identifier:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeChild</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>

@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -490,7 +504,7 @@
 
                 </div>
               </div>
-            <p>This protocol represents a datasource Interactor. Datasources are designed to provide data models to a Destination based on requests, such as requesting objects from a server for display in a navigation stack. For more information on Interactors, please see the documentation for <code><a href="../Protocols/Interactable.html">Interactable</a></code>.</p>
+            <p>This protocol represents a datasource Interactor. Datasources are designed to provide data models to a Destination based on simple data fetches, such as requesting objects from a server for display in a navigation stack. For more information on Interactors, please see the documentation for <code><a href="../Protocols/Interactable.html">Interactable</a></code>.</p>
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
     <p>If you need your datasource Interactor to run in an async context, please instead conform it to the <code><a href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a></code> protocol.</p>
@@ -525,46 +539,6 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Item</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations14DatasourceableP19startItemsRetrievalyyF"></a>
-                    <a name="//apple_ref/swift/Method/startItemsRetrieval()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14DatasourceableP19startItemsRetrievalyyF">startItemsRetrieval()</a>
-                    </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Tells the datasource to start retrieval of the items.</p>
-<div class="aside aside-note">
-    <p class="aside-title">Note</p>
-    <p>This method is deprecated and will be removed in a future version. To start the retrieval of items for a datasource, please instead use <code><a href="../Protocols/Destinationable.html">Destinationable</a></code>&lsquo;s <code>prepareForPresentation()</code> and call <code>performInterfaceAction()</code> with an interaction type which can initiate a retrieval request. If you need to configure an Interactor prior to making requests, please call the new <code>prepareForRequests()</code> method.</p>
-
-</div>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"This method is deprecated and will be removed in a future version. To start items retrieval for a datasource, please instead use Destinationable's prepareForPresentation(﹚ and call performInterfaceAction(﹚ with an interaction type which can initiate a retrieval request. If you need to configure an interactor prior to making requests, please call the new prepareForRequests(﹚ method."</span><span class="p">)</span>
-<span class="kd">func</span> <span class="nf">startItemsRetrieval</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

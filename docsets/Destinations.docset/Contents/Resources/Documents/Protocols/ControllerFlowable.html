@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -843,6 +857,64 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations18ControllerFlowableP28findNavigatorInViewHierarchy17searchDestinationAA0J14PathNavigating_pSgAA0B15Destinationable_p_tF"></a>
+                    <a name="//apple_ref/swift/Method/findNavigatorInViewHierarchy(searchDestination:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations18ControllerFlowableP28findNavigatorInViewHierarchy17searchDestinationAA0J14PathNavigating_pSgAA0B15Destinationable_p_tF">findNavigatorInViewHierarchy(searchDestination:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Finds the closest navigator in the view hierarchy to the provided Destination.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">findNavigatorInViewHierarchy</span><span class="p">(</span><span class="nv">searchDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/DestinationPathNavigating.html">DestinationPathNavigating</a></span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentDestination</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Destination to start searching at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Returns a navigator, if one was found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations18ControllerFlowableP015findSplitViewInF9Hierarchy18currentDestinationAA0efB15Destinationable_p11ContentTypeQzAHRS_0jM0QzAJRS03TabM0QzALRSXPSgAA0bK0_p_tF"></a>
                     <a name="//apple_ref/swift/Method/findSplitViewInViewHierarchy(currentDestination:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations18ControllerFlowableP015findSplitViewInF9Hierarchy18currentDestinationAA0efB15Destinationable_p11ContentTypeQzAHRS_0jM0QzAJRS03TabM0QzALRSXPSgAA0bK0_p_tF">findSplitViewInViewHierarchy(currentDestination:<wbr>)</a>
@@ -1006,26 +1078,32 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations18ControllerFlowableP10assignRoot04rootB0yAA0B22DestinationInterfacing_p_tF"></a>
-                    <a name="//apple_ref/swift/Method/assignRoot(rootController:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations18ControllerFlowableP10assignRoot04rootB0yAA0B22DestinationInterfacing_p_tF">assignRoot(rootController:<wbr>)</a>
+                    <a name="/s:12Destinations18ControllerFlowableP22findNearestDestination2of12currentLevelAA0B15Destinationable_p11ContentTypeQzAIRS_0fL0QzAKRS03TabL0QzAMRSXPSgAK_AaG_pA2IRS_A2KRSA2MRSXPtF"></a>
+                    <a name="//apple_ref/swift/Method/findNearestDestination(of:currentLevel:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations18ControllerFlowableP22findNearestDestination2of12currentLevelAA0B15Destinationable_p11ContentTypeQzAIRS_0fL0QzAKRS03TabL0QzAMRSXPSgAK_AaG_pA2IRS_A2KRSA2MRSXPtF">findNearestDestination(of:<wbr>currentLevel:<wbr>)</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Assigns a root controller to serve as the base controller of this Flow&rsquo;s Destinations.</p>
+                        <p>Finds the nearest Destination of the specified type in the UI hierarchy.</p>
 
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">renamed</span><span class="p">:</span> <span class="s">"assignBaseController(_:﹚"</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"This method has been deprecated and will be removed in a future version. Please use the assignBaseController(_:﹚ method instead."</span><span class="p">)</span>
-<span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">assignRoot</span><span class="p">(</span><span class="nv">rootController</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">findNearestDestination</span><span class="p">(</span><span class="n">of</span> <span class="nv">typeToFind</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="nv">currentLevel</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -1036,12 +1114,82 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>rootController</em>
+                                <em>typeToFind</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The root controller.</p>
+                                  <p>The type of Destination to find.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current hierarchy level to search at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A Destination of the specified type, if one was found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations18ControllerFlowableP18providersPreflight14routesToIgnoreySay15DestinationTypeQzGSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/providersPreflight(routesToIgnore:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations18ControllerFlowableP18providersPreflight14routesToIgnoreySay15DestinationTypeQzGSg_tF">providersPreflight(routesToIgnore:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This method raises a runtime assert if any Routes in a Flow do not have a Provider assigned to them. It is called automatically by <code><a href="../Classes/ControllerFlow.html">ControllerFlow</a></code>.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">providersPreflight</span><span class="p">(</span><span class="nv">routesToIgnore</span><span class="p">:</span> <span class="p">[</span><span class="kt">DestinationType</span><span class="p">]?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>routesToIgnore</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional list of routes to ignore when checking for Provider assignments.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1076,6 +1224,68 @@
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
 <span class="kd">@MainActor</span>
 <span class="kd">func</span> <span class="nf">presentNextDestinationInQueue</span><span class="p">(</span><span class="nv">contentToPass</span><span class="p">:</span> <span class="kt">ContentType</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations18ControllerFlowablePAAE06removeA6Before7nearestAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationI0QzAJRS03TabI0QzALRSXPSgAJ_tF"></a>
+                    <a name="//apple_ref/swift/Method/removeDestinationsBefore(nearest:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations18ControllerFlowablePAAE06removeA6Before7nearestAA0B15Destinationable_p11ContentTypeQzAHRS_011DestinationI0QzAJRS03TabI0QzALRSXPSgAJ_tF">removeDestinationsBefore(nearest:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeDestinationsBefore</span><span class="p">(</span><span class="n">nearest</span> <span class="nv">typeToFind</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations18ControllerFlowablePAAE23removeParentDestination3for5untilyAA0B15Destinationable_p11ContentTypeQzAIRS_0fK0QzAKRS03TabK0QzAMRSXP_AKtF"></a>
+                    <a name="//apple_ref/swift/Method/removeParentDestination(for:until:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations18ControllerFlowablePAAE23removeParentDestination3for5untilyAA0B15Destinationable_p11ContentTypeQzAIRS_0fK0QzAKRS03TabK0QzAMRSXP_AKtF">removeParentDestination(for:<wbr>until:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">removeParentDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">destination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">until</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

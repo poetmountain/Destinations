@@ -20,7 +20,7 @@
         <a class="header-link" href="index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -56,6 +56,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -471,6 +477,14 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:12Destinations018TabBarViewSelectedB14UpdatedClosurea">TabBarViewSelectedTabUpdatedClosure</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
               </li>
             </ul>
           </li>
@@ -1146,6 +1160,64 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations27DefaultNavigationControllerC"></a>
+                    <a name="//apple_ref/swift/Class/DefaultNavigationController" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations27DefaultNavigationControllerC">DefaultNavigationController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DefaultNavigationController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DefaultNavigationController</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">UINavigationController</span><span class="p">,</span> <span class="kt"><a href="Protocols.html#/s:12Destinations42NavigationControllerDestinationInterfacingP">NavigationControllerDestinationInterfacing</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations38DefaultNavigationControllerDestinationC"></a>
+                    <a name="//apple_ref/swift/Class/DefaultNavigationControllerDestination" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations38DefaultNavigationControllerDestinationC">DefaultNavigationControllerDestination</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DefaultNavigationControllerDestination.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DefaultNavigationControllerDestination</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigatingControllerDestinationable.html">NavigatingControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations19SplitViewControllerC"></a>
                     <a name="//apple_ref/swift/Class/SplitViewController" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations19SplitViewControllerC">SplitViewController</a>
@@ -1312,7 +1384,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIHostingState</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/DestinationStateable.html">DestinationStateable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SwiftUIHostingState</span><span class="o">&lt;</span><span class="kt">Content</span><span class="p">,</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/NavigationDestinationStateable.html">NavigationDestinationStateable</a></span> <span class="k">where</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt"><a href="Protocols/SwiftUIHostedInterfacing.html">SwiftUIHostedInterfacing</a></span><span class="p">,</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
 
                         </div>
                       </div>

@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -828,9 +842,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations14ControllerFlowC20destinationProviders19startingDestinationACyxq_q0_GSDyxAA0bG9Providing_pG_AA0G12PresentationCyxq0_q_Gtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(destinationProviders:startingDestination:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations14ControllerFlowC20destinationProviders19startingDestinationACyxq_q0_GSDyxAA0bG9Providing_pG_AA0G12PresentationCyxq0_q_Gtcfc">init(destinationProviders:<wbr>startingDestination:<wbr>)</a>
+                    <a name="/s:12Destinations14ControllerFlowC20destinationProviders19startingDestination14routesToIgnoreACyxq_q0_GSDyxAA0bG9Providing_pG_AA0G12PresentationCyxq0_q_GSayxGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(destinationProviders:startingDestination:routesToIgnore:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations14ControllerFlowC20destinationProviders19startingDestination14routesToIgnoreACyxq_q0_GSDyxAA0bG9Providing_pG_AA0G12PresentationCyxq0_q_GSayxGSgtcfc">init(destinationProviders:<wbr>startingDestination:<wbr>routesToIgnore:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -846,7 +860,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">destinationProviders</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC15DestinationTypea">DestinationType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationProviding.html">ControllerDestinationProviding</a></span><span class="p">],</span> <span class="nv">startingDestination</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC15DestinationTypea">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC11ContentTypea">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC7TabTypea">TabType</a></span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+<span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">destinationProviders</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC15DestinationTypea">DestinationType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationProviding.html">ControllerDestinationProviding</a></span><span class="p">],</span> <span class="nv">startingDestination</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC15DestinationTypea">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC11ContentTypea">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC7TabTypea">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">routesToIgnore</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/ControllerFlow.html#/s:12Destinations14ControllerFlowC15DestinationTypea">DestinationType</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -875,6 +889,18 @@
                               <td>
                                 <div>
                                   <p>The starting Destination.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>routesToIgnore</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional list of routes to ignore when checking for Provider assignments.</p>
                                 </div>
                               </td>
                             </tr>
@@ -932,34 +958,6 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">assignBaseController</span><span class="p">(</span><span class="n">_</span> <span class="nv">baseController</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations18ControllerFlowableP10assignRoot04rootB0yAA0B22DestinationInterfacing_p_tF"></a>
-                    <a name="//apple_ref/swift/Method/assignRoot(rootController:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations18ControllerFlowableP10assignRoot04rootB0yAA0B22DestinationInterfacing_p_tF">assignRoot(rootController:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">renamed</span><span class="p">:</span> <span class="s">"assignBaseController(_:﹚"</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"This method has been deprecated and will be removed in a future version. Please use the assignBaseController(_:﹚ method instead."</span><span class="p">)</span>
-<span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="nf">assignRoot</span><span class="p">(</span><span class="nv">rootController</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationInterfacing.html">ControllerDestinationInterfacing</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

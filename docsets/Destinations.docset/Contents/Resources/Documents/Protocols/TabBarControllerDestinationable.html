@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -500,34 +514,6 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations31TabBarControllerDestinationableP21navControllersForTabsSDy0B4TypeQzSo012UINavigationD0CGvp"></a>
-                    <a name="//apple_ref/swift/Property/navControllersForTabs" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP21navControllersForTabsSDy0B4TypeQzSo012UINavigationD0CGvp">navControllersForTabs</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A dictionary of UINavigationControllers whose keys are their associated tab types.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">navControllersForTabs</span><span class="p">:</span> <span class="p">[</span><span class="kt">TabType</span> <span class="p">:</span> <span class="kt">UINavigationController</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -720,6 +706,66 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations31TabBarControllerDestinationableP15rootDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS0bJ0QzALRSXPSgAL_tF"></a>
+                    <a name="//apple_ref/swift/Method/rootDestination(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP15rootDestination3forAA0dE0_p11ContentTypeQzAHRS_0gJ0QzAJRS0bJ0QzALRSXPSgAL_tF">rootDestination(for:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the root Destination for the tab. This is not necessarily the Destination representing the currently visible <code>UIViewController</code> in a tab, but is instead the <code>UIViewController</code> which is at the root level of the column, such as a <code>UINavigationController</code>.</p>
+
+<p>This method should be used when building the tabs for a <code>UITabViewController</code>.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">rootDestination</span><span class="p">(</span><span class="k">for</span> <span class="nv">tab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tab</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A tab type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A Destination, if one was found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations31TabBarControllerDestinationableP08selectedB14UpdatedClosureyAA0B5ModelCy0B4TypeQzGcSgvp"></a>
                     <a name="//apple_ref/swift/Property/selectedTabUpdatedClosure" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP08selectedB14UpdatedClosureyAA0B5ModelCy0B4TypeQzGcSgvp">selectedTabUpdatedClosure</a>
@@ -752,6 +798,9 @@
                     <a name="//apple_ref/swift/Method/presentDestination(destination:in:shouldUpdateSelectedTab:presentationOptions:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP18presentDestination11destination2in020shouldUpdateSelectedB019presentationOptions06removeG15FromFlowClosureyAA0dE0_p11ContentTypeQzALRS_0gT0QzANRS0bT0QzAPRSXP_APSbAA027NavigationStackPresentationN0VSgy10Foundation4UUIDVcSgtKF">presentDestination(destination:<wbr>in:<wbr>shouldUpdateSelectedTab:<wbr>presentationOptions:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -765,6 +814,10 @@
 
 </div>
 
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -824,60 +877,6 @@
                               <td>
                                 <div>
                                   <p>A model which provides options for presenting this Destination in the <code>UINavigationController</code> within the tab, including determining whether the presentation should be animated.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations31TabBarControllerDestinationableP018registerNavigationD9Delegates4withyAA28DestinationUIKitCoordinating_p_tF"></a>
-                    <a name="//apple_ref/swift/Method/registerNavigationControllerDelegates(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP018registerNavigationD9Delegates4withyAA28DestinationUIKitCoordinating_p_tF">registerNavigationControllerDelegates(with:<wbr>)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Registers the specified <code>UINavigationControllerDelegate</code> with the <code>UINavigationController</code> root objects in each tab.</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">registerNavigationControllerDelegates</span><span class="p">(</span><span class="n">with</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/DestinationUIKitCoordinating.html">DestinationUIKitCoordinating</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>coordinator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code>UINavigationControllerDelegate</code> coordinator object to register.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1176,6 +1175,135 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations31TabBarControllerDestinationableP06updateB11Controllers12destinations3forySayAA0dE0_p11ContentTypeQzAIRS_011DestinationK0QzAKRS0bK0QzAMRSXPG_SayAA0B5ModelCyAMGGtF"></a>
+                    <a name="//apple_ref/swift/Method/updateTabControllers(destinations:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP06updateB11Controllers12destinations3forySayAA0dE0_p11ContentTypeQzAIRS_011DestinationK0QzAKRS0bK0QzAMRSXPG_SayAA0B5ModelCyAMGGtF">updateTabControllers(destinations:<wbr>for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Updates multiple Destinations in the specified tabs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">updateTabControllers</span><span class="p">(</span><span class="nv">destinations</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">],</span> <span class="k">for</span> <span class="nv">tabs</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/TabModel.html">TabModel</a></span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>destinations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of Destinations</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tabs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The tabs whose <code>UIViewController</code> stacks should be replaced.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations31TabBarControllerDestinationableP15findDestination10typeToFind12currentLevelAA0dE0_p11ContentTypeQzAIRS_0gN0QzAKRS0bN0QzAMRSXPSgAK_AaG_pA2IRS_A2KRSA2MRSXPtF"></a>
+                    <a name="//apple_ref/swift/Method/findDestination(typeToFind:currentLevel:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations31TabBarControllerDestinationableP15findDestination10typeToFind12currentLevelAA0dE0_p11ContentTypeQzAIRS_0gN0QzAKRS0bN0QzAMRSXPSgAK_AaG_pA2IRS_A2KRSA2MRSXPtF">findDestination(typeToFind:<wbr>currentLevel:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Finds a Destination of the specified type within the children of this <code>UITabBarController</code>.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">findDestination</span><span class="p">(</span><span class="nv">typeToFind</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="nv">currentLevel</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>typeToFind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The type of Destination to find.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>currentLevel</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The current level of the view hierarchy to search at.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A Destination of the specified type, if one was found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations31TabBarControllerDestinationablePAAE40supportsIgnoringCurrentDestinationStatusSbvp"></a>
                     <a name="//apple_ref/swift/Property/supportsIgnoringCurrentDestinationStatus" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations31TabBarControllerDestinationablePAAE40supportsIgnoringCurrentDestinationStatusSbvp">supportsIgnoringCurrentDestinationStatus</a>
@@ -1207,6 +1335,36 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p11ContentTypeQzAJRS_0gN0QzALRS03TabN0QzANRSXP_SbSgAOtF"></a>
+                    <a name="//apple_ref/swift/Method/addChild(childDestination:shouldSetDestinationAsCurrent:shouldAnimate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP8addChild16childDestination09shouldSetG9AsCurrent0H7AnimateyAA0C0_p11ContentTypeQzAJRS_0gN0QzALRS03TabN0QzANRSXP_SbSgAOtF">addChild(childDestination:<wbr>shouldSetDestinationAsCurrent:<wbr>shouldAnimate:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">addChild</span><span class="p">(</span><span class="nv">childDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">shouldSetDestinationAsCurrent</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">shouldAnimate</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF"></a>
                     <a name="//apple_ref/swift/Method/replaceChild(currentID:with:removeDestinationFromFlowClosure:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations22GroupedDestinationableP12replaceChild9currentID4with32removeDestinationFromFlowClosurey10Foundation4UUIDV_AA0C0_p11ContentTypeQzAMRS_0jQ0QzAORS03TabQ0QzAQRSXPyAJcSgtF">replaceChild(currentID:<wbr>with:<wbr>removeDestinationFromFlowClosure:<wbr>)</a>
@@ -1228,6 +1386,36 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">func</span> <span class="nf">replaceChild</span><span class="p">(</span><span class="nv">currentID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="n">with</span> <span class="nv">newDestination</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">removeDestinationFromFlowClosure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:12Destinations32RemoveDestinationFromFlowClosurea">RemoveDestinationFromFlowClosure</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations22GroupedDestinationableP14updateChildrenyyF"></a>
+                    <a name="//apple_ref/swift/Method/updateChildren()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations22GroupedDestinationableP14updateChildrenyyF">updateChildren()</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">updateChildren</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

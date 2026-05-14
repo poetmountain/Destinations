@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -496,7 +510,7 @@
 
 <p>The concept of Interactors comes from <a href="https://clean-swift.com">Clean Swift</a>, used in its architecture as a way to move logic and datasource management out of view controllers. In Destinations, the <code>Interactable</code> protocol represents Interactor objects which provide an interface to perform some logic or data request, typically by interfacing with an backend API, handling system APIs, or some other self-contained work. <code><a href="../Protocols/Datasourceable.html">Datasourceable</a></code> inherits from this protocol and should be used for objects which specifically represent a datasource of some kind. There are also Actor-based async versions of these protocols available.</p>
 
-<p>Though requests to Interactors can be made using a Destination&rsquo;s <code>performRequest</code> method, in general one should use the <code>performInterfaceAction</code> method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.</p>
+<p>Though requests to Interactors can be made using a Destination&rsquo;s <code>performRequest</code> method, in general one should use the <code>performAction</code> method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.</p>
 
 <p>The recommended way is to assign a user interaction type to your request and using an <code><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></code>-conforming assistant to configure the request, leaving the Destination&rsquo;s interface free of associated business logic.</p>
 
@@ -507,9 +521,9 @@
  <span class="k">let</span> <span class="nv">colorsProvider</span> <span class="o">=</span> <span class="kt">ColorsListProvider</span><span class="p">(</span><span class="nv">interactorsData</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nv">moreButton</span><span class="p">:</span> <span class="n">paginateAction</span><span class="p">])</span>
 </code></pre>
 
-<p>And here is that user interaction type being called by a Destination&rsquo;s interface. Note that <code>performInterfaceAction</code> can throw and the Destination method <code>handleThrowable</code> automatically handles that for you, logging any errors to the console with the built-in Logger class.</p>
+<p>And here is that user interaction type being called by a Destination&rsquo;s interface. Note that <code>performAction</code> can throw and the Destination method <code>handleThrowable</code> automatically handles that for you, logging any errors to the console with the built-in Logger class.</p>
 <pre class="highlight swift"><code><span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="n">handleThrowable</span> <span class="p">{</span>
-   <span class="k">try</span> <span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="nf">performInterfaceAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="o">.</span><span class="n">moreButton</span><span class="p">)</span>
+   <span class="k">try</span> <span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="nf">performAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="o">.</span><span class="n">moreButton</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre>
 

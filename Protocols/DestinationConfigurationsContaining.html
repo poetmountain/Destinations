@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (98% documented)
+         (97% documented)
       </p>
     
     
@@ -58,6 +58,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -476,6 +482,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Macros.html">Macros</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Macros.html#/s:12Destinations16AutoCaseIterableyycfm">AutoCaseIterable()</a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <article class="main-content">
@@ -637,6 +651,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp"></a>
+                    <a name="//apple_ref/swift/Property/interactorConfigurations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A dictionary of interactor request configurations, using their associated user interaction types as keys.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interactorConfigurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF"></a>
                     <a name="//apple_ref/swift/Method/addConfiguration(configuration:for:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF">addConfiguration(configuration:<wbr>for:<wbr>)</a>
@@ -683,6 +724,64 @@
                               <td>
                                 <div>
                                   <p>The user interaction type to associate with this presentation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_19UserInteractionTypeQztF"></a>
+                    <a name="//apple_ref/swift/Method/addInteractorConfiguration(configuration:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_19UserInteractionTypeQztF">addInteractorConfiguration(configuration:<wbr>for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds an interactor request configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a></code> dictionary.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addInteractorConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An interactor request configuration to add.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>interactionType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The user interaction type to associate with this interactor request.</p>
                                 </div>
                               </td>
                             </tr>
@@ -745,6 +844,56 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg19UserInteractionTypeQz_tF"></a>
+                    <a name="//apple_ref/swift/Method/interactorConfiguration(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg19UserInteractionTypeQz_tF">interactorConfiguration(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns an interactor request configuration object, or <code>nil</code> if one isn&rsquo;t found.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">interactorConfiguration</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>interactionType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The user interaction type associated with the configuration object to be found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An object conforming to the <code><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></code> protocol, or <code>nil</code> if the specified object was not found.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:12Destinations35DestinationConfigurationsContainingP09removeAllC0yyF"></a>
                     <a name="//apple_ref/swift/Method/removeAllConfigurations()" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP09removeAllC0yyF">removeAllConfigurations()</a>
@@ -755,7 +904,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Removes all presentation configuration objects held in this object.</p>
+                        <p>Removes all configurations held in this object.</p>
 
                       </div>
                       <div class="declaration">
