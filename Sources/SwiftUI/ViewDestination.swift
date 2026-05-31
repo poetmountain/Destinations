@@ -13,7 +13,7 @@ import Foundation
 ///
 /// This is a generic Destination that can be used to represent most `View`s in a SwiftUI-based app.
 @Observable
-public final class ViewDestination<ViewType: ViewDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: ViewDestinationable {
+public final class ViewDestination<ViewType: ViewDestinationInterfacing, EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: ViewDestinationable {
 
     /// A unique identifier.
     public let id = UUID()
@@ -24,8 +24,9 @@ public final class ViewDestination<ViewType: ViewDestinationInterfacing, UserInt
     /// The SwiftUI `View` class associated with this Destination.
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
-    
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+
+    public var stateModel: (any StateModeling<ViewDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)?
 
     /// The initializer.
     /// - Parameters:
@@ -33,18 +34,14 @@ public final class ViewDestination<ViewType: ViewDestinationInterfacing, UserInt
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
+    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil, state: (any StateModeling<ViewDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = destinationType
-
+        self.stateModel = state
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
 
     }
-    
-    public func prepareForPresentation() {
-    }
-
 }
 
 extension ViewDestination: Equatable {

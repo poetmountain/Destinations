@@ -41,7 +41,7 @@ import Destinations
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
             
-            let presentation = destination.presentation(for: ColorsListDestination.UserInteractions.color(model: nil))
+            let presentation = destination.presentation(for: ColorsListDestination.Events.color(model: nil))
             XCTAssertNotNil(presentation)
             
         } else {
@@ -132,9 +132,9 @@ import Destinations
         
         if let destination = appFlow.currentDestination as? ColorsListDestination {
             let colorButtonSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic)
-            let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorButtonSelection, interactionType: .color(model: nil))
+            let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorButtonSelection, eventType: .color(model: nil))
             
-            XCTAssertEqual(interfaceAction.userInteractionType, .color(model: nil))
+            XCTAssertEqual(interfaceAction.eventType, .color(model: nil))
             XCTAssertEqual(interfaceAction.data.destinationType, colorButtonSelection.destinationType)
             XCTAssertEqual(interfaceAction.data.presentationID, colorButtonSelection.id)
             
@@ -161,7 +161,7 @@ import Destinations
             let sheetDismiss = PresentationConfiguration(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)
             let systemSelection = destination.buildSystemNavigationAction(presentationClosure: { _ in }, configuration: sheetDismiss, navigationType: .navigateBackInStack)
             
-            XCTAssertEqual(systemSelection.userInteractionType, .navigateBackInStack)
+            XCTAssertEqual(systemSelection.eventType, .navigateBackInStack)
             XCTAssertEqual(systemSelection.data.actionType, .systemNavigation)
             XCTAssertEqual(systemSelection.data.presentationID, sheetDismiss.id)
             
@@ -174,7 +174,7 @@ import Destinations
         
         let expectation = expectation(description: "Performs a request and tests the result in the closure")
 
-        let destination = ViewDestination<HomeView, HomeView.UserInteractions, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home)
+        let destination = ViewDestination<HomeView, HomeView.Events, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home)
         let view = HomeView(destination: destination)
         destination.assignAssociatedView(view: view)
         
@@ -206,23 +206,27 @@ import Destinations
     
     func test_addInterfaceAction() {
         let destination = ColorsListDestination()
-        let listView = ColorsListView(destination: destination)
+        let state = ColorsListState(destination: destination)
+        destination.stateModel = state
+        let listView = ColorsListView(destination: destination, state: state)
         destination.assignAssociatedView(view: listView)
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
-        let interactionType = ColorsListDestination.UserInteractions.color(model: nil)
-        let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorSelection, interactionType: interactionType)
+        let eventType = ColorsListDestination.Events.color(model: nil)
+        let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorSelection, eventType: eventType)
         
         try? destination.addInterfaceAction(action: interfaceAction)
         
-        XCTAssertNotNil(destination.internalState.interfaceActions[interactionType])
+        XCTAssertNotNil(destination.internalState.interfaceActions[eventType])
     }
     
     func test_addSystemNavigationClosure() {
 
         let destination = ColorsListDestination()
-        let listView = ColorsListView(destination: destination)
+        let state = ColorsListState(destination: destination)
+        destination.stateModel = state
+        let listView = ColorsListView(destination: destination, state: state)
         destination.assignAssociatedView(view: listView)
 
         let backSelection = PresentationConfiguration(presentationType: .navigationStack(type: .goBack), actionType: .systemNavigation, assistantType: .basic)

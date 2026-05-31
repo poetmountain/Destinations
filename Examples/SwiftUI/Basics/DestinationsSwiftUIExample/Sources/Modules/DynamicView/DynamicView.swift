@@ -10,32 +10,26 @@ import SwiftUI
 import Destinations
 
 struct DynamicView<Content: View>: ViewDestinationInterfacing, DestinationTypes {
-        
-    public enum UserInteractions: UserInteractionTypeable {
-        public var rawValue: String {
-            return ""
-        }
-        
-    }
 
-    typealias Destination = DynamicDestination
+    typealias Destination = ViewDestination<DynamicView<AnyView>, GeneralAppInteractions, RouteDestinationType, AppContentType, AppTabType, AppInteractorType>
 
     @State public var destinationState: DestinationInterfaceState<Destination>
 
     public var id = UUID()
-    
+
     @ViewBuilder public var content: Content
-    
+
     public init(destination: Destination, @ViewBuilder content: () -> Content) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        let state = DefaultDestinationState(destination: destination)
+        self.destinationState = DestinationInterfaceState(destination: destination, state: state)
         self.content = content()
     }
 
-    
+
     public var body: some View {
         content
     }
-    
+
     public static func == (lhs: DynamicView<Content>, rhs: DynamicView<Content>) -> Bool {
         lhs.id == rhs.id
     }

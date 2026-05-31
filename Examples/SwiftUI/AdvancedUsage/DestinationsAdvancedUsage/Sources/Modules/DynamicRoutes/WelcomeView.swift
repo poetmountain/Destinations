@@ -12,14 +12,14 @@ import Destinations
 
 struct WelcomeView: ViewDestinationInterfacing, DestinationTypes {
 
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             ""
         }
     }
 
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ViewDestination<WelcomeView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ViewDestination<WelcomeView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
     @State var destinationState: DestinationInterfaceState<Destination>
 

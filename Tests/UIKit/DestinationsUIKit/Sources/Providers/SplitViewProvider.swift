@@ -12,14 +12,14 @@ import Destinations
 
 struct SplitViewProvider: ControllerDestinationProviding, DestinationTypes {
     
-    public typealias Destination = SplitViewControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    public typealias Destination = SplitViewControllerDestination<EventType, DestinationType, AppContentType, TabType, InteractorType>
 
-    public var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
-    public var interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [Destination.EventType: any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     var initialContent: [UISplitViewController.Column: RouteDestinationType]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
                 
         var destinationsForColumns: [UISplitViewController.Column: any ControllerDestinationable<DestinationType, AppContentType, TabType>] = [:]
         
@@ -38,7 +38,7 @@ struct SplitViewProvider: ControllerDestinationProviding, DestinationTypes {
             }
         }
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations, parentDestinationID: configuration.parentDestinationID)
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, AppContentType, TabType, InteractorType>(type: DestinationType.splitView, destinationsForColumns: destinationsForColumns, destinationConfigurations: destinationPresentations, parentDestinationID: configuration.parentDestinationID)
 
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewController.preferredDisplayMode = .oneBesideSecondary

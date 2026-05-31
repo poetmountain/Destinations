@@ -12,10 +12,10 @@ import Destinations
 struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
     
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    public typealias Destination = ColorDetailDestination
+    public typealias Destination = ColorDetailViewController.Destination
     
-    public var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     let transitionAnimator = AnimationTransitionCoordinator()
 
@@ -44,19 +44,20 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
             
         })), assistantType: .basic)
         
-        presentationsData = [.colorDetailButton(model: nil): sheetPresent, .customDetailButton(model: nil): customSheetPresent]
+        presentationsData = [.colorDetailButton: sheetPresent, .customDetailButton: customSheetPresent]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?
         if let contentType = configuration.contentType, case let .color(model) = contentType {
             colorModel = model
         }
 
-        let destination = ColorDetailDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .colorDetail, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let controller = ColorDetailViewController(destination: destination, colorModel: colorModel)
+        let state = ColorDetailState(colorModel: colorModel)
+        let controller = ColorDetailViewController(destination: destination, state: state)
         destination.assignAssociatedController(controller: controller)
 
         return destination

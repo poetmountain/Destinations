@@ -11,9 +11,9 @@ import Destinations
 
 final class HomeViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
  
-    typealias UserInteractionType = HomeUserInteractions
+    typealias EventType = HomeEvents
     typealias InteractorType = AppInteractorType
-    typealias Destination = ControllerDestination<HomeViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    typealias Destination = ControllerDestination<HomeViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
 
@@ -53,9 +53,7 @@ final class HomeViewController: UIViewController, ControllerDestinationInterfaci
     }
     
     func handleButtonTap() {
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .pathPresent)
-        }
+        destination().handleEvent(.pathPresent)
     }
 
 }

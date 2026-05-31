@@ -10,17 +10,17 @@ import UIKit
 import Destinations
 
 final class SheetViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         
         var rawValue: String {
             ""
         }
     }
 
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias InteractorType = AppInteractorType
-    typealias Destination = SheetDestination
-        
+    typealias Destination = NavigationControllerDestination<SheetViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>
+
     var destinationState: NavigationDestinationInterfaceState<Destination>
 
     init(destination: Destination, rootController: UIViewController) {
@@ -35,7 +35,7 @@ final class SheetViewController: UINavigationController, NavigationControllerDes
     override func endAppearanceTransition() {
         let destination = destination()
         
-        if isBeingDismissed && !destination.isSystemNavigating {
+        if isBeingDismissed && !destination.isSystemNavigating() {
             destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID()))
          }
          super.endAppearanceTransition()
@@ -46,17 +46,17 @@ final class SheetViewController: UINavigationController, NavigationControllerDes
 final class SheetContentViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
     
 
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
 
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias InteractorType = AppInteractorType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias Destination = SheetDestination
-    
+    typealias Destination = SheetViewController.Destination
+
     var destinationState: DestinationInterfaceState<Destination>
 
     lazy var circleView: CircleView = {
@@ -150,7 +150,7 @@ final class SheetContentViewController: UIViewController, ControllerDestinationI
     override func endAppearanceTransition() {
         let destination = destination()
         
-        if isBeingDismissed && !destination.isSystemNavigating {
+        if isBeingDismissed && !destination.isSystemNavigating() {
             destination.performSystemNavigationAction(navigationType: .dismissSheet, options: SystemNavigationOptions(targetID: destination.id, parentID: destination.parentDestinationID()))
          }
          super.endAppearanceTransition()

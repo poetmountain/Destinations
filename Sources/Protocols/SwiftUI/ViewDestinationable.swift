@@ -72,9 +72,9 @@ public extension ViewDestinationable {
         }
     }
     
-    func updateInterfaceActions(actions: [InterfaceAction<UserInteractionType, DestinationType, ContentType>]) {
+    func updateInterfaceActions(actions: [InterfaceAction<EventType, DestinationType, ContentType>]) {
         for action in actions {
-            if let interactionType = action.userInteractionType {
+            if let eventType = action.eventType {
                 handleThrowable { [weak self] in
                     try self?.addInterfaceAction(action: action)
                 }
@@ -85,35 +85,35 @@ public extension ViewDestinationable {
     
     func updateSystemNavigationActions(actions: [InterfaceAction<SystemNavigationType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let interactionType = action.userInteractionType {
+            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let eventType = action.eventType {
                 addSystemNavigationAction(action: action)
             }
         }
     }
     
-    func performAction(for interactionType: UserInteractionType, content: ContentType? = nil) throws {
+    func performAction(for eventType: EventType, content: ContentType? = nil) throws {
         
-        guard var interfaceAction = internalState.interfaceActions[interactionType] else {
+        guard var interfaceAction = internalState.interfaceActions[eventType] else {
             let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
-            let message = String(format: template, interactionType.rawValue, type.rawValue)
+            let message = String(format: template, eventType.rawValue, type.rawValue)
             
             throw DestinationsError.missingInterfaceAction(message: message)
         }
         
-        if let presentation = internalState.destinationConfigurations?.configuration(for: interactionType) {
+        if let presentation = internalState.destinationConfigurations?.configuration(for: eventType) {
             
             if case .navigationStack(type: let navigationType) = presentation.presentationType, navigationType == .goBack {
                 moveBackInNavigationStack()
                 return
             }
             
-            let assistant: (any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType>)
+            let assistant: (any InterfaceActionConfiguring<EventType, DestinationType, ContentType>)
             
             switch presentation.assistantType {
                 case .basic:
-                    assistant = DefaultActionAssistant<UserInteractionType, DestinationType, ContentType>()
+                    assistant = DefaultActionAssistant<EventType, DestinationType, ContentType>()
                 case .custom(let customAssistant):
-                    if let customAssistant = customAssistant as? any InterfaceActionConfiguring<UserInteractionType, DestinationType, ContentType> {
+                    if let customAssistant = customAssistant as? any InterfaceActionConfiguring<EventType, DestinationType, ContentType> {
                         assistant = customAssistant
                     } else {
                         let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
@@ -122,7 +122,7 @@ public extension ViewDestinationable {
                     }
             }
             
-            let configuredAction = assistant.configure(interfaceAction: interfaceAction, interactionType: interactionType, destination: self, content: content)
+            let configuredAction = assistant.configure(interfaceAction: interfaceAction, eventType: eventType, destination: self, content: content)
             configuredAction()
             
         } else {
@@ -133,16 +133,26 @@ public extension ViewDestinationable {
     }
     
     @available(*, deprecated, renamed: "performAction(for:content:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.")
-    func performInterfaceAction(interactionType: UserInteractionType, content: ContentType? = nil) throws {
-        try performAction(for: interactionType, content: content)
+    func performInterfaceAction(eventType: EventType, content: ContentType? = nil) throws {
+        try performAction(for: eventType, content: content)
     }
 
     func assignAssociatedView(view: ViewType) {
         self.view = view
+        
+        // assign the state from the View to the Destination
+        if let viewModel = view.destinationState.stateModel as? any StateModeling<Self> {
+            self.stateModel = viewModel
+            self.stateModel?.destination = self
+        } else {
+            assertionFailure("The StateModel assigned to the View's destinationState is not of type StateModeling.")
+        }
+        
     }
     
     func removeAssociatedInterface() {
         self.view = nil
+        self.stateModel = nil
     }
     
     func setPresentingNavigator(navigator: any DestinationPathNavigating) {

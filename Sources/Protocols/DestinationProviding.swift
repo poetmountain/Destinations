@@ -29,14 +29,14 @@ import Foundation
     /// An enum which defines the types of content that are able to be sent through Destinations.
     associatedtype ContentType: ContentTypeable
     
-    /// A dictionary of presentation configuration models, with their keys being the user interaction type.
-    var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
+    /// A dictionary of presentation configuration models, with their keys being the event type.
+    var presentationsData: [Destination.EventType: DestinationPresentation<DestinationType, ContentType, TabType>] { get set }
     
-    /// A dictionary of interactor action configuration models, with their keys being the user interaction type associated with each interactor action.
-    var interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>] { get set }
+    /// A dictionary of interactor action configuration models, with their keys being the event type associated with each interactor action.
+    var interactorsData: [Destination.EventType: any InteractorConfiguring<Destination.InteractorType>] { get set }
     
     /// Generates Destination presentations associated with this provider.
-    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?
+    func buildPresentations() -> AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?
     
     /// Generates system navigation presentations supported by Destinations.
     func buildSystemPresentations() -> AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?
@@ -52,22 +52,22 @@ import Foundation
 }
 
 public extension DestinationProviding {
-    func buildPresentations() -> AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>? {
+    func buildPresentations() -> AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>? {
         
-        let configurations = AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>()
+        let configurations = AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>()
         
         // add configurations for Destination presentations
-        for (interactionType, configuration) in presentationsData {
+        for (eventType, configuration) in presentationsData {
             let presentation = configuration.copy()
-            if let interactionType = interactionType as? Destination.UserInteractionType {
-                configurations.addConfiguration(configuration: presentation, for: interactionType)
+            if let eventType = eventType as? Destination.EventType {
+                configurations.addConfiguration(configuration: presentation, for: eventType)
             }
         }
         
         // add configurations for Interactor requests
-        for (interactionType, configuration) in interactorsData {
-            if let interactionType = interactionType as? Destination.UserInteractionType {
-                configurations.addInteractorConfiguration(configuration: configuration, for: interactionType)
+        for (eventType, configuration) in interactorsData {
+            if let eventType = eventType as? Destination.EventType {
+                configurations.addInteractorConfiguration(configuration: configuration, for: eventType)
             }
         }
         
@@ -82,10 +82,10 @@ public extension DestinationProviding {
         let sheetDismiss = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)
         let systemNavigations: [SystemNavigationType: DestinationPresentation<DestinationType, ContentType, TabType>] = [.navigateBackInStack: backSelection, .dismissSheet: sheetDismiss]
         
-        for (interactionType, configuration) in systemNavigations {
+        for (eventType, configuration) in systemNavigations {
             let presentation = configuration.copy()
             
-            configurations.addConfiguration(configuration: presentation, for: interactionType)
+            configurations.addConfiguration(configuration: presentation, for: eventType)
             
         }
         
@@ -93,8 +93,8 @@ public extension DestinationProviding {
     }
 
     func assignInteractorAssistants(for destination: Destination) {
-        for (interactionType, configuration) in interactorsData {
-            configuration.assignInteractorAssistant(destination: destination, interactionType: interactionType)
+        for (eventType, configuration) in interactorsData {
+            configuration.assignInteractorAssistant(destination: destination, eventType: eventType)
         }
     }
 }
@@ -102,33 +102,33 @@ public extension DestinationProviding {
 public extension DestinationProviding {
     
     func prepareForProviding() {
-        let missingInteraction = presentationsPreflight()
-        assert(missingInteraction == nil, "⚠️ \(Self.self) has no action assigned for user interaction type: \(missingInteraction?.rawValue ?? "unknown")")
+        let missingEvent = presentationsPreflight()
+        assert(missingEvent == nil, "⚠️ \(Self.self) has no action assigned for event type: \(missingEvent?.rawValue ?? "unknown")")
         
-        let sharedInteraction = verifyUserInteractionExclusivity()
-        assert(sharedInteraction == nil, "⚠️ \(Self.self) has the user interaction type \(sharedInteraction?.rawValue ?? "unknown") assigned to both a presentation and an interactor action.")
+        let sharedEvent = verifyEventExclusivity()
+        assert(sharedEvent == nil, "⚠️ \(Self.self) has the event type \(sharedEvent?.rawValue ?? "unknown") assigned to both a presentation and an interactor action.")
     }
     
-    /// Determines whether all user interactions have a presentation or interactor action assigned to them.
+    /// Determines whether all events have a presentation or interactor action assigned to them.
     ///
     /// > Note: This is automatically called by ``prepareForProviding()``.
-    /// - Returns: An optional `UserInteractionType` representing the first failing user interaction found.
-    internal func presentationsPreflight() -> Destination.UserInteractionType? {
+    /// - Returns: An optional `EventType` representing the first failing event found.
+    internal func presentationsPreflight() -> Destination.EventType? {
         
         let presentationKeys = Set(presentationsData.keys)
         let interactorKeys = Set(interactorsData.keys)
         let registeredTypes = presentationKeys.union(interactorKeys)
-        let allTypes = Destination.UserInteractionType.allCases
+        let allTypes = Destination.EventType.allCases
         let missingKeys = Set(allTypes).subtracting(registeredTypes)
         return missingKeys.first
 
     }
     
-    /// Determines whether a `UserInteractionType` is assigned to both a presentation and an interactor action.
+    /// Determines whether a `EventType` is assigned to both a presentation and an interactor action.
     ///
     /// > Note: This is automatically called by ``prepareForProviding()``.
-    /// - Returns: An optional `UserInteractionType` representing the first failing user interaction found.
-    internal func verifyUserInteractionExclusivity() -> Destination.UserInteractionType? {
+    /// - Returns: An optional `EventType` representing the first failing event found.
+    internal func verifyEventExclusivity() -> Destination.EventType? {
         let presentationKeys = Set(presentationsData.keys)
         let interactorKeys = Set(interactorsData.keys)
         

@@ -10,9 +10,9 @@ import Foundation
 import Destinations
 
 final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
+    typealias EventType = ColorsListDestination.Events
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         var routeType: RouteDestinationType?
@@ -20,7 +20,7 @@ final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, Dest
         
         closure.data.parentID = destination.parentDestinationID()
         
-        if case .color(model: let model) = interactionType {
+        if case .color(model: let model) = eventType {
             routeType = RouteDestinationType.colorDetail
             if let model {
                 contentType = .color(model: model)

@@ -9,7 +9,7 @@
 import SwiftUI
 import Destinations
 
-enum TabSelections: UserInteractionTypeable {
+enum TabSelections: EventTypeable {
     case back
     
     public var rawValue: String {
@@ -22,20 +22,21 @@ enum TabSelections: UserInteractionTypeable {
 
 struct AppTabView: TabBarViewDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         public var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = TabViewDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = TabViewDestination<Self, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     @State public var destinationState: DestinationInterfaceState<Destination>
 
 
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        let state = DefaultDestinationState(destination: destination)
+        self.destinationState = DestinationInterfaceState(destination: destination, state: state)
     }
     
     

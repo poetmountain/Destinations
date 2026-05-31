@@ -11,17 +11,17 @@ import Destinations
 
 struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, DestinationTypes {
   
-    enum UserInteractions: UserInteractionTypeable {
-        case changeColor
+    enum Events: EventTypeable {
+        case changeTab
         
         var rawValue: String {
             switch self {
-                case .changeColor:
-                    return "changeColor"
+                case .changeTab:
+                    return "changeTab"
             }
         }
         
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
         
@@ -31,16 +31,16 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
     }
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ViewDestination<ColorView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ViewDestination<ColorView, EventType, DestinationType, ContentType, TabType, InteractorType>
     
     var destinationState: DestinationInterfaceState<Destination>
 
-    @State var hostingState: SwiftUIHostingState<ColorView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    @State var hostingState: SwiftUIHostingState<ColorView, EventType, DestinationType, ContentType, TabType, InteractorType>
     
     @State var colorModel: ColorViewModel?
 
-    init(model: ColorViewModel? = nil, parentDestination: SwiftUIContainerDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>) {
+    init(model: ColorViewModel? = nil, parentDestination: SwiftUIContainerDestination<Self, EventType, DestinationType, ContentType, TabType, InteractorType>) {
         let destination = Destination(destinationType: .colorDetail)
         self.destinationState = DestinationInterfaceState(destination: destination)
         self.hostingState = SwiftUIHostingState(destination: parentDestination)
@@ -60,13 +60,8 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
                 .fill(Color(colorModel?.color ?? .black))
                 .frame(width: 200, height: 200)
             
-            Button("Change color") {
-                hostingState.destination.handleThrowable { [weak hostingState] in
-                    try hostingState?.destination.performAction(
-                        for: .changeColor,
-                        content: .color(model: ColorViewModel(color: .systemGreen, name: "Green"))
-                    )
-                }
+            Button("Switch tab to Palettes") {
+                hostingState.destination.handleEvent(.changeTab)
             }
         }
     }

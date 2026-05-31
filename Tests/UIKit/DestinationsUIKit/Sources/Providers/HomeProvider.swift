@@ -11,15 +11,15 @@ import Destinations
 
 struct HomeProvider: ControllerDestinationProviding, DestinationTypes {
     
-    typealias UserInteractionType = HomeUserInteractions
-    public typealias Destination = ControllerDestination<HomeViewController, HomeUserInteractions, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = HomeEvents
+    public typealias Destination = ControllerDestination<HomeViewController, HomeEvents, DestinationType, ContentType, TabType, InteractorType>
 
-    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
         
-        let destination = ControllerDestination<HomeViewController, HomeUserInteractions, DestinationType, ContentType, TabType, HomeViewController.InteractorType>(destinationType: .home, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = ControllerDestination<HomeViewController, HomeEvents, DestinationType, ContentType, TabType, HomeViewController.InteractorType>(destinationType: .home, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
         
         let controller = HomeViewController(destination: destination)
         destination.assignAssociatedController(controller: controller)

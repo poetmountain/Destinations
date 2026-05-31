@@ -12,28 +12,31 @@ import Destinations
 struct ColorsListProvider: ControllerDestinationProviding, DestinationTypes {
     
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
-    public typealias Destination = ColorsListDestination
+    public typealias Destination = ColorsViewController.Destination
     
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     init() {
         // presentation actions
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
         
         // interactor actions
-        let paginateAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
+        let paginateAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
+        let colorsListRetrieveAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
         
-        presentationsData = [.color(model: nil): colorSelection]
+        presentationsData = [.color: colorSelection]
         interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
-        
-        let destination = ColorsListDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
 
-        let controller = ColorsViewController(destination: destination)
+        let destination = Destination(destinationType: .colorsList, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+
+        let state = ColorsListState(destination: destination)
+        destination.stateModel = state
+
+        let controller = ColorsViewController(destination: destination, state: state)
         destination.assignAssociatedController(controller: controller)
 
         let datasource = ColorsDatasource()

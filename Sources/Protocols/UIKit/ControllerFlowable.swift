@@ -269,9 +269,7 @@ public extension ControllerFlowable {
             guard let configuration else { return }
             
             
-            if didComplete == true {
-                DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                
+            if didComplete == true {                
                 if let destination {
                     
                     // handle use case where the top-level Destination should be replaced

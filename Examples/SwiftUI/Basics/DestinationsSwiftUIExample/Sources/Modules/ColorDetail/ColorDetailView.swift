@@ -9,56 +9,75 @@
 import SwiftUI
 import Destinations
 
-struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, DestinationTypes {
+@Observable
+final class ColorDetailInterfaceState: DestinationStateable, DestinationTypes {
     
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    typealias Destination = ColorDetailDestination
-        
-    @State var destinationState: DestinationInterfaceState<Destination>
+    enum Events: EventTypeable, Equatable {
+
+        case colorDetailButton
+
+        var rawValue: String {
+            switch self {
+                case .colorDetailButton:
+                    return "colorDetailButton"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case colors
+    }
+    
+    typealias Destination = ViewDestination<ColorDetailView, Events, DestinationType, AppContentType, TabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: ColorDetailState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+    }
+}
+
+struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, DestinationTypes {
+
+    typealias Destination = ColorDetailInterfaceState.Destination
+    typealias EventType = ColorDetailInterfaceState.Events
+    typealias InteractorType = ColorDetailInterfaceState.InteractorType
+
+    @State var destinationState: ColorDetailInterfaceState
 
     @State var areDatasourcesSetup = false
-            
-    @State private var colorModel: ColorViewModel?
-    
-    @State var sheetPresentation = SheetPresentation()
-    
-    @State var sheetView: ContainerView<AnyView>?
-    
-    init(destination: Destination, model: ColorViewModel? = nil, sheetView: ContainerView<AnyView>? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
 
-        if let model {
-            _colorModel = State.init(initialValue: model)
-        }
-        
-        if let sheetView {
-            _sheetView = State.init(initialValue: sheetView)
-        }
-        
+    @State var sheetPresentation = SheetPresentation()
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
+
         sheetPresentation.dismissedClosure = {
             print("custom dismissed!")
         }
     }
-    
-    mutating func updateSheetView(sheetView: ContainerView<AnyView>) {
-        
-        _sheetView = State.init(initialValue: sheetView)
-    }
-    
+
     var body: some View {
         VStack {
-            Text("Color \(colorModel?.name ?? "")")
+            Text("Color \(destinationState.stateModel.colorModel?.name ?? "")")
             Circle()
-                .fill(Color(colorModel?.color ?? .black))
+                .fill(Color(destinationState.stateModel.colorModel?.color ?? .black))
                 .frame(width: 200, height: 200)
 
             Button(action: { [weak destination = destination()] in
-                guard let sheetView else { return }
-                
-                destination?.handleThrowable(closure: {
-                    try destination?.performAction(for: .colorDetailButton, content: .dynamicView(view: sheetView))
-                })
-                
+                destination?.handleEvent(.colorDetailButton)
             }, label: {
                 Text("Present")
             })
@@ -72,18 +91,18 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
 
 
 struct ColorDetailSelectionModel: Hashable {
-    
+
     var color: ColorViewModel?
     var targetID: UUID?
-    
+
 }
 
 public struct DynamicViewModel: Equatable, Hashable {
-    
+
     let id: UUID = UUID()
-    
+
     var view: ContainerView<AnyView>?
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

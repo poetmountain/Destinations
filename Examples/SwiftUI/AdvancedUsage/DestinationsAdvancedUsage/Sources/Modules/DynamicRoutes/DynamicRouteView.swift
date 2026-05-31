@@ -10,15 +10,42 @@
 import SwiftUI
 import Destinations
 
+@Observable
+final class DynamicRouteInterfaceState: NavigationDestinationStateable, DestinationTypes {
+    
+    enum Events: String, EventTypeable {
+        case navigate
+    }
+
+    enum InteractorType: InteractorTypeable {
+    }
+    
+    typealias Destination = NavigationViewDestination<Events, DynamicRouteView, DestinationType, AppContentType, TabType, InteractorType>
+
+    var destination: Destination
+
+    var navigator: any DestinationPathNavigating = DestinationNavigator()
+
+    var stateModel: DynamicRouteState
+
+    init(destination: Destination, state: DynamicRouteState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+        navigator.navigatorDestinationID = destination.id
+    }
+}
+
 struct DynamicRouteView: NavigatingDestinationInterfacing, DestinationTypes {
 
-    typealias UserInteractionType = DynamicRouteDestination.UserInteractions
-    typealias Destination = DynamicRouteDestination
+    typealias EventType = DynamicRouteInterfaceState.Events
+    typealias InteractorType = DynamicRouteInterfaceState.InteractorType
+    typealias Destination = DynamicRouteInterfaceState.Destination
 
-    @State var destinationState: NavigationDestinationInterfaceState<Destination>
+    @State var destinationState: DynamicRouteInterfaceState
 
-    init(destination: Destination) {
-        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+    init(destination: Destination, state: DynamicRouteState) {
+        self.destinationState = DynamicRouteInterfaceState(destination: destination, state: state)
     }
 
     var body: some View {
@@ -34,7 +61,7 @@ struct DynamicRouteView: NavigatingDestinationInterfacing, DestinationTypes {
                     .padding(.horizontal)
                     .padding(.bottom, 10)
 
-                Picker("Destination", selection: $destinationState.destination.selectedRoute) {
+                Picker("Destination", selection: $destinationState.stateModel.selectedRoute) {
                     Text("Welcome").tag(Route.welcome)
                     Text("Info").tag(Route.info)
                 }
@@ -42,7 +69,7 @@ struct DynamicRouteView: NavigatingDestinationInterfacing, DestinationTypes {
                 .padding(.horizontal)
 
                 Button("Navigate") {
-                    destination().handleNavigateTapped()
+                    destination().handleEvent(.navigate)
                 }
                 .padding(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                 .foregroundStyle(.white)

@@ -11,14 +11,14 @@ import Destinations
 
 struct StartProvider: ControllerDestinationProviding, DestinationTypes {
     
-    public typealias Destination = NavigationControllerDestination<StartViewController, StartViewController.UserInteractions, DestinationType, ContentType, TabType, InteractorType>
+    public typealias Destination = NavigationControllerDestination<StartViewController, StartViewController.Events, DestinationType, ContentType, TabType, InteractorType>
 
-    public var presentationsData: [Destination.UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
         
-        let destination = NavigationControllerDestination<StartViewController, StartViewController.UserInteractions, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .start, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = NavigationControllerDestination<StartViewController, StartViewController.Events, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .start, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let controller = StartViewController(destination: destination)
         destination.assignAssociatedController(controller: controller)

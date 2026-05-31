@@ -22,7 +22,7 @@ import Foundation
     ///   - configuration: A ``DestinationPresentation`` object which provides configuration data to construct the Destination.
     ///   - appFlow: A reference to the ``Flowable`` object which should call this method. This is necessary in cases where a Destination type needs to create children Destinations as part of its construction.
     /// - Returns: The newly created ``ViewDestinationable`` object.
-    func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination?
+    func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination?
 }
 
 public extension ViewDestinationProviding {

@@ -9,16 +9,16 @@ import UIKit
 import Destinations
 
 final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
+    typealias EventType = ColorDetailDestination.Events
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         var contentType: ContentType?
 
         closure.data.parentID = destination.id
 
-        switch interactionType {
+        switch eventType {
             case .colorDetailButton(model: let model):
                 if let model, closure.data.contentType == nil {
                     contentType = .color(model: model)

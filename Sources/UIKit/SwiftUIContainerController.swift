@@ -11,21 +11,22 @@ import UIKit
 
 /// A controller that serves as a container for a SwiftUI `View`.
 public final class SwiftUIContainerController<Content: SwiftUIHostedInterfacing>: UIViewController, SwiftUIContainerInterfacing {
-    
+        
     public typealias InteractorType = Content.InteractorType
-    public typealias UserInteractionType = Content.UserInteractionType
+    public typealias EventType = Content.EventType
     public typealias DestinationType = Content.DestinationType
     public typealias ContentType = Content.ContentType
     public typealias TabType = Content.TabType
+    public typealias StateModel = DefaultDestinationState<Destination>
+
+    public typealias DestinationState = SwiftUIHostingState<Content, EventType, DestinationType, ContentType, TabType, InteractorType>
     
-    public typealias DestinationState = SwiftUIHostingState<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
     
-    
-    public typealias Destination = SwiftUIContainerDestination<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias Destination = SwiftUIContainerDestination<Content, EventType, DestinationType, ContentType, TabType, InteractorType>
 
     
     /// The Destination associated with the contained SwiftUI `View`.
-    public var destinationState: SwiftUIHostingState<Content, UserInteractionType, DestinationType, ContentType, TabType, InteractorType> {
+    public var destinationState: SwiftUIHostingState<Content, EventType, DestinationType, ContentType, TabType, InteractorType> {
         get {
             return adapter.view.hostingState
         }

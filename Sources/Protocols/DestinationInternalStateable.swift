@@ -10,10 +10,10 @@
 import Foundation
 
 /// This protocol represents classes which the internal state of classes conforming to the ``Destinationable`` protocol.
-public protocol DestinationInternalStateable<UserInteractionType, DestinationType, TabType, ContentType, InteractorType> {
+public protocol DestinationInternalStateable<EventType, DestinationType, TabType, ContentType, InteractorType> {
     
-    /// An enum which defines user interaction types for this Destination's interface.
-    associatedtype UserInteractionType: UserInteractionTypeable
+    /// An enum which defines event types for this Destination's interface.
+    associatedtype EventType: EventTypeable
     
     /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
@@ -31,7 +31,7 @@ public protocol DestinationInternalStateable<UserInteractionType, DestinationTyp
     var parentDestinationID: UUID? { get set }
     
     /// An ``AppDestinationConfigurations`` object representing configurations to handle user interactions on this Destination's associated UI.
-    var destinationConfigurations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>? { get set }
+    var destinationConfigurations: AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>? { get set }
     
     /// An ``AppDestinationConfigurations`` instance that holds configurations to handle system navigation events related to this Destination.
     var systemNavigationConfigurations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>? { get set }
@@ -42,14 +42,14 @@ public protocol DestinationInternalStateable<UserInteractionType, DestinationTyp
     /// A dictionary of interactors, with the associated keys being their interactor type.
     var interactors: [InteractorType: any AbstractInteractable] { get set }
     
-    /// A dictionary of ``InterfaceAction`` objects, with the key being the associated user interaction type.
-    var interfaceActions: [UserInteractionType: InterfaceAction<UserInteractionType, DestinationType, ContentType>] { get set }
+    /// A dictionary of ``InterfaceAction`` objects, with the key being the associated event type.
+    var interfaceActions: [EventType: InterfaceAction<EventType, DestinationType, ContentType>] { get set }
     
     /// A dictionary of system navigation interface actions which are run when certain system navigation events occur, with the key being the associated system navigation type.
     var systemNavigationActions: [SystemNavigationType: InterfaceAction<SystemNavigationType, DestinationType, ContentType>] { get set }
     
-    /// A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated user interaction type.
-    var interactorAssistants: [UserInteractionType: any InteractorAssisting<InteractorType, ContentType>] { get set }
+    /// A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated event type.
+    var interactorAssistants: [EventType: any InteractorAssisting<InteractorType, ContentType>] { get set }
 
     /// A reference to the associated navigator object, if this Destination was presented within a SwiftUI `NavigationStack` or a custom navigation object.
     /// - Note: This property is unused with UIKit navigation controllers.

@@ -14,8 +14,8 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
     public typealias Destination = ColorDetailDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
     init() {
         let goBackAction = DestinationPresentation<DestinationType, ContentType, TabType>(presentationType: .navigationStack(type: .goBack), assistantType: .basic)
@@ -24,7 +24,7 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
         presentationsData = [.goBack: goBackAction, .moveToNearest: moveToNearestAction]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?
         if let contentType = configuration.contentType, case let .color(model) = contentType {
@@ -33,7 +33,8 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
         
         let destination = ColorDetailDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let view = ColorDetailView(destination: destination, model: colorModel)
+        let state = ColorDetailState(colorModel: colorModel)
+        let view = ColorDetailView(destination: destination, state: state)
         destination.assignAssociatedView(view: view)
 
         return destination

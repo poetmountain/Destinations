@@ -13,15 +13,15 @@ import Destinations
 struct ColorNavProvider: ViewDestinationProviding, DestinationTypes {
     
     public typealias Destination = ColorNavDestination
-    typealias UserInteractionType = Destination.UserInteractionType
+    typealias EventType = Destination.EventType
 
-    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
+    public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    var containerDestination: SwiftUIContainerDestination<ColorNavView, UserInteractionType, ColorNavView.DestinationType, ColorNavView.ContentType, ColorNavView.TabType, Destination.InteractorType>
+    var containerDestination: SwiftUIContainerDestination<ColorNavView, EventType, ColorNavView.DestinationType, ColorNavView.ContentType, ColorNavView.TabType, Destination.InteractorType>
 
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ViewFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ViewFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
 
         let destination = ColorNavDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

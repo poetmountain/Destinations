@@ -12,16 +12,16 @@ import Destinations
 
 struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterfacing, DestinationTypes {
 
-    typealias UserInteractionType = ColorNavDestination.UserInteractions
+    typealias EventType = ColorNavDestination.Events
     typealias Destination = ColorNavDestination
     
     @State var destinationState: NavigationDestinationInterfaceState<Destination>
 
-    @State var hostingState: SwiftUIHostingState<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    @State var hostingState: SwiftUIHostingState<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
-    init(destination: Destination, parentDestination: SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>) {
+    init(destination: Destination, parentDestination: SwiftUIContainerDestination<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>) {
         self.destinationState = NavigationDestinationInterfaceState(destination: destination)
-        self.hostingState = SwiftUIHostingState<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(destination: parentDestination)
+        self.hostingState = SwiftUIHostingState<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>(destination: parentDestination)
 
     }
     

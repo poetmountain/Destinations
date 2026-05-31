@@ -196,9 +196,7 @@ public extension ViewFlowable {
             guard let strongSelf = self else { return }
             guard let configuration else { return }
             
-            if didComplete == true {
-                DestinationsSupport.logger.log("✌️ Default presentation completion closure", level: .verbose)
-                
+            if didComplete == true {                
                 if let destination {
                     strongSelf.updateActiveDestinations(with: destination)
                 }

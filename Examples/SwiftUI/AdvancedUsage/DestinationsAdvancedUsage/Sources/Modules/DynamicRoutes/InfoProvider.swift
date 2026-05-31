@@ -12,13 +12,13 @@ import Destinations
 
 struct InfoProvider: ViewDestinationProviding, DestinationTypes {
 
-    typealias UserInteractionType = InfoView.UserInteractions
-    typealias Destination = ViewDestination<InfoView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = InfoView.Events
+    typealias Destination = ViewDestination<InfoView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
-    var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
-    var interactorsData: [UserInteractionType: any InteractorConfiguring<InteractorType>] = [:]
+    var presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    var interactorsData: [EventType: any InteractorConfiguring<InteractorType>] = [:]
 
-    func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
 
         let destination = Destination(destinationType: .info, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

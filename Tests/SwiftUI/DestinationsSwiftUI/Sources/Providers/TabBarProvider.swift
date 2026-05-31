@@ -11,13 +11,13 @@ import Destinations
 
 struct TabBarProvider: ViewDestinationProviding, DestinationTypes {
     
-    public typealias Destination = TabViewDestination<AppTabView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
-    typealias UserInteractionType = AppTabView.UserInteractionType
+    public typealias Destination = TabViewDestination<AppTabView, EventType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = AppTabView.EventType
 
-    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         
@@ -45,7 +45,7 @@ struct TabBarProvider: ViewDestinationProviding, DestinationTypes {
             }
         }
         
-        if let destination = TabViewDestination<AppTabView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: RouteDestinationType.tabBar(tabs: tabs), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
+        if let destination = TabViewDestination<AppTabView, EventType, DestinationType, ContentType, TabType, InteractorType>(type: RouteDestinationType.tabBar(tabs: tabs), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabView = AppTabView(destination: destination)
             destination.assignAssociatedView(view: tabView)

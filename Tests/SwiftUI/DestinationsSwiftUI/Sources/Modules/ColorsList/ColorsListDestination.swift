@@ -8,16 +8,15 @@
 
 import Foundation
 import Destinations
-import Combine
 
 @Observable
 final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationable {
     
     typealias ViewType = ColorsListView
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
 
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors
         
@@ -30,7 +29,7 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
             }
         }
         
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
         
@@ -49,50 +48,16 @@ final class ColorsListDestination: DestinationTypes, NavigatingViewDestinationab
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
-    
-    var items: [ColorViewModel] = []
+
+    var stateModel: (any StateModeling<ColorsListDestination>)?
 
     private(set) var listID: UUID = UUID()
-
-    private(set) var cancellables: Set<AnyCancellable> = []
 
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
-    }
-    
-    func configureInteractor(_ interactor: any AbstractInteractable, type: ColorsListDestination.InteractorType) {
-        switch type {
-            case .colors:
-                if let datasource = interactor as? ColorsDatasource {
-                    subscribeToDatasource(datasource: datasource)
-                }
-        }
-    }
-    
-    func subscribeToDatasource(datasource: ColorsDatasource) {
-        cancellables.removeAll()
-                
-        // set up Combine subscriber for the items provider
-        datasource.itemsProvider
-        .receive(on: RunLoop.main)
-        .compactMap { $0 }
-        .sink(receiveValue: { [weak self] (current) in
-            guard let strongSelf = self else { return }
-            let items = current
-            strongSelf.items = items
-            DestinationsSupport.logger.log("items received \(items)", category: .network)
-        })
-        .store(in: &cancellables)
-    }
-
-    func prepareForPresentation() {
-        // retrieve initial colors
-        handleThrowable(closure: {
-            try self.performAction(for: .retrieveInitialColors)
-        })
     }
 }

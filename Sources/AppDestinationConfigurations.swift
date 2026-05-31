@@ -10,18 +10,18 @@
 import Foundation
 
 /// A container class for Destination presentation configuration models, which are used by a Destination to present new Destinations.
-public final class AppDestinationConfigurations<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>: DestinationConfigurationsContaining {
+public final class AppDestinationConfigurations<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>: DestinationConfigurationsContaining {
             
     
-    /// A dictionary of presentation configuration objects, whose keys are a user interaction type they're associated with.
-    public var configurations: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    /// A dictionary of presentation configuration objects, whose keys are an event type they're associated with.
+    public var configurations: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
     
-    /// A dictionary of interactor request configuration objects, whose keys are a user interaction type they're associated with.
-    public var interactorConfigurations: [UserInteractionType: any InteractorConfiguring] = [:]
+    /// A dictionary of interactor request configuration objects, whose keys are an event type they're associated with.
+    public var interactorConfigurations: [EventType: any InteractorConfiguring] = [:]
 
     /// Initializer.
-    /// - Parameter configurations: A dictionary of presentation configuration objects, whose keys are a user interaction type they're associated with.
-    public init(configurations: [UserInteractionType : DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorConfigurations: [UserInteractionType: any InteractorConfiguring]? = nil) {
+    /// - Parameter configurations: A dictionary of presentation configuration objects, whose keys are an event type they're associated with.
+    public init(configurations: [EventType : DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorConfigurations: [EventType: any InteractorConfiguring]? = nil) {
         if let configurations {
             self.configurations = configurations
         }
@@ -30,27 +30,27 @@ public final class AppDestinationConfigurations<UserInteractionType: UserInterac
         }
     }
     
-    /// Adds a presentation configuration to the specified user interaction type.
+    /// Adds a presentation configuration to the specified event type.
     /// - Parameters:
     ///   - configuration: The presentation configuration to add.
-    ///   - interactionType: The user interaction type to associate with the presentation.
-    public func addConfiguration(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, for interactionType: UserInteractionType) {
-        self.configurations[interactionType] = configuration
+    ///   - eventType: The event type to associate with the presentation.
+    public func addConfiguration(configuration: DestinationPresentation<DestinationType, ContentType, TabType>, for eventType: EventType) {
+        self.configurations[eventType] = configuration
     }
     
-    public func addInteractorConfiguration(configuration: any InteractorConfiguring, for interactionType: UserInteractionType) {
-        self.interactorConfigurations[interactionType] = configuration
+    public func addInteractorConfiguration(configuration: any InteractorConfiguring, for eventType: EventType) {
+        self.interactorConfigurations[eventType] = configuration
     }
     
-    /// Returns a presentation configuration object based on its associated user interaction type.
-    /// - Parameter interactionType: The user interaction type to find a configuration object for.
+    /// Returns a presentation configuration object based on its associated event type.
+    /// - Parameter eventType: The event type to find a configuration object for.
     /// - Returns: A presentation configuration, if one is found.
-    public func configuration(for interactionType: UserInteractionType) -> DestinationPresentation<DestinationType, ContentType, TabType>? {
-        return configurations[interactionType]
+    public func configuration(for eventType: EventType) -> DestinationPresentation<DestinationType, ContentType, TabType>? {
+        return configurations[eventType]
     }
     
-    public func interactorConfiguration(for interactionType: UserInteractionType) -> (any InteractorConfiguring)? {
-        return interactorConfigurations[interactionType]
+    public func interactorConfiguration(for eventType: EventType) -> (any InteractorConfiguring)? {
+        return interactorConfigurations[eventType]
     }
     
     /// Removes all model objects from the ``configurations`` dictionary.

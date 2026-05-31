@@ -300,5 +300,6 @@ public extension SplitViewControllerDestinationable {
     
     // default implementation
     func prepareForPresentation() {
+        stateModel?.prepareForPresentation()
     }
 }

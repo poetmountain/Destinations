@@ -10,9 +10,9 @@ import UIKit
 import Destinations
 
 final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = TestColorsDestination.UserInteractions
+    typealias EventType = TestColorsDestination.Events
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
                 
         closure.data.parentID = destination.parentDestinationID()

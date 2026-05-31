@@ -14,10 +14,10 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
     public typealias Destination = ColorsListDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil) {
+    init(presentationsData: [Destination.EventType: PresentationConfiguration]? = nil) {
 
         if let presentationsData {
             self.presentationsData = presentationsData
@@ -33,14 +33,15 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
         interactorsData = [.retrieveInitialColors: colorsListRetrieveAction]
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         let destination = ColorsListDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let listView = ColorsListView(destination: destination)
+        let state = ColorsListState(destination: destination)
+        let listView = ColorsListView(destination: destination, state: state)
         destination.assignAssociatedView(view: listView)
 
-        let datasource = ColorsDatasource(with: ColorsPresenter())
+        let datasource = ColorsDatasource()
         destination.assignInteractor(interactor: datasource, for: .colors)
         
          return destination

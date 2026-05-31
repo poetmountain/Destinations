@@ -21,25 +21,25 @@ Also check out the [Examples projects](Examples) to see Destinations in action i
 
 Keeping application logic, tight couplings to datasources and system APIs, and knowledge of other views out of your views and view controllers can be a constant battle, compounded by often tight timelines to get a feature shipped. Destinations is a library designed from the ground up to address this problem.
 
-In Destinations, user interfaces have no knowledge of the actions they should take. They have no knowledge of datasources, other UI screens, either. All of these things -- Views, actions, datasources -- are associated with enum values. User interactions are represented by enum values too, and they in turn are associated with an action the app should take. Thus, when a user interacts with a UI element the only thing the View sends along is the enum value associated with that user interaction. In this way, app functionality is no longer tightly coupled to UI, and can be switched or modified easily. A button in View A can display View B, even though A has no knowledge of B, or even that it should present a View! A button could make a server request or show a modal sheet simply by switching its associated action, with no direct knowledge of either.
+In Destinations, user interfaces have no knowledge of the actions they should take. They have no knowledge of datasources, other UI screens, either. All of these things -- Views, actions, datasources -- are associated with enum values. User interaction events are represented by enum values too, and they in turn are associated with an action the app should take. Thus, when a user interacts with a UI element the only thing the View sends along is the enum value associated with that event. In this way, app functionality is no longer tightly coupled to UI, and can be switched or modified easily. A button in View A can display View B, even though A has no knowledge of B, or even that it should present a View! A button could make a server request or show a modal sheet simply by switching its associated action, with no direct knowledge of either.
 
 But more than that, abstracting navigation and View presentation actions, along with datasource request handling, enables Destinations to act as a framework for your app's feature flows. And it handles most UIKit and SwiftUI presentation tasks for you, allowing you to focus on your app's functionality instead of writing boilerplate code.
 
 ## Presenting a Destination
 
-Destinations represents each significant interface element – typically one that would be presented as the active view on the screen and can be routed to – as an abstract object that conforms to the `Destinationable` protocol. For shorthand I'll refer to these objects as a **Destination**. A Destination's role in the ecosystem is to represent a discrete user interface screen and to manage user interaction events and datasource requests on behalf of that interface. It allows its interface to focus on that task.
+Destinations represents each significant interface element – typically one that would be presented as the active view on the screen and can be routed to – as an abstract object that conforms to the `Destinationable` protocol. For shorthand I'll refer to these objects as a **Destination**. A Destination's role in the ecosystem is to represent a discrete user interface screen and to manage user events and interactor requests on behalf of that interface. It allows its interface to focus on that task.
 
 Let's say we have a SwiftUI app which shows user Notes in a `List` in a NotesView `View`, backed by a NotesDestination. We want to create a detail screen that will be pushed onto the `NavigationStack` when a user taps on a Note list item. To do that we should create a `DestinationPresentation` object which represents that action. This object contains the type of Destination to present, the `presentationType` which represents *how* the Destination should be presented, and the `assistantType` which represents the kind of presentation assistant to be used (we'll talk more about those in a bit). Often you can just use the `basic` assistant if you don't need to pass along any state.
 ```swift
 let notePresentation = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .noteDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(SelectNoteAssistant())
 ```
 
-In order for the NotesView containing the list of Notes to be aware of this user action, we need to feed the action into a Provider object which builds the NotesDestination and the associated NotesView. The `presentationsData` dictionary in the example below pairs user interaction types for that Destination with a presentation configuration model. Effectively, we're associating a particular type of user interaction with a specific action which Destinations should take. So in this example, we're supplying a configuration to the NotesDestination that when a user taps a Note list item and causes the `displayNote` interaction type to be sent, the presentation action should be run, which will create the Note detail Destination and present its associated `View` on-screen by pushing it onto the `NavigationStack`.
+In order for the NotesView containing the list of Notes to be aware of this user action, we need to feed the action into a Provider object which builds the NotesDestination and the associated NotesView. The `presentationsData` dictionary in the example below pairs event types for that Destination with a presentation configuration model. Effectively, we're associating a particular type of event with a specific action which Destinations should take. So in this example, we're supplying a configuration to the NotesDestination that when a user taps a Note list item and causes the `displayNote` event type to be sent, the presentation action should be run, which will create the Note detail Destination and present its associated `View` on-screen by pushing it onto the `NavigationStack`.
 ```swift
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation])
 ```
 
-Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` user interaction type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that user interaction type to its Destination, along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performAction()` method)
+Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` event type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property, we can pass that event type to its Destination, along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (The `handleThrowable()` method here automatically handles any throws that occur from calling the `performAction()` method)
 ```swift
 .onChange(of: selectedItem, { [weak destination = destination()] oldValue, newValue in
 	if let newValue, let item = destination?.items.first(where: { $0.id == newValue }) {
@@ -50,19 +50,19 @@ Now that we have a defined interface action for presenting the detail `View` and
 })
 ```
 
-There's one more step. We need a presentation assistant. We saw those before when creating the `DestinationPresentation` object. These assistants handle the user interaction, configuring an `InterfaceAction` which will drive the presentation of the new Destination. Usually, creating a custom assistant like this isn't necessary, but in this case we're passing along a Note model to the detail `View` so we need an assistant that can handle that.
+There's one more step. We need a presentation assistant. We saw those before when creating the `DestinationPresentation` object. These assistants handle the event, configuring an `InterfaceAction` which will drive the presentation of the new Destination. Usually, creating a custom assistant like this isn't necessary, but in this case we're passing along a Note model to the detail `View` so we need an assistant that can handle that.
 ```swift
 struct SelectNoteAssistant: InterfaceActionConfiguring {
-    typealias UserInteractionType = NotesDestination.UserInteractions
+    typealias EventType = NotesDestination.Events
     typealias DestinationType = AppDestinationType
     typealias ContentType = AppContentType
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var action = interfaceAction
         
         var contentType: ContentType?
                 
-        if case .note(model: let model) = interactionType {
+        if case .note(model: let model) = eventType {
             if let model {
                 contentType = .note(model: model)
             }
@@ -118,7 +118,7 @@ struct NotesRequest: InteractorRequestConfiguring {
 
 Now that we have a datasource and a way to make requests of it, we need to make an interface action which will represent a specific request. For Interactor interface actions we should use`InteractorConfiguration` to represent them. It specifies the type of Interactor being called (this enum type should be assigned to one using a Destination's `assignInteractor` method), the type of action the Interactor should take, and the type of Interactor assistant that should be used. (Interactor assistants create the actual Request and handle communication between the Destination and the Interactor) 
 
-As with our `View` presentation, we can pass this action, paired with a user interaction type which should call it, in to the Provider which creates the Notes list `View`. All interactor actions should go into the `interactorsData` dictionary parameter. Here we've assigned the Notes retrieval action to a new user interaction type `retrieveNotes`.
+As with our `View` presentation, we can pass this action, paired with an event type which should call it, in to the Provider which creates the Notes list `View`. All interactor actions should go into the `interactorsData` dictionary parameter. Here we've assigned the Notes retrieval action to a new event type `retrieveNotes`.
 ```swift
 let notesAction = InteractorConfiguration<NotesDestination.InteractorType, NotesDatasource>(interactorType: .notes, actionType: .retrieve, assistantType: .basic)
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation], interactorsData: [.retrieveNotes: notesAction])
@@ -157,9 +157,9 @@ func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: 
 }
 ```
 
-So with a relatively small amount of code we've created an interaction where the Notes list `View` knows nothing about the Note detail screen or that it should be presented in the `NavigationStack`. And we created a second interaction that retrieves Notes to populate the NotesView list, where that `View` knows nothing about the datasource and never interacted with it directly. All of that presentation code, boilerplate SwiftUI navigation code, and the associated logic is handled by Destinations internally.
+So with a relatively small amount of code we've created an interaction where the Notes list `View` knows nothing about the Note detail screen or that it should be presented in the `NavigationStack`. And we created a second event that retrieves Notes to populate the NotesView list, where that `View` knows nothing about the datasource and never interacted with it directly. All of that presentation code, boilerplate SwiftUI navigation code, and the associated logic is handled by Destinations internally.
 
-Because of that pairing between user interaction type and presentation action, we've also opened up the ability to quickly reconfigure what the Note's list item displays when tapped. Let's say the product team wants to have the button to present a detail `View` with an alternate design. That's as easy as creating a new `DestinationPresentation` and assigning it to the `displayNote` type. Or if the product team wants to A/B test with these two detail views, then additionally create a new user interaction type and switch the type being called as necessary. Or perhaps we want to change the Notes datasource to pull from a local cache instead. The only change required is to swap the datasource linked to the interface action. This flexibility makes it possible to quickly test new behaviors and change the routing paths in your app without editing several files. Less code, less time, less potential bugs.
+Because of that pairing between event type and presentation action, we've also opened up the ability to quickly reconfigure what the Note's list item displays when tapped. Let's say the product team wants to have the button to present a detail `View` with an alternate design. That's as easy as creating a new `DestinationPresentation` and assigning it to the `displayNote` type. Or if the product team wants to A/B test with these two detail views, then additionally create a new user interaction type and switch the type being called as necessary. Or perhaps we want to change the Notes datasource to pull from a local cache instead. The only change required is to swap the datasource linked to the interface action. This flexibility makes it possible to quickly test new behaviors and change the routing paths in your app without editing several files. Less code, less time, less potential bugs.
 
 If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** and the examples projects to dive deeper into Destinations!
 

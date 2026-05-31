@@ -7,7 +7,6 @@
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
-import Combine
 import XCTest
 
 @testable import DestinationsUIKit
@@ -68,14 +67,14 @@ import Destinations
 
 final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes {
     
-    typealias UserInteractionType = AppTabBarController.UserInteractions
+    typealias EventType = AppTabBarController.Events
     
-    public typealias Destination = TabBarControllerDestination<AppTabBarController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    public typealias Destination = TabBarControllerDestination<AppTabBarController, EventType, DestinationType, AppContentType, TabType, InteractorType>
 
-    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
     
-    init(presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
+    init(presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>]? = nil, interactorsData: [Destination.EventType: any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         }
@@ -84,7 +83,7 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
         }
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         guard let destinationType = configuration.destinationType else { return nil }
         guard case let RouteDestinationType.tabBar(tabs: tabs) = destinationType else { return nil }
@@ -112,7 +111,7 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
             }
         }
                 
-        if let destination = TabBarControllerDestination<AppTabBarController, AppTabBarController.UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
+        if let destination = TabBarControllerDestination<AppTabBarController, AppTabBarController.EventType, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: tabTypes), tabDestinations: tabDestinations, tabTypes: tabTypes, selectedTab: .palettes, navigationConfigurations: navigationPresentations) {
             
             let tabController = AppTabBarController(destination: destination)
             destination.assignAssociatedController(controller: tabController)
@@ -136,10 +135,10 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
     public typealias Destination = TestColorsDestination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractions : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.Events : any InteractorConfiguring<Destination.InteractorType>] = [:]
 
-    init(presentationsData: [Destination.UserInteractionType: PresentationConfiguration]? = nil, interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>]? = nil) {
+    init(presentationsData: [Destination.EventType: PresentationConfiguration]? = nil, interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
             self.presentationsData = presentationsData
         } else {
@@ -149,18 +148,19 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         if let interactorsData {
             self.interactorsData = interactorsData
         } else {
-            let paginateAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
-            let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
+            let paginateAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
+            let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
             self.interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]
 
         }
     }
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         let destination = TestColorsDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let controller = TestColorsViewController(destination: destination)
+        let state = TestColorsListState()
+        let controller = TestColorsViewController(destination: destination, state: state)
         destination.assignAssociatedController(controller: controller)
 
         let datasource = TestColorsDatasource(with: ColorsPresenter())
@@ -216,10 +216,9 @@ final class TestColorsDatasource: Datasourceable {
         let range: Range<Int> = 0..<request.numColorsToRetrieve
         let colors = Array(allColors[safe: range])
                 
-        let response = responseForAction(action: request.action)
+        let responseClosure = responseForAction(action: request.action)
         
-        
-        let result = presenter.present(colors: colors, response: response, request: request)
+        let result = presenter.present(colors: colors, response: responseClosure, request: request)
         switch result {
             case .success(let response):
                 switch response {
@@ -231,6 +230,7 @@ final class TestColorsDatasource: Datasourceable {
                 break
         }
 
+        responseClosure?(result, request)
     }
     
 }
@@ -269,14 +269,14 @@ public enum TestTabType: String, TabTypeable {
 
 final class TestGroupDestination: NavigatingControllerDestinationable, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
@@ -289,7 +289,7 @@ final class TestGroupDestination: NavigatingControllerDestinationable, Destinati
     
     var controller: TestGroupViewController?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
     
     func prepareForPresentation() {
@@ -299,17 +299,17 @@ final class TestGroupDestination: NavigatingControllerDestinationable, Destinati
 
 final class TestViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
     
-    enum Selections: UserInteractionTypeable {
+    enum Selections: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = Selections
+    typealias EventType = Selections
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
-    typealias Destination = ControllerDestination<TestViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = ControllerDestination<TestViewController, EventType, DestinationType, ContentType, TabType, InteractorType>
 
 
     var destinationState: NavigationDestinationInterfaceState<Destination>
@@ -327,7 +327,7 @@ final class TestViewController: UIViewController, ControllerDestinationInterfaci
 
 final class TestGroupViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
     
-    typealias UserInteractionType = TestGroupDestination.UserInteractions
+    typealias EventType = TestGroupDestination.Events
     typealias DestinationType = TestGroupDestination.DestinationType
     typealias InteractorType = TestGroupDestination.InteractorType
     typealias TabType = TestGroupDestination.TabType
@@ -351,17 +351,17 @@ final class TestGroupViewController: UINavigationController, NavigationControlle
 
 final class TestTabBarController: UITabBarController, TabBarControllerDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
-    typealias Destination = TabBarControllerDestination<TestTabBarController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = TabBarControllerDestination<TestTabBarController, EventType, DestinationType, ContentType, TabType, InteractorType>
 
     var destinationState: NavigationDestinationInterfaceState<Destination>
 
@@ -409,9 +409,9 @@ final class TestTabBarController: UITabBarController, TabBarControllerDestinatio
 }
 
 final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = TestColorsDestination.UserInteractions
+    typealias EventType = TestColorsDestination.Events
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
                 
         closure.data.parentID = destination.parentDestinationID()

@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-public enum GeneralAppInteractions: UserInteractionTypeable {
+public enum GeneralAppInteractions: EventTypeable {
     public var rawValue: String {
         return ""
     }

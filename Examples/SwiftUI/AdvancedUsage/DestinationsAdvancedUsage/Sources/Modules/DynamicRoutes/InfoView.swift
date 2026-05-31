@@ -12,15 +12,15 @@ import Destinations
 
 struct InfoView: ViewDestinationInterfacing, DestinationTypes {
 
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             ""
         }
         
     }
 
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ViewDestination<InfoView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ViewDestination<InfoView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
     @State var destinationState: DestinationInterfaceState<Destination>
 

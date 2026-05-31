@@ -8,36 +8,49 @@
 
 import SwiftUI
 import Destinations
-import Combine
 
-struct ColorDetailView: ViewDestinationInterfacing, AppDestinationTypes {
+@Observable
+final class ColorDetailInterfaceState: DestinationStateable, AppDestinationTypes {
     
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    typealias Destination = ColorDetailDestination
-            
-    @State var destinationState: DestinationInterfaceState<Destination>
+    enum Events: String, EventTypeable, Equatable {
+        case none
+    }
 
-    @State var areDatasourcesSetup = false
-        
-    @State private var selectedItem: ColorViewModel.ID?
-    
-    @State private var colorModel: ColorViewModel?
-        
-    init(destination: Destination, model: ColorViewModel? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
-
-        if let model {
-            _colorModel = State.init(initialValue: model)
-        }
-
+    enum InteractorType: InteractorTypeable {
+        case colors
     }
     
-    
+    typealias Destination = ViewDestination<ColorDetailView, Events, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: ColorDetailState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+    }
+}
+
+struct ColorDetailView: ViewDestinationInterfacing, AppDestinationTypes {
+
+    typealias Destination = ColorDetailInterfaceState.Destination
+    typealias EventType = ColorDetailInterfaceState.Events
+    typealias InteractorType = ColorsListInterfaceState.InteractorType
+
+    @State var destinationState: ColorDetailInterfaceState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
+    }
+
+
     var body: some View {
         VStack {
-            Text("Color \(colorModel?.name ?? "")")
+            Text("Color \(destinationState.stateModel.colorModel?.name ?? "")")
             Circle()
-                .fill(Color(colorModel?.color ?? .black))
+                .fill(Color(destinationState.stateModel.colorModel?.color ?? .black))
                 .frame(width: 200, height: 200)
 
         }
@@ -48,18 +61,18 @@ struct ColorDetailView: ViewDestinationInterfacing, AppDestinationTypes {
 
 
 struct ColorDetailSelectionModel: Hashable {
-    
+
     var color: ColorViewModel?
     var targetID: UUID?
-    
+
 }
 
 public struct DynamicViewModel: Equatable, Hashable {
-    
+
     let id: UUID = UUID()
-    
+
     var view: ContainerView<AnyView>?
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

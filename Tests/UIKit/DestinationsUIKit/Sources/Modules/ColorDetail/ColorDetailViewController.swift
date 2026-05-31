@@ -9,37 +9,48 @@
 import UIKit
 import Destinations
 
-final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
-    
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
+@Observable
+final class ColorDetailInterfaceState: DestinationStateable {
     typealias Destination = ColorDetailDestination
-        
-    var destinationState: DestinationInterfaceState<Destination>
-    
-    var colorModel: ColorViewModel?
-    
-    static let typedNil : Int? = nil
-    
-    init(destination: Destination, colorModel: ColorViewModel? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
 
-        self.colorModel = colorModel
+    var destination: Destination
+
+    var stateModel: ColorDetailState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+    }
+}
+
+final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
+
+    typealias EventType = ColorDetailDestination.Events
+    typealias Destination = ColorDetailDestination
+
+    var destinationState: ColorDetailInterfaceState
+
+    static let typedNil : Int? = nil
+
+    init(destination: Destination, state: ColorDetailState = ColorDetailState()) {
+        self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupUI()
     }
 
     private func setupUI() {
-        view.backgroundColor = colorModel?.color
-        
+        view.backgroundColor = destinationState.stateModel.colorModel?.color
+
         let button = PillButton()
         button.titleLabel?.text = "Present sheet"
         button.backgroundColor = .init(white: 1.0, alpha: 0.9)
@@ -48,9 +59,7 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
             guard let strongSelf = self else { return }
             strongSelf.handleDetailTap()
         }
-        
-    
-        
+
         view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -61,12 +70,10 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
         ])
 
     }
-    
+
     func handleDetailTap() {
-        guard let colorModel else { return }
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .colorDetailButton(model: colorModel))
-        }
+        guard let colorModel = destinationState.stateModel.colorModel else { return }
+        destination().handleEvent(.colorDetailButton(model: colorModel), content: nil)
     }
 
 

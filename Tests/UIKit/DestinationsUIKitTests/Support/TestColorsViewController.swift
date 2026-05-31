@@ -7,7 +7,6 @@
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
-import Combine
 import Destinations
 @testable import DestinationsUIKit
 
@@ -20,14 +19,28 @@ public struct ColorsPresenter: ColorsPresenting {
 
 }
 
+@Observable
+final class TestColorsListInterfaceState: DestinationStateable {
+    typealias Destination = TestColorsDestination
+
+    var destination: Destination
+
+    var stateModel: (any TestColorsListStateModeling)
+
+    init(destination: Destination, state: (any TestColorsListStateModeling)) {
+        self.destination = destination
+        self.stateModel = state
+    }
+}
+
 class TestColorsViewController: UIViewController, UICollectionViewDelegate, ControllerDestinationInterfacing {
 
-    typealias UserInteractionType = TestColorsDestination.UserInteractions
+    typealias EventType = TestColorsDestination.Events
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = TestColorsDestination.InteractorType
     typealias Destination = TestColorsDestination
 
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: TestColorsListInterfaceState
 
    enum ColorItem: Equatable, Hashable {
        case color(model: ColorViewModel?)
@@ -94,10 +107,8 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
    }()
 
 
-   private(set) var cancellables: Set<AnyCancellable> = []
-   
-    init(destination: Destination) {
-        destinationState = DestinationInterfaceState(destination: destination)
+    init(destination: Destination, state: (any TestColorsListStateModeling) = TestColorsListState()) {
+        destinationState = TestColorsListInterfaceState(destination: destination, state: state)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -146,16 +157,11 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
    }
    
     func requestMoreButtonAction() {
-        
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .moreButton)
-        } catchClosure: {
-            print("catch triggered!")
-        }
+        destination().handleEvent(.moreButton, content: nil)
     }
    
     
-    func updateItems(items: [ColorsRequest.Item]) async {
+    func updateItems(items: [ColorsRequest.Item]) {
         self.buildNewCollection(with: items)
     }
     
@@ -206,16 +212,8 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
    }
 
    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       guard let datasource = destination().interactor(for: .colors) as? any Datasourceable<ColorViewModel> else { return }
-
-       if let model = datasource.items[safe: indexPath.item] {
-           
-           destination().handleThrowable(closure: { [weak destination = destination()] in
-               try destination?.performAction(for: .color(model: model))
-           })
-           
-       }
-
+       guard let model = destinationState.stateModel.items[safe: indexPath.item] else { return }
+       destination().handleEvent(.color(model: model), content: nil)
    }
 
 }
@@ -233,17 +231,11 @@ extension TestColorsViewController {
     }
     
     func modelItems() -> [ColorViewModel]? {
-        if let interactor = destination().interactor(for: .colors) as? any Datasourceable<ColorViewModel> {
-            return interactor.items
-        }
-        return nil
+        return destinationState.stateModel.items
     }
     
     func model(for indexPath: IndexPath) -> ColorViewModel? {
-        if let interactor = destination().interactor(for: .colors) as? any Datasourceable<ColorViewModel> {
-            return interactor.items[safe: indexPath.item]
-        }
-        return nil
+        return destinationState.stateModel.items[safe: indexPath.item]
     }
     
 }

@@ -10,7 +10,7 @@
 import Foundation
 
 /// Defines types used for communicating system navigation events.
-public enum SystemNavigationType: UserInteractionTypeable {
+public enum SystemNavigationType: EventTypeable {
 
     /// Represents a system navigation event where a navigation stack interface is transitioning to the previous view in the stack.
     case navigateBackInStack

@@ -9,21 +9,55 @@
 import UIKit
 import Destinations
 
-final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
-    
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
-    typealias Destination = ColorDetailDestination
-        
-    var destinationState: DestinationInterfaceState<Destination>
-    
-    var colorModel: ColorViewModel?
-    
-    static let typedNil : Int? = nil
-    
-    init(destination: Destination, colorModel: ColorViewModel? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+@Observable
+final class ColorDetailInterfaceState: DestinationStateable, DestinationTypes {
 
-        self.colorModel = colorModel
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case colorDetailButton
+        case customDetailButton
+
+        var rawValue: String {
+            switch self {
+                case .colorDetailButton:
+                    return "colorDetailButton"
+                case .customDetailButton:
+                    return "customDetailButton"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    typealias Destination = ControllerDestination<ColorDetailViewController, Events, DestinationType, AppContentType, TabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: ColorDetailState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+    }
+}
+
+final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
+
+    typealias EventType = ColorDetailInterfaceState.Events
+    typealias InteractorType = ColorDetailInterfaceState.InteractorType
+    typealias Destination = ColorDetailInterfaceState.Destination
+
+    var destinationState: ColorDetailInterfaceState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,7 +72,7 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     }
 
     private func setupUI() {
-        view.backgroundColor = colorModel?.color
+        view.backgroundColor = destinationState.stateModel.colorModel?.color
         
         let button = PillButton()
         button.titleLabel?.text = "Present sheet"
@@ -76,17 +110,13 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     }
     
     func handleDetailTap() {
-        guard let colorModel else { return }
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .colorDetailButton(model: colorModel))
-        }
+        guard let colorModel = destinationState.stateModel.colorModel else { return }
+        destination().handleEvent(.colorDetailButton, content: .color(model: colorModel))
     }
     
     func handleCustomDetailTap() {
-        guard let colorModel else { return }
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .customDetailButton(model: colorModel))
-        }
+        guard let colorModel = destinationState.stateModel.colorModel else { return }
+        destination().handleEvent(.customDetailButton, content: .color(model: colorModel))
     }
 
 }

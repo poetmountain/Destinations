@@ -11,7 +11,7 @@ import Destinations
 
 struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
     
-    typealias UserInteractionType = ColorDetailSwiftUIDestination.UserInteractions
+    typealias EventType = ColorDetailSwiftUIDestination.Events
     typealias Destination = ColorDetailSwiftUIDestination
         
     @State var destinationState: DestinationInterfaceState<Destination>

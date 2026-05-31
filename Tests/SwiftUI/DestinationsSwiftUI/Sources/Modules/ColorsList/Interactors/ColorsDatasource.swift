@@ -7,12 +7,7 @@
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
-import Combine
 import Destinations
-
-protocol ColorsPresenting {
-    func present(colors: [ColorModel]) -> Result<[ColorViewModel], Error>
-}
 
 struct ColorsRequest: InteractorRequestConfiguring {
     
@@ -42,66 +37,52 @@ struct ColorsRequest: InteractorRequestConfiguring {
 }
 
 
-final class ColorsDatasource: Datasourceable {
-    
+actor ColorsDatasource: AsyncDatasourceable {
+
     typealias Request = ColorsRequest
     typealias Item = Request.Item
 
-    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
-    
-    @Published var items: [Item] = []
+    var items: [Item] = []
 
-    var itemsProvider: Published<[Request.Item]>.Publisher { $items }
-    
-    let presenter: ColorsPresenting
-    
-    init(with presenter: ColorsPresenting) {
-        self.presenter = presenter
-    }
-    
+    func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
 
-    func perform(request: Request) {
-        
         switch request.action {
             case .retrieve, .paginate:
-                retrieveColors(request: request)
+                return await retrieveColors(request: request)
         }
-
     }
-    
-    func retrieveColors(request: ColorsRequest) {
-        
-        let red = ColorModel(color: UIColor.red, name: "red")
-        let yellow = ColorModel(color: UIColor.yellow, name: "yellow")
-        let blue = ColorModel(color: UIColor.blue, name: "blue")
-        let orange = ColorModel(color: UIColor.orange, name: "orange")
-        let pink = ColorModel(color: UIColor.systemPink, name: "pink")
-        let allColors = [red, yellow, blue, orange, pink]
-        
+
+    func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
+        var allColors: [ColorModel] = []
+
         let range: Range<Int> = 0..<request.numColorsToRetrieve
-        let colors = Array(allColors[safe: range])
-                
-        let result = presenter.present(colors: colors)
-        let response = responseForAction(action: request.action)
 
-        switch result {
-            case .success(let models):
-                self.items = models
-                
-                response?(.success(.colors(models: models)), request)
-            case .failure(_):
-                break
+        switch request.action {
+            case .retrieve:
+                let red = ColorModel(color: UIColor.red, name: "red")
+                let yellow = ColorModel(color: UIColor.yellow, name: "yellow")
+                let blue = ColorModel(color: UIColor.blue, name: "blue")
+                allColors = [red, yellow, blue]
+            case .paginate:
+                allColors = range.map { _ in randomHexColor() }
         }
 
-    }
-    
-    
-}
+        let colors = Array(allColors[safe: range])
 
-public struct ColorsPresenter: ColorsPresenting {
-
-    @discardableResult func present(colors: [ColorModel]) -> Result<[ColorViewModel], Error> {
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
-        return .success(viewModels)
+        self.items.append(contentsOf: viewModels)
+        let result: Result<AppContentType, Error> = .success(.colors(models: items))
+
+        return result
     }
+
+    private func randomHexColor() -> ColorModel {
+        let red = Int.random(in: 0...255)
+        let green = Int.random(in: 0...255)
+        let blue = Int.random(in: 0...255)
+        let hexName = String(format: "#%02X%02X%02X", red, green, blue)
+        let color = UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+        return ColorModel(color: color, name: hexName)
+    }
+
 }

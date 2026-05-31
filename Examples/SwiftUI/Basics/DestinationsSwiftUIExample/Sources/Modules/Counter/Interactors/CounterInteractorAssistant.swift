@@ -12,7 +12,7 @@ import Destinations
 
 struct CounterInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
     
-    typealias InteractorType = CounterDestination.InteractorType
+    typealias InteractorType = CounterView.InteractorType
     typealias Request = CounterRequest
     
     let interactorType: InteractorType = .counter

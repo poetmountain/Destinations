@@ -1,5 +1,5 @@
 //
-//  GeneralAppInteractions.swift
+//  GeneralAppEvents.swift
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-public enum GeneralAppInteractions: UserInteractionTypeable {
+public enum GeneralAppEvents: EventTypeable {
     public var rawValue: String {
         return ""
     }

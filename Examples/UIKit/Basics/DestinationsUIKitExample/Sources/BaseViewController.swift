@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import Destinations
 
-enum GeneralAppInteractions: UserInteractionTypeable {
+enum GeneralAppEvents: EventTypeable {
     var rawValue: String {
         return ""
     }
@@ -22,14 +22,14 @@ public enum AppInteractorType: InteractorTypeable {
 
 final class BaseViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ControllerDestination<BaseViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
     
@@ -70,7 +70,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let tabBarProvider = TabBarProvider()
         let navProvider = NavigationControllerProvider()
         
-        let viewSetup: SwiftUIContainerProvider<ColorView>.SwiftUIViewSetupClosure = { (destination: SwiftUIContainerDestination<ColorView, ColorView.UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, content: ContentType?) in
+        let viewSetup: SwiftUIContainerProvider<ColorView>.SwiftUIViewSetupClosure = { (destination: SwiftUIContainerDestination<ColorView, ColorView.EventType, DestinationType, ContentType, TabType, InteractorType>, content: ContentType?) in
             var colorModel: ColorViewModel?
             if let content = content, case let .color(model) = content {
                 colorModel = model
@@ -81,8 +81,8 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
             return ColorView(model: colorModel, parentDestination: destination)
         }
         
-        let changeSwiftUIColor = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .swiftUI, presentationType: .replaceCurrent, assistantType: .custom(ChangeColorActionAssistant()))
-        let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeColor: changeSwiftUIColor], viewSetup: viewSetup)
+        let changeTab = DestinationPresentation<DestinationType, AppContentType, TabType>(presentationType: .tabBar(tab: .palettes), assistantType: .basic)
+        let swiftUIProvider = SwiftUIContainerProvider<ColorView>(presentationsData: [.changeTab: changeTab], viewSetup: viewSetup)
         
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .start: startProvider,
@@ -113,15 +113,15 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
 
 final class StartViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = NavigationControllerDestination<StartViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>
         
     var destinationState: NavigationDestinationInterfaceState<Destination>
         

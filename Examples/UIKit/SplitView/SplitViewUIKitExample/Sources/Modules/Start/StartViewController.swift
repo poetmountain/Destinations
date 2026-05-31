@@ -12,15 +12,15 @@ import Destinations
 
 final class StartViewController: UINavigationController, NavigationControllerDestinationInterfacing, AppDestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = NavigationControllerDestination<StartViewController, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: NavigationDestinationInterfaceState<Destination>
         

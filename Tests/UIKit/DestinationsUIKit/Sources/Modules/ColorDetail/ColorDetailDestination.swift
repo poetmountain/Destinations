@@ -9,10 +9,11 @@
 import Foundation
 import Destinations
 
+@Observable
 final class ColorDetailDestination: ControllerDestinationable, DestinationTypes {
-    
+
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         case colorDetailButton(model: ColorViewModel?)
         case moveToNearest
 
@@ -24,57 +25,33 @@ final class ColorDetailDestination: ControllerDestinationable, DestinationTypes 
                     return "moveToNearest"
             }
         }
-        
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
-        
+
         func hash(into hasher: inout Hasher) {
             hasher.combine(rawValue)
         }
     }
-    
-    typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
+
+    typealias EventType = Events
+    typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>
     typealias ControllerType = ColorDetailViewController
-    
+
     public let id = UUID()
-    
+
     public let type: RouteDestinationType = .colorDetail
-    
+
     public var controller: ControllerType?
-    
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
-    
-    public var parentDestinationID: UUID?
-    
-    var didAppear: Bool = false
-    var didDisappear: Bool = false
-    
-    var isVisible: Bool = false
-    var wasVisible: Bool = false
-    
+
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+
+    var stateModel: (any StateModeling<ColorDetailDestination>)?
+
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
-        self.internalState.parentDestinationID = parentDestination
-        self.internalState.destinationConfigurations = destinationConfigurations
-        self.internalState.systemNavigationConfigurations = navigationConfigurations
-    }
-    
-    func prepareForPresentation() {
-    }
-    
-    func prepareForAppearance(isVisible: Bool) {
-        print("prepareForAppearance - \(self.type) : isVisible \(isVisible) : \(self.id.uuidString)")
-        didAppear = true
-        didDisappear = false
-        self.isVisible = isVisible
-    }
-    
-    func prepareForDisappearance(wasVisible: Bool) {
-        print("prepareForDisappearance - \(self.type) : wasVisible \(wasVisible) : \(self.id.uuidString)")
-        didAppear = false
-        didDisappear = true
-        isVisible = false
-        self.wasVisible = wasVisible
+        internalState.parentDestinationID = parentDestination
+        internalState.destinationConfigurations = destinationConfigurations
+        internalState.systemNavigationConfigurations = navigationConfigurations
     }
 }

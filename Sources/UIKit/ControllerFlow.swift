@@ -254,16 +254,13 @@ public final class ControllerFlow<DestinationType: RoutableDestinations, TabType
     /// UITabBarControllerDelegate delegate method
     public func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
 
-        if let navController = tabBarController.selectedViewController as? UINavigationController, let controllerToPresent = navController.visibleViewController as? any DestinationInterfacing, let destination = self.destination(for: controllerToPresent.destination().id) {
-            
-            if let tabBarDestinationController = tabBarController as? any TabBarControllerDestinationInterfacing {
-                tabBarDestinationController.destination().updateCurrentDestination(destinationID: controllerToPresent.destination().id)
-            }
-            
-            self.updateCurrentDestination(destination: destination)
-            
+        guard let controller = tabBarController as? any TabBarControllerDestinationInterfacing, let tabDestination = controller.destination() as? any TabBarControllerDestinationable<DestinationType, ContentType, TabType> else { return
         }
-        
+
+        if let tabType = tabDestination.tab(containing: viewController) {
+            try? tabDestination.updateSelectedTab(type: tabType)
+        }
+
     }
     
 }

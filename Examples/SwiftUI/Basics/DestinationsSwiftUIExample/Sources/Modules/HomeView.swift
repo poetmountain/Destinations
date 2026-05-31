@@ -11,10 +11,10 @@ import Destinations
 
 struct HomeView: ViewDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: String, UserInteractionTypeable {
+    enum Events: String, EventTypeable {
         case pathPresent
 
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
         
@@ -23,10 +23,10 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = AppInteractorType
-    typealias Destination = ViewDestination<HomeView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = ViewDestination<HomeView, EventType, DestinationType, ContentType, TabType, InteractorType>
     
 
     @State public var destinationState: DestinationInterfaceState<Destination>
@@ -36,16 +36,15 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
     @State private var selectedItem: ColorViewModel.ID?
     
     init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        let state = DefaultDestinationState(destination: destination)
+        self.destinationState = DestinationInterfaceState(destination: destination, state: state)
     }
     
     var body: some View {
         VStack {
             Text("Home View")
             Button("Link to path") {
-                destination().handleThrowable(closure: { [weak destination = destination()] in
-                    try destination?.performAction(for: .pathPresent)
-                })
+                destination().handleEvent(.pathPresent)
             }
             .padding()
             .foregroundStyle(.white)

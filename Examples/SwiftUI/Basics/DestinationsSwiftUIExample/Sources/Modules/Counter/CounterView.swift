@@ -10,40 +10,83 @@
 import SwiftUI
 import Destinations
 
-struct CounterView: ViewDestinationInterfacing, DestinationTypes {
+@Observable
+final class CounterInterfaceState: DestinationStateable, DestinationTypes {
     
-    typealias UserInteractionType = CounterDestination.UserInteractions
-    typealias Destination = CounterDestination
-        
-    @State var destinationState: DestinationInterfaceState<Destination>
-                        
-    init(destination: Destination, sheetView: ContainerView<AnyView>? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+    enum Events: EventTypeable, Equatable {
+
+        case start
+        case stop
+
+        var rawValue: String {
+            switch self {
+                case .start:
+                    return "start"
+                case .stop:
+                    return "stop"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case counter
     }
     
+    typealias Destination = ViewDestination<CounterView, Events, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: CounterState
+
+    init(destination: Destination, state: CounterState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+    }
+}
+
+struct CounterView: ViewDestinationInterfacing, DestinationTypes {
+
+    typealias EventType = CounterInterfaceState.Events
+    typealias Destination = CounterInterfaceState.Destination
+    typealias InteractorType = CounterInterfaceState.InteractorType
+
+    @State var destinationState: CounterInterfaceState
+
+    init(destination: Destination, state: CounterState) {
+        self.destinationState = CounterInterfaceState(destination: destination, state: state)
+    }
+
     var body: some View {
         VStack(alignment: .center) {
             Spacer()
-            
+
             Text("Counter")
                 .font(.system(size: 24, weight: .semibold))
-            Text("\(destinationState.destination.counter)")
+            Text("\(destinationState.stateModel.counter)")
                 .font(.system(size: 28, weight: .semibold))
                 .foregroundStyle(Color(UIColor.systemBlue.cgColor))
-            
+
             Spacer()
-            
+
             HStack {
                 Button("Start counter") {
-                    destination().handleStartButtonTapped()
+                    destinationState.stateModel.handleStartButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)
                 .background(Color.blue)
                 .clipShape(Capsule())
-                
+
                 Button("Stop counter") {
-                    destination().handleStopButtonTapped()
+                    destinationState.stateModel.handleStopButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)

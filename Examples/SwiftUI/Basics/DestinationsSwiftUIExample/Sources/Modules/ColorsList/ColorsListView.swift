@@ -9,54 +9,101 @@
 import SwiftUI
 import Destinations
 
-struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
+@Observable
+final class ColorsListInterfaceState: NavigationDestinationStateable, DestinationTypes {
     
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
-    typealias Destination = ColorsListDestination
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case color
+        case retrieveInitialColors
+        case moreButton
 
-    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
+        var rawValue: String {
+            switch self {
+                case .color:
+                    return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
+                case .moreButton:
+                    return "moreButton"
+            }
+        }
 
-    @State var areDatasourcesSetup = false
-        
-    @State var selectedItem: ColorViewModel.ID?
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
 
-    init(destination: Destination) {
-        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case colors
     }
     
+    typealias Destination = NavigationViewDestination<Events, ColorsListView, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
+    /// The Destination which user interaction events are sent to.
+    var destination: Destination
+
+    /// An object which manages the state of the associated interface's navigation stack.
+    var navigator: any DestinationPathNavigating = DestinationNavigator()
+
+    var stateModel: (any ColorsListStateModeling)
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destination = destination
+        self.stateModel = state
+        navigator.navigatorDestinationID = destination.id
+    }
+}
+
+struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
+
+    typealias Destination = ColorsListInterfaceState.Destination
+    typealias EventType = ColorsListInterfaceState.Events
+    typealias InteractorType = ColorsListInterfaceState.InteractorType
+
+    @State var destinationState: ColorsListInterfaceState
+
+    @State var isPresented: Bool = false
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destinationState = ColorsListInterfaceState(destination: destination, state: state)
+    }
+
     public var body: some View {
         VStack {
             NavigationStack(path: $destinationState.navigator.navigationPath, root: {
                 VStack {
                     Text("Colors List")
-                    List(destinationState.destination.items, selection: $selectedItem) { item in
+                    List(destinationState.stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
                         ColorsListRow(item: item)
                     }
                     .listStyle(.plain)
-                    .id(destination().listID)
-                    
-                    
+                    .id(destination().id)
+
+
                     Button("Show More") {
-                        destination().handleRequestMoreButtonAction()
+                        destination().handleEvent(.moreButton)
                     }
                     .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
                     .foregroundStyle(.white)
                     .background(Color.blue)
                     .clipShape(Capsule())
                     .padding()
-                    
-                    .onChange(of: selectedItem, { [weak destination = destination()] oldValue, newValue in
-                        if let newValue, let item = destination?.items.first(where: { $0.id == newValue }) {
-                            destination?.handleThrowable(closure: {
-                                try destination?.performAction(for: .color(model: item))
-                            })
-                            
+
+                    .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
+                        if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
+                            destination?.handleEvent(.color, content: .color(model: item))
+
                             Task {
                                 try? await Task.sleep(for: .milliseconds(80))
-                                selectedItem = nil
+                                destinationState.stateModel.selectedItem = nil
                             }
                         }
-                        
+
                     })
                 }
                 .navigationDestination(for: UUID.self) { [weak destination = destination()] destinationID in
@@ -68,9 +115,9 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
             })
         }
     }
-    
 
-    
+
+
     @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<DestinationType, ContentType, TabType>) -> (some View)? {
         destinationView(for: destinationToBuild)
         .id(destinationToBuild.id.uuidString)
@@ -79,9 +126,8 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
             backToPreviousDestination(currentDestination: destinationToBuild)
         }
     }
-    
-    
 
-    
+
+
+
 }
-

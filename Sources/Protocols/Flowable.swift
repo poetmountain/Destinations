@@ -167,7 +167,7 @@ public extension Flowable {
     func updateActiveDestinations(with destination: any Destinationable<DestinationType, ContentType, TabType>) {
         guard self.destination(for: destination.id) == nil else { return }
         activeDestinations.append(destination)
-        DestinationsSupport.logger.log("Active destinations \(activeDestinations.map { $0.type }).", level: .verbose)
+        DestinationsSupport.logger.log("Active destinations: \(activeDestinations.map { $0.type }).", level: .verbose)
 
     }
     
@@ -254,7 +254,7 @@ public extension Flowable {
         }
 
 
-        DestinationsSupport.logger.log("Active destinations (after removal) \(activeDestinations.map { $0.type }).", level: .verbose)
+        DestinationsSupport.logger.log("Active destinations (after removal): \(activeDestinations.map { $0.type }).", level: .verbose)
     }
     
     func removeDestinations(destinationIDs: [UUID]) {

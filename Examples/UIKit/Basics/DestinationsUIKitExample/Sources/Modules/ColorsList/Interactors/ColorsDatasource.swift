@@ -7,7 +7,6 @@
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
-import Combine
 import Destinations
 
 struct ColorsRequest: InteractorRequestConfiguring {
@@ -57,19 +56,17 @@ actor ColorsDatasource: AsyncDatasourceable {
         let red = ColorModel(color: UIColor.systemRed, name: "red")
         let yellow = ColorModel(color: UIColor.systemYellow, name: "yellow")
         let blue = ColorModel(color: UIColor.systemBlue, name: "blue")
-        let orange = ColorModel(color: UIColor.orange, name: "orange")
-        let pink = ColorModel(color: UIColor.systemPink, name: "pink")
-        
+ 
         var allColors: [ColorModel] = []
-        
+        let range: Range<Int> = 0..<request.numColorsToRetrieve
+
         switch request.action {
             case .retrieve:
                 allColors = [red, yellow, blue]
             case .paginate:
-                allColors = [orange, pink]
+                allColors = range.map { _ in randomHexColor() }
         }
                                 
-        let range: Range<Int> = 0..<request.numColorsToRetrieve
         let colors = Array(allColors[safe: range])
                 
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
@@ -80,6 +77,14 @@ actor ColorsDatasource: AsyncDatasourceable {
 
     }
     
+    private func randomHexColor() -> ColorModel {
+        let red = Int.random(in: 0...255)
+        let green = Int.random(in: 0...255)
+        let blue = Int.random(in: 0...255)
+        let hexName = String(format: "#%02X%02X%02X", red, green, blue)
+        let color = UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+        return ColorModel(color: color, name: hexName)
+    }
 
 }
 

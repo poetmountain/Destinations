@@ -48,9 +48,9 @@ public extension ControllerDestinationable {
         return controller
     }
     
-    func updateInterfaceActions(actions: [InterfaceAction<UserInteractionType, DestinationType, ContentType>]) {
+    func updateInterfaceActions(actions: [InterfaceAction<EventType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<UserInteractionType, DestinationType, ContentType>, let interactionType = action.userInteractionType {
+            if let action = action as? InterfaceAction<EventType, DestinationType, ContentType>, let eventType = action.eventType {
                 handleThrowable { [weak self] in
                     try self?.addInterfaceAction(action: action)
                 }
@@ -61,7 +61,7 @@ public extension ControllerDestinationable {
     
     func updateSystemNavigationActions(actions: [InterfaceAction<SystemNavigationType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let interactionType = action.userInteractionType {
+            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let eventType = action.eventType {
                 addSystemNavigationAction(action: action)
             }
         }
@@ -70,6 +70,14 @@ public extension ControllerDestinationable {
     
     func assignAssociatedController(controller: ControllerType) {
         self.controller = controller
+        
+        // assign the state from the view controller to the Destination
+        if let viewModel = controller.destinationState.stateModel as? any StateModeling<Self> {
+            self.stateModel = viewModel
+            self.stateModel?.destination = self
+        } else {
+            assertionFailure("The StateModel assigned to the view controller's destinationState is not of type StateModeling.")
+        }
     }
     
     func removeAssociatedInterface() {

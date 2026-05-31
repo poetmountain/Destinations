@@ -12,7 +12,7 @@ import UIKit
 /// A Destination class whose associated user interface is a `UINavigationController`.
 ///
 /// This is a generic Destination that can be used to represent most `UINavigationController` classes in a UIKit-based app.
-public final class NavigationControllerDestination<ControllerDestinationType: NavigationControllerDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
+public final class NavigationControllerDestination<ControllerDestinationType: NavigationControllerDestinationInterfacing, EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
 
     public typealias ControllerType = ControllerDestinationType
 
@@ -25,9 +25,10 @@ public final class NavigationControllerDestination<ControllerDestinationType: Na
     /// The `UIViewController` class associated with this Destination.
     public var controller: ControllerType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
 
+    public var stateModel: (any StateModeling<NavigationControllerDestination<ControllerDestinationType, EventType, DestinationType, ContentType, TabType, InteractorType>>)?
 
     /// The initializer.
     /// - Parameters:
@@ -35,15 +36,13 @@ public final class NavigationControllerDestination<ControllerDestinationType: Na
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
+    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil, state: (any StateModeling<NavigationControllerDestination<ControllerDestinationType, EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = destinationType
+        self.stateModel = state
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
 
-    }
-
-    public func prepareForPresentation() {
     }
 }
 
@@ -59,17 +58,19 @@ extension NavigationControllerDestination: @preconcurrency CustomStringConvertib
     }
 }
 
-public final class DefaultNavigationController<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: UINavigationController, NavigationControllerDestinationInterfacing {
+public final class DefaultNavigationController<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: UINavigationController, NavigationControllerDestinationInterfacing {
         
-    public typealias Destination = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias Destination = DefaultNavigationControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>
     public typealias InteractorType = InteractorType
-    public typealias UserInteractionType = UserInteractionType
+    public typealias EventType = EventType
     public typealias ControllerType = DefaultNavigationController
+    public typealias StateModel = DefaultDestinationState<Destination>
 
     public var destinationState: NavigationDestinationInterfaceState<Destination>
         
-    public init(destination: Destination) {
-        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+    public init(destination: Destination, state: StateModel? = nil) {
+        let state = state ?? DefaultDestinationState(destination: destination)
+        self.destinationState = NavigationDestinationInterfaceState(destination: destination, state: state)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -79,9 +80,9 @@ public final class DefaultNavigationController<UserInteractionType: UserInteract
 
 }
 
-public final class DefaultNavigationControllerDestination<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
+public final class DefaultNavigationControllerDestination<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: NavigatingControllerDestinationable {
 
-    public typealias ControllerType = DefaultNavigationController<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias ControllerType = DefaultNavigationController<EventType, DestinationType, ContentType, TabType, InteractorType>
 
     /// A unique identifier.
     public let id = UUID()
@@ -92,9 +93,10 @@ public final class DefaultNavigationControllerDestination<UserInteractionType: U
     /// The `UIViewController` class associated with this Destination.
     public var controller: ControllerType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
 
+    public var stateModel: (any StateModeling<DefaultNavigationControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>>)?
 
     /// The initializer.
     /// - Parameters:
@@ -102,8 +104,9 @@ public final class DefaultNavigationControllerDestination<UserInteractionType: U
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
+    public init(destinationType: DestinationType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil, state: (any StateModeling<DefaultNavigationControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = destinationType
+        self.stateModel = state
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
@@ -111,5 +114,6 @@ public final class DefaultNavigationControllerDestination<UserInteractionType: U
     }
 
     public func prepareForPresentation() {
+        stateModel?.prepareForPresentation()
     }
 }

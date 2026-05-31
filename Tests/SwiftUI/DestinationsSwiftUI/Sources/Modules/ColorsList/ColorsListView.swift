@@ -9,19 +9,34 @@
 import SwiftUI
 import Destinations
 
+@Observable
+final class ColorsListInterfaceState: NavigationDestinationStateable {
+    typealias Destination = ColorsListDestination
+
+    var destination: Destination
+
+    var navigator: any DestinationPathNavigating = DestinationNavigator()
+
+    var stateModel: (any ColorsListStateModeling)
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destination = destination
+        self.stateModel = state
+        navigator.navigatorDestinationID = destination.id
+    }
+}
+
 struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
     
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
+    typealias EventType = ColorsListDestination.Events
     typealias Destination = ColorsListDestination
     
-    @State public var destinationState: NavigationDestinationInterfaceState<Destination>
+    @State public var destinationState: ColorsListInterfaceState
 
     @State var areDatasourcesSetup = false
-        
-    @State var selectedItem: ColorViewModel.ID?
 
-    init(destination: Destination) {
-        self.destinationState = NavigationDestinationInterfaceState(destination: destination)
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destinationState = ColorsListInterfaceState(destination: destination, state: state)
     }
     
     public var body: some View {
@@ -29,7 +44,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
             NavigationStack(path: $destinationState.navigator.navigationPath, root: {
                 VStack {
                     Text("Colors List")
-                    List(destinationState.destination.items, selection: $selectedItem) { item in
+                    List(destinationState.stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
                         ColorsListRow(item: item)
                     }
                     .listStyle(.plain)
@@ -42,23 +57,21 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     .clipShape(Capsule())
                     .padding()
                     
-                    .onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
-                        if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
-                            destinationState?.destination.handleThrowable(closure: {
-                                try destinationState?.destination.performAction(for: UserInteractionType.color(model: item))
-                            })
-                            
+                    .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
+                        if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
+                            destination?.handleEvent(.color(model: item), content: nil)
+
                             Task {
                                 try? await Task.sleep(for: .milliseconds(80))
-                                selectedItem = nil
+                                destinationState.stateModel.selectedItem = nil
                             }
                         }
                         
                     })
                 }
-                .navigationDestination(for: UUID.self) { [weak destinationState] destinationID in
-                    if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
-                        buildView(for: destination)
+                .navigationDestination(for: UUID.self) { [weak destination = destination()] destinationID in
+                    if let destinationToBuild = destination?.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+                        buildView(for: destinationToBuild)
                     }
                 }
 
@@ -79,4 +92,3 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
     
 
 }
-

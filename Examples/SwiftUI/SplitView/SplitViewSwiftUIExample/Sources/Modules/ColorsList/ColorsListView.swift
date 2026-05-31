@@ -9,43 +9,75 @@
 import SwiftUI
 import Destinations
 
-struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
+@Observable
+final class ColorsListInterfaceState: DestinationStateable, AppDestinationTypes {
     
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
-    typealias Destination = ColorsListDestination
-    
-    @State public var destinationState: DestinationInterfaceState<Destination>
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case color(model: ColorViewModel?)
+        case retrieveInitialColors
 
-    @State var areDatasourcesSetup = false
+        var rawValue: String {
+            switch self {
+                case .color:
+                    return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
+            }
+        }
 
-    @State var selectedItem: ColorViewModel.ID?
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
 
-    init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case colors
     }
     
+    typealias Destination = ViewDestination<ColorsListView, Events, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: (any ColorsListStateModeling)
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destination = destination
+        self.stateModel = state
+    }
+}
+
+struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
+
+    typealias Destination = ColorsListInterfaceState.Destination
+    typealias EventType = ColorsListInterfaceState.Events
+    typealias InteractorType = ColorsListInterfaceState.InteractorType
+    
+    @State public var destinationState: ColorsListInterfaceState
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destinationState = ColorsListInterfaceState(destination: destination, state: state)
+    }
+
     public var body: some View {
         VStack {
             VStack {
-                List(destinationState.destination.items, selection: $selectedItem) { item in
+                List(destinationState.stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
                     ColorsListRow(item: item)
                 }
                 .listStyle(.plain)
-                .id(destination().listID)
-                .onChange(of: selectedItem, { [weak destinationState] oldValue, newValue in
-                    if let newValue, let item = destinationState?.destination.items.first(where: { $0.id == newValue }) {
-                        destinationState?.destination.handleThrowable(closure: {
-                            try destinationState?.destination.performAction(for: UserInteractionType.color(model: item))
-                        })
-                        
+                .id(destination().id)
+                .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
+                    if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
+                        destination?.handleEvent(.color(model: item))
                     }
-
                 })
             }
-
-        
         }
     }
 
 }
-

@@ -122,19 +122,19 @@ import Destinations
         
         wait(timeout: 0.3)
         
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
-            XCTAssertTrue(presentedDestination.didAppear)
-            XCTAssertTrue(presentedDestination.isVisible)
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+            XCTAssertTrue(state.didAppear)
+            XCTAssertTrue(state.isVisible)
         } else {
             XCTFail()
         }
 
         // old destination presented by path should have "wasActive" as false
         let destinationsCount = appFlow.activeDestinations.count
-        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination {
-            XCTAssertTrue(oldDestination.didDisappear)
-            XCTAssertFalse(oldDestination.isVisible)
-            XCTAssertFalse(oldDestination.wasVisible)
+        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination, let oldState = oldDestination.stateModel as? ColorDetailState {
+            XCTAssertTrue(oldState.didDisappear)
+            XCTAssertFalse(oldState.isVisible)
+            XCTAssertFalse(oldState.wasVisible)
         } else {
             XCTFail()
         }
@@ -143,18 +143,18 @@ import Destinations
 
         wait(timeout: 0.1)
 
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
-            XCTAssertTrue(presentedDestination.didAppear)
-            XCTAssertTrue(presentedDestination.isVisible)
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+            XCTAssertTrue(state.didAppear)
+            XCTAssertTrue(state.isVisible)
         } else {
             XCTFail()
         }
         
         // single addition should have "wasActive" as true
-        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailDestination {
-            XCTAssertTrue(oldDestination.didDisappear)
-            XCTAssertFalse(oldDestination.isVisible)
-            XCTAssertTrue(oldDestination.wasVisible)
+        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailDestination, let oldState = oldDestination.stateModel as? ColorDetailState {
+            XCTAssertTrue(oldState.didDisappear)
+            XCTAssertFalse(oldState.isVisible)
+            XCTAssertTrue(oldState.wasVisible)
         } else {
             XCTFail()
         }
@@ -163,9 +163,9 @@ import Destinations
         
         wait(timeout: 0.1)
 
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination {
-            XCTAssertTrue(presentedDestination.didAppear)
-            XCTAssertTrue(presentedDestination.isVisible)
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+            XCTAssertTrue(state.didAppear)
+            XCTAssertTrue(state.isVisible)
         } else {
             XCTFail()
         }
@@ -347,7 +347,8 @@ import Destinations
                             XCTAssert(tabController.currentController(for: AppTabType.palettes) is ColorDetailViewController, "expected ColorDetailVC for palettes tab, found \(String(describing: tabController.destination().destinationIDsForTabs[AppTabType.palettes]))")
                             
                             if let detailController = try? XCTUnwrap(tabController.currentController(for: AppTabType.palettes) as? ColorDetailViewController, "couldn't find tab detail controller") {
-                                XCTAssert(detailController.colorModel == detailColor, "expected \(detailColor), got \(String(describing: detailController.colorModel))")
+                                let detailState = detailController.destinationState.stateModel
+                                XCTAssert(detailState.colorModel == detailColor, "expected \(detailColor), got \(String(describing: detailState.colorModel))")
                             }
 
                         }
@@ -399,12 +400,63 @@ import Destinations
         
         // switch tab to Home
         appFlow.presentDestination(configuration: PresentationConfiguration(presentationType: .tabBar(tab: .home), assistantType: .basic))
-        
+
         XCTAssertEqual(appFlow.currentDestination?.type, .home)
-        
+
     }
-    
-    
+
+
+    func test_switch_tab_via_user_tap() {
+        guard let sceneDelegate else {
+            XCTFail("No scene delegate present")
+            return
+        }
+
+        let startingTabs: [AppTabType] = [.palettes, .home]
+        let startingType: RouteDestinationType = .tabBar(tabs: startingTabs)
+        let startingDestination = PresentationConfiguration(destinationType: startingType, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let colorsListProvider = TestColorsListProvider()
+        let colorDetailProvider = ColorDetailProvider()
+        let homeProvider = HomeProvider()
+        let tabBarProvider = TestTabBarProvider()
+
+        let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
+            startingType: tabBarProvider,
+            .colorsList: colorsListProvider,
+            .colorDetail: colorDetailProvider,
+            .home: homeProvider
+        ]
+
+        let baseController = try? XCTUnwrap(sceneDelegate.rootController as? any ControllerDestinationInterfacing, "couldn't find base controller")
+
+        let appFlow = ControllerFlow(destinationProviders: providers, startingDestination: startingDestination, routesToIgnore: [.colorDetailSwiftUI, .colorNav, .swiftUI, .sheet, .start])
+        if let root = baseController {
+            appFlow.assignBaseController(root)
+        }
+        appFlow.start()
+
+        wait(timeout: 0.3)
+
+        guard let currentControllerDestination = appFlow.currentDestination as? any ControllerDestinationable<RouteDestinationType, AppContentType, AppTabType>,
+              let tabDestination = appFlow.findTabBarInViewHierarchy(currentDestination: currentControllerDestination),
+              let tabController = tabDestination.currentController() as? AppTabBarController,
+              let homeIndex = tabController.tabIndex(for: .home),
+              let homeViewController = tabController.viewControllers?[safe: homeIndex] else {
+            XCTFail("couldn't resolve tab controller or home view controller")
+            return
+        }
+
+        // we're simulating a user tap here by changing the selectedIndex and invoking the selection delegate
+        tabController.selectedIndex = homeIndex
+        tabController.delegate?.tabBarController?(tabController, didSelect: homeViewController)
+
+        XCTAssertEqual(appFlow.currentDestination?.type, .home, "expected currentDestination to be .home after user tap, got \(String(describing: appFlow.currentDestination?.type))")
+        XCTAssertEqual(tabDestination.selectedTab.type, .home, "expected destination's selectedTab to be .home, got \(tabDestination.selectedTab.type)")
+    }
+
+
+
     func test_replace_destination_in_tab_controller() {
         guard let sceneDelegate else {
             XCTFail("No scene delegate present")
@@ -673,7 +725,7 @@ import Destinations
 
         let sheetButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
 
-        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.UserInteractions.colorDetailButton(model: nil): sheetButtonInteraction])
+        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.Events.colorDetailButton(model: nil): sheetButtonInteraction])
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .colorDetail: colorDetailProvider
@@ -702,7 +754,8 @@ import Destinations
                     newController.prepareForFirstAppearance()
                     wait(timeout: 0.3)
                     
-                    XCTAssert(newController.colorModel == modelToPass, "expected \(modelToPass), got \(String(describing: newController.colorModel))")
+                    let newState = newController.destinationState.stateModel
+                    XCTAssert(newState.colorModel == modelToPass, "expected \(modelToPass), got \(String(describing: newState.colorModel))")
                     
                     // verify that the new controller is being presented in a sheet
                     XCTAssert((newController.presentingViewController != nil || newController.isBeingPresented), "Expected VC to be presented in a sheet, newController parent \(String(describing: newController.parent))")

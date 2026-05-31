@@ -33,6 +33,6 @@ import Foundation
     /// Assigns an interactor assistant to a Destination.
     /// - Parameters:
     ///   - destination: The Destination to apply this interactor assistant to.
-    ///   - interactionType: The user interaction type to associate this assistant with.
-    func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, interactionType: Destination.UserInteractionType) where InteractorType == Destination.InteractorType
+    ///   - eventType: The event type to associate this assistant with.
+    func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, eventType: Destination.EventType) where InteractorType == Destination.InteractorType
 }

@@ -8,39 +8,43 @@
 
 import SwiftUI
 import Destinations
-import Combine
+
+@Observable
+final class ColorDetailInterfaceState: DestinationStateable {
+    typealias Destination = ColorDetailDestination
+
+    var destination: Destination
+
+    var stateModel: ColorDetailState
+
+    init(destination: Destination, state: ColorDetailState) {
+        self.destination = destination
+        self.stateModel = state
+        self.destination.stateModel = state
+        state.destination = destination
+    }
+}
 
 struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
     
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
+    typealias EventType = ColorDetailDestination.Events
     typealias Destination = ColorDetailDestination
             
-    @State var destinationState: DestinationInterfaceState<Destination>
+    @State var destinationState: ColorDetailInterfaceState
 
     @State var areDatasourcesSetup = false
-        
-    @State private var selectedItem: ColorViewModel.ID?
-    
-    @State private var colorModel: ColorViewModel?
-    
-    init(destination: Destination, model: ColorViewModel? = nil) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
 
-        if let model = model {
-            _colorModel = State.init(initialValue: model)
-        }
-   
+    init(destination: Destination, state: ColorDetailState) {
+        self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
     }
     
     var body: some View {
         VStack {
-            Text("Color \(colorModel?.name ?? "")")
+            Text("Color \(destinationState.stateModel.colorModel?.name ?? "")")
             Circle()
-                .fill(Color(colorModel?.color ?? .black))
+                .fill(Color(destinationState.stateModel.colorModel?.color ?? .black))
                 .frame(width: 200, height: 200)
-
         }
-
     }
 
 }
@@ -52,4 +56,3 @@ struct ColorDetailSelectionModel: Hashable {
     var targetID: UUID?
     
 }
-

@@ -15,7 +15,7 @@ For Interactors, use `InteractorConfiguration` objects to define actions which c
 * The `interactorType` property defines the type of Interactor to request an action from. This is an enum type of your choosing and can be scoped to a particular Destination. In other words, each Destination can have its own set of interactor types, and the association between a specific Interactor and an interactor type is made when calling the `assignInteractor(interactor: type:)` method on a Destination.
 * The `actionType` property defines the specific action of the interactor to be requested, represented by an enum type of your choosing and is scoped to individual Interactors.
 
-These `DestinationPresentation`s and `InteractorConfiguration`s are then supplied to their associated Destination providers – Destinations that should be presented and Interactor actions that should be requested from user interactions tied to a specific Destination:
+These `DestinationPresentation`s and `InteractorConfiguration`s are then supplied to their associated Destination providers – Destinations that should be presented and Interactor actions that should be requested from user interactions or other triggered events which are tied to a specific Destination:
 ```swift
 let presentColorDetail = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .colorDetail, presentationType: .tabBar(tab: .colors), assistantType: .custom(ChooseColorFromListAssistant()))
 let moreColorsRequest = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colorsDatasource, actionType: .paginate)
@@ -23,15 +23,15 @@ let moreColorsRequest = InteractorConfiguration<ColorsListProvider.InteractorTyp
 let colorsListProvider = ColorsListProvider(presentationsData: [.selectColor: presentColorDetail], interactorsData: [.moreButton: moreColorsRequest])
 ```
 
-Note that this is just a simple example. Generally you would want to the Provider to directly build the presentation and interactor configurations internally unless you need to change which actions are associated with user interactions at runtime.
+Note that this is just a simple example. Generally you would want to the Provider to directly build the presentation and interactor configurations internally unless you need to change which actions are associated with user interactions and other events at runtime.
 
 ### Interaction Flow
 
 **User interaction → Destination → InterfaceAction → Interaction Assistant → Flow → new Destination**
 
-One of the main responsibilities of Destinations is to handle the presentation of new Destinations, typically triggered from a user interacting with a UI element. These user interactions are represented by `UserInteractionTypeable`-conforming enum types which are scoped to an individual Destination. Not every UI element on a particular Destination's interface must be represented by a user interaction type, but if a user interaction should trigger a presentation or an Interactor request should. 
+One of the main responsibilities of Destinations is to handle the presentation of new Destinations, typically triggered from a user interacting with a UI element. These user interactions are represented by `EventTypeable`-conforming enum types which are scoped to an individual Destination. Not every UI element on a particular Destination's interface must be represented by one of these event types, but if a user interaction should trigger a presentation or an Interactor request should. 
 
-When a user interacts with one of these element types, you should call a method on the Destination which handles the `performAction(for: content:)` request, passing in the user interaction type and an optional content model.  Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
+When a user interacts with one of these element types, you should call a method on the Destination which handles the `performAction(for: content:)` request, passing in the event type and an optional content model.  Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
 ```swift
 func handleMoreButtonTapped() {
     handleThrowable { [weak self] in 
@@ -40,7 +40,7 @@ func handleMoreButtonTapped() {
 }
 ```
 
-Calling `performAction()` instructs a Destination to choose the appropriate presentation assistant, configure an `InterfaceAction` object, and then run the action. The `InterfaceAction` model represents the action that is attached to a specific user interaction type, and contains data used to configure this action. If the action represents a presentation, it is first configured by the associated assistant from the `DestinationPresentation`'s `assistantType` property before the action is run. That assistant is defined when you create a `DestinationPresentation` object during app setup.
+Calling `performAction()` instructs a Destination to choose the appropriate presentation assistant, configure an `InterfaceAction` object, and then run the action. The `InterfaceAction` model represents the action that is attached to a specific event type, and contains data used to configure this action. If the action represents a presentation, it is first configured by the associated assistant from the `DestinationPresentation`'s `assistantType` property before the action is run. That assistant is defined when you create a `DestinationPresentation` object during app setup.
 
 When the `InterfaceAction` is run, the `Flow` uses the `DestinationPresentation` object to find an existing Destination that it references, or if one is not found, builds a new one using a Destination provider assigned to its type. The Destination is then set up by the `DestinationPresentation` and its interface is presented using the presentation type assigned to the `DestinationPresentation`'s `presentationType` property.
 
@@ -147,17 +147,17 @@ Destinations has several built-in presentation types which `DestinationPresentat
  
 Though requests to Interactors can be made using a Destination's `performRequest` method, in general one should use the `performAction` method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.
 
-The recommended way is to assign a user interaction type to your request and using an `InteractorAssisting`-conforming assistant to configure the request, leaving the Destination's interface free of associated business logic.
+The recommended way is to assign an event type to your request and using an `InteractorAssisting`-conforming assistant to configure the request, leaving the Destination's interface free of associated business logic.
 
  Interactors are typically created by Destination providers and stored in the Destination. Like with presentations of new Destinations, Interactor requests are associated with a particular `InterfaceAction` object and are represented by an `InteractorConfiguration` model object. Action types for each Interactor are defined as enums, keeping Interactor-specific knowledge out of the interface. 
 
-For example, here we're creating an Interactor action for making a pagination request to the ColorsDatasource, and then assign it to a `moreButton` user interaction type:
+For example, here we're creating an Interactor action for making a pagination request to the ColorsDatasource, and then assign it to a `moreButton` event type:
 ```swift
 let paginateAction = InteractorConfiguration<ColorsListProvider.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basic)
 let colorsProvider = ColorsProvider(interactorsData: [.moreButton: paginateAction])
 ```
 
-And here is that user interaction type being called by a Destination. Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
+And here is that event type being called by a Destination. Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.
 ```swift
 func handleMoreButtonTapped() {
     handleThrowable { [weak self] in
@@ -193,7 +193,7 @@ func handleAsyncRequest<Destination: Destinationable>(destination: Destination, 
 
 #### Handling an Interactor result
 
-We've shown how to connect an Interactor action to a user interaction request, but how do we handle the result of the operation?  
+We've shown how to connect an Interactor action to an event request, but how do we handle the result of the operation?  
 
 For an Interactor that conforms to `AsyncInteractable` or `AsyncDatasourceable`, the result can be presented to the calling Destination's `handleAsyncInteractorResult()` method from your custom Interactor assistant. As a Destination can house multiple Interactors which provide results via this method, we have to cast the content to the ResultData type of the Request inside this method.
 ```swift
@@ -222,11 +222,11 @@ List(destination().items, selection: $selectedItem) { note in
 
 ### Provider
 
-A Provider is responsible for building a specific type of Destination class. There are two dictionaries, `presentationsData` and `interactorsData`, which pair configuration objects with user interaction types and are used to configure a Destination with the presentations and interactor actions it supports. When a Flow needs to present a new Destination, it finds the Provider associated with the requested Destination type and calls the `buildDestination(...)` method. This method should create the Destination, create the `View` or `UIViewController` and assign it to the Destination, and then create any Interactors and add them to the Destination.
+A Provider is responsible for building a specific type of Destination class. There are two dictionaries, `presentationsData` and `interactorsData`, which pair configuration objects with event types and are used to configure a Destination with the presentations and interactor actions it supports. When a Flow needs to present a new Destination, it finds the Provider associated with the requested Destination type and calls the `buildDestination(...)` method. This method should create the Destination, create the `View` or `UIViewController` and assign it to the Destination, and then create any Interactors and add them to the Destination.
 
 Here's a simple example that creates a NotesDestination and its associated `View`, assigns a datasource to the Destination that will supply Note models to the UI, and returns the Destination to the Flow object for presentation.
 ```swift
-public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
     
     let destination = NotesDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 

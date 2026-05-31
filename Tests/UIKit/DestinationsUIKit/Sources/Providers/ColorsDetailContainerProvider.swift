@@ -10,19 +10,19 @@ import Destinations
 
 struct ColorsDetailContainerProvider: ControllerDestinationProviding, DestinationTypes {
 
-    typealias UserInteractionType = ColorNavProvider.UserInteractionType
-    public typealias Destination = SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = ColorNavProvider.EventType
+    public typealias Destination = SwiftUIContainerDestination<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
-    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>, _ content: ContentType?) -> ColorNavView
+    public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>, _ content: ContentType?) -> ColorNavView
     
     var destinationType: DestinationType = .colorDetailSwiftUI
     
-    public var presentationsData: [UserInteractionType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
-    public var interactorsData: [UserInteractionType : any InteractorConfiguring<InteractorType>] = [:]
+    public var presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]
+    public var interactorsData: [EventType : any InteractorConfiguring<InteractorType>] = [:]
     
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
  
-        let parentDestination = SwiftUIContainerDestination<ColorNavView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let parentDestination = SwiftUIContainerDestination<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>(destinationType: .swiftUI, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
         
         let colorNavProvider = ColorNavProvider(presentationsData: presentationsData, containerDestination: parentDestination)
         let colorDetailProvider = ColorDetailSwiftUIProvider()

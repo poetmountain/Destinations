@@ -21,7 +21,7 @@ import Destinations
     }
 
     func test_addChild() {
-        let destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let destination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navDestination = TestGroupDestination()
         
         navDestination.addChild(childDestination: destination)
@@ -31,7 +31,7 @@ import Destinations
     
 
     func test_removeChild() {
-        let destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let destination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let navDestination = TestNavigatorDestination<TestGroupView>()
         let navView = TestGroupView(destination: navDestination)
         navDestination.assignAssociatedView(view: navView)

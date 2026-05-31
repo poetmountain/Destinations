@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import Destinations
 
-enum GeneralAppInteractions: UserInteractionTypeable {
+enum GeneralAppEvents: EventTypeable {
     var rawValue: String {
         return ""
     }
@@ -22,14 +22,14 @@ public enum AppInteractorType: InteractorTypeable {
 
 final class BaseViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ControllerDestination<BaseViewController, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
         
@@ -46,15 +46,15 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
 
 final class StartViewController: UINavigationController, NavigationControllerDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = NavigationControllerDestination<StartViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = NavigationControllerDestination<StartViewController, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: NavigationDestinationInterfaceState<Destination>
         

@@ -11,7 +11,7 @@ import UIKit
 import Destinations
 
 
-enum GeneralAppInteractions: UserInteractionTypeable {
+enum GeneralAppEvents: EventTypeable {
     var rawValue: String {
         return ""
     }
@@ -23,15 +23,15 @@ public enum AppInteractorType: InteractorTypeable {
 
 final class BaseViewController: UIViewController, ControllerDestinationInterfacing, AppDestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ControllerDestination<BaseViewController, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     var destinationState: DestinationInterfaceState<Destination>
     
@@ -61,9 +61,9 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
         let startProvider = StartProvider()
         let splitViewProvider = SplitViewProvider(initialContent: [.primary: .colorsList, .secondary: .colorNav])
         
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsViewController.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
         
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color: colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
         let colorContainerProvider = ColorDetailContainerProvider()
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [

@@ -98,8 +98,4 @@ public extension NavigatingViewDestinationable {
         removeDestinationFromFlowClosure?(identifier)
 
     }
-    
-    // default implementation
-    func prepareForPresentation() {
-    }
 }

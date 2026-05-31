@@ -1,5 +1,5 @@
 //
-//  HomeUserInteractions.swift
+//  HomeEvents.swift
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-enum HomeUserInteractions: UserInteractionTypeable {
+enum HomeEvents: EventTypeable {
     
     var rawValue: String {
         ""

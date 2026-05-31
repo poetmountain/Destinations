@@ -39,7 +39,7 @@ import Foundation
                 DestinationsError.missingInterfaceAction(message: let message),
                 DestinationsError.missingInterfaceActionAssistant(message: let message),
                 DestinationsError.incompatibleType(message: let message),
-                DestinationsError.duplicateUserInteractionTypeUsed(message: let message):
+                DestinationsError.duplicateEventTypeUsed(message: let message):
                 
                 DestinationsSupport.logger.log(message, category: .error)
                 
@@ -79,8 +79,8 @@ import Foundation
             case .undefinedSplitViewColumnType(message: _):
                 return "Error: A column type for %@ was undefined in a SplitViewColumn model."
                 
-            case .duplicateUserInteractionTypeUsed(message: _):
-                return "Error: An existing InterfaceAction already exists for the \"%@\" user interaction type."
+            case .duplicateEventTypeUsed(message: _):
+                return "Error: An existing InterfaceAction already exists for the \"%@\" event type."
                 
             case .incompatibleType(message: _):
                 return "Error: An incompatible type %@ was passed in as a parameter."

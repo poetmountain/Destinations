@@ -9,11 +9,63 @@
 import UIKit
 import Destinations
 
+struct ColorDetailSelectionModel: Hashable {
+
+    var color: ColorViewModel?
+    var targetID: UUID?
+
+}
+
+@Observable
+final class ColorsListInterfaceState: DestinationStateable, DestinationTypes {
+
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case color
+        case retrieveInitialColors
+        case moreButton
+
+        var rawValue: String {
+            switch self {
+                case .color:
+                    return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
+                case .moreButton:
+                    return "moreButton"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case colors
+    }
+
+    typealias Destination = ControllerDestination<ColorsViewController, Events, DestinationType, AppContentType, TabType, InteractorType>
+
+    var destination: Destination
+
+    var stateModel: (any ColorsListStateModeling)
+
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destination = destination
+        self.stateModel = state
+    }
+}
+
 final class ColorsViewController: UIViewController, UICollectionViewDelegate, ControllerDestinationInterfacing, DestinationTypes {
-        
-    typealias UserInteractionType = ColorsListDestination.UserInteractions
-    typealias InteractorType = ColorsListDestination.InteractorType
-    typealias Destination = ColorsListDestination
+
+    typealias EventType = ColorsListInterfaceState.Events
+    typealias InteractorType = ColorsListInterfaceState.InteractorType
+    typealias Destination = ColorsListInterfaceState.Destination
     
     enum ColorItem: Sendable, Equatable, Hashable {
         case color(model: ColorViewModel?)
@@ -79,10 +131,10 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
         return layout
     }()
 
-    var destinationState: DestinationInterfaceState<Destination>
+    var destinationState: ColorsListInterfaceState
 
-    init(destination: Destination) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+    init(destination: Destination, state: (any ColorsListStateModeling)) {
+        self.destinationState = ColorsListInterfaceState(destination: destination, state: state)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -133,12 +185,7 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
     }
     
     func requestMoreButtonAction() {
-        
-        destination().handleThrowable { [weak self] in
-            try self?.destination().performAction(for: .moreButton)
-        } catchClosure: {
-            print("catch triggered!")
-        }
+        destination().handleEvent(.moreButton, content: nil)
     }
     
     func updateItems(items: [ColorsRequest.Item]) {
@@ -192,17 +239,8 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destination = destination()
-        guard let datasource = destination.interactor(for: .colors) as? any AsyncDatasourceable<ColorViewModel> else { return }
-
-        Task {
-            if let model = await datasource.items[safe: indexPath.item] {
-                destination.handleThrowable { [weak destination] in
-                    try destination?.performAction(for: .color(model: model))
-                }
-            }
-        }
-
+        guard let model = destinationState.stateModel.items[safe: indexPath.item] else { return }
+        destination().handleEvent(.color, content: .color(model: model))
     }
 
 }

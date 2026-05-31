@@ -36,7 +36,7 @@ public enum TestDestinationType: String, RoutableDestinations {
 }
 
 @MainActor final class TestHelpers {
-    typealias UserInteractionType = GeneralAppInteractions
+    typealias EventType = GeneralAppEvents
     typealias InteractorType = AppInteractorType
     typealias DestinationType = RouteDestinationType
     typealias TabType = AppTabType
@@ -87,21 +87,20 @@ extension ColorsListDestination: DestinationTypeable {}
 extension ColorDetailDestination: DestinationTypeable {}
 
 extension ColorsListView {
-    
+
     func selectCell(id: UUID) {
-        
-        self.selectedItem = id
+        self.destinationState.stateModel.selectedItem = id
         //RunLoop.current.run(until: Date())
     }
-    
+
     func numberOfCells() -> Int {
-        return self.destination().items.count
+        return self.destinationState.stateModel.items.count
     }
-    
+
     func model(for itemID: UUID) -> ColorViewModel? {
-        return self.destination().items.first(where: { $0.id == itemID })
+        return self.destinationState.stateModel.items.first(where: { $0.id == itemID })
     }
-    
+
 }
 
 final class TestInteractor: Interactable {
@@ -151,19 +150,19 @@ struct TestInteractorOptions: InteractorRequestConfiguring {
 
 final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         public var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
-    typealias Destination = ViewDestination<TestGroupView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = ViewDestination<TestGroupView, EventType, DestinationType, ContentType, TabType, InteractorType>
     typealias ViewType = TestGroupView
     
     let id: UUID = UUID()
@@ -171,42 +170,39 @@ final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, D
     var type: TestDestinationType = .group
     var view: TestGroupView?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
     
-
-    func prepareForPresentation() {
-    }
 }
 
 
 final class TestNavigatorDestination<ViewType: NavigatingDestinationInterfacing>: NavigatingViewDestinationable, DestinationTypes {
     
-    enum UserInteractions: String, UserInteractionTypeable {
+    enum Events: String, EventTypeable {
         case test
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
     typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
-    typealias Destination = ViewDestination<TestGroupView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = ViewDestination<TestGroupView, EventType, DestinationType, ContentType, TabType, InteractorType>
     
     let id: UUID = UUID()
 
     var type: TestDestinationType = .group
     var view: ViewType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
 
 }
 
 struct TestGroupView: NavigatingDestinationInterfacing, DestinationTypes {
 
-    typealias UserInteractionType = TestGroupDestination.UserInteractions
+    typealias EventType = TestGroupDestination.Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
@@ -234,7 +230,7 @@ struct TestGroupView: NavigatingDestinationInterfacing, DestinationTypes {
 
 struct TestGroupContainerView<Content: View>: NavigatingDestinationInterfacing, DestinationTypes {
 
-    typealias UserInteractionType = TestGroupDestination.UserInteractions
+    typealias EventType = TestGroupDestination.Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
@@ -282,16 +278,16 @@ public enum TestTabType: String, TabTypeable {
 
 struct TestView: ViewDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: String, UserInteractionTypeable {
+    enum Events: String, EventTypeable {
         case test
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias Destination = ViewDestination<TestView, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = ViewDestination<TestView, EventType, DestinationType, ContentType, TabType, InteractorType>
     
     @State public var destinationState: NavigationDestinationInterfaceState<Destination>
             
@@ -302,7 +298,7 @@ struct TestView: ViewDestinationInterfacing, DestinationTypes {
     var body: some View {
         VStack {
             Button("Test") {
-                try? destination().performAction(for: UserInteractions.test)
+                try? destination().performAction(for: Events.test)
             }
         }
     }
@@ -311,18 +307,18 @@ struct TestView: ViewDestinationInterfacing, DestinationTypes {
 
 struct TestTabView: TabBarViewDestinationInterfacing, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         public var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
     typealias PresentationConfiguration = DestinationPresentation<TestDestinationType, AppContentType, TabType>
-    typealias Destination = TabViewDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = TabViewDestination<Self, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     @State public var destinationState: NavigationDestinationInterfaceState<Destination>
 
@@ -361,17 +357,17 @@ struct TestTabView: TabBarViewDestinationInterfacing, DestinationTypes {
 
 struct TestSplitView: NavigationSplitViewDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         public var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = TestDestinationType
     typealias InteractorType = AppInteractorType
     typealias TabType = TestTabType
-    typealias Destination = NavigationSplitViewDestination<Self, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = NavigationSplitViewDestination<Self, EventType, DestinationType, ContentType, TabType, InteractorType>
         
     @State public var destinationState: NavigationDestinationInterfaceState<Destination>
 

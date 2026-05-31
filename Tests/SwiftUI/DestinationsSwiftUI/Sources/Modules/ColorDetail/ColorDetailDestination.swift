@@ -16,7 +16,7 @@ struct CollectionDatasourceOptions {
 @Observable
 final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable, Equatable {
+    enum Events: EventTypeable, Equatable {
         case goBack
         case moveToNearest
         
@@ -29,7 +29,7 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
             }
         }
         
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
         
@@ -43,7 +43,7 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     }
     
     typealias ViewType = ColorDetailView
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
 
 
     public let id = UUID()
@@ -52,37 +52,13 @@ final class ColorDetailDestination: ViewDestinationable, DestinationTypes {
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
 
-    var items: [ColorViewModel] = []
+    var stateModel: (any StateModeling<ColorDetailDestination>)?
 
-    var didAppear: Bool = false
-    var didDisappear: Bool = false
-    
-    var isVisible: Bool = false
-    var wasVisible: Bool = false
-    
     init(destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
-    }
-
-    func prepareForPresentation() {
-    }
-    
-    func prepareForAppearance(isVisible: Bool) {
-        print("prepareForAppearance - \(self.type) : isVisible \(isVisible) : \(self.id.uuidString)")
-        didAppear = true
-        didDisappear = false
-        self.isVisible = isVisible
-    }
-    
-    func prepareForDisappearance(wasVisible: Bool) {
-        print("prepareForDisappearance - \(self.type) : wasVisible \(wasVisible) : \(self.id.uuidString)")
-        didAppear = false
-        didDisappear = true
-        isVisible = false
-        self.wasVisible = wasVisible
     }
 }

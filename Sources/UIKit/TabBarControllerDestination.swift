@@ -13,10 +13,10 @@ import UIKit
 ///
 /// This is a generic Destination that can be used to represent most `UITabViewController`s in a UIKit-based app.
 @Observable
-public final class TabBarControllerDestination<ControllerType: TabBarControllerDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: TabBarControllerDestinationable {
+public final class TabBarControllerDestination<ControllerType: TabBarControllerDestinationInterfacing, EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: TabBarControllerDestinationable {
             
     /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
-    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
+    public typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>
     /// A type of ``AppDestinationConfigurations`` which handles system navigation events.
     public typealias NavigationConfigurations = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>
  
@@ -28,7 +28,7 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
         
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
               
                     
@@ -38,15 +38,14 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     
     public var selectedTab: TabModel<TabType> {
         didSet {
-            print("update selected tab")
             selectedTabUpdatedClosure?(selectedTab)
         }
     }
     
     public var selectedTabUpdatedClosure: TabBarControllerSelectedTabUpdatedClosure<TabType>?
 
-    
-    
+    public var stateModel: (any StateModeling<TabBarControllerDestination<ControllerType, EventType, DestinationType, ContentType, TabType, InteractorType>>)?
+
     /// The initializer.
     /// - Parameters:
     ///   - type: The type of Destination.
@@ -56,8 +55,9 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestinationID: The identifier of the parent Destination.
-    public init?(type: DestinationType, tabDestinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>], tabTypes: [TabType], selectedTab: TabType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil) {
+    public init?(type: DestinationType, tabDestinations: [any ControllerDestinationable<DestinationType, ContentType, TabType>], tabTypes: [TabType], selectedTab: TabType, destinationConfigurations: DestinationConfigurations? = nil, navigationConfigurations: NavigationConfigurations? = nil, parentDestinationID: UUID? = nil, state: (any StateModeling<TabBarControllerDestination<ControllerType, EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = type
+        self.stateModel = state
  
         var tabModels: [TabModel<TabType>] = []
         var selectedModel: TabModel<TabType>?
@@ -133,9 +133,6 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
                 currentController()?.customizeTabItem(for: tabType, controller: controller)
             }
         }
-    }
-    
-    public func prepareForPresentation() {
     }
     
     public func updateSelectedTab(type: TabType) throws {

@@ -10,16 +10,16 @@ import SwiftUI
 import Destinations
 
 struct ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = ColorDetailDestination.UserInteractions
+    typealias EventType = ColorDetailView.EventType
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         var contentType: ContentType?
 
         closure.data.parentID = destination.id
 
-        switch interactionType {
+        switch eventType {
             case .colorDetailButton:
                 if let content, case ContentType.dynamicView = content {
                     contentType = content

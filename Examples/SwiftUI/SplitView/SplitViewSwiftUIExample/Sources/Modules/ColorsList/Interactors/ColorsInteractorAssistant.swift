@@ -9,26 +9,25 @@
 import Foundation
 import Destinations
 
-struct ColorsInteractorAssistant: InteractorAssisting, AppDestinationTypes {
+struct ColorsInteractorAssistant: AsyncInteractorAssisting, AppDestinationTypes {
     
-    typealias InteractorType = ColorsListDestination.InteractorType
+    typealias InteractorType = ColorsListView.InteractorType
     typealias Request = ColorsRequest
     
     let interactorType: InteractorType = .colors
-        
-    let requestMethod: InteractorRequestMethod = .sync
 
-    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType {
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType {
         
         switch actionType {
             case .retrieve:
                 let request = ColorsRequest(action: actionType)
-                destination.performRequest(interactor: interactorType, request: request)
+                let result = await destination.performRequest(interactor: interactorType, request: request)
+                await destination.handleAsyncInteractorResult(result: result, for: request)
                 
             case .paginate:
                 let request = ColorsRequest(action: actionType, numColorsToRetrieve: 5)
-                destination.performRequest(interactor: interactorType, request: request)
-
+                let result = await destination.performRequest(interactor: interactorType, request: request)
+                await destination.handleAsyncInteractorResult(result: result, for: request)
         }
     }
     

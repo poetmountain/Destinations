@@ -30,7 +30,7 @@ import UIKit
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
         
         let colorsColumn = splitViewDestination.column(destinationID: colors.id)
         XCTAssertEqual(colorsColumn, .primary)
@@ -45,15 +45,15 @@ import UIKit
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
-        let home = ControllerDestination<HomeViewController, HomeUserInteractions, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home, destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ControllerDestination<HomeViewController, HomeEvents, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home, destinationConfigurations: nil, navigationConfigurations: nil)
         let homeController = HomeViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let nav = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
+        let nav = DefaultNavigationControllerDestination<EventType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
         let controller = DefaultNavigationController(destination: nav)
         nav.assignAssociatedController(controller: controller)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
@@ -99,7 +99,7 @@ import UIKit
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
@@ -135,11 +135,11 @@ import UIKit
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let nav = DefaultNavigationControllerDestination<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
+        let nav = DefaultNavigationControllerDestination<EventType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .navController)
         let controller = DefaultNavigationController(destination: nav)
         nav.assignAssociatedController(controller: controller)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: nav])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
@@ -178,7 +178,7 @@ import UIKit
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
@@ -207,7 +207,7 @@ import UIKit
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
-        let splitViewDestination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
+        let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
         let splitViewController = SplitViewController(destination: splitViewDestination, style: .doubleColumn)
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()

@@ -10,10 +10,10 @@
 import Foundation
 
 /// A Destination representing a ``SwiftUIContainerController`` instance which presents a SwiftUI `View` within UIKit.
-public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: SwiftUIContainerDestinationable {
+public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacing, EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: SwiftUIContainerDestinationable {
     
     /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
-    public typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>
+    public typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>
     public typealias ControllerType = SwiftUIContainerController<ViewType>
     
     public let id = UUID()
@@ -22,9 +22,11 @@ public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacin
     
     public var controller: SwiftUIContainerController<ViewType>?
     
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
 
     
+    public var stateModel: (any StateModeling<SwiftUIContainerDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)?
+
     /// This `ViewFlow` object manages the SwiftUI `View` presented by this Destination.
     public var viewFlow: ViewFlow<DestinationType, TabType, ContentType>?
 
@@ -35,8 +37,9 @@ public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacin
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestination: The identifier of the parent Destination.
-    public init(destinationType: DestinationType, flow: ViewFlow<DestinationType, TabType, ContentType>? = nil, destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
+    public init(destinationType: DestinationType, flow: ViewFlow<DestinationType, TabType, ContentType>? = nil, destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil, state: (any StateModeling<SwiftUIContainerDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = destinationType
+        self.stateModel = state
         if let flow {
             self.viewFlow = flow
         }
@@ -48,9 +51,9 @@ public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacin
     public func buildInterfaceActions(presentationClosure: @escaping (DestinationPresentation<DestinationType, ContentType, TabType>) -> Void) {
         guard let destinationConfigurations = internalState.destinationConfigurations else { return }
 
-        var containers: [InterfaceAction<UserInteractionType, DestinationType, ContentType>] = []
+        var containers: [InterfaceAction<EventType, DestinationType, ContentType>] = []
         for (type, configuration) in destinationConfigurations.configurations {
-            let container = buildInterfaceAction(presentationClosure: presentationClosure, configuration: configuration, interactionType: type)
+            let container = buildInterfaceAction(presentationClosure: presentationClosure, configuration: configuration, eventType: type)
             containers.append(container)
         }
         
@@ -67,10 +70,9 @@ public final class SwiftUIContainerDestination<ViewType: SwiftUIHostedInterfacin
     }
 
     public func cleanupResources() {
+        stateModel?.cleanupResources()
         controller?.cleanupResources()
     }
     
-    public func prepareForPresentation() {
-    }
 }
 

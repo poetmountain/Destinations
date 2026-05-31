@@ -52,10 +52,10 @@ public enum DestinationsError: Error, Hashable {
     /// - Parameter message: A message to be sent with the error.
     case undefinedSplitViewColumnType(message: String)
     
-    /// An error type generated when a duplicate user interaction type is attempted to be used to add a ``InterfaceAction`` to a Destination.
+    /// An error type generated when a duplicate event type is attempted to be used to add a ``InterfaceAction`` to a Destination.
     ///
     /// - Parameter message: A message to be sent with the error.
-    case duplicateUserInteractionTypeUsed(message: String)
+    case duplicateEventTypeUsed(message: String)
     
     /// An error type generated when an incompatible type was passed as a parameter, typically an incorrect sub-protocol.
     ///

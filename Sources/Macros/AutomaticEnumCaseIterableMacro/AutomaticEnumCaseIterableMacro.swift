@@ -30,12 +30,17 @@ public struct AutomaticEnumCaseIterableMacro: ExtensionMacro {
                 if let parameterClause = element.parameterClause {
                     let args = parameterClause.parameters.map { param in
                         let label = param.firstName?.text
-                        let defaultValue = defaultValueForType(param.type)
+                        let value: String
+                        if let userDefault = param.defaultValue {
+                            value = userDefault.value.trimmedDescription
+                        } else {
+                            value = defaultValueForType(param.type)
+                        }
 
                         if let label, label != "_" {
-                            return "\(label): \(defaultValue)"
+                            return "\(label): \(value)"
                         } else {
-                            return defaultValue
+                            return value
                         }
                     }
                     caseExpressions.append(".\(caseName)(\(args.joined(separator: ", ")))")
@@ -112,13 +117,4 @@ struct AutomaticEnumCaseIterablePlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         AutomaticEnumCaseIterableMacro.self,
     ]
-}
-
-/// Adds a parameterless initializer to all `CaseIterable` types,
-/// returning the first case. This allows the macro to generate
-/// `TypeName.init()` uniformly for both structs and enums.
-public extension CaseIterable {
-    init(_caseIterableDefault: Void = ()) {
-        self = Self.allCases[Self.allCases.startIndex]
-    }
 }

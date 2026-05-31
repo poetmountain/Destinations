@@ -10,13 +10,13 @@
 import Foundation
 
 /// A default assistant to be used to configure interface actions. This only adds the the current Destination's `id` as the `parentID` value.
-public final class DefaultActionAssistant<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: InterfaceActionConfiguring {
+public final class DefaultActionAssistant<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: InterfaceActionConfiguring {
     
     /// The initializer.
     public init() {
     }
         
-    public func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    public func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         closure.data.parentID = destination.id

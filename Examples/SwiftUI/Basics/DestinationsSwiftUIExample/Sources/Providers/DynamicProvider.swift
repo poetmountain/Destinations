@@ -10,25 +10,25 @@ import SwiftUI
 import Destinations
 
 struct DynamicProvider: ViewDestinationProviding, DestinationTypes {
-    
-    public typealias Destination = DynamicDestination
 
-    public var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.UserInteractionType : any InteractorConfiguring<Destination.InteractorType>] = [:]
-    
-    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
-        
+    public typealias Destination = DynamicView<AnyView>.Destination
+
+    public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
+
+    public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
+
         guard let contentType = configuration.contentType, case .dynamicView(view: let customView) = contentType else { return nil }
-        
-        let destination = DynamicDestination(navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
-        
+
+        let destination = Destination(destinationType: .dynamic, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+
         let dynamicView = DynamicView(destination: destination) {
             AnyView(customView)
         }
         destination.assignAssociatedView(view: dynamicView)
 
         return destination
-        
+
     }
-    
+
 }

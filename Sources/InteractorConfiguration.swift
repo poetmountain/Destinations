@@ -27,20 +27,20 @@ public struct InteractorConfiguration<InteractorType: InteractorTypeable, Intera
         self.assistantType = assistantType
     }
     
-    public func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, interactionType: Destination.UserInteractionType) where InteractorType == Destination.InteractorType {
+    public func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, eventType: Destination.EventType) where InteractorType == Destination.InteractorType {
         
         switch assistantType {
             case .basic:
                 var assistant = DefaultInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
-                destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
+                destination.assignInteractorAssistant(assistant: assistant, for: eventType)
                 
             case .basicAsync:
                 var assistant = DefaultAsyncInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
-                destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
+                destination.assignInteractorAssistant(assistant: assistant, for: eventType)
                 
             case .custom(let assistant):
                 if var assistant = assistant as? any InteractorAssisting<Destination.InteractorType, Destination.ContentType> {
-                    destination.assignInteractorAssistant(assistant: assistant, for: interactionType)
+                    destination.assignInteractorAssistant(assistant: assistant, for: eventType)
                 }
         }
     

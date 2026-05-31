@@ -12,7 +12,7 @@ import Destinations
 
 final class ColorDetailSwiftUIDestination: ViewDestinationable, DestinationTypes {
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             ""
         }
@@ -22,8 +22,8 @@ final class ColorDetailSwiftUIDestination: ViewDestinationable, DestinationTypes
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
+    typealias EventType = Events
+    typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>
     
     typealias ViewType = ColorDetailView
 
@@ -33,7 +33,7 @@ final class ColorDetailSwiftUIDestination: ViewDestinationable, DestinationTypes
     
     public var view: ViewType?
     
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination

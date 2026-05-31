@@ -11,7 +11,7 @@ import Destinations
 
 public protocol DestinationTypes {
 
-    typealias UserInteractionType = GeneralAppInteractions
+    typealias EventType = GeneralAppInteractions
     typealias InteractorType = AppInteractorType
     typealias DestinationType = RouteDestinationType
     typealias TabType = AppTabType

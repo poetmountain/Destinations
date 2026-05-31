@@ -11,16 +11,16 @@ import Destinations
 
 final class AppTabBarController: UITabBarController, TabBarControllerDestinationInterfacing, DestinationTypes {
     
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
     }
     
-    typealias UserInteractionType = UserInteractions
+    typealias EventType = Events
     typealias DestinationType = RouteDestinationType
     typealias InteractorType = AppInteractorType
-    typealias Destination = TabBarControllerDestination<AppTabBarController, UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    typealias Destination = TabBarControllerDestination<AppTabBarController, EventType, DestinationType, ContentType, TabType, InteractorType>
 
     var destinationState: DestinationInterfaceState<Destination>
 

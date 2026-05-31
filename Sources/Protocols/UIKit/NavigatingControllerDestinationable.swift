@@ -147,6 +147,7 @@ public extension NavigatingControllerDestinationable {
     
     // default implementation
     func prepareForPresentation() {
+        stateModel?.prepareForPresentation()
     }
-    
+
 }

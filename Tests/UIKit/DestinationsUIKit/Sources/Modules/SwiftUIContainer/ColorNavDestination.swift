@@ -11,7 +11,7 @@ import Destinations
 
 final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes {
         
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
 
         var rawValue: String {
             ""
@@ -23,8 +23,8 @@ final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
+    typealias EventType = Events
+    typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>
     
     typealias ViewType = ColorNavView
 
@@ -34,7 +34,7 @@ final class ColorNavDestination: NavigatingViewDestinationable, DestinationTypes
     
     public var view: ViewType?
     
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
     public var groupInternalState: GroupDestinationInternalState<DestinationType, AppContentType, TabType> = GroupDestinationInternalState()
     
 

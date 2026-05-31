@@ -10,14 +10,14 @@ import Foundation
 import Destinations
 
 struct ChangeColorActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias UserInteractionType = ColorView.UserInteractions
+    typealias EventType = ColorView.Events
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         closure.data.parentID = destination.id
         
-        if case .changeColor = interactionType {
+        if case .changeTab = eventType {
             if let content, closure.data.contentType == nil {
                 closure.data.contentType = content
             }

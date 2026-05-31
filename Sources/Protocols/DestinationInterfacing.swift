@@ -24,14 +24,16 @@ import Foundation
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
     
-    /// An enum which defines user interaction types for this Destination's interface.
-    associatedtype UserInteractionType: UserInteractionTypeable
+    /// An enum which defines event types for this Destination's interface.
+    associatedtype EventType: EventTypeable
     
     /// The type of Destination associated with this user interface.
     associatedtype Destination: Destinationable<DestinationType, ContentType, TabType>
     
+    associatedtype StateModel
+
     /// The state model associated with this interface's Destination.
-    associatedtype DestinationState: DestinationStateable<Destination>
+    associatedtype DestinationState: DestinationStateable<Destination, StateModel>
 
     /// The Destination associated with this UI element.
     var destinationState: DestinationState { get set }

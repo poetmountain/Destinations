@@ -21,7 +21,7 @@ import Destinations
     }
 
     func test_addChild() {
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
@@ -47,8 +47,8 @@ import Destinations
     }
     
     func test_removeAllChildren() {
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let child2Destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let child2Destination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
@@ -60,7 +60,7 @@ import Destinations
     }
     
     func test_childForIdentifier() {
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
         
@@ -71,8 +71,8 @@ import Destinations
     
     func test_replaceCurrentDestination_with_existing_destination() {
         
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let newDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
         
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
@@ -85,7 +85,7 @@ import Destinations
     
     func test_replaceCurrentDestination_with_no_current_destination() {
         
-        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
+        let newDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
         
         let groupDestination = TestGroupDestination()
         groupDestination.replaceCurrentDestination(with: newDestination)
@@ -94,10 +94,10 @@ import Destinations
     }
     
     func test_replaceChild() {
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let child2Destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let child3Destination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let child2Destination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let child3Destination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let newDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
         
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
@@ -112,7 +112,7 @@ import Destinations
 
         XCTAssertEqual(currentIndex, newIndex)
         
-        let newDestination2 = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
+        let newDestination2 = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
         let currentIndex2 = groupDestination.childDestinations().firstIndex(where: { $0.id == child3Destination.id })
         
         groupDestination.replaceChild(currentID: child3Destination.id, with: newDestination2)
@@ -124,8 +124,8 @@ import Destinations
     }
     
     func test_updateCurrentDestination() {
-        let childDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
-        let newDestination = ViewDestination<TestView, TestView.UserInteractions, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
+        let childDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.detail)
+        let newDestination = ViewDestination<TestView, TestView.Events, TestDestinationType, ContentType, TestTabType, InteractorType>(destinationType: TestDestinationType.list)
         let groupDestination = TestGroupDestination()
         groupDestination.addChild(childDestination: childDestination)
         groupDestination.addChild(childDestination: newDestination)

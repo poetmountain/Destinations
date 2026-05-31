@@ -1,5 +1,6 @@
 //
 //  ColorsDatasource.swift
+//  SplitViewSwiftUIExample
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
@@ -7,12 +8,7 @@
 //  Licensed under MIT License. See LICENSE file in this repository.
 
 import UIKit
-import Combine
 import Destinations
-
-protocol ColorsPresenting {
-    func present(colors: [ColorModel], response: InteractorResponseClosure<ColorsRequest>?, request: ColorsRequest) -> Result<ColorsRequest.ResultData, Error>
-}
 
 struct ColorModel: Hashable {
     let colorID: UUID = UUID()
@@ -48,33 +44,22 @@ struct ColorsRequest: InteractorRequestConfiguring {
 }
 
 
-final class ColorsDatasource: Datasourceable {
+actor ColorsDatasource: AsyncDatasourceable {
     
     typealias Request = ColorsRequest
     typealias Item = Request.Item
     
-    @Published var items: [Item] = []
+    var items: [Item] = []
 
-    var itemsProvider: Published<[Request.Item]>.Publisher { $items }
-    
-    var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
-
-    let presenter: ColorsPresenting
-    
-    init(with presenter: ColorsPresenting) {
-        self.presenter = presenter
-    }
-    
-    func perform(request: Request) {
+    func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
         
         switch request.action {
             case .retrieve, .paginate:
-                retrieveColors(request: request)
+                return await retrieveColors(request: request)
         }
-
     }
     
-    func retrieveColors(request: ColorsRequest) {
+    func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
         
         let red = ColorModel(color: UIColor.red, name: "red")
         let yellow = ColorModel(color: UIColor.yellow, name: "yellow")
@@ -86,32 +71,11 @@ final class ColorsDatasource: Datasourceable {
         let range: Range<Int> = 0..<request.numColorsToRetrieve
         let colors = Array(allColors[safe: range])
         
-        let response = responseForAction(action: request.action)
-        
-        let result = presenter.present(colors: colors, response: response, request: request)
-        switch result {
-            case .success(let response):
-                switch response {
-                    case .colors(models: let models):
-                        self.items = models
-                    default: break
-                }
-            case .failure(_):
-                break
-        }
-
-    }
-    
-    
-}
-
-public struct ColorsPresenter: ColorsPresenting, AppDestinationTypes {
-
-    @discardableResult func present(colors: [ColorModel], response: InteractorResponseClosure<ColorsRequest>?, request: ColorsRequest) -> Result<ColorsRequest.ResultData, Error> {
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
-        let result: Result<ColorsRequest.ResultData, Error> = .success(ContentType.colors(models: viewModels))
-        response?(result, request)
+        self.items = viewModels
+        let result: Result<AppContentType, Error> = .success(.colors(models: viewModels))
         
         return result
     }
+    
 }

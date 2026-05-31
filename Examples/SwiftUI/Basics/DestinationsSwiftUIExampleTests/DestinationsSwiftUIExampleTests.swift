@@ -10,27 +10,22 @@ import XCTest
 
 final class DestinationsSwiftUIExampleTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+    // Verifies that destination.stateModel and view.destinationState.stateModel
+    // refer to the same object instance. Since they are different existential types
+    // (any StateModeling<ColorsListDestination> vs any ColorsListStateModeling),
+    // identity is confirmed by comparing their UUIDs via Identifiable.id.
+    @MainActor
+    func testStateModelIdentity() throws {
+        let state = ColorsListState()
+        let destination = ColorsListDestination(
+            destinationConfigurations: nil,
+            navigationConfigurations: nil,
+            parentDestination: nil,
+            state: state
+        )
+        let listView = ColorsListView(destination: destination, state: state)
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+        XCTAssertEqual(destination.stateModel?.id, listView.destinationState.stateModel.id)
     }
 
 }

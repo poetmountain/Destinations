@@ -10,11 +10,11 @@
 import UIKit
 
 /// A `UISplitViewController` subclass which can be used as an interface for a ``SplitViewControllerDestination``.
-public final class SplitViewController<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: UISplitViewController, SplitViewControllerDestinationInterfacing {
+public final class SplitViewController<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: UISplitViewController, SplitViewControllerDestinationInterfacing {
     
-    public typealias Destination = SplitViewControllerDestination<UserInteractionType, DestinationType, ContentType, TabType, InteractorType>
+    public typealias Destination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>
     public typealias InteractorType = InteractorType
-    public typealias UserInteractionType = UserInteractionType
+    public typealias EventType = EventType
     public typealias ControllerType = SplitViewController
     
     public var destinationState: DestinationInterfaceState<Destination>
@@ -24,7 +24,8 @@ public final class SplitViewController<UserInteractionType: UserInteractionTypea
     ///   - destination: The Destination associated with this interface.
     ///   - style: The `UISplitViewController` style.
     public init(destination: Destination, style: UISplitViewController.Style) {
-        self.destinationState = DestinationInterfaceState(destination: destination)
+        let state = DefaultDestinationState(destination: destination)
+        self.destinationState = DestinationInterfaceState(destination: destination, state: state)
 
         super.init(style: style)
     }

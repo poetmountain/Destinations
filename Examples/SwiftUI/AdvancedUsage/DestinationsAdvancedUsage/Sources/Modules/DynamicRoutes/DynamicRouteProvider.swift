@@ -16,11 +16,11 @@ struct DynamicRouteProvider: ViewDestinationProviding {
     typealias TabType = Destination.TabType
     typealias ContentType = Destination.ContentType
 
-    typealias Destination = DynamicRouteDestination
+    typealias Destination = DynamicRouteView.Destination
     typealias PresentationConfiguration = DestinationPresentation<Destination.DestinationType, Destination.ContentType, Destination.TabType>
 
-    var presentationsData: [Destination.UserInteractionType: PresentationConfiguration] = [:]
-    var interactorsData: [Destination.UserInteractionType: any InteractorConfiguring<Destination.InteractorType>] = [:]
+    var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
+    var interactorsData: [Destination.EventType: any InteractorConfiguring<Destination.InteractorType>] = [:]
 
     init() {
         // The destinationType here acts as a default. The DynamicRouteAssistant
@@ -28,17 +28,18 @@ struct DynamicRouteProvider: ViewDestinationProviding {
         let navigatePresentation = PresentationConfiguration(
             destinationType: .welcome,
             presentationType: .navigationStack(type: .present),
-            assistantType: .custom(DynamicRouteAssistant<Destination.UserInteractionType>())
+            assistantType: .custom(DynamicRouteAssistant<Destination.EventType>())
         )
 
         presentationsData = [.navigate: navigatePresentation]
     }
 
-    func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.UserInteractionType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<Destination.DestinationType, Destination.ContentType, Destination.TabType>) -> Destination? {
+    func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<Destination.DestinationType, Destination.ContentType, Destination.TabType>) -> Destination? {
 
-        let destination = DynamicRouteDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .dynamic, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
-        let view = DynamicRouteView(destination: destination)
+        let state = DynamicRouteState()
+        let view = DynamicRouteView(destination: destination, state: state)
         destination.assignAssociatedView(view: view)
 
         return destination

@@ -13,7 +13,7 @@ import Foundation
 ///
 /// This is a generic Destination that can be used to represent most `TabView`s in a SwiftUI-based app.
 @Observable
-public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing, UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: TabBarViewDestinationable {
+public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing, EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable, InteractorType: InteractorTypeable>: TabBarViewDestinationable {
     
     public let id = UUID()
     
@@ -21,7 +21,7 @@ public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing
     
     public var view: ViewType?
 
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
+    public var internalState: DestinationInternalState<EventType, DestinationType, ContentType, TabType, InteractorType> = DestinationInternalState()
     
     public var groupInternalState: GroupDestinationInternalState<DestinationType, ContentType, TabType> = GroupDestinationInternalState()
     
@@ -36,10 +36,11 @@ public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing
     }
     
     public var destinationPresentationClosure: TabBarViewDestinationPresentationClosure<DestinationType, ContentType, TabType>?
-    
+
     public var selectedTabUpdatedClosure: TabBarViewSelectedTabUpdatedClosure<TabType>?
 
-    
+    public var stateModel: (any StateModeling<TabViewDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)?
+
     /// The initializer.
     /// - Parameters:
     ///   - type: The type of Destination.
@@ -49,8 +50,9 @@ public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing
     ///   - destinationConfigurations: The Destination presentation configurations associated with this Destination.
     ///   - navigationConfigurations: The system navigation events associated with this Destination.
     ///   - parentDestinationID: The identifier of the parent Destination.
-    public init?(type: DestinationType, tabDestinations: [any ViewDestinationable<DestinationType, ContentType, TabType>], tabTypes: [TabType], selectedTab: TabType, destinationConfigurations: AppDestinationConfigurations<UserInteractionType, DestinationType, ContentType, TabType>? = nil, navigationConfigurations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>? = nil, parentDestinationID: UUID? = nil) {
+    public init?(type: DestinationType, tabDestinations: [any ViewDestinationable<DestinationType, ContentType, TabType>], tabTypes: [TabType], selectedTab: TabType, destinationConfigurations: AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>? = nil, navigationConfigurations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>? = nil, parentDestinationID: UUID? = nil, state: (any StateModeling<TabViewDestination<ViewType, EventType, DestinationType, ContentType, TabType, InteractorType>>)? = nil) {
         self.type = type
+        self.stateModel = state
 
         var tabModels: [TabModel<TabType>] = []
         var selectedModel: TabModel<TabType>?
@@ -98,10 +100,7 @@ public final class TabViewDestination<ViewType: TabBarViewDestinationInterfacing
         }
         
     }
-    
-    public func prepareForPresentation() {
-    }
-    
+
 }
 
 extension TabViewDestination: @preconcurrency CustomStringConvertible {

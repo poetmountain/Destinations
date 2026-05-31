@@ -11,9 +11,9 @@ import Foundation
 import Destinations
 
 /// This assistant is used to dynamically change the Destination type of a presentation request based on the content passed in with the request.
-struct DynamicRouteAssistant<UserInteractionType: UserInteractionTypeable>: InterfaceActionConfiguring, DestinationTypes {
+struct DynamicRouteAssistant<EventType: EventTypeable>: InterfaceActionConfiguring, DestinationTypes {
     
-    func configure(interfaceAction: InterfaceAction<UserInteractionType, DestinationType, ContentType>, interactionType: UserInteractionType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<UserInteractionType, DestinationType, ContentType> {
+    func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType? = nil) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
         closure.data.parentID = destination.id

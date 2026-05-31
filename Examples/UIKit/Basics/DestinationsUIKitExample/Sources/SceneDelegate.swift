@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return baseVC
             
         } else {
-            let destination = ControllerDestination<BaseViewController, BaseViewController.UserInteractions, BaseViewController.DestinationType, BaseViewController.ContentType, BaseViewController.TabType, BaseViewController.InteractorType>(destinationType: .home)
+            let destination = ControllerDestination<BaseViewController, BaseViewController.Events, BaseViewController.DestinationType, BaseViewController.ContentType, BaseViewController.TabType, BaseViewController.InteractorType>(destinationType: .home)
             let baseVC = BaseViewController(destination: destination)
             destination.assignAssociatedController(controller: baseVC)
             rootController = baseVC
@@ -65,7 +65,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 final class BaseTestsViewController: UINavigationController, ControllerDestinationInterfacing, DestinationTypes {
 
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         var rawValue: String {
             return ""
         }
@@ -73,13 +73,13 @@ final class BaseTestsViewController: UINavigationController, ControllerDestinati
 
     
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
-    typealias UserInteractionType = UserInteractions
-    typealias Destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>
+    typealias EventType = Events
+    typealias Destination = ControllerDestination<BaseViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>
     
     var destinationState: DestinationInterfaceState<Destination>
     
     init() {
-        let destination = ControllerDestination<BaseViewController, UserInteractionType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .home)
+        let destination = ControllerDestination<BaseViewController, EventType, DestinationType, AppContentType, TabType, InteractorType>(destinationType: .home)
         destinationState = DestinationInterfaceState(destination: destination)
         super.init(nibName: nil, bundle: nil)
     }

@@ -13,7 +13,7 @@ import Destinations
 @Observable
 final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
     @AutoCaseIterable
-    enum UserInteractions: UserInteractionTypeable {
+    enum Events: EventTypeable {
         case color(model: ColorViewModel?)
         case retrieveInitialColors
         case moreButton
@@ -29,7 +29,7 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
             }
         }
         
-        static func == (lhs: UserInteractions, rhs: UserInteractions) -> Bool {
+        static func == (lhs: Events, rhs: Events) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
         
@@ -59,8 +59,8 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
         }
     }
     
-    typealias UserInteractionType = UserInteractions
-    typealias DestinationConfigurations = AppDestinationConfigurations<UserInteractionType, DestinationType, AppContentType, TabType>
+    typealias EventType = Events
+    typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>
     typealias ControllerType = TestColorsViewController
     
     public let id = UUID()
@@ -69,37 +69,14 @@ final class TestColorsDestination: DestinationTypes, ControllerDestinationable {
     
     public var controller: ControllerType?
     
-    public var internalState: DestinationInternalState<UserInteractionType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
-    
+    public var internalState: DestinationInternalState<EventType, DestinationType, AppContentType, TabType, InteractorType> = DestinationInternalState()
+
+    var stateModel: (any StateModeling<TestColorsDestination>)?
 
     init(destinationConfigurations: DestinationConfigurations?, navigationConfigurations: NavigationConfigurations?, parentDestination: UUID? = nil) {
         self.internalState.parentDestinationID = parentDestination
         self.internalState.destinationConfigurations = destinationConfigurations
         self.internalState.systemNavigationConfigurations = navigationConfigurations
-    }
-    
-
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<ContentType, Error>, for request: Request) async {
-        
-        switch result {
-            case .success(let content):
-                
-                switch content {
-                    case .colors(models: let items):
-                        await controller?.updateItems(items: items)
-                    default: break
-                }
-                
-            case .failure(let error):
-                logError(error: error)
-        }
-        
-    }
-    
-    func prepareForPresentation() {
-        handleThrowable(closure: {
-            try self.performAction(for: .retrieveInitialColors)
-        })
     }
 
 }

@@ -12,7 +12,7 @@ import Destinations
 
 protocol AppDestinationTypes {
 
-    typealias UserInteractionType = GeneralAppInteractions
+    typealias EventType = GeneralAppInteractions
     typealias InteractorType = AppInteractorType
     typealias DestinationType = RouteDestinationType
     typealias TabType = AppTabType
@@ -29,8 +29,8 @@ public enum AppTabType: TabTypeable {
 
 }
 
-enum GeneralAppInteractions: UserInteractionTypeable {
-    var rawValue: String {
+public enum GeneralAppInteractions: EventTypeable {
+    public var rawValue: String {
         return ""
     }
 }

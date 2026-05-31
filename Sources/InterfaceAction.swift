@@ -10,16 +10,16 @@
 import Foundation
 
 /// Represents an action to be taken when a user interacts with a particular interface element.
-public struct InterfaceAction<UserInteractionType: UserInteractionTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: Equatable, Hashable {
+public struct InterfaceAction<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: Equatable, Hashable {
     
     /// A unique identifier.
     public let id = UUID()
     
     /// A closure to be run when a user interacts with a specific user interface element.
-    public var function: (UserInteractionType, InterfaceActionData<DestinationType, ContentType>) -> Void
+    public var function: (EventType, InterfaceActionData<DestinationType, ContentType>) -> Void
 
     /// A user interaction type.
-    public var userInteractionType: UserInteractionType?
+    public var eventType: EventType?
 
     /// Model data associated with the presentation which is used by the closure.
     public var data: InterfaceActionData<DestinationType, ContentType> = InterfaceActionData()
@@ -28,19 +28,19 @@ public struct InterfaceAction<UserInteractionType: UserInteractionTypeable, Dest
     ///
     /// > Note: This is a "magic" function used by Swift, as part of Swift proposal SE-0253. See https://github.com/swiftlang/swift-evolution/blob/main/proposals/0253-callable.md for more information.
     public func callAsFunction() {
-        if let interactionType = userInteractionType {
-            return function(interactionType, data)
+        if let eventType {
+            return function(eventType, data)
         }
     }
     
     /// The initializer.
     /// - Parameters:
     ///   - function: A closure to be run when a user interacts with a specific user interface element.
-    ///   - interactionType: A user interaction type.
+    ///   - eventType: An event type associated with the presentation.
     ///   - data: Model data associated with the presentation which is used by the closure.
-    public init(function: @escaping (UserInteractionType, InterfaceActionData<DestinationType, ContentType>) -> Void, interactionType: UserInteractionType? = nil, data: InterfaceActionData<DestinationType, ContentType>? = nil) {
+    public init(function: @escaping (EventType, InterfaceActionData<DestinationType, ContentType>) -> Void, eventType: EventType? = nil, data: InterfaceActionData<DestinationType, ContentType>? = nil) {
         self.function = function
-        self.userInteractionType = interactionType
+        self.eventType = eventType
         if let data {
             self.data = data
         }
