@@ -13,10 +13,12 @@ import Destinations
 
 @MainActor final class FlowableTests: XCTestCase, DestinationTypes {
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
         continueAfterFailure = false
 
     }
+  
 
     func test_presenting_destination() {
 

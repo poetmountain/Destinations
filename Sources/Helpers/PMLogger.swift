@@ -35,7 +35,7 @@ import Foundation
 import OSLog
 
 /// Severity of the log.
-public enum PMLogLevel: Int {
+public enum PMLogLevel: Int, Sendable {
     case none
     case error
     case warning
@@ -44,7 +44,7 @@ public enum PMLogLevel: Int {
     case verbose
 }
 
-public struct PMLoggerOptions {
+@MainActor public struct PMLoggerOptions {
     /// Determines the maximum level at which log entries are shown.
     /// For example, if the `level` is `debug` then all `verbose` entries will be ignored. The default value is `debug`.
     public var maximumOutputLevel = PMLogLevel.debug

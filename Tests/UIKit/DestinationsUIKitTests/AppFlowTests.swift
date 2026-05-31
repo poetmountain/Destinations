@@ -16,6 +16,10 @@ import Destinations
         
     let testDestinations = TestDestinations()
 
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+    }
+    
     override func tearDown() async throws {
         sceneDelegate?.navigationController.setViewControllers([], animated: false)
         sceneDelegate?.navigationController = UINavigationController()
@@ -681,14 +685,11 @@ import Destinations
         }
         wait(timeout: 0.3)
 
-        print("current children before going back \(navDestination.groupInternalState.childDestinations.map { $0.type })")
-
         let secondaryDestination = navDestination.currentChildDestination() as? any ControllerDestinationable<DestinationType, AppContentType, TabType>
         XCTAssertEqual(secondaryDestination?.type, .colorDetail)
         XCTAssertEqual(navDestination.navigator()?.navigationPath.count, 3)
 
         if let lastDestination = appFlow.activeDestinations.last as? any ControllerDestinationable {
-            print("moving back in stack from \(lastDestination.type)")
             lastDestination.moveBackInNavigationStack()
         } else {
             XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
@@ -702,9 +703,6 @@ import Destinations
         
         // the current child of the SplitViewDestination should now be the home Destination
         let afterBackDestination = navDestination.childDestinations().last
-        
-        print("current children after \(navDestination.groupInternalState.childDestinations.map { $0.type })")
-        print("current IDs after \(navDestination.groupInternalState.childDestinations.map { $0.id })")
         
         XCTAssertEqual(afterBackDestination?.type, home?.type, "Expected currentChildDestination to be the previous Destination \(String(describing: home?.type)), but found \(String(describing: afterBackDestination?.type))")
 

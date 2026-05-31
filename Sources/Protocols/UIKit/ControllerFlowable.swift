@@ -382,8 +382,6 @@ public extension ControllerFlowable {
             guard let strongSelf = self, let configuration else { return }
 
             if didComplete {
-                DestinationsSupport.logger.log("✌️ Default system navigating back closure", level: .verbose)
-
                 if let oldID = configuration.currentDestinationID {
                     if let oldDestination = strongSelf.destination(for: oldID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
                         oldDestination.prepareForDisappearance(wasVisible: true)

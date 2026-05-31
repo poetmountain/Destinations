@@ -301,7 +301,20 @@ public extension Destinationable {
     }
     
     func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType) {
+#if swift(>=6.1)
         stateModel?.configureInteractor(interactor, type: type)
+#else
+        if let stateModel {
+            _forwardConfigureInteractor(stateModel, interactor: interactor, type: type)
+        }
+#endif
+    }
+
+    /// Fix for Swift 6.0 build failure. This internal forwarding method explicitly opens the existential via SE-0352 so the constraint chain resolves at the generic call site instead of on the existential.
+    ///
+    /// Swift 6.1 and above has existential-opening / associated-type resolution can follow that chain transitively through the same-type where clauses on a primary-associated-type existential, so this is only needed to support building on Swift 6.0.
+    internal func _forwardConfigureInteractor<SM: StateModeling>(_ sm: SM, interactor: any AbstractInteractable, type: InteractorType) where SM.Destination == Self {
+        sm.configureInteractor(interactor, type: type)
     }
     
     func updatePresentation(presentation: DestinationPresentation<DestinationType, ContentType, TabType>) {
@@ -660,7 +673,21 @@ public extension Destinationable {
     }
     
     func handleEvent(_ type: EventType, content: ContentType? = nil) {
+#if swift(>=6.1)
         stateModel?.handleEvent(type, content: content)
+#else
+        if let stateModel {
+            _forwardHandleEvent(stateModel, type: type, content: content)
+        }
+#endif
+        
+    }
+
+    /// Fix for Swift 6.0 build failure. This internal forwarding method explicitly opens the existential via SE-0352 so the constraint chain resolves at the generic call site instead of on the existential.
+    ///
+    /// Swift 6.1 and above has existential-opening / associated-type resolution can follow that chain transitively through the same-type where clauses on a primary-associated-type existential, so this is only needed to support building on Swift 6.0.
+    internal func _forwardHandleEvent<SM: StateModeling>(_ sm: SM, type: EventType, content: ContentType?) where SM.Destination == Self {
+        sm.handleEvent(type, content: content)
     }
     
     // default implementation

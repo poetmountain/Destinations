@@ -12,6 +12,9 @@ import Destinations
 
 @MainActor final class DestinationPathNavigatingTests: XCTestCase {
     
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+    }
 
     func test_addPathElement() {
         let pathID = UUID()

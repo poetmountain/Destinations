@@ -161,7 +161,7 @@ public extension TabBarViewDestinationable {
     }
     
     func presentDestination(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
-        DestinationsSupport.logger.log("Presenting tab view \(destination.type) in tab \(tab).")
+        DestinationsSupport.logger.log("Presenting tab view \(destination.type) in tab \(tab).", level: .verbose)
        let currentTabDestination = rootDestination(for: tab)
         
         if shouldUpdateSelectedTab {
@@ -206,7 +206,7 @@ public extension TabBarViewDestinationable {
             return
         }
 
-        DestinationsSupport.logger.log("Replacing tab destination with \(newDestination.type)")
+        DestinationsSupport.logger.log("Replacing tab destination with \(newDestination.type)", level: .verbose)
         
         let shouldReplaceCurrentDestination = (currentChildDestination()?.id == currentID)
         

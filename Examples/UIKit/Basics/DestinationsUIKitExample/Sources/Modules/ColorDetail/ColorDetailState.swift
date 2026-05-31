@@ -34,10 +34,14 @@ final class ColorDetailState: StateModeling {
     }
 
     func prepareForAppearance(isVisible: Bool) {
-        print("prepareForAppearance - \(String(describing: destination?.type)) : is visible \(isVisible) : \(String(describing: destination?.id.uuidString))")
+        if isVisible {
+            print("prepareForAppearance - \(String(describing: destination?.type)) : is visible \(isVisible) : \(String(describing: destination?.id.uuidString))")
+        }
     }
 
     func prepareForDisappearance(wasVisible: Bool) {
-        print("prepareForDisappearance - \(String(describing: destination?.type)) : was visible \(wasVisible) : \(String(describing: destination?.id.uuidString))")
+        if wasVisible {
+            print("prepareForDisappearance - \(String(describing: destination?.type)) : was visible \(wasVisible) : \(String(describing: destination?.id.uuidString))")
+        }
     }
 }

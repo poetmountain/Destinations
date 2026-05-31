@@ -12,11 +12,11 @@ import Destinations
 
 @MainActor final class DestinationableTests: XCTestCase, DestinationTypes {
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
         continueAfterFailure = false
     }
-
-
+    
     func test_access_presentation() {
         let startingTabs: [AppTabType] = [.palettes, .home]
         let startingType: RouteDestinationType = .colorsList

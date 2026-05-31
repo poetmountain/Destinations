@@ -12,14 +12,10 @@ import Destinations
 
 @MainActor final class ViewDestinationableTests: XCTestCase, DestinationTypes {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
+    
     func test_assignInteractor() {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.Events, DestinationType, ContentType, TabType>(configurations: [.color(model: nil): colorSelection])

@@ -14,6 +14,10 @@ import UIKit
 @MainActor final class NavigatingControllerDestinationableTests: XCTestCase, DestinationTypes {
     typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+    }
+    
     override func tearDown() async throws {
         sceneDelegate?.navigationController.setViewControllers([], animated: false)
         sceneDelegate?.navigationController = UINavigationController()

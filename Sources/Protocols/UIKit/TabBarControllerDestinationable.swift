@@ -145,12 +145,10 @@ public extension TabBarControllerDestinationable {
     }
 
     public func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
-        DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).")
+        DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).", level: .verbose)
 
         let currentTabDestination = rootDestination(for: tab)
-        
-        DestinationsSupport.logger.log("current tab dest \(currentTabDestination?.type)")
-        
+                
         if shouldUpdateSelectedTab {
             groupInternalState.currentChildDestination = destination
             try updateSelectedTab(type: tab)
@@ -203,10 +201,8 @@ public extension TabBarControllerDestinationable {
             return
         }
 
-        DestinationsSupport.logger.log("Replacing tab \(tabToReplace) destination with \(newDestination.type)")
-        
-        DestinationsSupport.logger.log("Current tab VC \(self.currentDestination(for: tabToReplace))")
-        
+        DestinationsSupport.logger.log("Replacing tab \(tabToReplace) destination with \(newDestination.type)", level: .verbose)
+                
         let shouldReplaceCurrentDestination = (currentChildDestination()?.id == currentID)
         
         groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
@@ -291,13 +287,10 @@ public extension TabBarControllerDestinationable {
         DestinationsSupport.logger.log("Registering navigation closures for \(destination.description)", level: .verbose)
 
         destination.assignChildRemovedClosure { [weak self] destinationID in
-            DestinationsSupport.logger.log("Child was removed closure", level: .verbose)
-
             self?.removeChild(identifier: destinationID, removeDestinationFromFlowClosure: nil)
         }
 
         destination.assignCurrentDestinationChangedClosure { [weak self, weak destination] destinationID in
-            DestinationsSupport.logger.log("Current destination changed closure", level: .verbose)
 
             if let destinationID {
                 self?.updateCurrentDestination(destinationID: destinationID)

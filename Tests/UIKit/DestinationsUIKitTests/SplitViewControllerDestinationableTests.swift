@@ -17,7 +17,7 @@ import UIKit
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, AppContentType, TabType>
 
     override func setUp() async throws {
-        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
     }
 
     override func tearDown() async throws {
@@ -62,8 +62,6 @@ import UIKit
         
         wait(timeout: 0.3)
         
-        print("before replaced \(splitViewDestination.childDestinations().map { $0.type })")
-
         let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
@@ -71,9 +69,7 @@ import UIKit
         wait(timeout: 0.3)
 
         splitViewDestination.replaceChild(currentID: home.id, with: newDestination)
-        
-        print("after replaced \(splitViewDestination.childDestinations().map { $0.type })")
-        
+                
         // new Destination should be a child
         XCTAssertTrue(splitViewDestination.childDestinations().contains(where: { $0.id == newDestination.id }), "Expected new Destination to be in the childDestinations array")
         

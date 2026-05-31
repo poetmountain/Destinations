@@ -139,7 +139,6 @@ public extension GroupedDestinationable {
         guard let childIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == identifier}), let childDestination = groupInternalState.childDestinations[safe: childIndex] else { return }
 
         if let currentChildDestination = groupInternalState.currentChildDestination, childDestination.id == currentChildDestination.id {
-            DestinationsSupport.logger.log("hey Removing current child \(currentChildDestination.type) from \(Self.self)", level: .verbose)
             groupInternalState.currentChildDestination = nil
         }
         
@@ -152,7 +151,7 @@ public extension GroupedDestinationable {
         groupInternalState.childDestinations.remove(at: childIndex)
         groupInternalState.currentChildDestination = groupInternalState.childDestinations.last
         
-        DestinationsSupport.logger.log("New group current child \(groupInternalState.currentChildDestination?.type.rawValue)", level: .verbose)
+        DestinationsSupport.logger.log("New group current child \(groupInternalState.currentChildDestination?.type.rawValue ?? "nil")", level: .verbose)
 
         childDestination.removeAssociatedInterface()
 

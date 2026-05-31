@@ -13,8 +13,8 @@ import Destinations
 
 @MainActor final class NavigationSplitViewDestinationableTests: XCTestCase, DestinationTypes {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
     }
 
     func test_column_for_destinationID() {

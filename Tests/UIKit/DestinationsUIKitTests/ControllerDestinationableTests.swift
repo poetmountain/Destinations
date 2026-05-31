@@ -13,6 +13,9 @@ import UIKit
 
 @MainActor final class ControllerDestinationableTests: XCTestCase, DestinationTypes {
 
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+    }
     
     func test_assignInteractor() {
         let colorsListConfigs = AppDestinationConfigurations<TestColorsDestination.Events, DestinationType, AppContentType, TabType>(configurations: [:])

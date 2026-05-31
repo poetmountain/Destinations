@@ -40,14 +40,12 @@ final class ColorDetailState: StateModeling {
     }
 
     func prepareForAppearance(isVisible: Bool) {
-        print("prepareForAppearance - \(String(describing: destination?.type)) : isVisible \(isVisible) : \(String(describing: destination?.id.uuidString))")
         didAppear = true
         didDisappear = false
         self.isVisible = isVisible
     }
 
     func prepareForDisappearance(wasVisible: Bool) {
-        print("prepareForDisappearance - \(String(describing: destination?.type)) : wasVisible \(wasVisible) : \(String(describing: destination?.id.uuidString))")
         didAppear = false
         didDisappear = true
         isVisible = false

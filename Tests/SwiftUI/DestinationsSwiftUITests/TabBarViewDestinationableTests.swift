@@ -13,7 +13,7 @@ import Destinations
 @MainActor final class TabBarViewDestinationableTests: XCTestCase, DestinationTypes {
 
     override func setUp() async throws {
-        DestinationsSupport.logger.options.maximumOutputLevel = .verbose
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
     }
 
     func test_tab_for_destinationID() {

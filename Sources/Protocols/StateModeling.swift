@@ -10,12 +10,13 @@
 import Foundation
 
 /// This protocol represents a state model associated with a Destination.
-@MainActor public protocol StateModeling<Destination>: AnyObject where InteractorType == Destination.InteractorType, ContentType == Destination.ContentType, EventType == Destination.EventType  {
+@MainActor public protocol StateModeling<Destination>: AnyObject {
 
-    associatedtype EventType: EventTypeable
-    associatedtype InteractorType: InteractorTypeable
-    associatedtype ContentType: ContentTypeable
     associatedtype Destination: Destinationable
+
+    typealias EventType = Destination.EventType
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
 
     /// The Destination associated with this state model.
     ///

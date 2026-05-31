@@ -46,12 +46,12 @@ public enum TestDestinationType: String, RoutableDestinations {
     
     static func buildAppFlow(startingDestination: DestinationPresentation<DestinationType, ContentType, TabType>, startingTabs: [AppTabType]? = nil, splitViewContent: [NavigationSplitViewColumn: RouteDestinationType]? = nil) -> ViewFlow<DestinationType, TabType, ContentType> {
         
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+        
         let splitViewColumns = splitViewContent ?? [.sidebar: .colorsList, .detail: .colorDetail]
         
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
         let sheetPresent = PresentationConfiguration(destinationType: .colorsList, presentationType: .sheet(type: .present), assistantType: .basic)
              
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListDestination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant()))
         let colorsListProvider = ColorsListProvider()
         
         let colorDetailProvider = ColorDetailProvider()

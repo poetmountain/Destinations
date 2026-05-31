@@ -13,6 +13,9 @@ import UIKit
 
 @MainActor final class TabBarControllerDestinationInterfacingTests: XCTestCase, DestinationTypes {
 
+    override func setUp() async throws {
+        DestinationsSupport.logger.options.maximumOutputLevel = .error
+    }
 
     func test_tabIndex_for_tab() {
         let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
