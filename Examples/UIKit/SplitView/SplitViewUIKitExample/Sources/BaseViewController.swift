@@ -55,7 +55,7 @@ final class BaseViewController: UIViewController, ControllerDestinationInterfaci
 
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail,
                                                        presentationType: .splitView(column: SplitViewColumn(uiKit: .secondary)),
-                                                       assistantType: .custom(ChooseColorFromListActionAssistant()))
+                                                       assistantType: .basic)
 
  
         let startProvider = StartProvider()

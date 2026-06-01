@@ -35,12 +35,11 @@ struct ColorsRequest: InteractorRequestConfiguring {
 
 }
 
-actor ColorsDatasource: AsyncDatasourceable {
+actor ColorsDatasource: AsyncInteractable {
 
     typealias Request = ColorsRequest
-    typealias Item = Request.Item
 
-    var items: [Item] = []
+    var items: [ColorViewModel] = []
 
     func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
 

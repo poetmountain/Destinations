@@ -17,7 +17,7 @@ final class ColorDetailState: StateModeling {
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
-    weak var destination: Destination?
+    var destination: Destination?
 
     var colorModel: ColorViewModel?
 
@@ -26,10 +26,7 @@ final class ColorDetailState: StateModeling {
     }
 
     func handleEvent(_ type: EventType, content: ContentType?) {
-        switch type {
-            case .none:
-                break
-        }
+
     }
 
     func prepareForAppearance(isVisible: Bool) {

@@ -18,7 +18,10 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
 
     init() {
         let options = ViewSheetPresentationOptions(presentationMode: .sheet)
-        let sheetPresent = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .dynamic, presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)), assistantType: .custom(ColorDetailActionAssistant()))
+        let sheetPresent = DestinationPresentation<DestinationType, ContentType, TabType>(
+            destinationType: .dynamic,
+            presentationType: .sheet(type: .present, options: SheetPresentationOptions(swiftUI: options)),
+            assistantType: .basic)
 
         presentationsData = [.colorDetailButton: sheetPresent]
     }

@@ -27,7 +27,6 @@ struct CounterRequest: InteractorRequestConfiguring {
 actor CounterInteractor: AsyncInteractable {
     
     typealias Request = CounterRequest
-    typealias Item = Request.Item
 
     var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
         

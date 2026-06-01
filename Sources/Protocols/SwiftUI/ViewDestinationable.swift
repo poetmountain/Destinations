@@ -142,8 +142,8 @@ public extension ViewDestinationable {
         
         // assign the state from the View to the Destination
         if let viewModel = view.destinationState.stateModel as? any StateModeling<Self> {
-            self.stateModel = viewModel
-            self.stateModel?.destination = self
+            stateModel = viewModel
+            stateModel?.destination = self
         } else {
             assertionFailure("The StateModel assigned to the View's destinationState is not of type StateModeling.")
         }
@@ -151,8 +151,9 @@ public extension ViewDestinationable {
     }
     
     func removeAssociatedInterface() {
-        self.view = nil
-        self.stateModel = nil
+        view = nil
+        stateModel?.destination = nil
+        stateModel = nil
     }
     
     func setPresentingNavigator(navigator: any DestinationPathNavigating) {

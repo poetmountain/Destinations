@@ -17,7 +17,7 @@ final class DynamicRouteState: StateModeling {
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
-    weak var destination: Destination?
+    var destination: Destination?
 
     var selectedRoute: Route = .welcome
 

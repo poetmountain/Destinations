@@ -15,11 +15,7 @@ struct ColorDetailProvider: ViewDestinationProviding, AppDestinationTypes {
 
     public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
     public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
-    
-    init() {
-        presentationsData[.none] = PresentationConfiguration(presentationType: .addToCurrent, assistantType: .basic)
-    }
-    
+ 
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
         var colorModel: ColorViewModel?

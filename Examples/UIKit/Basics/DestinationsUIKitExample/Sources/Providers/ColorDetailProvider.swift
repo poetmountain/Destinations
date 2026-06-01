@@ -29,9 +29,16 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
             sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
             sheet.prefersGrabberVisible = true
         }))
-        let sheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: options), assistantType: .custom(ColorDetailActionAssistant()))
+        let sheetPresent = PresentationConfiguration(
+            destinationType: .sheet,
+            presentationType: .sheet(type: .present, options: options),
+            assistantType: .basic)
+        
         let customOptions = SheetPresentationOptions(uiKit: ControllerSheetPresentationOptions(presentationStyle: .custom, transitionDelegate: transitionAnimator))
-        let customSheetPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .sheet(type: .present, options: customOptions), assistantType: .custom(ColorDetailActionAssistant()))
+        let customSheetPresent = PresentationConfiguration(
+            destinationType: .sheet,
+            presentationType: .sheet(type: .present, options: customOptions),
+            assistantType: .basic)
         
         
         let customPresent = PresentationConfiguration(destinationType: .sheet, presentationType: .custom(presentation: CustomPresentation<DestinationType, AppContentType, TabType>(uiKit: { (destinationToPresent, rootController, currentDestination, parentOfCurrentDestination, completionClosure) in

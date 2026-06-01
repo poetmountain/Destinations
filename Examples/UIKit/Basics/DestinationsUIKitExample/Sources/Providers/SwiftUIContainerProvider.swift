@@ -21,8 +21,6 @@ struct SwiftUIContainerProvider<SwiftUIView: ViewDestinationInterfacing & SwiftU
     
     public typealias Destination = SwiftUIContainerDestination<SwiftUIView, EventType, DestinationType, ContentType, TabType, InteractorType>
 
-    
-    
     public typealias SwiftUIViewSetupClosure = (_ destination: SwiftUIContainerDestination<SwiftUIView, EventType, DestinationType, ContentType, TabType, InteractorType>, _ content: ContentType?) -> SwiftUIView
 
     public var presentationsData: [EventType: DestinationPresentation<DestinationType, ContentType, TabType>] = [:]

@@ -17,7 +17,7 @@ final class CounterState: StateModeling {
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
-    weak var destination: Destination?
+    var destination: Destination?
 
     var counter: Int = 0
 

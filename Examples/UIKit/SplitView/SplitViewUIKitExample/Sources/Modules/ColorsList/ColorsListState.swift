@@ -23,7 +23,7 @@ final class ColorsListState: ColorsListStateModeling {
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
-    weak var destination: Destination?
+    var destination: Destination?
 
     var items: [ColorViewModel] = []
 

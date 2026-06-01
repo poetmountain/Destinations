@@ -100,7 +100,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
 
                             Task {
                                 try? await Task.sleep(for: .milliseconds(80))
-                                destinationState.stateModel.selectedItem = nil
+                                stateModel?.selectedItem = nil
                             }
                         }
 

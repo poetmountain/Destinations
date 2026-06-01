@@ -82,6 +82,8 @@ public extension ControllerDestinationable {
     
     func removeAssociatedInterface() {
         controller = nil
+        stateModel?.destination = nil
+        stateModel = nil
     }
     
     func setPresentingNavigator(navigator: any DestinationPathNavigating) {

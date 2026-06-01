@@ -14,7 +14,7 @@ final class ColorsListInterfaceState: DestinationStateable, AppDestinationTypes 
     
     @AutoCaseIterable
     enum Events: EventTypeable {
-        case color(model: ColorViewModel?)
+        case color
         case retrieveInitialColors
 
         var rawValue: String {
@@ -73,7 +73,7 @@ struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
                 .id(destination().id)
                 .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
                     if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
-                        destination?.handleEvent(.color(model: item))
+                        destination?.handleEvent(.color, content: .color(model: item))
                     }
                 })
             }

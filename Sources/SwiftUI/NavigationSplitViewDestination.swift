@@ -63,5 +63,15 @@ import SwiftUI
             destinationIDsForColumns[column] = destination.id
             presentDestination(destination: destination, in: column)
         }
+
+        // `presentDestination(in:)` only updates `currentChildDestination`, which means the Flow's
+        // completion closure will later call `prepareForAppearance(isVisible:)` on just that one
+        // destination. Invoke it here for the other columns so every initial column destination
+        // gets the appearance hook exactly once.
+        if let currentChildID = groupInternalState.currentChildDestination?.id {
+            for destination in destinationsForColumns.values where destination.id != currentChildID {
+                destination.prepareForAppearance(isVisible: true)
+            }
+        }
     }
 }

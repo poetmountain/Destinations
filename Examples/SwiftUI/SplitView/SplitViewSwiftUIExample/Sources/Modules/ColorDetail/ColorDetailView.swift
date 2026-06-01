@@ -12,8 +12,11 @@ import Destinations
 @Observable
 final class ColorDetailInterfaceState: DestinationStateable, AppDestinationTypes {
     
-    enum Events: String, EventTypeable, Equatable {
-        case none
+    enum Events: EventTypeable, Equatable {
+        
+        var rawValue: String {
+            ""
+        }
     }
 
     enum InteractorType: InteractorTypeable {

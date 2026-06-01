@@ -19,11 +19,20 @@ struct ColorsListProvider: ControllerDestinationProviding, DestinationTypes {
     
     init() {
         // presentation actions
-        let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant()))
+        let colorSelection = PresentationConfiguration(
+            destinationType: .colorDetail,
+            presentationType: .navigationStack(type: .present),
+            assistantType: .basic)
         
         // interactor actions
-        let paginateAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .basicAsync)
-        let colorsListRetrieveAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .basicAsync)
+        let paginateAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(
+            interactorType: .colors,
+            actionType: .paginate,
+            assistantType: .basicAsync)
+        let colorsListRetrieveAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(
+            interactorType: .colors,
+            actionType: .retrieve,
+            assistantType: .basicAsync)
         
         presentationsData = [.color: colorSelection]
         interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]

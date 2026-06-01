@@ -27,14 +27,24 @@ struct SplitViewSwiftUIExampleApp: App, AppDestinationTypes {
         //DestinationsSupport.logger.shouldUseFileInfo = true
         //DestinationsSupport.logger.shouldUseMethodInfo = true
 
-        let startingDestination = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .splitView, presentationType: .replaceCurrent, assistantType: .basic)
+        let startingDestination = DestinationPresentation<DestinationType, AppContentType, TabType>(
+            destinationType: .splitView,
+            presentationType: .replaceCurrent,
+            assistantType: .basic)
 
-        let colorSelection = DestinationPresentation<DestinationType, AppContentType, TabType>(destinationType: .colorDetail, presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)), assistantType: .custom(ChooseColorFromListActionAssistant()))
+        let colorSelection = DestinationPresentation<DestinationType, AppContentType, TabType>(
+            destinationType: .colorDetail,
+            presentationType: .splitView(column: SplitViewColumn(swiftUI: .detail)),
+            assistantType: .basic)
  
         let splitViewProvider = SplitViewProvider(initialContent: [.sidebar: .colorsList, .detail: .colorDetail])
         
-        let colorsListRetrieveAction = InteractorConfiguration<ColorsListView.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(ColorsInteractorAssistant()))
-        let colorsListProvider = ColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
+        let colorsListRetrieveAction = InteractorConfiguration<ColorsListView.InteractorType, ColorsDatasource>(
+            interactorType: .colors,
+            actionType: .retrieve,
+            assistantType: .basicAsync)
+        
+        let colorsListProvider = ColorsListProvider(presentationsData: [.color: colorSelection], interactorsData: [.retrieveInitialColors: colorsListRetrieveAction])
         
         let colorDetailProvider = ColorDetailProvider()
 

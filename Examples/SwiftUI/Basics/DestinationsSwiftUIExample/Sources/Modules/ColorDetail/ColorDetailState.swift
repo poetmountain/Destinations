@@ -17,7 +17,7 @@ final class ColorDetailState: StateModeling {
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
-    weak var destination: Destination?
+    var destination: Destination?
 
     var colorModel: ColorViewModel?
     var sheetView: ContainerView<AnyView>?

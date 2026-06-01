@@ -41,16 +41,9 @@ final class ColorsListState: ColorsListStateModeling {
     }
 
     func handleEvent(_ type: EventType, content: ContentType?) {
-
-        switch type {
-            case .color(model: _):
-                destination?.handleThrowable(closure: { [weak destination] in
-                    try destination?.performAction(for: type)
-                })
-
-            case .retrieveInitialColors:
-                break
-        }
+        destination?.handleThrowable(closure: { [weak destination] in
+            try destination?.performAction(for: type, content: content)
+        })
     }
 
     func handleAsyncInteractorResult<Request>(result: Result<Request.ResultData, any Error>, for request: Request) async where Request : InteractorRequestConfiguring {

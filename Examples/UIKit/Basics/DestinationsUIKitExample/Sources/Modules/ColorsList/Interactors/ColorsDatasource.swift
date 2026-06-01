@@ -35,7 +35,7 @@ struct ColorsRequest: InteractorRequestConfiguring {
     
 }
 
-actor ColorsDatasource: AsyncDatasourceable {
+actor ColorsDatasource: AsyncInteractable {
     
     typealias Request = ColorsRequest
     typealias Item = Request.Item

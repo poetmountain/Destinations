@@ -1,3 +1,13 @@
+### 3.1.0
+#### Features
+* Created a new `StateModeling` type that sits in the destination state object. This state model is designed to move business logic and interactor handling out of Destination objects. This allows state objects to be easy to swap out as well as removing the need to create custom Destinations in most cases.
+* `@AutoCaseIterable` macro now supports enums with associated values that are enums, if they are also `CaseIterable`. Please see the documentation and example projects for more details.
+#### Changes
+* `UserInteractionType` has been renamed to `EventType` everywhere in Destinations. This conceptual change was made to better generalize this type, as events can be triggered from user interactions, but also via the state model's logic.
+#### Fixes
+* Fixed regression causing UIKit tab bar taps to not update the current destination in Flows
+* Fixed `isVisible` in `prepareForAppearance(isVisible:)` not being set to true for the sidebar column in split view controllers.
+
 ### 3.0.0
 #### Features
 * Added the `moveToNearest` presentation type for SwiftUI and UIKit projects, which finds the nearest Destination of the type specified by the `DestinationPresentation`'s `destinationType` in the view hierarchy and makes it the current Destination, starting from the current Destination and moving upwards in the hierarchy. Typically this presentation type would be used to move to another view higher in a navigation stack.
