@@ -70,8 +70,6 @@ func handleEvent(_ type: EventType, content: ContentType?) {
 }
 ```
 
-Calling `performAction(for:)` on the Destination retrieves the configuration object assigned to that event and then runs the appropriate action.
-
 The `Flow` object (which we'll talk about next) is called by the Destination and given the action to run. When presenting a new view it will try to find an existing Destination associated with that view type, or if one is not found, builds a new one using a Destination provider assigned to its type. The Destination's interface is then presented in the view hierarchy using the presentation type assigned to the `DestinationPresentation`'s `presentationType` property.
 
 If the event type is instead associated with an Interactor request, the Destination retrieves the Interactor and sends the request.
