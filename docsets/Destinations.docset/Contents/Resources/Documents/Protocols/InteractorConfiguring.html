@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -682,9 +691,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations21InteractorConfiguringP06assignB9Assistant11destination15interactionTypeyqd___015UserInteractionH0Qyd__tAA15DestinationableRd__0bH0Qyd__AJRtzlF"></a>
-                    <a name="//apple_ref/swift/Method/assignInteractorAssistant(destination:interactionType:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations21InteractorConfiguringP06assignB9Assistant11destination15interactionTypeyqd___015UserInteractionH0Qyd__tAA15DestinationableRd__0bH0Qyd__AJRtzlF">assignInteractorAssistant(destination:<wbr>interactionType:<wbr>)</a>
+                    <a name="/s:12Destinations21InteractorConfiguringP06assignB9Assistant11destination9eventTypeyqd___05EventH0Qyd__tAA15DestinationableRd__0bH0Qyd__AJRtzlF"></a>
+                    <a name="//apple_ref/swift/Method/assignInteractorAssistant(destination:eventType:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations21InteractorConfiguringP06assignB9Assistant11destination9eventTypeyqd___05EventH0Qyd__tAA15DestinationableRd__0bH0Qyd__AJRtzlF">assignInteractorAssistant(destination:<wbr>eventType:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -700,7 +709,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="n">assignInteractorAssistant</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">Destination</span><span class="p">,</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt">Destination</span><span class="o">.</span><span class="kt">UserInteractionType</span><span class="p">)</span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorConfiguring.html#/s:12Destinations21InteractorConfiguringP0B4TypeQa">InteractorType</a></span> <span class="o">==</span> <span class="kt">Destination</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorConfiguring.html#/s:12Destinations21InteractorConfiguringP0B4TypeQa">InteractorType</a></span></code></pre>
+<span class="kd">func</span> <span class="n">assignInteractorAssistant</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">Destination</span><span class="p">,</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt">Destination</span><span class="o">.</span><span class="kt">EventType</span><span class="p">)</span> <span class="k">where</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorConfiguring.html#/s:12Destinations21InteractorConfiguringP0B4TypeQa">InteractorType</a></span> <span class="o">==</span> <span class="kt">Destination</span><span class="o">.</span><span class="kt"><a href="../Protocols/InteractorConfiguring.html#/s:12Destinations21InteractorConfiguringP0B4TypeQa">InteractorType</a></span></code></pre>
 
                         </div>
                       </div>
@@ -723,12 +732,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type to associate this assistant with.</p>
+                                  <p>The event type to associate this assistant with.</p>
                                 </div>
                               </td>
                             </tr>

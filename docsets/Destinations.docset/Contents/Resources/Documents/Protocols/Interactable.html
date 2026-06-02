@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -512,18 +521,18 @@
 
 <p>Though requests to Interactors can be made using a Destination&rsquo;s <code>performRequest</code> method, in general one should use the <code>performAction</code> method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request.</p>
 
-<p>The recommended way is to assign a user interaction type to your request and using an <code><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></code>-conforming assistant to configure the request, leaving the Destination&rsquo;s interface free of associated business logic.</p>
+<p>The recommended way is to assign an event type to your request and using an <code><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></code>-conforming assistant to configure the request, leaving the Destination&rsquo;s interface free of associated business logic.</p>
 
 <p>Interactors are typically created by Destination providers and stored in the Destination. Like with presentations of new Destinations, Interactor requests are associated with a particular <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> object and are represented by an <code><a href="../Structs/InteractorConfiguration.html">InteractorConfiguration</a></code> model object. Action types for each Interactor are defined as enums, keeping Interactor-specific knowledge out of the interface.</p>
 
-<p>For example, here we&rsquo;re creating an Interactor action for making a pagination request to the ColorsDatasource, and then assign it to a <code>moreButton</code> user interaction type:</p>
+<p>For example, here we&rsquo;re creating an Interactor action for making a pagination request to the ColorsDatasource, and then assign it to a <code>moreButton</code> event type:</p>
 <pre class="highlight swift"><code> <span class="k">let</span> <span class="nv">paginateAction</span> <span class="o">=</span> <span class="kt">InteractorConfiguration</span><span class="o">&lt;</span><span class="kt">ColorsListProvider</span><span class="o">.</span><span class="kt">InteractorType</span><span class="p">,</span> <span class="kt">ColorsDatasource</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">interactorType</span><span class="p">:</span> <span class="o">.</span><span class="n">colors</span><span class="p">,</span> <span class="nv">actionType</span><span class="p">:</span> <span class="o">.</span><span class="n">paginate</span><span class="p">,</span> <span class="nv">assistantType</span><span class="p">:</span> <span class="o">.</span><span class="n">basic</span><span class="p">)</span>
  <span class="k">let</span> <span class="nv">colorsProvider</span> <span class="o">=</span> <span class="kt">ColorsListProvider</span><span class="p">(</span><span class="nv">interactorsData</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nv">moreButton</span><span class="p">:</span> <span class="n">paginateAction</span><span class="p">])</span>
 </code></pre>
 
-<p>And here is that user interaction type being called by a Destination&rsquo;s interface. Note that <code>performAction</code> can throw and the Destination method <code>handleThrowable</code> automatically handles that for you, logging any errors to the console with the built-in Logger class.</p>
+<p>And here is that event type being called by a Destination&rsquo;s interface. Note that <code>performAction</code> can throw and the Destination method <code>handleThrowable</code> automatically handles that for you, logging any errors to the console with the built-in Logger class.</p>
 <pre class="highlight swift"><code><span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="n">handleThrowable</span> <span class="p">{</span>
-   <span class="k">try</span> <span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="nf">performAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="o">.</span><span class="n">moreButton</span><span class="p">)</span>
+   <span class="k">try</span> <span class="nf">destination</span><span class="p">()</span><span class="o">.</span><span class="nf">performAction</span><span class="p">(</span><span class="nv">eventType</span><span class="p">:</span> <span class="o">.</span><span class="n">moreButton</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre>
 

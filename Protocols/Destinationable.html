@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -523,9 +532,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP19UserInteractionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/UserInteractionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a>
+                    <a name="/s:12Destinations15DestinationableP9EventTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/EventType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -533,14 +542,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines user interaction types for this Destination&rsquo;s interface.</p>
+                        <p>An enum which defines event types for this Destination&rsquo;s interface.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">EventType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/EventTypeable.html">EventTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -702,7 +711,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DestinationConfigurations</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DestinationConfigurations</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -795,9 +804,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy19UserInteractionTypeQz0eI0Qz07ContentI0Qz03TabI0Qz010InteractorI0QzGvp"></a>
+                    <a name="/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy9EventTypeQz0eH0Qz07ContentH0Qz03TabH0Qz010InteractorH0QzGvp"></a>
                     <a name="//apple_ref/swift/Property/internalState" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy19UserInteractionTypeQz0eI0Qz07ContentI0Qz03TabI0Qz010InteractorI0QzGvp">internalState</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy9EventTypeQz0eH0Qz07ContentH0Qz03TabH0Qz010InteractorH0QzGvp">internalState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -813,7 +822,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="k">var</span> <span class="nv">internalState</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationInternalState.html">DestinationInternalState</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP14InteractorTypeQa">InteractorType</a></span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+<span class="k">var</span> <span class="nv">internalState</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationInternalState.html">DestinationInternalState</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP14InteractorTypeQa">InteractorType</a></span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -823,9 +832,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP13performAction3for7contenty19UserInteractionTypeQz_07ContentI0QzSgtKF"></a>
-                    <a name="//apple_ref/swift/Method/performAction(for:content:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP13performAction3for7contenty19UserInteractionTypeQz_07ContentI0QzSgtKF">performAction(for:<wbr>content:<wbr>)</a>
+                    <a name="/s:12Destinations15DestinationableP10stateModelAA13StateModeling_px11DestinationRts_XPSgvp"></a>
+                    <a name="//apple_ref/swift/Property/stateModel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP10stateModelAA13StateModeling_px11DestinationRts_XPSgvp">stateModel</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -836,7 +845,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Performs the interface action associated with the specified user interaction type. This action could be a Destination presentation or a request to an Interactor.</p>
+                        <p>A state model that handles business logic and view state for this Destination.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -848,7 +857,42 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">performAction</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="k">throws</span></code></pre>
+<span class="k">var</span> <span class="nv">stateModel</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/StateModeling.html">StateModeling</a></span><span class="o">&lt;</span><span class="k">Self</span><span class="o">&gt;</span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP13performAction3for7contenty9EventTypeQz_07ContentH0QzSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/performAction(for:content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP13performAction3for7contenty9EventTypeQz_07ContentH0QzSgtKF">performAction(for:<wbr>content:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs the action associated with the specified event type. This action could be a Destination presentation or a request to an Interactor.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">performAction</span><span class="p">(</span><span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -859,12 +903,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type whose action should be run.</p>
+                                  <p>The event type whose action should be run.</p>
                                 </div>
                               </td>
                             </tr>
@@ -876,7 +920,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Optional content to use with the interface action.</p>
+                                  <p>Optional content to use with the action.</p>
                                 </div>
                               </td>
                             </tr>
@@ -889,9 +933,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP22performInterfaceAction15interactionType7contenty015UserInteractionG0Qz_07ContentG0QzSgtKF"></a>
-                    <a name="//apple_ref/swift/Method/performInterfaceAction(interactionType:content:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP22performInterfaceAction15interactionType7contenty015UserInteractionG0Qz_07ContentG0QzSgtKF">performInterfaceAction(interactionType:<wbr>content:<wbr>)</a>
+                    <a name="/s:12Destinations15DestinationableP22performInterfaceAction9eventType7contenty05EventG0Qz_07ContentG0QzSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/performInterfaceAction(eventType:content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP22performInterfaceAction9eventType7contenty05EventG0Qz_07ContentG0QzSgtKF">performInterfaceAction(eventType:<wbr>content:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -902,7 +946,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Performs the interface action associated with the specified user interaction type.</p>
+                        <p>Performs the action associated with the specified event type.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -915,7 +959,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">renamed</span><span class="p">:</span> <span class="s">"performAction(for:content:﹚"</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"This method is deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:﹚` method instead."</span><span class="p">)</span>
 <span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">performInterfaceAction</span><span class="p">(</span><span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="k">throws</span></code></pre>
+<span class="kd">func</span> <span class="nf">performInterfaceAction</span><span class="p">(</span><span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -926,12 +970,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type whose action should be run.</p>
+                                  <p>The event type whose action should be run.</p>
                                 </div>
                               </td>
                             </tr>
@@ -943,7 +987,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Optional content to use with the interface action.</p>
+                                  <p>Optional content to use with the action.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1010,9 +1054,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP20buildInterfaceAction19presentationClosure13configuration15interactionTypeAA0dE0Vy015UserInteractionJ0Qz011DestinationJ0Qz07ContentJ0QzGyAA0M12PresentationCyAmO03TabJ0QzGc_AuKtF"></a>
-                    <a name="//apple_ref/swift/Method/buildInterfaceAction(presentationClosure:configuration:interactionType:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP20buildInterfaceAction19presentationClosure13configuration15interactionTypeAA0dE0Vy015UserInteractionJ0Qz011DestinationJ0Qz07ContentJ0QzGyAA0M12PresentationCyAmO03TabJ0QzGc_AuKtF">buildInterfaceAction(presentationClosure:<wbr>configuration:<wbr>interactionType:<wbr>)</a>
+                    <a name="/s:12Destinations15DestinationableP20buildInterfaceAction19presentationClosure13configuration9eventTypeAA0dE0Vy05EventJ0Qz011DestinationJ0Qz07ContentJ0QzGyAA0L12PresentationCyAmO03TabJ0QzGc_AuKtF"></a>
+                    <a name="//apple_ref/swift/Method/buildInterfaceAction(presentationClosure:configuration:eventType:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP20buildInterfaceAction19presentationClosure13configuration9eventTypeAA0dE0Vy05EventJ0Qz011DestinationJ0Qz07ContentJ0QzGyAA0L12PresentationCyAmO03TabJ0QzGc_AuKtF">buildInterfaceAction(presentationClosure:<wbr>configuration:<wbr>eventType:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -1035,7 +1079,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">buildInterfaceAction</span><span class="p">(</span><span class="nv">presentationClosure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span></code></pre>
+<span class="kd">func</span> <span class="nf">buildInterfaceAction</span><span class="p">(</span><span class="nv">presentationClosure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span> <span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1070,12 +1114,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type associated with this presentation.</p>
+                                  <p>The event type associated with this presentation.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1146,9 +1190,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP22updateInterfaceActions7actionsySayAA0D6ActionVy19UserInteractionTypeQz011DestinationJ0Qz07ContentJ0QzGG_tF"></a>
+                    <a name="/s:12Destinations15DestinationableP22updateInterfaceActions7actionsySayAA0D6ActionVy9EventTypeQz011DestinationI0Qz07ContentI0QzGG_tF"></a>
                     <a name="//apple_ref/swift/Method/updateInterfaceActions(actions:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP22updateInterfaceActions7actionsySayAA0D6ActionVy19UserInteractionTypeQz011DestinationJ0Qz07ContentJ0QzGG_tF">updateInterfaceActions(actions:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP22updateInterfaceActions7actionsySayAA0D6ActionVy9EventTypeQz011DestinationI0Qz07ContentI0QzGG_tF">updateInterfaceActions(actions:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1164,7 +1208,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">updateInterfaceActions</span><span class="p">(</span><span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">])</span></code></pre>
+<span class="kd">func</span> <span class="nf">updateInterfaceActions</span><span class="p">(</span><span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">])</span></code></pre>
 
                         </div>
                       </div>
@@ -1492,9 +1536,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP12presentation3forAA23DestinationPresentationCy0E4TypeQz07ContentG0Qz03TabG0QzGSg015UserInteractionG0Qz_tF"></a>
+                    <a name="/s:12Destinations15DestinationableP12presentation3forAA23DestinationPresentationCy0E4TypeQz07ContentG0Qz03TabG0QzGSg05EventG0Qz_tF"></a>
                     <a name="//apple_ref/swift/Method/presentation(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP12presentation3forAA23DestinationPresentationCy0E4TypeQz07ContentG0Qz03TabG0QzGSg015UserInteractionG0Qz_tF">presentation(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP12presentation3forAA23DestinationPresentationCy0E4TypeQz07ContentG0Qz03TabG0QzGSg05EventG0Qz_tF">presentation(for:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -1505,7 +1549,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns a presentation configuration object based on its associated user interaction type.</p>
+                        <p>Returns a presentation configuration object based on its associated user interaction event type.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -1517,7 +1561,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">presentation</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
+<span class="kd">func</span> <span class="nf">presentation</span><span class="p">(</span><span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -1528,12 +1572,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type.</p>
+                                  <p>The user interaction event type.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1899,9 +1943,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP18addInterfaceAction6actionyAA0dE0Vy19UserInteractionTypeQz011DestinationI0Qz07ContentI0QzG_tKF"></a>
+                    <a name="/s:12Destinations15DestinationableP18addInterfaceAction6actionyAA0dE0Vy9EventTypeQz011DestinationH0Qz07ContentH0QzG_tKF"></a>
                     <a name="//apple_ref/swift/Method/addInterfaceAction(action:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP18addInterfaceAction6actionyAA0dE0Vy19UserInteractionTypeQz011DestinationI0Qz07ContentI0QzG_tKF">addInterfaceAction(action:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP18addInterfaceAction6actionyAA0dE0Vy9EventTypeQz011DestinationH0Qz07ContentH0QzG_tKF">addInterfaceAction(action:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -1924,7 +1968,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">addInterfaceAction</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+<span class="kd">func</span> <span class="nf">addInterfaceAction</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP15DestinationTypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -2007,9 +2051,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP25assignInteractorAssistant9assistant3foryAA0D9Assisting_p11ContentTypeQzAIRS_0dJ0QzAKRSXP_015UserInteractionJ0QztF"></a>
+                    <a name="/s:12Destinations15DestinationableP25assignInteractorAssistant9assistant3foryAA0D9Assisting_p11ContentTypeQzAIRS_0dJ0QzAKRSXP_05EventJ0QztF"></a>
                     <a name="//apple_ref/swift/Method/assignInteractorAssistant(assistant:for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP25assignInteractorAssistant9assistant3foryAA0D9Assisting_p11ContentTypeQzAIRS_0dJ0QzAKRSXP_015UserInteractionJ0QztF">assignInteractorAssistant(assistant:<wbr>for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP25assignInteractorAssistant9assistant3foryAA0D9Assisting_p11ContentTypeQzAIRS_0dJ0QzAKRSXP_05EventJ0QztF">assignInteractorAssistant(assistant:<wbr>for:<wbr>)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -2020,7 +2064,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Assigns an Interactor assistant to a specific type of user interaction.</p>
+                        <p>Assigns an Interactor assistant to a specific event type.</p>
 
                       </div>
                       <h4>Default Implementation</h4>
@@ -2032,7 +2076,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">func</span> <span class="nf">assignInteractorAssistant</span><span class="p">(</span><span class="nv">assistant</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP14InteractorTypeQa">InteractorType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
+<span class="kd">func</span> <span class="nf">assignInteractorAssistant</span><span class="p">(</span><span class="nv">assistant</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP14InteractorTypeQa">InteractorType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -2055,12 +2099,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The type of user interaction which this assistant should handle requests for.</p>
+                                  <p>The type of event which this assistant should handle requests for.</p>
                                 </div>
                               </td>
                             </tr>
@@ -2077,6 +2121,9 @@
                     <a name="//apple_ref/swift/Method/prepareForPresentation()" class="dashAnchor"></a>
                     <a class="token" href="#/s:12Destinations15DestinationableP22prepareForPresentationyyF">prepareForPresentation()</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -2086,9 +2133,13 @@
                         <p>This method is called automatically when a Destination is presented by a Flow for the first time, but before its associated UI is built. Implement this method in your Destination classes to put any initial state setup actions or datasource retrieval calls here that should only be run when a Destination is first created.</p>
 
 <blockquote>
-<p>Unlike <code>prepareForAppearance()</code>, this method is only called once on a Destination.</p>
+<p>Unlike <code><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP20prepareForAppearance9isVisibleySb_tF">prepareForAppearance(isVisible:)</a></code>, this method is only called once on a Destination.</p>
 </blockquote>
 
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -2209,6 +2260,72 @@
                               <td>
                                 <div>
                                   <p>Represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a Destination path presentation, it would be <code>false</code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations15DestinationableP11handleEvent_7contenty0D4TypeQz_07ContentF0QzSgtF"></a>
+                    <a name="//apple_ref/swift/Method/handleEvent(_:content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP11handleEvent_7contenty0D4TypeQz_07ContentF0QzSgtF">handleEvent(_:<wbr>content:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs an action tied to the user interaction event of the specified type. This is the central method you should use to route user interactions from the View layer to the Destination.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">handleEvent</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html#/s:12Destinations15DestinationableP11ContentTypeQa">ContentType</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The interaction event type to act upon.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional content model to use when performing the action.</p>
                                 </div>
                               </td>
                             </tr>

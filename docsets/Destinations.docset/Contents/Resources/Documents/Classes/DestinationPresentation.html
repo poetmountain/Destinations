@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -518,7 +527,7 @@
 <li><code>replaceRoot</code> This presentation type removes all Destinations that are currently presented and adds a new root Destination. This is useful in use cases such as a user signing out, where you need to remove all the current UI and present a new screen.</li>
 <li><code>replaceCurrent</code> This presentation type replaces the currently-presented Destination with a new Destination in system UI components which allow that.</li>
 <li><code>sheet(type: SheetPresentationType, options: SheetPresentationOptions?)</code> This presentation type presents (or dismisses) a Destination in a sheet. The <code>options</code> parameter allows you to customize how the sheet is presented, configuring SwiftUI-specific options with a <code><a href="../Structs/ViewSheetPresentationOptions.html">ViewSheetPresentationOptions</a></code> model and UIKit-specific options with a <code><a href="../Structs/ControllerSheetPresentationOptions.html">ControllerSheetPresentationOptions</a></code> model.</li>
-<li><code>destinationPath(path: [DestinationPresentation])</code> This presentation type presents a path of multiple Destination objects, useful for providing deep linking functionality or building complex state with one user interaction.</li>
+<li><code>destinationPath(path: [DestinationPresentation])</code> This presentation type presents a path of multiple Destination objects, useful for providing deep linking functionality or building complex state with one event. This presentation could be used for instance to rebuild a navigation stack when resuming a user&rsquo;s state.</li>
 <li><code>custom(presentation: CustomPresentation&lt;DestinationPresentation&gt;)</code> This presentation type enables you to present a custom presentation of a Destination. It can be used to support the presentation of custom UI, as well as system components which Destinations does not directly support. The <code>presentation</code> parameter allows you to use a <code><a href="../Structs/CustomPresentation.html">CustomPresentation</a></code> model with specialized closures to provide whatever functionality you need.</li>
 </ul>
 

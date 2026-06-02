@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -501,7 +510,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationStateable</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationStateable</span><span class="o">&lt;</span><span class="kt">Destination</span><span class="p">,</span> <span class="kt">StateModel</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                 </div>
               </div>
@@ -527,7 +536,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The Destination type associated with this state model.</p>
+                        <p>The Destination class type associated with this state&rsquo;s Destination.</p>
 
                       </div>
                       <div class="declaration">
@@ -535,6 +544,33 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Destination</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Destinationable.html">Destinationable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations20DestinationStateableP10StateModelQa"></a>
+                    <a name="//apple_ref/swift/Alias/StateModel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations20DestinationStateableP10StateModelQa">StateModel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The state model object type to be used with this Destination&rsquo;s interface.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">StateModel</span></code></pre>
 
                         </div>
                       </div>
@@ -563,6 +599,34 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="k">var</span> <span class="nv">destination</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationStateable.html#/s:12Destinations20DestinationStateableP0B0Qa">Destination</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations20DestinationStateableP10stateModel05StateE0Qzvp"></a>
+                    <a name="//apple_ref/swift/Property/stateModel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations20DestinationStateableP10stateModel05StateE0Qzvp">stateModel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The state model used with this Destination&rsquo;s interface. It holds the interface&rsquo;s state, along with handling business logic and interactor requests and responses.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">stateModel</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationStateable.html#/s:12Destinations20DestinationStateableP10StateModelQa">StateModel</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

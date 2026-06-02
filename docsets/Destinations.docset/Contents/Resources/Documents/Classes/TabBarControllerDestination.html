@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -501,7 +510,7 @@
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TabBarControllerDestination</span><span class="o">&lt;</span><span class="kt">ControllerType</span><span class="p">,</span> <span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabBarControllerDestinationInterfacing.html">TabBarControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TabBarControllerDestination</span><span class="o">&lt;</span><span class="kt">ControllerType</span><span class="p">,</span> <span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a></span> <span class="k">where</span> <span class="kt">ControllerType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabBarControllerDestinationInterfacing.html">TabBarControllerDestinationInterfacing</a></span><span class="p">,</span> <span class="kt">EventType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/EventTypeable.html">EventTypeable</a></span><span class="p">,</span> <span class="kt">DestinationType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/RoutableDestinations.html">RoutableDestinations</a></span><span class="p">,</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span><span class="p">,</span> <span class="kt">TabType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TabTypeable.html">TabTypeable</a></span><span class="p">,</span> <span class="kt">InteractorType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a></span></code></pre>
 
                 </div>
               </div>
@@ -536,7 +545,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">DestinationConfigurations</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">DestinationConfigurations</span> <span class="o">=</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -680,9 +689,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy19UserInteractionTypeQz0eI0Qz07ContentI0Qz03TabI0Qz010InteractorI0QzGvp"></a>
+                    <a name="/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy9EventTypeQz0eH0Qz07ContentH0Qz03TabH0Qz010InteractorH0QzGvp"></a>
                     <a name="//apple_ref/swift/Property/internalState" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy19UserInteractionTypeQz0eI0Qz07ContentI0Qz03TabI0Qz010InteractorI0QzGvp">internalState</a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP13internalStateAA019DestinationInternalD0Cy9EventTypeQz0eH0Qz07ContentH0Qz03TabH0Qz010InteractorH0QzGvp">internalState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -697,7 +706,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="k">var</span> <span class="nv">internalState</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationInternalState.html">DestinationInternalState</a></span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">internalState</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationInternalState.html">DestinationInternalState</a></span><span class="o">&lt;</span><span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -842,9 +851,36 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations27TabBarControllerDestinationC4type03tabA00G5Types08selectedB025destinationConfigurations010navigationK006parentE2IDACyxq_q0_q1_q2_q3_GSgq0__SayAA0D15Destinationable_pq1_11ContentTypeRts_q0_0eQ0Rtsq2_0bQ0RtsXPGSayq2_Gq2_AA03AppeK0Cyq_q0_q1_q2_GSgAWyAA016SystemNavigationQ0Oq0_q1_q2_GSg10Foundation4UUIDVSgtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(type:tabDestinations:tabTypes:selectedTab:destinationConfigurations:navigationConfigurations:parentDestinationID:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations27TabBarControllerDestinationC4type03tabA00G5Types08selectedB025destinationConfigurations010navigationK006parentE2IDACyxq_q0_q1_q2_q3_GSgq0__SayAA0D15Destinationable_pq1_11ContentTypeRts_q0_0eQ0Rtsq2_0bQ0RtsXPGSayq2_Gq2_AA03AppeK0Cyq_q0_q1_q2_GSgAWyAA016SystemNavigationQ0Oq0_q1_q2_GSg10Foundation4UUIDVSgtcfc">init(type:<wbr>tabDestinations:<wbr>tabTypes:<wbr>selectedTab:<wbr>destinationConfigurations:<wbr>navigationConfigurations:<wbr>parentDestinationID:<wbr>)</a>
+                    <a name="/s:12Destinations15DestinationableP10stateModelAA13StateModeling_px11DestinationRts_XPSgvp"></a>
+                    <a name="//apple_ref/swift/Property/stateModel" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations15DestinationableP10stateModelAA13StateModeling_px11DestinationRts_XPSgvp">stateModel</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">stateModel</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/StateModeling.html">StateModeling</a></span><span class="o">&lt;</span><span class="kt">TabBarControllerDestination</span><span class="o">&lt;</span><span class="kt">ControllerType</span><span class="p">,</span> <span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;&gt;</span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations27TabBarControllerDestinationC4type03tabA00G5Types08selectedB025destinationConfigurations010navigationK006parentE2ID5stateACyxq_q0_q1_q2_q3_GSgq0__SayAA0D15Destinationable_pq1_11ContentTypeRts_q0_0eR0Rtsq2_0bR0RtsXPGSayq2_Gq2_AA03AppeK0Cyq_q0_q1_q2_GSgAXyAA016SystemNavigationR0Oq0_q1_q2_GSg10Foundation4UUIDVSgAA13StateModeling_pAL0E0Rts_XPSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(type:tabDestinations:tabTypes:selectedTab:destinationConfigurations:navigationConfigurations:parentDestinationID:state:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations27TabBarControllerDestinationC4type03tabA00G5Types08selectedB025destinationConfigurations010navigationK006parentE2ID5stateACyxq_q0_q1_q2_q3_GSgq0__SayAA0D15Destinationable_pq1_11ContentTypeRts_q0_0eR0Rtsq2_0bR0RtsXPGSayq2_Gq2_AA03AppeK0Cyq_q0_q1_q2_GSgAXyAA016SystemNavigationR0Oq0_q1_q2_GSg10Foundation4UUIDVSgAA13StateModeling_pAL0E0Rts_XPSgtcfc">init(type:<wbr>tabDestinations:<wbr>tabTypes:<wbr>selectedTab:<wbr>destinationConfigurations:<wbr>navigationConfigurations:<wbr>parentDestinationID:<wbr>state:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -860,7 +896,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="nv">tabDestinations</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">],</span> <span class="nv">tabTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt">TabType</span><span class="p">],</span> <span class="nv">selectedTab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">,</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/TabBarControllerDestination.html#/s:12Destinations27TabBarControllerDestinationC0E14Configurationsa">DestinationConfigurations</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">navigationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/TabBarControllerDestination.html#/s:12Destinations27TabBarControllerDestinationC24NavigationConfigurationsa">NavigationConfigurations</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">parentDestinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+<span class="kd">public</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">type</span><span class="p">:</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="nv">tabDestinations</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">],</span> <span class="nv">tabTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt">TabType</span><span class="p">],</span> <span class="nv">selectedTab</span><span class="p">:</span> <span class="kt">TabType</span><span class="p">,</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/TabBarControllerDestination.html#/s:12Destinations27TabBarControllerDestinationC0E14Configurationsa">DestinationConfigurations</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">navigationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/TabBarControllerDestination.html#/s:12Destinations27TabBarControllerDestinationC24NavigationConfigurationsa">NavigationConfigurations</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">parentDestinationID</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">state</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/StateModeling.html">StateModeling</a></span><span class="o">&lt;</span><span class="kt">TabBarControllerDestination</span><span class="o">&lt;</span><span class="kt">ControllerType</span><span class="p">,</span> <span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;&gt;</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -979,33 +1015,6 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@MainActor</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateTabControllers</span><span class="p">(</span><span class="nv">destinations</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ControllerDestinationable.html">ControllerDestinationable</a></span><span class="o">&lt;</span><span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">TabType</span><span class="o">&gt;</span><span class="p">],</span> <span class="k">for</span> <span class="nv">tabs</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/TabModel.html">TabModel</a></span><span class="o">&lt;</span><span class="kt">TabType</span><span class="o">&gt;</span><span class="p">])</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12Destinations15DestinationableP22prepareForPresentationyyF"></a>
-                    <a name="//apple_ref/swift/Method/prepareForPresentation()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations15DestinationableP22prepareForPresentationyyF">prepareForPresentation()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="nf">prepareForPresentation</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

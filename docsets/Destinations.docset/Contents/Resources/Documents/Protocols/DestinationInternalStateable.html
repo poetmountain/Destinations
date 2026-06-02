@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -500,7 +509,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInternalStateable</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationInternalStateable</span><span class="o">&lt;</span><span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="p">,</span> <span class="kt">InteractorType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -516,9 +525,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/UserInteractionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a>
+                    <a name="/s:12Destinations28DestinationInternalStateableP9EventTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/EventType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP9EventTypeQa">EventType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -526,14 +535,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines user interaction types for this Destination&rsquo;s interface.</p>
+                        <p>An enum which defines event types for this Destination&rsquo;s interface.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">EventType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/EventTypeable.html">EventTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -678,9 +687,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP25destinationConfigurationsAA03AppbF0Cy19UserInteractionTypeQz0bJ0Qz07ContentJ0Qz03TabJ0QzGSgvp"></a>
+                    <a name="/s:12Destinations28DestinationInternalStateableP25destinationConfigurationsAA03AppbF0Cy9EventTypeQz0bI0Qz07ContentI0Qz03TabI0QzGSgvp"></a>
                     <a name="//apple_ref/swift/Property/destinationConfigurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP25destinationConfigurationsAA03AppbF0Cy19UserInteractionTypeQz0bJ0Qz07ContentJ0Qz03TabJ0QzGSgvp">destinationConfigurations</a>
+                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP25destinationConfigurationsAA03AppbF0Cy9EventTypeQz0bI0Qz07ContentI0Qz03TabI0QzGSgvp">destinationConfigurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -695,7 +704,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">destinationConfigurations</span><span class="p">:</span> <span class="kt"><a href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -786,9 +795,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP16interfaceActionsSDy19UserInteractionTypeQzAA15InterfaceActionVyAF0bI0Qz07ContentI0QzGGvp"></a>
+                    <a name="/s:12Destinations28DestinationInternalStateableP16interfaceActionsSDy9EventTypeQzAA15InterfaceActionVyAF0bH0Qz07ContentH0QzGGvp"></a>
                     <a name="//apple_ref/swift/Property/interfaceActions" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP16interfaceActionsSDy19UserInteractionTypeQzAA15InterfaceActionVyAF0bI0Qz07ContentI0QzGGvp">interfaceActions</a>
+                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP16interfaceActionsSDy9EventTypeQzAA15InterfaceActionVyAF0bH0Qz07ContentH0QzGGvp">interfaceActions</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -796,14 +805,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A dictionary of <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> objects, with the key being the associated user interaction type.</p>
+                        <p>A dictionary of <code><a href="../Structs/InterfaceAction.html">InterfaceAction</a></code> objects, with the key being the associated event type.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interfaceActions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interfaceActions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP9EventTypeQa">EventType</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/InterfaceAction.html">InterfaceAction</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP9EventTypeQa">EventType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -840,9 +849,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations28DestinationInternalStateableP20interactorAssistantsSDy19UserInteractionTypeQzAA19InteractorAssisting_p07ContentI0QzAIRS_0jI0QzAKRSXPGvp"></a>
+                    <a name="/s:12Destinations28DestinationInternalStateableP20interactorAssistantsSDy9EventTypeQzAA19InteractorAssisting_p07ContentH0QzAIRS_0iH0QzAKRSXPGvp"></a>
                     <a name="//apple_ref/swift/Property/interactorAssistants" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP20interactorAssistantsSDy19UserInteractionTypeQzAA19InteractorAssisting_p07ContentI0QzAIRS_0jI0QzAKRSXPGvp">interactorAssistants</a>
+                    <a class="token" href="#/s:12Destinations28DestinationInternalStateableP20interactorAssistantsSDy9EventTypeQzAA19InteractorAssisting_p07ContentH0QzAIRS_0iH0QzAKRSXPGvp">interactorAssistants</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -850,14 +859,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated user interaction type.</p>
+                        <p>A dictionary of assistants which help the Destination make requests of an interactor, with the key being the associated event type.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interactorAssistants</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa">InteractorType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interactorAssistants</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP9EventTypeQa">EventType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorAssisting.html">InteractorAssisting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP14InteractorTypeQa">InteractorType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationInternalStateable.html#/s:12Destinations28DestinationInternalStateableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

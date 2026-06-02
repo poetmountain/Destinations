@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
     
@@ -58,6 +58,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationController.html">DefaultNavigationController</a>
@@ -175,6 +178,9 @@
             <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -258,6 +264,9 @@
                 <a class="nav-group-task-link" href="../Protocols/Destinationable.html">Destinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/EventTypeable.html">EventTypeable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Flowable.html">Flowable</a>
               </li>
               <li class="nav-group-task">
@@ -333,6 +342,9 @@
                 <a class="nav-group-task-link" href="../Protocols/SplitViewControllerDestinationable.html">SplitViewControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/StateModeling.html">StateModeling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/SwiftUIAdaptable.html">SwiftUIAdaptable</a>
               </li>
               <li class="nav-group-task">
@@ -361,9 +373,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabTypeable.html">TabTypeable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/ViewDestinationInterfacing.html">ViewDestinationInterfacing</a>
@@ -500,7 +509,7 @@
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">UserInteractionType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DestinationConfigurationsContaining</span><span class="o">&lt;</span><span class="kt">EventType</span><span class="p">,</span> <span class="kt">DestinationType</span><span class="p">,</span> <span class="kt">TabType</span><span class="p">,</span> <span class="kt">ContentType</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
@@ -516,9 +525,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/UserInteractionType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/EventType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -526,14 +535,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines user interaction types for this Destination&rsquo;s interface.</p>
+                        <p>An enum which defines event types for this Destination&rsquo;s interface.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">UserInteractionType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/UserInteractionTypeable.html">UserInteractionTypeable</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">EventType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/EventTypeable.html">EventTypeable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -624,9 +633,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy9EventTypeQzAA0B12PresentationCy0bG0Qz07ContentG0Qz03TabG0QzGGvp"></a>
                     <a name="//apple_ref/swift/Property/configurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp">configurations</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy9EventTypeQzAA0B12PresentationCy0bG0Qz07ContentG0Qz03TabG0QzGGvp">configurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -634,14 +643,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A dictionary of presentation configurations, using their associated user interaction types as keys.</p>
+                        <p>A dictionary of presentation configurations, using their associated event types as keys.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">configurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">configurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span> <span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -651,9 +660,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy9EventTypeQzAA21InteractorConfiguring_pGvp"></a>
                     <a name="//apple_ref/swift/Property/interactorConfigurations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy9EventTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -661,14 +670,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A dictionary of interactor request configurations, using their associated user interaction types as keys.</p>
+                        <p>A dictionary of interactor request configurations, using their associated event types as keys.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interactorConfigurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">interactorConfigurations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span> <span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -678,9 +687,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_05EventJ0QztF"></a>
                     <a name="//apple_ref/swift/Method/addConfiguration(configuration:for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_015UserInteractionJ0QztF">addConfiguration(configuration:<wbr>for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP16addConfiguration13configuration3foryAA0B12PresentationCy0B4TypeQz07ContentJ0Qz03TabJ0QzG_05EventJ0QztF">addConfiguration(configuration:<wbr>for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -688,14 +697,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adds a presentation configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy19UserInteractionTypeQzAA0B12PresentationCy0bH0Qz07ContentH0Qz03TabH0QzGGvp">configurations</a></code> dictionary.</p>
+                        <p>Adds a presentation configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP14configurationsSDy9EventTypeQzAA0B12PresentationCy0bG0Qz07ContentG0Qz03TabG0QzGGvp">configurations</a></code> dictionary.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -718,12 +727,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type to associate with this presentation.</p>
+                                  <p>The event type to associate with this presentation.</p>
                                 </div>
                               </td>
                             </tr>
@@ -736,9 +745,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_19UserInteractionTypeQztF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_9EventTypeQztF"></a>
                     <a name="//apple_ref/swift/Method/addInteractorConfiguration(configuration:for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_19UserInteractionTypeQztF">addInteractorConfiguration(configuration:<wbr>for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP26addInteractorConfiguration13configuration3foryAA0F11Configuring_p_9EventTypeQztF">addInteractorConfiguration(configuration:<wbr>for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -746,14 +755,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Adds an interactor request configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy19UserInteractionTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a></code> dictionary.</p>
+                        <p>Adds an interactor request configuration to this object&rsquo;s <code><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP010interactorC0SDy9EventTypeQzAA21InteractorConfiguring_pGvp">interactorConfigurations</a></code> dictionary.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addInteractorConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addInteractorConfiguration</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -776,12 +785,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type to associate with this interactor request.</p>
+                                  <p>The event type to associate with this interactor request.</p>
                                 </div>
                               </td>
                             </tr>
@@ -794,9 +803,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg015UserInteractionH0Qz_tF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg05EventH0Qz_tF"></a>
                     <a name="//apple_ref/swift/Method/configuration(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg015UserInteractionH0Qz_tF">configuration(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP13configuration3forAA0B12PresentationCy0B4TypeQz07ContentH0Qz03TabH0QzGSg05EventH0Qz_tF">configuration(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -811,7 +820,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">configuration</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">configuration</span><span class="p">(</span><span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/DestinationPresentation.html">DestinationPresentation</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP0B4TypeQa">DestinationType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP11ContentTypeQa">ContentType</a></span><span class="p">,</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP7TabTypeQa">TabType</a></span><span class="o">&gt;</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -822,12 +831,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type associated with the configuration object to be found.</p>
+                                  <p>The event type associated with the configuration object to be found.</p>
                                 </div>
                               </td>
                             </tr>
@@ -844,9 +853,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg19UserInteractionTypeQz_tF"></a>
+                    <a name="/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg9EventTypeQz_tF"></a>
                     <a name="//apple_ref/swift/Method/interactorConfiguration(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg19UserInteractionTypeQz_tF">interactorConfiguration(for:<wbr>)</a>
+                    <a class="token" href="#/s:12Destinations35DestinationConfigurationsContainingP23interactorConfiguration3forAA21InteractorConfiguring_pSg9EventTypeQz_tF">interactorConfiguration(for:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -861,7 +870,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">interactorConfiguration</span><span class="p">(</span><span class="k">for</span> <span class="nv">interactionType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP19UserInteractionTypeQa">UserInteractionType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">)?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">interactorConfiguration</span><span class="p">(</span><span class="k">for</span> <span class="nv">eventType</span><span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationConfigurationsContaining.html#/s:12Destinations35DestinationConfigurationsContainingP9EventTypeQa">EventType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/InteractorConfiguring.html">InteractorConfiguring</a></span><span class="p">)?</span></code></pre>
 
                         </div>
                       </div>
@@ -872,12 +881,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>interactionType</em>
+                                <em>eventType</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The user interaction type associated with the configuration object to be found.</p>
+                                  <p>The event type associated with the configuration object to be found.</p>
                                 </div>
                               </td>
                             </tr>
