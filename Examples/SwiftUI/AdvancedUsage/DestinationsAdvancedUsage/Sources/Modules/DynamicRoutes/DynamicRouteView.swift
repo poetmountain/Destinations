@@ -69,7 +69,7 @@ struct DynamicRouteView: NavigatingDestinationInterfacing, DestinationTypes {
                 .padding(.horizontal)
 
                 Button("Navigate") {
-                    destination().handleEvent(.navigate)
+                    stateModel.handleEvent(.navigate)
                 }
                 .padding(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
                 .foregroundStyle(.white)

@@ -89,16 +89,16 @@ extension ColorDetailDestination: DestinationTypeable {}
 extension ColorsListView {
 
     func selectCell(id: UUID) {
-        self.destinationState.stateModel.selectedItem = id
+        self.stateModel.selectedItem = id
         //RunLoop.current.run(until: Date())
     }
 
     func numberOfCells() -> Int {
-        return self.destinationState.stateModel.items.count
+        return self.stateModel.items.count
     }
 
     func model(for itemID: UUID) -> ColorViewModel? {
-        return self.destinationState.stateModel.items.first(where: { $0.id == itemID })
+        return self.stateModel.items.first(where: { $0.id == itemID })
     }
 
 }

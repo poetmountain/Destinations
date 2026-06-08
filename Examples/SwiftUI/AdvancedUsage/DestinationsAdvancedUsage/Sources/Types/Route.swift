@@ -10,9 +10,9 @@ import SwiftUI
 import Destinations
 
 @AutoCaseIterable
-public enum Route: String, RoutableDestinations, Identifiable {
+enum Route: String, RoutableDestinations, Identifiable {
 
-    public var id: String { rawValue }
+    var id: String { rawValue }
 
     case dynamic
     case welcome
@@ -21,7 +21,7 @@ public enum Route: String, RoutableDestinations, Identifiable {
 }
 
 extension Route: Equatable {
-    public static func == (lhs: Route, rhs: Route) -> Bool {
+    static func == (lhs: Route, rhs: Route) -> Bool {
         return (lhs.rawValue == rhs.rawValue)
     }
 }

@@ -38,6 +38,9 @@ import Foundation
     /// The Destination associated with this UI element.
     var destinationState: DestinationState { get set }
     
+    /// The current state model associated with this interface element.
+    var stateModel: StateModel { get }
+    
     /// Returns the current Destination associated with this interface element.
     /// - Returns: The associated Destination.
     func destination() -> Destination
@@ -46,13 +49,17 @@ import Foundation
     func cleanupResources()
 }
 
-// optional method conformance
 public extension DestinationInterfacing {    
-        
+    
+    var stateModel: StateModel {
+        return destinationState.stateModel
+    }
+    
     func destination() -> Destination {
         return self.destinationState.destination
     }
 
+    // optional method conformance
     func cleanupResources() {
     }
 }

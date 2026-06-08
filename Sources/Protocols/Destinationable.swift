@@ -182,12 +182,6 @@ import Foundation
     ///   - wasVisible: Represents whether this Destination which is disappearing was actually visible on-screen. If this Destination was presented within the middle of a Destination path presentation, it would be `false`.
     func prepareForDisappearance(wasVisible: Bool)
     
-    /// Performs an action tied to the user interaction event of the specified type. This is the central method you should use to route user interactions from the View layer to the Destination.
-    /// - Parameters:
-    ///   - type: The interaction event type to act upon.
-    ///   - content: An optional content model to use when performing the action.
-    func handleEvent(_ type: EventType, content: ContentType?)
-    
     /// Performs a request with the specified Interactor.
     /// - Parameters:
     ///   - interactor: The type of Interactor that should receive the request.
@@ -670,24 +664,6 @@ public extension Destinationable {
     
     func parentDestinationID() -> UUID? {
         return internalState.parentDestinationID
-    }
-    
-    func handleEvent(_ type: EventType, content: ContentType? = nil) {
-#if swift(>=6.1)
-        stateModel?.handleEvent(type, content: content)
-#else
-        if let stateModel {
-            _forwardHandleEvent(stateModel, type: type, content: content)
-        }
-#endif
-        
-    }
-
-    /// Fix for Swift 6.0 build failure. This internal forwarding method explicitly opens the existential via SE-0352 so the constraint chain resolves at the generic call site instead of on the existential.
-    ///
-    /// Swift 6.1 and above has existential-opening / associated-type resolution can follow that chain transitively through the same-type where clauses on a primary-associated-type existential, so this is only needed to support building on Swift 6.0.
-    internal func _forwardHandleEvent<SM: StateModeling>(_ sm: SM, type: EventType, content: ContentType?) where SM.Destination == Self {
-        sm.handleEvent(type, content: content)
     }
     
     // default implementation

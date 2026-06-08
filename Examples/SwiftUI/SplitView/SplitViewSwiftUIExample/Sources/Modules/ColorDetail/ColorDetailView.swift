@@ -51,9 +51,9 @@ struct ColorDetailView: ViewDestinationInterfacing, AppDestinationTypes {
 
     var body: some View {
         VStack {
-            Text("Color \(destinationState.stateModel.colorModel?.name ?? "")")
+            Text("Color \(stateModel.colorModel?.name ?? "")")
             Circle()
-                .fill(Color(destinationState.stateModel.colorModel?.color ?? .black))
+                .fill(Color(stateModel.colorModel?.color ?? .black))
                 .frame(width: 200, height: 200)
 
         }

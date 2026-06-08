@@ -44,7 +44,7 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
             NavigationStack(path: $destinationState.navigator.navigationPath, root: {
                 VStack {
                     Text("Colors List")
-                    List(destinationState.stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
+                    List(stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
                         ColorsListRow(item: item)
                     }
                     .listStyle(.plain)
@@ -57,16 +57,16 @@ struct ColorsListView: NavigatingDestinationInterfacing, DestinationTypes {
                     .clipShape(Capsule())
                     .padding()
                     
-                    .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
-                        if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
-                            destination?.handleEvent(.color(model: item), content: nil)
+                    .onChange(of: stateModel.selectedItem, { [weak stateModel = stateModel] (oldValue: UUID?, newValue: UUID?) in
+                        if let newValue, let stateModel, let item = stateModel.items.first(where: { $0.id == newValue }) {
+                            stateModel.handleEvent(.color(model: item), content: nil)
 
                             Task {
                                 try? await Task.sleep(for: .milliseconds(80))
-                                destinationState.stateModel.selectedItem = nil
+                                stateModel.selectedItem = nil
                             }
                         }
-                        
+
                     })
                 }
                 .navigationDestination(for: UUID.self) { [weak destination = destination()] destinationID in

@@ -66,14 +66,14 @@ struct ColorsListView: ViewDestinationInterfacing, AppDestinationTypes {
     public var body: some View {
         VStack {
             VStack {
-                List(destinationState.stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
+                List(stateModel.items, selection: $destinationState.stateModel.selectedItem) { item in
                     ColorsListRow(item: item)
                 }
                 .listStyle(.plain)
                 .id(destination().id)
-                .onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
-                    if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
-                        destination?.handleEvent(.color, content: .color(model: item))
+                .onChange(of: stateModel.selectedItem, { [weak stateModel = stateModel] (oldValue: UUID?, newValue: UUID?) in
+                    if let newValue, let stateModel, let item = stateModel.items.first(where: { $0.id == newValue }) {
+                        stateModel.handleEvent(.color, content: .color(model: item))
                     }
                 })
             }

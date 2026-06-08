@@ -157,7 +157,7 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
    }
    
     func requestMoreButtonAction() {
-        destination().handleEvent(.moreButton, content: nil)
+        stateModel.handleEvent(.moreButton, content: nil)
     }
    
     
@@ -212,8 +212,8 @@ class TestColorsViewController: UIViewController, UICollectionViewDelegate, Cont
    }
 
    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       guard let model = destinationState.stateModel.items[safe: indexPath.item] else { return }
-       destination().handleEvent(.color(model: model), content: nil)
+       guard let model = stateModel.items[safe: indexPath.item] else { return }
+       stateModel.handleEvent(.color(model: model), content: nil)
    }
 
 }
@@ -231,11 +231,11 @@ extension TestColorsViewController {
     }
     
     func modelItems() -> [ColorViewModel]? {
-        return destinationState.stateModel.items
+        return stateModel.items
     }
-    
+
     func model(for indexPath: IndexPath) -> ColorViewModel? {
-        return destinationState.stateModel.items[safe: indexPath.item]
+        return stateModel.items[safe: indexPath.item]
     }
     
 }

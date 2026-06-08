@@ -22,7 +22,7 @@ public final class DefaultDestinationState<Destination: Destinationable>: StateM
         self.destination = destination
     }
 
-    public func handleEvent(_ type: Destination.EventType, content: Destination.ContentType?) {
+    public func handleEvent(_ type: Destination.EventType, content: Destination.ContentType? = nil) {
         destination?.handleThrowable { [weak destination] in
             try destination?.performAction(for: type, content: content)
         }

@@ -13,7 +13,7 @@ import Destinations
 enum AppContentType: ContentTypeable {
     case route(Route)
     
-    public var rawValue: String {
+    var rawValue: String {
         switch self {
             case .route(_):
                 "route"

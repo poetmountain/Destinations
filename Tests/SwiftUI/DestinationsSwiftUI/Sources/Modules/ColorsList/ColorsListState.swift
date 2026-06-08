@@ -9,7 +9,11 @@
 import Foundation
 import Destinations
 
-@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable {
+@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable where Destination == ColorsListDestination {
+
+    typealias EventType = Destination.Events
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
 
     var id: UUID { get }
 
@@ -21,10 +25,6 @@ import Destinations
 
 @Observable
 final class ColorsListState: ColorsListStateModeling {
-    typealias Destination = ColorsListDestination
-    typealias EventType = Destination.Events
-    typealias InteractorType = Destination.InteractorType
-    typealias ContentType = Destination.ContentType
 
     let id = UUID()
 
@@ -38,7 +38,7 @@ final class ColorsListState: ColorsListStateModeling {
         self.destination = destination
     }
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
         switch type {
             case .color(model: _):
                 destination?.handleThrowable(closure: { [weak destination] in

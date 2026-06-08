@@ -15,105 +15,63 @@ Destinations is a Swift framework for UIKit and SwiftUI apps that is designed to
 
 #### Get started with the **[user guide](Guides/UserGuide.md)** for detailed explanations and examples.
 
-Also check out the [Examples projects](Examples) to see Destinations in action in UIKit and SwiftUI, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
+Please be sure to check out the [Examples projects](Examples) to see some simple implementations of Destinations in UIKit and SwiftUI apps, or dive deep into the source [Documentation](https://poetmountain.github.io/Destinations/).
 
 ## Overview
 
-Keeping application logic, tight couplings to datasources and system APIs, and knowledge of other views out of your views and view controllers can be a constant battle, compounded by often tight timelines to get a feature shipped. Destinations is a library designed from the ground up to address this problem.
+Keeping application logic, tight couplings to datasources and system APIs, and knowledge of other views out of your user interfaces can be a constant battle, compounded by often tight timelines to get a feature shipped. Destinations is a library designed from the ground up to address this problem.
 
-In Destinations, user interfaces have no knowledge of the actions they should take. They have no knowledge of datasources, business logic, or other UI screens, either. These things – View presentations, API requests, logic – are associated with an enum of events which are tied to each Destination. Thus, when a user interacts with a UI element the only thing the View sends along to the Destination is the enum value associated with that event. In this way, app functionality is no longer tightly coupled to UI, and can be switched or modified easily. A button in View A can display View B, even though A has no knowledge of B, or even that it should present a View! A button could make a server request or show a modal sheet simply by switching its associated action, with no direct knowledge of either.
+In Destinations, user interfaces have no knowledge of the actions they should take. They have no knowledge of datasources, business logic, or other UI screens, either. These things – View presentations, API requests, logic – are handled by state models you create which and interface with the View's Destination. Actions that can be taken in a particular Destination are represented by an enum of events you define. Thus, when a user interacts with a UI element the only thing the View sends along to the state model is the event's enum value. In this way, app functionality is no longer tightly coupled to UI and can be switched or modified easily. A button in View A can display View B, even though A has no knowledge of B, or even that it should present a View! A button could make a server request or show a modal sheet simply by switching its associated action, with no direct knowledge of either.
 
-But more than that, abstracting navigation and View presentation actions, along with datasource request handling, enables Destinations to act as a framework for your app's feature flows. And it handles most UIKit and SwiftUI presentation tasks for you, allowing you to focus on your app's functionality instead of writing boilerplate code.
+But more than that, abstracting navigation and View presentation actions, along with datasource request handling, enables Destinations to act as a framework for your app's feature flows. In fact Destinations handles most UIKit and SwiftUI presentation tasks for you, allowing you to focus on your app's functionality instead of writing boilerplate code.
+
+There's a few main conceptual types in Destinations:
+**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.
+**Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.
+**State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view. 
+**Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.
+**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.
 
 ## Presenting a Destination
 
-Destinations represents each significant interface element – typically one that would be presented as the active view on the screen and can be routed to – with an object that conforms to the `Destinationable` protocol. For shorthand I'll refer to these objects as a **Destination**. A Destination's role in the ecosystem is to represent a discrete user interface screen and coordinate on behalf of that interface.
+A Destination's role in the ecosystem is to represent a discrete user interface screen within the framework and coordinate on behalf of that interface. Generally you will create one of the default classes, `ViewDestination` or `ControllerDestination` for SwiftUI or UIKit projects respectively, in the Provider and never deal with them again within your app.
 
-Let's say we have a SwiftUI app which shows user Notes in a `List` in a NotesView `View`, backed by a Destination. We want to create a detail screen that will be pushed onto the `NavigationStack` when a user taps on a Note list item. To do that we should create a `DestinationPresentation` object which represents that action. This object contains the type of Destination to present, the `presentationType` which represents *how* the Destination should be presented, and the `assistantType` which represents the kind of presentation assistant to be used. The `basic` assistant type is usually adequate if you're passing a state model along.
+Let's say we have a SwiftUI app which shows user Note objects in a `List` in NotesView. We want to create a detail screen that will be pushed onto the `NavigationStack` when a user taps on a Note list item. To do that we should create a `DestinationPresentation` object which represents that action. This object contains the type of Destination to present, the `presentationType` which represents *how* the Destination should be presented, and the `assistantType` which represents the kind of presentation assistant to be used (`basic` is usually fine).
 ```swift
 let notePresentation = DestinationPresentation<DestinationType, ContentType, TabType>(destinationType: .noteDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 ```
 
-In order for the NotesView to be aware of this user action, we need to feed it into a Provider object which builds the NotesDestination and the associated NotesView. The `presentationsData` dictionary in the example below pairs event types for that Destination with a presentation configuration model. Effectively, we're associating a particular type of event with a specific action which Destinations should take.
+In order for the NotesView to be aware of this presentation action we need to feed it into a Provider which builds the Destination, the StateModel, and the associated NotesView. The `presentationsData` dictionary in the example below associates a specific event type with a specific presentation action Destinations should take. So when NotesView sends this event to the StateModel with a `handleEvent(...)` call, this presentation should be implemented and the detail view will be shown.
 ```swift
 let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation])
 ```
 
-Now that we have a defined interface action for presenting the detail `View` and linked it to the `displayNote` event type, we need to connect it to our interface. Assuming we have an `onChange` modifier in the NotesView watching a `selectedItem` property on its state model, we can pass that event type to its Destination along with a `content` parameter providing the selected Note model we should display in the new detail `View`. (We'll cover state models in the next section, but for now just know that they hold a Destination's view state and business logic.)
+In the example below, we're passing that event type from NotesView to its state model along with the Note model we should display in the detail view. (We'll cover state models in the next section, but for now just know that they hold the view's state and business logic.)
 ```swift
-.onChange(of: destinationState.stateModel.selectedItem, { [weak stateModel = destinationState.stateModel, weak destination = destination()] oldValue, newValue in
-    if let newValue, let item = stateModel?.items.first(where: { $0.id == newValue }) {
-        destination?.handleEvent(.displayNote, content: .note(model: item))
+.onChange(of: stateModel.selectedItem, { [weak stateModel = stateModel] (oldValue: UUID?, newValue: UUID?) in
+    if let newValue, let stateModel, let item = stateModel.items.first(where: { $0.id == newValue }) {
+        stateModel.handleEvent(.displayNote, content: .note(model: item))
     }
 })
 ```
 
-## Making a Datasource Request
-
-Continuing our Notes example, let's hook up an **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI, such as datasource retrievals, API requests, etc.
-
-So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncInteractable` protocol and will be called when our Notes Destination makes a request by passing in a NotesRequest. The `action` types we switch on represent the possible actions that the Interactor supports. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
-```swift
-actor NotesDatasource: AsyncInteractable {
-    typealias Request = NotesRequest
-    typealias Item = Request.Item
-                
-    var items: [Item] = []
-    
-    func perform(request: Request) async -> Result<NotesRequest.ResultData, Error> {
-    
-        switch request.action {
-            case .retrieve:
-                return await retrieveNotes(request: request)
-            default: break
-        }
-    }
-}
-```
-
-And here is the NotesRequest struct that we passed into the `perform(request:)` method. **Request** objects specify the type of action the Interactor should take, and can contain any necessary configuration state.
-```swift
-struct NotesRequest: InteractorRequestConfiguring {
-
-    enum ActionType: InteractorRequestActionTypeable {
-        case retrieve
-        case paginate
-    }
-    
-    typealias RequestContentType = AppContentType
-    typealias ResultData = AppContentType
-    typealias Item = NoteModel
-    
-    let action: ActionType
-}
-```
-
-Now that we have a datasource and a way to make requests of it, we need to make an interface action which will represent a specific request. Interactor interface actions are represented by `InteractorConfiguration` models. They specify the type of Interactor being called, the type of action the Interactor should take, and the type of Interactor assistant that should be used. (Interactor assistants create the actual Request and handle communication between the Destination and the Interactor) 
-
-As with our `View` presentation we can pass this action, paired with an event type which should call it, in to the Provider which creates the Notes list `View`. All interactor actions should go into the `interactorsData` dictionary parameter. Here we've assigned the Notes retrieval action to a new event type `retrieveNotes`.
-```swift
-let notesAction = InteractorConfiguration<NotesDestination.InteractorType, NotesDatasource>(interactorType: .notes, actionType: .retrieve, assistantType: .basic)
-let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation], interactorsData: [.retrieveNotes: notesAction])
-```
-
 ## State Models
 
-Now we need a place to put the view state and the logic for handling these events. A **state model** is an object that conforms to the `StateModeling` protocol and holds a Destination's view state, business logic, lifecycle hooks, and handles Interactor requests and responses. It resides in the `DestinationInterfaceState
-` object (or your own custom version), which acts as the glue between the user interface and the Destination class. The Destination itself acts as coordinator – it routes events, manages presentation lifecycle, and holds internal state, passing on requests to the state model and responding to requests from it.
+A **state model** is an object that conforms to the `StateModeling` protocol and holds a Destination's view state, business logic, lifecycle hooks, as well as handling Interactor requests and responses. It resides in a `DestinationStateable` object you generally create for each View, and which acts as the glue between the user interface and the Destination class.
 
 Here's a sketch of NotesState. It holds the `items` and `selectedItem` properties the View observes, makes the initial Notes retrieval when the Destination first appears, and updates `items` when the Interactor returns a result. 
 ```swift
 @Observable
 final class NotesState: StateModeling {
-    typealias Destination = NotesDestination
-    typealias EventType = Destination.Events
+    typealias Destination = NotesView.Destination
+    typealias EventType = NotesView.Events
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 
     var destination: Destination?
 
-    var items: [NoteModel] = []
-    var selectedItem: NoteModel.ID?
+    var items: [Note] = []
+    var selectedItem: Note.ID?
 
     func prepareForAppearance(isVisible: Bool) {
         if isVisible {
@@ -132,18 +90,61 @@ final class NotesState: StateModeling {
                     default: break
                 }
             case .failure(let error):
-                destination?.logError(error: error)
+                break
         }
     }
 }
 ```
 
-If you assign the `stateModel` property on your View's `DestinationStateable
-` object as a protocol, you suddenly have a business logic and datasource layer that's swappable with any objects that conform to that protocol. You can for instance substitute a mock implementation in tests or switch between concrete state classes at runtime for A/B testing, without touching the Destination, the user interface, or the routing layer.
+If you instead define a custom protocol that your state model conforms to, you suddenly have a business logic and datasource layer that's swappable with any objects that conform to that protocol. You can for instance substitute a mock implementation in tests or switch between concrete state classes at runtime for A/B testing, without touching the Destination, the user interface, or the routing layer.
 
-So with a relatively small amount of code we've created an interaction where the NotesView knows nothing about the Note detail screen or that it should be presented in the `NavigationStack`. And we created a second event that retrieves Notes to populate the NotesView list, where that `View` knows nothing about the datasource and never interacted with it directly. All of that presentation code, boilerplate SwiftUI navigation code, and the associated logic is handled by Destinations internally once you conform your View or UIViewController to the appropriate Destinations protocol.
+Here's an example of a protocol layer for our Notes state model:
+```swift
+@MainActor protocol NotesStateModeling: StateModeling, AnyObject, Identifiable where Destination == NotesView.Destination {
+    typealias EventType = NotesView.EventType
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
 
-Because of that pairing between event type and presentation action, we've also opened up the ability to quickly reconfigure what the Note's list item displays when tapped. Let's say the product team wants to have the button to present a detail screen with an alternate design. That's as easy as creating a new `DestinationPresentation` and assigning it to the `displayNote` type. Or if the product team wants to A/B test with these two detail views, we can create a new event type and switch the type being sent as necessary. Or perhaps we want to have an alternate test datasource that pulls from a local JSON file instead for testing. The only change required is to swap the datasource linked to the interface action. This flexibility makes it possible to quickly test new behaviors and change the routing paths in your app without editing several files. Less code, less time, less potential bugs.
+    var id: UUID { get }
+    var items: [Note] { get set }
+    var selectedItem: Note.ID? { get set }
+}
+```
+
+## Making a Datasource Request
+
+Continuing our Notes example, let's hook up an **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI, such as datasource retrievals, API requests, etc.
+
+So let's start by creating a sketch of a datasource Interactor for our Notes. The `perform(request:) async -> Result<NotesRequest.ResultData, Error>` method here is part of the `AsyncInteractable` protocol and will be called when NotesState makes a request to the Destination with `performAction(...)`. The NotesRequest `action` types we switch on in the example below represent the possible actions that the Interactor supports. Once the method retrieves the relevant Note models, it should package them up in a Result and return them.
+```swift
+actor NotesDatasource: AsyncInteractable {
+    typealias Request = NotesRequest
+    typealias Item = Request.Item
+                
+    var items: [Item] = []
+    
+    func perform(request: Request) async -> Result<NotesRequest.ResultData, Error> {
+    
+        switch request.action {
+            case .retrieve:
+                return await retrieveNotes(request: request)
+            default: break
+        }
+    }
+}
+```
+
+Now that we have a datasource and a way to make requests of it, we need to enable the state model to call it. We can do this with `InteractorConfiguration` models. These objects specify the type of Interactor being called, the type of action the Interactor should take, and the type of Interactor assistant that should be used. (Interactor assistants handle communication between the Destination and the Interactor) 
+
+All interactor actions should go into the `interactorsData` dictionary parameter of the Provider which creates the Destination that should call it. Here we've assigned the Notes retrieval action to a new event type `retrieveNotes`.
+```swift
+let notesAction = InteractorConfiguration<NotesDestination.InteractorType, NotesDatasource>(interactorType: .notes, actionType: .retrieve, assistantType: .basic)
+let notesProvider = NotesProvider(presentationsData: [.displayNote: notePresentation], interactorsData: [.retrieveNotes: notesAction])
+```
+
+So with a relatively small amount of code we've created an interaction where NotesView knows nothing about the Note detail screen or that it should be presented in the `NavigationStack`. And we created a second event that retrieves Notes to populate the NotesView list, where that `View` knows nothing about the datasource and never interacted with it directly. All of that presentation code, boilerplate SwiftUI navigation code, and the associated logic is handled by Destinations internally once you conform your View or UIViewController to the appropriate Destinations protocol.
+
+Because of that pairing between event type and presentation action, we've also opened up the ability to quickly reconfigure what the NoteView's list items display when tapped. Let's say the product team wants to have the tap action present a detail screen with an alternate design. That's as easy as creating a new `DestinationPresentation` and assigning it to the `displayNote` type. Or if the product team wants to A/B test with different business logic on the view, we can simply create a new state model using a shared protocol and assign them to the View as needed. Or perhaps we want to have an alternate test datasource that pulls from a local JSON file instead for testing. The only change required is to swap the datasource linked to the interface action. This flexibility makes it possible to quickly test new behaviors and change the routing paths in your app without editing several files. And because everything is tied to enum states, we reduce ambiguity about the result of actions taken. Less code, less time, less potential bugs.
 
 If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** and the examples projects to dive deeper into Destinations!
 
@@ -152,7 +153,7 @@ If that sounds appealing, check out the **[user guide](Guides/UserGuide.md)** an
 
 * Xcode 16.0+
 * iOS 17+
-* Swift 6.0 or above. It has been tested against Swift 6 Strict Concurrency.
+* Swift 6.0 or above.
 
 ### Migration Guides
 

@@ -1,7 +1,12 @@
+### 3.1.1
+* Added a new convenience property `stateModel` on `DestinationInterfacing` to directly access your state model objects from a View or UIViewController. If you need add a Binding to a state model property from your View you can still use the full path `$destinationState.stateModel.someProperty`.
+* Updated example projects and tests.
+* Rewrote parts of the README and UserGuide for better clarity.
+
 ### 3.1.0
 #### Features
 * Created a new `StateModeling` type that sits in the destination state object. This state model is designed to move business logic and interactor handling out of Destination objects. This allows state objects to be easy to swap out as well as removing the need to create custom Destinations in most cases.
-* Added a new `Destinationable` method `handleEvent(_ type: EventType, content: ContentType?)` which provides a central way to pass events from your user interfaces to their Destination objects and on to the state model. If you prefer, you can call this method directly on the state model instead.
+* The `StateModeling` method `handleEvent(_ type: EventType, content: ContentType?)` provides a central way to pass events from your user interfaces to trigger interface presentations and Interactor requests.
 * `@AutoCaseIterable` macro now supports enums with associated values that are enums, if they are also `CaseIterable`. Please see the documentation and example projects for more details.
 #### Changes
 * `UserInteractionType` has been renamed to `EventType` everywhere in Destinations. This conceptual change was made to better generalize this type, as events can be triggered from user interactions, but also via the state model's logic.

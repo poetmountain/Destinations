@@ -21,7 +21,7 @@ final class DynamicRouteState: StateModeling {
 
     var selectedRoute: Route = .welcome
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
         switch type {
             case .navigate:
                 destination?.handleThrowable(closure: { [weak destination, weak self] in

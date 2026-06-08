@@ -53,7 +53,7 @@ final class HomeViewController: UIViewController, ControllerDestinationInterfaci
     }
     
     func handleButtonTap() {
-        destination().handleEvent(.pathPresent)
+        stateModel.handleEvent(.pathPresent)
     }
 
 }

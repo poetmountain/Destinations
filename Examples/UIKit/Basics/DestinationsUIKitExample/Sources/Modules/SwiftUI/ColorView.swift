@@ -61,7 +61,7 @@ struct ColorView: ViewDestinationInterfacing, SwiftUIHostedInterfacing, Destinat
                 .frame(width: 200, height: 200)
             
             Button("Switch tab to Palettes") {
-                hostingState.destination.handleEvent(.changeTab)
+                hostingState.stateModel.handleEvent(.changeTab)
             }
         }
     }

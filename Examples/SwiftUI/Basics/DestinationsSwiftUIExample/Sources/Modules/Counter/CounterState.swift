@@ -21,7 +21,7 @@ final class CounterState: StateModeling {
 
     var counter: Int = 0
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
         switch type {
             case .start, .stop:
                 destination?.handleThrowable(closure: { [weak destination] in

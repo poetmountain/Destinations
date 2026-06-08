@@ -9,8 +9,12 @@ import Foundation
 import Destinations
 
 /// Demonstrates the ability to swap state models by using a protocol
-@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable {
-
+@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable where Destination == ColorsListView.Destination {
+    
+    typealias EventType = ColorsListView.EventType
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
+    
     var id: UUID { get }
 
     var items: [ColorViewModel] { get set }
@@ -21,10 +25,7 @@ import Destinations
 
 @Observable
 final class ColorsListState: ColorsListStateModeling {
-    typealias Destination = ColorsListView.Destination
-    typealias EventType = ColorsListView.EventType
-    typealias InteractorType = Destination.InteractorType
-    typealias ContentType = Destination.ContentType
+
 
     let id = UUID()
 
@@ -38,7 +39,7 @@ final class ColorsListState: ColorsListStateModeling {
         self.destination = destination
     }
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
 
         switch type {
             case .color:

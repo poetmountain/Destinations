@@ -49,7 +49,7 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     }
 
     private func setupUI() {
-        view.backgroundColor = destinationState.stateModel.colorModel?.color
+        view.backgroundColor = stateModel.colorModel?.color
 
         let button = PillButton()
         button.titleLabel?.text = "Present sheet"
@@ -72,8 +72,8 @@ final class ColorDetailViewController: UIViewController, ControllerDestinationIn
     }
 
     func handleDetailTap() {
-        guard let colorModel = destinationState.stateModel.colorModel else { return }
-        destination().handleEvent(.colorDetailButton(model: colorModel), content: nil)
+        guard let colorModel = stateModel.colorModel else { return }
+        stateModel.handleEvent(.colorDetailButton(model: colorModel), content: nil)
     }
 
 

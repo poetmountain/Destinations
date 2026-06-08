@@ -224,8 +224,8 @@ final class ColorsViewController: UIViewController, UICollectionViewDelegate, Co
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let model = destinationState.stateModel.items[safe: indexPath.item] else { return }
-        destination().handleEvent(.color, content: .color(model: model))
+        guard let model = stateModel.items[safe: indexPath.item] else { return }
+        stateModel.handleEvent(.color, content: .color(model: model))
     }
 
 }

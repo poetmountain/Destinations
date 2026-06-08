@@ -10,7 +10,11 @@ import Foundation
 import Destinations
 @testable import DestinationsUIKit
 
-@MainActor protocol TestColorsListStateModeling: StateModeling, AnyObject {
+@MainActor protocol TestColorsListStateModeling: StateModeling, AnyObject where Destination == TestColorsDestination {
+
+    typealias EventType = Destination.Events
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
 
     var items: [ColorViewModel] { get set }
 }
@@ -18,10 +22,6 @@ import Destinations
 
 @Observable
 final class TestColorsListState: TestColorsListStateModeling {
-    typealias Destination = TestColorsDestination
-    typealias EventType = Destination.Events
-    typealias InteractorType = Destination.InteractorType
-    typealias ContentType = Destination.ContentType
 
     weak var destination: Destination?
 
@@ -31,7 +31,7 @@ final class TestColorsListState: TestColorsListStateModeling {
         self.destination = destination
     }
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
 
         switch type {
             case .color, .moreButton:

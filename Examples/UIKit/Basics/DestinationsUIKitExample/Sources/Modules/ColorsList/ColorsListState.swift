@@ -9,7 +9,11 @@
 import Foundation
 import Destinations
 
-@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject {
+@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject where Destination == ColorsViewController.Destination {
+
+    typealias EventType = ColorsViewController.EventType
+    typealias InteractorType = Destination.InteractorType
+    typealias ContentType = Destination.ContentType
 
     var items: [ColorViewModel] { get set }
 }
@@ -17,10 +21,6 @@ import Destinations
 
 @Observable
 final class ColorsListState: ColorsListStateModeling {
-    typealias Destination = ColorsViewController.Destination
-    typealias EventType = ColorsViewController.EventType
-    typealias InteractorType = Destination.InteractorType
-    typealias ContentType = Destination.ContentType
 
     var destination: Destination?
 
@@ -30,7 +30,7 @@ final class ColorsListState: ColorsListStateModeling {
         self.destination = destination
     }
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
 
         switch type {
             case .color, .moreButton:

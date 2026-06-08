@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-public enum AppInteractorType: InteractorTypeable {
+enum AppInteractorType: InteractorTypeable {
     case test
 }
 

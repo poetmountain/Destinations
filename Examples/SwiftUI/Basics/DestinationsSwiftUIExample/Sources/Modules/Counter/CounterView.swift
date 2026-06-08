@@ -70,7 +70,7 @@ struct CounterView: ViewDestinationInterfacing, DestinationTypes {
 
             Text("Counter")
                 .font(.system(size: 24, weight: .semibold))
-            Text("\(destinationState.stateModel.counter)")
+            Text("\(stateModel.counter)")
                 .font(.system(size: 28, weight: .semibold))
                 .foregroundStyle(Color(UIColor.systemBlue.cgColor))
 
@@ -78,7 +78,7 @@ struct CounterView: ViewDestinationInterfacing, DestinationTypes {
 
             HStack {
                 Button("Start counter") {
-                    destinationState.stateModel.handleStartButtonTapped()
+                    stateModel.handleStartButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)
@@ -86,7 +86,7 @@ struct CounterView: ViewDestinationInterfacing, DestinationTypes {
                 .clipShape(Capsule())
 
                 Button("Stop counter") {
-                    destinationState.stateModel.handleStopButtonTapped()
+                    stateModel.handleStopButtonTapped()
                 }
                 .padding()
                 .foregroundStyle(.white)

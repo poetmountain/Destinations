@@ -44,7 +44,7 @@ struct HomeView: ViewDestinationInterfacing, DestinationTypes {
         VStack {
             Text("Home View")
             Button("Link to path") {
-                destination().handleEvent(.pathPresent)
+                stateModel.handleEvent(.pathPresent)
             }
             .padding()
             .foregroundStyle(.white)

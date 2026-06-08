@@ -26,7 +26,7 @@ final class ColorDetailState: StateModeling {
         self.colorModel = colorModel
     }
 
-    func handleEvent(_ type: EventType, content: ContentType?) {
+    func handleEvent(_ type: EventType, content: ContentType? = nil) {
         switch type {
             case .colorDetailButton:
                 guard let sheetView else { return }
