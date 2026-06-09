@@ -2,12 +2,12 @@
 
 Let's take a deeper look at how Destinations can help you reduce implementation time and free up your user interfaces to focus on surprising and delighting your users.
 
-There's a few main conceptual types in Destinations:
-**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.
-**Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.
-**State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view. 
-**Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.
-**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.
+There's a few main conceptual types in Destinations:  
+**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.  
+**Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.  
+**State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view.  
+**Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.  
+**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.  
 
 ### Flow
 

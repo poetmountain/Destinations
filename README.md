@@ -25,12 +25,12 @@ In Destinations, user interfaces have no knowledge of the actions they should ta
 
 But more than that, abstracting navigation and View presentation actions, along with datasource request handling, enables Destinations to act as a framework for your app's feature flows. In fact Destinations handles most UIKit and SwiftUI presentation tasks for you, allowing you to focus on your app's functionality instead of writing boilerplate code.
 
-There's a few main conceptual types in Destinations:
-**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.
-**Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.
-**State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view. 
-**Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.
-**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.
+There's a few main conceptual types in Destinations:  
+**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.  
+**Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.  
+**State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view.  
+**Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.  
+**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.  
 
 ## Presenting a Destination
 
