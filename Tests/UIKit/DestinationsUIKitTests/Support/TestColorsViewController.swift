@@ -20,8 +20,40 @@ public struct ColorsPresenter: ColorsPresenting {
 }
 
 @Observable
-final class TestColorsListInterfaceState: DestinationStateable {
-    typealias Destination = TestColorsDestination
+final class TestColorsListInterfaceState: DestinationStateable, DestinationTypes {
+    
+    
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case color(model: ColorViewModel?)
+        case retrieveInitialColors
+        case moreButton
+        
+        var rawValue: String {
+            switch self {
+                case .color:
+                    return "color"
+                case .retrieveInitialColors:
+                    return "retrieveInitialColors"
+                case .moreButton:
+                    return "moreButton"
+            }
+        }
+        
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+    
+    enum InteractorType: InteractorTypeable {
+        case colors
+    }
+    
+    typealias Destination = ControllerDestination<TestColorsViewController, Events, DestinationType, AppContentType, TabType, InteractorType>
 
     var destination: Destination
 
@@ -35,10 +67,10 @@ final class TestColorsListInterfaceState: DestinationStateable {
 
 class TestColorsViewController: UIViewController, UICollectionViewDelegate, ControllerDestinationInterfacing {
 
-    typealias EventType = TestColorsDestination.Events
+    typealias EventType = TestColorsListInterfaceState.Events
     typealias DestinationType = RouteDestinationType
-    typealias InteractorType = TestColorsDestination.InteractorType
-    typealias Destination = TestColorsDestination
+    typealias InteractorType = TestColorsListInterfaceState.InteractorType
+    typealias Destination = TestColorsListInterfaceState.Destination
 
     var destinationState: TestColorsListInterfaceState
 

@@ -28,9 +28,9 @@ import Destinations
         
         let startProvider = StartProvider()
         
-        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsListInterfaceState.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
         
-        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsListInterfaceState.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
         
         let colorsListProvider = TestColorsListProvider(presentationsData: [.color(model: nil): colorSelection], interactorsData: [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction])
         
@@ -61,6 +61,30 @@ import Destinations
 
         return [.navigateBackInStack: goBackAction, .dismissSheet: sheetDismiss]
     }
+}
+
+struct TestColorsInteractorAssistant: InteractorAssisting, DestinationTypes {
+    
+    typealias InteractorType = TestColorsListInterfaceState.InteractorType
+    typealias Request = ColorsRequest
+    
+    let interactorType: InteractorType = .colors
+    let requestMethod: InteractorRequestMethod = .sync
+
+    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType {
+        
+        switch actionType {
+            case .retrieve:
+                let request = ColorsRequest(action: actionType)
+                destination.performRequest(interactor: interactorType, request: request)
+                
+            case .paginate:
+                let request = ColorsRequest(action: actionType, numColorsToRetrieve: 5)
+                destination.performRequest(interactor: interactorType, request: request)
+
+        }
+    }
+    
 }
 
 
@@ -132,11 +156,11 @@ final class TestTabBarProvider: ControllerDestinationProviding, DestinationTypes
 
 final class TestColorsListProvider: ControllerDestinationProviding, DestinationTypes  {
 
-    public typealias Destination = TestColorsDestination
+    public typealias Destination = TestColorsViewController.Destination
     public typealias PresentationConfiguration = DestinationPresentation<DestinationType, ContentType, TabType>
 
     public var presentationsData: [Destination.EventType: PresentationConfiguration] = [:]
-    public var interactorsData: [Destination.Events : any InteractorConfiguring<Destination.InteractorType>] = [:]
+    public var interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
 
     init(presentationsData: [Destination.EventType: PresentationConfiguration]? = nil, interactorsData: [Destination.EventType : any InteractorConfiguring<Destination.InteractorType>]? = nil) {
         if let presentationsData {
@@ -148,8 +172,8 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         if let interactorsData {
             self.interactorsData = interactorsData
         } else {
-            let paginateAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
-            let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
+            let paginateAction = InteractorConfiguration<Destination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
+            let colorsListRetrieveAction = InteractorConfiguration<Destination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
             self.interactorsData = [.moreButton: paginateAction, .retrieveInitialColors: colorsListRetrieveAction]
 
         }
@@ -157,7 +181,7 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
     
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: PresentationConfiguration, appFlow: some ControllerFlowable<DestinationType, ContentType, TabType>) -> Destination? {
         
-        let destination = TestColorsDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .colorsList, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let state = TestColorsListState()
         let controller = TestColorsViewController(destination: destination, state: state)
@@ -409,7 +433,7 @@ final class TestTabBarController: UITabBarController, TabBarControllerDestinatio
 }
 
 final class TestChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias EventType = TestColorsDestination.Events
+    typealias EventType = TestColorsViewController.EventType
     
     func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
@@ -437,9 +461,7 @@ protocol DestinationTypeable {
     typealias DestinationType = RouteDestinationType
 }
 
-extension TestColorsDestination: DestinationTypeable {}
 extension ControllerDestination: DestinationTypeable {}
-extension ColorDetailDestination: DestinationTypeable {}
 extension NavigationControllerDestination: DestinationTypeable {}
 extension TabBarControllerDestination: DestinationTypeable {}
 

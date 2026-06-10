@@ -10,7 +10,7 @@ import UIKit
 import Destinations
 
 final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias EventType = TestColorsDestination.Events
+    typealias EventType = TestColorsViewController.EventType
     
     func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction

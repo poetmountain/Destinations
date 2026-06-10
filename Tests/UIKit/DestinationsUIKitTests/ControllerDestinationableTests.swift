@@ -18,10 +18,10 @@ import UIKit
     }
     
     func test_assignInteractor() {
-        let colorsListConfigs = AppDestinationConfigurations<TestColorsDestination.Events, DestinationType, AppContentType, TabType>(configurations: [:])
+        let colorsListConfigs = AppDestinationConfigurations<TestColorsListInterfaceState.Events, DestinationType, AppContentType, TabType>(configurations: [:])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, AppContentType, TabType>(configurations: [:])
 
-        let destination = TestColorsDestination(destinationConfigurations: colorsListConfigs, navigationConfigurations: navigationConfigs, parentDestination: nil)
+        let destination = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: colorsListConfigs, navigationConfigurations: navigationConfigs, parentDestination: nil)
 
         
         let datasource = TestColorsDatasource(with: ColorsPresenter())

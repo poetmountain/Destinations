@@ -11,25 +11,25 @@ import Foundation
 import Destinations
 
 struct ColorNavProvider: ViewDestinationProviding, DestinationTypes {
-    
-    public typealias Destination = ColorNavDestination
+
+    public typealias Destination = ColorNavView.Destination
     typealias EventType = Destination.EventType
 
     public var presentationsData: [EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
     public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
-    
+
     var containerDestination: SwiftUIContainerDestination<ColorNavView, EventType, ColorNavView.DestinationType, ColorNavView.ContentType, ColorNavView.TabType, Destination.InteractorType>
 
-    
+
     public func buildDestination(destinationPresentations: AppDestinationConfigurations<EventType, DestinationType, AppContentType, TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, AppContentType, TabType>, appFlow: some ViewFlowable<DestinationType, AppContentType, TabType>) -> Destination? {
 
-        let destination = ColorNavDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .colorNav, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let view = ColorNavView(destination: destination, parentDestination: containerDestination)
         destination.assignAssociatedView(view: view)
-        
+
         return destination
-        
+
     }
-    
+
 }

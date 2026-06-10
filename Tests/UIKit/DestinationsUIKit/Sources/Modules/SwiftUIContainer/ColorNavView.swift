@@ -1,6 +1,5 @@
 //
 //  ColorNavView.swift
-//  SplitViewUIKitExample
 //
 //  Copyright © 2025 Poet & Mountain, LLC. All rights reserved.
 //  https://github.com/poetmountain
@@ -12,9 +11,21 @@ import Destinations
 
 struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterfacing, DestinationTypes {
 
-    typealias EventType = ColorNavDestination.Events
-    typealias Destination = ColorNavDestination
-    
+    enum Events: EventTypeable {
+
+        var rawValue: String {
+            ""
+        }
+
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    typealias EventType = Events
+    typealias Destination = NavigationViewDestination<Events, ColorNavView, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
     @State var destinationState: NavigationDestinationInterfaceState<Destination>
 
     @State var hostingState: SwiftUIHostingState<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>
@@ -24,7 +35,7 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
         self.hostingState = SwiftUIHostingState<ColorNavView, EventType, DestinationType, ContentType, TabType, InteractorType>(destination: parentDestination)
 
     }
-    
+
     var body: some View {
 
         VStack(alignment: .leading) {
@@ -33,7 +44,7 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
                 VStack {
                     Text("Colors")
                 }
-                
+
                 .navigationDestination(for: UUID.self) { [weak destinationState] destinationID in
                     if let destination = destinationState?.destination.childForIdentifier(destinationIdentifier: destinationID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
                         buildView(for: destination)
@@ -47,7 +58,7 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
 
         }
     }
-        
+
     @ViewBuilder func buildView(for destinationToBuild: any ViewDestinationable<DestinationType, ContentType, TabType>) -> (some View)? {
         destinationView(for: destinationToBuild)
         .id(destinationToBuild.id.uuidString)
@@ -56,6 +67,5 @@ struct ColorNavView: View, NavigatingDestinationInterfacing, SwiftUIHostedInterf
         }
         .onDestinationDisappear(destination: destinationToBuild, navigationDestination: destination())
     }
-    
-}
 
+}

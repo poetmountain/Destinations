@@ -111,7 +111,7 @@ import Destinations
                 
         XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
         
-        if let lastDestination = appFlow.activeDestinations.last as? ColorDetailDestination {
+        if let lastDestination = appFlow.activeDestinations.last as? ColorDetailView.Destination {
             print("moving back in stack from \(lastDestination.type)")
             try? lastDestination.performAction(for: .goBack)
             
@@ -152,7 +152,7 @@ import Destinations
                 
         XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail)
         
-        if let lastDestination = appFlow.activeDestinations.last as? ColorDetailDestination {
+        if let lastDestination = appFlow.activeDestinations.last as? ColorDetailView.Destination {
             try? lastDestination.performAction(for: .moveToNearest)
             
         } else {

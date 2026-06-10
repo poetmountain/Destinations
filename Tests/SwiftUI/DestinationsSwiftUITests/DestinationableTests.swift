@@ -39,9 +39,9 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: providers, startingDestination: startingPresentation, routesToIgnore: [.home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             
-            let presentation = destination.presentation(for: ColorsListDestination.Events.color(model: nil))
+            let presentation = destination.presentation(for: ColorsListView.EventType.color(model: nil))
             XCTAssertNotNil(presentation)
             
         } else {
@@ -58,7 +58,7 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             let presentation = destination.systemNavigationPresentation(for: .navigateBackInStack)
             XCTAssertNotNil(presentation)
 
@@ -78,7 +78,7 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             if let presentation = destination.presentation(for: .color(model: nil)){
                 let newParentID = UUID()
                 presentation.parentDestinationID = newParentID
@@ -102,7 +102,7 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             if let presentation = destination.systemNavigationPresentation(for: .navigateBackInStack) {
                 let newTargetID = UUID()
                 presentation.actionTargetID = newTargetID
@@ -130,7 +130,7 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             let colorButtonSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .replaceCurrent, contentType: .color(model: ColorViewModel(color: .purple, name: "purple")), assistantType: .basic)
             let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorButtonSelection, eventType: .color(model: nil))
             
@@ -156,7 +156,7 @@ import Destinations
         let appFlow = ViewFlow(destinationProviders: [.colorsList: colorsListProvider], startingDestination: startingPresentation, routesToIgnore: [.splitView, .colorDetail, .tabBar(tabs: []), .home])
         appFlow.start()
         
-        if let destination = appFlow.currentDestination as? ColorsListDestination {
+        if let destination = appFlow.currentDestination as? ColorsListView.Destination {
             
             let sheetDismiss = PresentationConfiguration(presentationType: .sheet(type: .dismiss), actionType: .systemNavigation, assistantType: .basic)
             let systemSelection = destination.buildSystemNavigationAction(presentationClosure: { _ in }, configuration: sheetDismiss, navigationType: .navigateBackInStack)
@@ -205,7 +205,7 @@ import Destinations
     }
     
     func test_addInterfaceAction() {
-        let destination = ColorsListDestination()
+        let destination = ColorsListView.Destination(destinationType: .colorsList)
         let state = ColorsListState(destination: destination)
         destination.stateModel = state
         let listView = ColorsListView(destination: destination, state: state)
@@ -213,7 +213,7 @@ import Destinations
         
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
 
-        let eventType = ColorsListDestination.Events.color(model: nil)
+        let eventType = ColorsListView.EventType.color(model: nil)
         let interfaceAction = destination.buildInterfaceAction(presentationClosure: { _ in }, configuration: colorSelection, eventType: eventType)
         
         try? destination.addInterfaceAction(action: interfaceAction)
@@ -223,7 +223,7 @@ import Destinations
     
     func test_addSystemNavigationClosure() {
 
-        let destination = ColorsListDestination()
+        let destination = ColorsListView.Destination(destinationType: .colorsList)
         let state = ColorsListState(destination: destination)
         destination.stateModel = state
         let listView = ColorsListView(destination: destination, state: state)

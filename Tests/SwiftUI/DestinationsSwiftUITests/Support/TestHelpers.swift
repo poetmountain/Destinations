@@ -83,8 +83,8 @@ protocol DestinationTypeable {
     @MainActor var type: RouteDestinationType { get }
 }
 
-extension ColorsListDestination: DestinationTypeable {}
-extension ColorDetailDestination: DestinationTypeable {}
+extension ColorsListView.Destination: DestinationTypeable {}
+extension ColorDetailView.Destination: DestinationTypeable {}
 
 extension ColorsListView {
 

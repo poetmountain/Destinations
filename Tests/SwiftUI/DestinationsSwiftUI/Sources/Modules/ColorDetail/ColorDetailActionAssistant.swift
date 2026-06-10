@@ -10,7 +10,7 @@ import SwiftUI
 import Destinations
 
 final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias EventType = ColorDetailDestination.Events
+    typealias EventType = ColorDetailInterfaceState.Events
     
     func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction

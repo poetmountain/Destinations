@@ -10,28 +10,38 @@ import SwiftUI
 import Destinations
 
 struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
-    
-    typealias EventType = ColorDetailSwiftUIDestination.Events
-    typealias Destination = ColorDetailSwiftUIDestination
-        
+
+    enum Events: EventTypeable {
+        var rawValue: String {
+            ""
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    typealias EventType = Events
+    typealias Destination = ViewDestination<ColorDetailView, Events, RouteDestinationType, AppContentType, AppTabType, InteractorType>
+
     @State var destinationState: DestinationInterfaceState<Destination>
 
     @State var areDatasourcesSetup = false
-            
+
     @State private var colorModel: ColorViewModel?
-    
+
 
     init(destination: Destination, model: ColorViewModel? = nil) {
         self.destinationState = DestinationInterfaceState(destination: destination)
-        
+
         if let model {
             _colorModel = State.init(initialValue: model)
         }
-        
+
 
     }
-    
-    
+
+
     var body: some View {
 
         VStack(alignment: .leading) {
@@ -43,23 +53,23 @@ struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
                         .frame(width: 200, height: 200)
 
                 }
-  
+
 
             Spacer()
 
         }
     }
-        
+
 
 }
 
 
 public struct DynamicViewModel: Equatable, Hashable {
-    
+
     let id: UUID = UUID()
-    
+
     var view: ContainerView<AnyView>?
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

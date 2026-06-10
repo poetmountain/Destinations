@@ -48,7 +48,6 @@ final class CounterInterfaceState: DestinationStateable, DestinationTypes {
     init(destination: Destination, state: CounterState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
     }
 }
 

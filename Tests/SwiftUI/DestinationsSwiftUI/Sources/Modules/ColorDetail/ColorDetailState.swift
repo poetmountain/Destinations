@@ -11,8 +11,8 @@ import Destinations
 
 @Observable
 final class ColorDetailState: StateModeling {
-    typealias Destination = ColorDetailDestination
-    typealias EventType = Destination.Events
+    typealias Destination = ColorDetailView.Destination
+    typealias EventType = ColorDetailView.EventType
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 

@@ -11,7 +11,7 @@ import Destinations
 
 struct ColorsInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
     
-    typealias InteractorType = ColorsListDestination.InteractorType
+    typealias InteractorType = ColorsListInterfaceState.InteractorType
     typealias Request = ColorsRequest
     
     let interactorType: InteractorType = .colors

@@ -32,7 +32,6 @@ final class ColorDetailInterfaceState: DestinationStateable, AppDestinationTypes
     init(destination: Destination, state: ColorDetailState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
     }
 }
 

@@ -18,8 +18,8 @@ import UIKit
     }
 
     func test_tabIndex_for_tab() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
 
         let startingTabs: [AppTabType] = [.palettes, .home]
         let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.Events, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
@@ -34,8 +34,8 @@ import UIKit
     }
 
     func test_tab_for_destinationID() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
 
         let startingTabs: [AppTabType] = [.palettes, .home]
         let tabsDestination = TabBarControllerDestination<AppTabBarController, AppTabBarController.Events, DestinationType, ContentType, TabType, InteractorType>(type: .tabBar(tabs: startingTabs), tabDestinations: [colors, home], tabTypes: startingTabs, selectedTab: .palettes)
@@ -49,10 +49,10 @@ import UIKit
     }
     
     func test_gotoTab() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
@@ -67,10 +67,10 @@ import UIKit
     }
     
     func test_currentController_for_tab() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         

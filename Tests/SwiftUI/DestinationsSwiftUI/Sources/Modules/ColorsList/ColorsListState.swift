@@ -9,10 +9,10 @@
 import Foundation
 import Destinations
 
-@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable where Destination == ColorsListDestination {
+@MainActor protocol ColorsListStateModeling: StateModeling, AnyObject, Identifiable where Destination == ColorsListView.Destination {
 
-    typealias EventType = Destination.Events
-    typealias InteractorType = Destination.InteractorType
+    typealias EventType = ColorsListView.EventType
+    typealias InteractorType = ColorsListView.InteractorType
     typealias ContentType = Destination.ContentType
 
     var id: UUID { get }
@@ -20,6 +20,8 @@ import Destinations
     var items: [ColorViewModel] { get set }
 
     var selectedItem: ColorViewModel.ID? { get set }
+
+    var listID: UUID { get }
 }
 
 
@@ -33,6 +35,8 @@ final class ColorsListState: ColorsListStateModeling {
     var items: [ColorViewModel] = []
 
     var selectedItem: ColorViewModel.ID?
+
+    private(set) var listID: UUID = UUID()
 
     init(destination: Destination? = nil) {
         self.destination = destination

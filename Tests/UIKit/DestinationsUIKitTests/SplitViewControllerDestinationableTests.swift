@@ -27,8 +27,8 @@ import UIKit
     }
 
     func test_column_for_destinationID() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         
         let splitViewDestination = SplitViewControllerDestination<EventType, DestinationType, ContentType, TabType, InteractorType>(type: .splitView, destinationsForColumns: [.primary: colors, .secondary: home])
         
@@ -42,7 +42,7 @@ import UIKit
 
     
     func test_replaceChild() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
         let home = ControllerDestination<HomeViewController, HomeEvents, DestinationType, ContentType, TabType, InteractorType>(destinationType: .home, destinationConfigurations: nil, navigationConfigurations: nil)
@@ -62,7 +62,7 @@ import UIKit
         
         wait(timeout: 0.3)
         
-        let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let newDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
 
@@ -87,11 +87,11 @@ import UIKit
     }
     
     func test_presentDestination() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
         
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
@@ -100,7 +100,7 @@ import UIKit
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
         
-        let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let newDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
         splitViewDestination.presentDestination(destination: newDestination, in: .secondary)
@@ -108,7 +108,7 @@ import UIKit
         XCTAssertEqual(newDestination.parentDestinationID(), splitViewDestination.id)
         XCTAssertTrue(splitViewDestination.childDestinations().contains { $0.id == newDestination.id })
 
-        let thirdDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let thirdDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let thirdController = ColorDetailViewController(destination: thirdDestination)
         thirdDestination.assignAssociatedController(controller: thirdController)
         splitViewDestination.presentDestination(destination: thirdDestination, in: .secondary)
@@ -123,11 +123,11 @@ import UIKit
     
     
     func test_currentDestination() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
         
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
@@ -143,14 +143,14 @@ import UIKit
         splitViewDestination.presentDestination(destination: home, in: .secondary)
         wait(timeout: 0.3)
         
-        let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let newDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
         splitViewDestination.presentDestination(destination: newDestination, in: .secondary)
         
         wait(timeout: 0.3)
         
-        let childDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let childDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let childController = ColorDetailViewController(destination: childDestination)
         childDestination.assignAssociatedController(controller: childController)
         splitViewDestination.presentDestination(destination: childDestination, in: .secondary)
@@ -167,10 +167,10 @@ import UIKit
     }
     
     func test_rootDestination() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
@@ -179,12 +179,12 @@ import UIKit
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
         
-        let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let newDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
         splitViewDestination.presentDestination(destination: newDestination, in: .secondary)
         
-        let childDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let childDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let childController = ColorDetailViewController(destination: childDestination)
         childDestination.assignAssociatedController(controller: childController)
         splitViewDestination.presentDestination(destination: childDestination, in: .secondary)
@@ -196,10 +196,10 @@ import UIKit
     }
     
     func test_updateColumnControllers() {
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
-        let home = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let home = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let homeController = ColorDetailViewController(destination: home)
         home.assignAssociatedController(controller: homeController)
         
@@ -208,11 +208,11 @@ import UIKit
         splitViewDestination.assignAssociatedController(controller: splitViewController)
         splitViewDestination.updateChildren()
         
-        let newDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let newDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let newController = ColorDetailViewController(destination: newDestination)
         newDestination.assignAssociatedController(controller: newController)
         
-        let childDestination = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let childDestination = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let childController = ColorDetailViewController(destination: childDestination)
         childDestination.assignAssociatedController(controller: childController)
 

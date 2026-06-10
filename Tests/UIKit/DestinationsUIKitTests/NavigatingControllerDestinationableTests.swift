@@ -29,7 +29,7 @@ import UIKit
 
         let navDestination = NavigationControllerDestination<StartViewController, StartViewController.Events, StartViewController.DestinationType, StartViewController.ContentType, StartViewController.TabType, StartViewController.InteractorType>(destinationType: .start)
         
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         navDestination.addChild(childDestination: colors)
         
         XCTAssertEqual(colors.parentDestinationID(), navDestination.id)
@@ -42,12 +42,12 @@ import UIKit
         let navController = StartViewController(destination: navDestination)
         navDestination.assignAssociatedController(controller: navController)
         
-        let colors = TestColorsDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let colors = TestColorsViewController.Destination(destinationType: .colorsList, destinationConfigurations: nil, navigationConfigurations: nil)
         let colorsController = TestColorsViewController(destination: colors)
         colors.assignAssociatedController(controller: colorsController)
         navDestination.addChild(childDestination: colors)
         
-        let detail = ColorDetailDestination(destinationConfigurations: nil, navigationConfigurations: nil)
+        let detail = ColorDetailViewController.Destination(destinationType: .colorDetail)
         let detailController = ColorDetailViewController(destination: detail)
         detail.assignAssociatedController(controller: detailController)
         navDestination.addChild(childDestination: detail)

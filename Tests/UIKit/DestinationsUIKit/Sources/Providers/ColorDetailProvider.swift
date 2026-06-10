@@ -11,8 +11,8 @@ import Destinations
 
 struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
 
-    typealias EventType = Destination.Events
-    public typealias Destination = ColorDetailDestination
+    typealias EventType = ColorDetailViewController.EventType
+    public typealias Destination = ColorDetailViewController.Destination
 
     public var presentationsData: [EventType: DestinationPresentation<DestinationType, AppContentType, TabType>] = [:]
     public var interactorsData: [EventType : any InteractorConfiguring<Destination.InteractorType>] = [:]
@@ -44,9 +44,10 @@ struct ColorDetailProvider: ControllerDestinationProviding, DestinationTypes {
             colorModel = model
         }
 
-        let destination = ColorDetailDestination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+        let destination = Destination(destinationType: .colorDetail, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let state = ColorDetailState(colorModel: colorModel)
+        destination.stateModel = state
         let controller = ColorDetailViewController(destination: destination, state: state)
         destination.assignAssociatedController(controller: controller)
 

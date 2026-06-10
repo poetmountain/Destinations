@@ -10,8 +10,36 @@ import SwiftUI
 import Destinations
 
 @Observable
-final class ColorDetailInterfaceState: DestinationStateable {
-    typealias Destination = ColorDetailDestination
+final class ColorDetailInterfaceState: DestinationStateable, DestinationTypes {
+
+    @AutoCaseIterable
+    enum Events: EventTypeable, Equatable {
+        case goBack
+        case moveToNearest
+
+        var rawValue: String {
+            switch self {
+                case .goBack:
+                    return "goBack"
+                case .moveToNearest:
+                    return "moveToNearest"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    enum InteractorType: InteractorTypeable {
+        case colors
+    }
+
+    typealias Destination = ViewDestination<ColorDetailView, Events, RouteDestinationType, AppContentType, AppTabType, InteractorType>
 
     var destination: Destination
 
@@ -20,16 +48,15 @@ final class ColorDetailInterfaceState: DestinationStateable {
     init(destination: Destination, state: ColorDetailState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
-        state.destination = destination
     }
 }
 
 struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
-    
-    typealias EventType = ColorDetailDestination.Events
-    typealias Destination = ColorDetailDestination
-            
+
+    typealias EventType = ColorDetailInterfaceState.Events
+    typealias Destination = ColorDetailInterfaceState.Destination
+    typealias InteractorType = ColorDetailInterfaceState.InteractorType
+
     @State var destinationState: ColorDetailInterfaceState
 
     @State var areDatasourcesSetup = false
@@ -37,7 +64,7 @@ struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
     init(destination: Destination, state: ColorDetailState) {
         self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
     }
-    
+
     var body: some View {
         VStack {
             Text("Color \(stateModel.colorModel?.name ?? "")")
@@ -51,8 +78,8 @@ struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
 
 
 struct ColorDetailSelectionModel: Hashable {
-    
+
     var color: ColorViewModel?
     var targetID: UUID?
-    
+
 }

@@ -10,7 +10,7 @@ import Foundation
 import Destinations
 
 final class ChooseColorFromListActionAssistant: InterfaceActionConfiguring, DestinationTypes {
-    typealias EventType = ColorsListDestination.Events
+    typealias EventType = ColorsListInterfaceState.Events
     
     func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction

@@ -18,10 +18,10 @@ import Destinations
     
     func test_assignInteractor() {
         let colorSelection = PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .basic)
-        let colorsListConfigs = AppDestinationConfigurations<ColorsListDestination.Events, DestinationType, ContentType, TabType>(configurations: [.color(model: nil): colorSelection])
+        let colorsListConfigs = AppDestinationConfigurations<ColorsListView.EventType, DestinationType, ContentType, TabType>(configurations: [.color(model: nil): colorSelection])
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>(configurations: [:])
 
-        let destination = ColorsListDestination(destinationConfigurations: colorsListConfigs, navigationConfigurations: navigationConfigs, parentDestination: nil)
+        let destination = ColorsListView.Destination(destinationType: .colorsList, destinationConfigurations: colorsListConfigs, navigationConfigurations: navigationConfigs, parentDestination: nil)
         let state = ColorsListState(destination: destination)
         destination.stateModel = state
         let listView = ColorsListView(destination: destination, state: state)
@@ -30,7 +30,7 @@ import Destinations
         let datasource = ColorsDatasource()
         destination.assignInteractor(interactor: datasource, for: .colors)
         
-        XCTAssertNotNil(listView.destination().internalState.interactors[ColorsListDestination.InteractorType.colors])
+        XCTAssertNotNil(listView.destination().internalState.interactors[ColorsListView.InteractorType.colors])
 
     }
 

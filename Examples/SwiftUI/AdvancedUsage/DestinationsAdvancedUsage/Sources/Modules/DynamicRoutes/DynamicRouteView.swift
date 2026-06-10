@@ -31,7 +31,6 @@ final class DynamicRouteInterfaceState: NavigationDestinationStateable, Destinat
     init(destination: Destination, state: DynamicRouteState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
         navigator.navigatorDestinationID = destination.id
     }
 }

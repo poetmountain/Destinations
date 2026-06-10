@@ -126,7 +126,7 @@ import Destinations
         
         wait(timeout: 0.3)
         
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailViewController.Destination, let state = presentedDestination.stateModel as? ColorDetailState {
             XCTAssertTrue(state.didAppear)
             XCTAssertTrue(state.isVisible)
         } else {
@@ -135,7 +135,7 @@ import Destinations
 
         // old destination presented by path should have "wasActive" as false
         let destinationsCount = appFlow.activeDestinations.count
-        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailDestination, let oldState = oldDestination.stateModel as? ColorDetailState {
+        if let oldDestination = appFlow.activeDestinations[destinationsCount-2] as? ColorDetailViewController.Destination, let oldState = oldDestination.stateModel as? ColorDetailState {
             XCTAssertTrue(oldState.didDisappear)
             XCTAssertFalse(oldState.isVisible)
             XCTAssertFalse(oldState.wasVisible)
@@ -147,7 +147,7 @@ import Destinations
 
         wait(timeout: 0.1)
 
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailViewController.Destination, let state = presentedDestination.stateModel as? ColorDetailState {
             XCTAssertTrue(state.didAppear)
             XCTAssertTrue(state.isVisible)
         } else {
@@ -155,7 +155,7 @@ import Destinations
         }
         
         // single addition should have "wasActive" as true
-        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailDestination, let oldState = oldDestination.stateModel as? ColorDetailState {
+        if let oldDestination = appFlow.activeDestinations[appFlow.activeDestinations.count-2] as? ColorDetailViewController.Destination, let oldState = oldDestination.stateModel as? ColorDetailState {
             XCTAssertTrue(oldState.didDisappear)
             XCTAssertFalse(oldState.isVisible)
             XCTAssertTrue(oldState.wasVisible)
@@ -167,7 +167,7 @@ import Destinations
         
         wait(timeout: 0.1)
 
-        if let presentedDestination = appFlow.currentDestination as? ColorDetailDestination, let state = presentedDestination.stateModel as? ColorDetailState {
+        if let presentedDestination = appFlow.currentDestination as? ColorDetailViewController.Destination, let state = presentedDestination.stateModel as? ColorDetailState {
             XCTAssertTrue(state.didAppear)
             XCTAssertTrue(state.isVisible)
         } else {
@@ -326,7 +326,7 @@ import Destinations
         
         wait(timeout: 0.3)
         
-        if let currentDestination = appFlow.currentDestination as? TestColorsDestination, let controller = currentDestination.currentController() {
+        if let currentDestination = appFlow.currentDestination as? any ControllerDestinationable & DestinationTypeable, let controller = currentDestination.currentController() as? TestColorsViewController {
             controller.prepareForFirstAppearance()
             wait(timeout: 0.1)
 
@@ -566,8 +566,8 @@ import Destinations
         ]
         let startingDestination = PresentationConfiguration(presentationType: .destinationPath(path: startPath), assistantType: .basic)
         
-        let colorsListRetrieveAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
-        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsDestination.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
+        let colorsListRetrieveAction = InteractorConfiguration<TestColorsListInterfaceState.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .custom(TestColorsInteractorAssistant()))
+        let colorsListMoreButtonAction = InteractorConfiguration<TestColorsListInterfaceState.InteractorType, TestColorsDatasource>(interactorType: .colors, actionType: .paginate, assistantType: .custom(TestColorsInteractorAssistant()))
         let colorsListProvider = TestColorsListProvider(interactorsData: [.retrieveInitialColors: colorsListRetrieveAction, .moreButton: colorsListMoreButtonAction])
         
         let colorDetailProvider = ColorDetailProvider()
@@ -723,7 +723,7 @@ import Destinations
 
         let sheetButtonInteraction = PresentationConfiguration(destinationType: .colorDetail, presentationType: .sheet(type: .present), contentType: .color(model: modelToPass), assistantType: .custom(ColorDetailActionAssistant()))
 
-        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailDestination.Events.colorDetailButton(model: nil): sheetButtonInteraction])
+        let colorDetailProvider = ColorDetailProvider(presentationsData: [ColorDetailViewController.EventType.colorDetailButton(model: nil): sheetButtonInteraction])
 
         let providers: [RouteDestinationType: any ControllerDestinationProviding] = [
             .colorDetail: colorDetailProvider

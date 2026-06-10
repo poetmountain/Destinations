@@ -10,8 +10,32 @@ import UIKit
 import Destinations
 
 @Observable
-final class ColorDetailInterfaceState: DestinationStateable {
-    typealias Destination = ColorDetailDestination
+final class ColorDetailInterfaceState: DestinationStateable, DestinationTypes {
+
+    @AutoCaseIterable
+    enum Events: EventTypeable {
+        case colorDetailButton(model: ColorViewModel?)
+        case moveToNearest
+
+        var rawValue: String {
+            switch self {
+                case .colorDetailButton(_):
+                    return "colorDetailButton"
+                case .moveToNearest:
+                    return "moveToNearest"
+            }
+        }
+
+        static func == (lhs: Events, rhs: Events) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(rawValue)
+        }
+    }
+
+    typealias Destination = ControllerDestination<ColorDetailViewController, Events, DestinationType, AppContentType, TabType, InteractorType>
 
     var destination: Destination
 
@@ -20,14 +44,13 @@ final class ColorDetailInterfaceState: DestinationStateable {
     init(destination: Destination, state: ColorDetailState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
     }
 }
 
 final class ColorDetailViewController: UIViewController, ControllerDestinationInterfacing, DestinationTypes {
 
-    typealias EventType = ColorDetailDestination.Events
-    typealias Destination = ColorDetailDestination
+    typealias EventType = ColorDetailInterfaceState.Events
+    typealias Destination = ColorDetailInterfaceState.Destination
 
     var destinationState: ColorDetailInterfaceState
 

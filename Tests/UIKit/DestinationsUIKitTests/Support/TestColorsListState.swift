@@ -10,9 +10,9 @@ import Foundation
 import Destinations
 @testable import DestinationsUIKit
 
-@MainActor protocol TestColorsListStateModeling: StateModeling, AnyObject where Destination == TestColorsDestination {
+@MainActor protocol TestColorsListStateModeling: StateModeling, AnyObject where Destination == TestColorsListInterfaceState.Destination {
 
-    typealias EventType = Destination.Events
+    typealias EventType = Destination.EventType
     typealias InteractorType = Destination.InteractorType
     typealias ContentType = Destination.ContentType
 

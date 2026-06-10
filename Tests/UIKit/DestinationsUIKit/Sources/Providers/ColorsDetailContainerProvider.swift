@@ -45,7 +45,7 @@ struct ColorsDetailContainerProvider: ControllerDestinationProviding, Destinatio
         viewFlow.start()
 
         
-        if let destination = viewFlow.rootDestination as? ColorNavDestination, let view = destination.view {
+        if let destination = viewFlow.rootDestination as? ColorNavView.Destination, let view = destination.view {
             let adapter = SwiftUIAdapter<ColorNavView>(content: { view })
             adapter.hostingController.sizingOptions = [.intrinsicContentSize]
             adapter.hostingController.safeAreaRegions = []
