@@ -14,7 +14,7 @@ public enum AppContentType: ContentTypeable {
     case color(model: ColorViewModel)
     case colors(models: [ColorViewModel])
     case dynamicView(view: ContainerView<AnyView>)
-    case count(value: Int)
+    case count(value: Int, isFinished: Bool)
     
     public var rawValue: String {
         switch self {

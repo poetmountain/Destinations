@@ -20,7 +20,7 @@ import SwiftUI
     
     /// An initializer that takes a closure that contains a `View`.
     /// - Parameter content: The SwiftUI `View` to contain.
-    public init(@ViewBuilder content: () -> Content) {
+    public init(@ViewBuilder content: @MainActor () -> Content) {
         self.content = content()
     }
     

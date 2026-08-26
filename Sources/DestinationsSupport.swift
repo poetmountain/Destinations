@@ -70,8 +70,17 @@ import Foundation
             case .missingInterfaceAction(_):
                 return "Error: No appropriate InterfaceAction was found while trying to perform a \"%@\" InterfaceAction from Destination %@."
                 
+            case .missingInteractorType(_):
+                return "Error: No appropriate InteractorTypeable type was found."
+                
+            case .unsupportedInteractorAssistantType(_):
+                return "Error: Unsupported interactor assistant type."
+                
             case .missingInterfaceActionAssistant(_):
                 return "Error: No interactor assistant was found while constructing Interface action closure for type %@."
+                
+            case .missingAsyncRequestImplementation(_):
+                return "Error: No asyncRequest method implementation was found while trying to perform a \"%@\" InterfaceAction."
                 
             case .undefinedDestinationType(message: _):
                 return "Error: No appropriate Destination type was found while trying to perform a \"%@\" presentation type. Please verify that the DestinationPresentation that triggered this presentation has a value defined for the destinationType parameter."
@@ -84,6 +93,9 @@ import Foundation
                 
             case .incompatibleType(message: _):
                 return "Error: An incompatible type %@ was passed in as a parameter."
+                
+            case .unregisteredInteractor(message: _):
+                return "Action sequence references unregistered interactor type(s): %@. Assign them via assignInteractor(_:to:) before calling performActions."
         }
     }
 }

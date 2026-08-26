@@ -88,12 +88,12 @@ public extension StateModeling {
     
     // default implementation
     func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) {
-        DestinationsSupport.logger.log("Calling default handleInteractorResult method implementation for \(request) because one was not found on the state model for Destination type \(self.destination?.type).", category: .error)
+        DestinationsSupport.logger.log("Calling default handleInteractorResult method implementation for \(request) because one was not found on the state model for Destination type \(String(describing: self.destination?.type)).", category: .error)
     }
     
     // default implementation
     func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
-        DestinationsSupport.logger.log("Calling default handleAsyncInteractorResult method implementation for \(request) because one was not found on the state model for Destination type  \(self.destination?.type).", category: .error)
+        DestinationsSupport.logger.log("Calling default handleAsyncInteractorResult method implementation for \(request) because one was not found on the state model for Destination type  \(String(describing: self.destination?.type)).", category: .error)
     }
     
     func cleanupResources() {}

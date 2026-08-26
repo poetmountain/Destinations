@@ -134,18 +134,38 @@ struct TestRequest: InteractorRequestConfiguring {
 }
 
 struct TestInteractorOptions: InteractorRequestConfiguring {
-        
+
     enum ActionType: InteractorRequestActionTypeable {
         case increaseCount
     }
-    
+
     typealias RequestContentType = AppContentType
     typealias ResultData = AppContentType
     typealias Item = Int
 
     var action: ActionType
 
-    
+
+}
+
+/// A test assistant which implements both `handleAsyncRequest` and `asyncRequest`, allowing us to verify the new async `performAction` and `asyncRequest` flows on `Destinationable` and `AsyncInteractorAssisting`.
+struct TestAsyncColorsInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
+
+    typealias InteractorType = ColorsListView.InteractorType
+    typealias Request = ColorsRequest
+
+    let interactorType: InteractorType = .colors
+
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType {
+        let request = ColorsRequest(action: actionType)
+        let result = await destination.performRequest(interactor: interactorType, request: request)
+        await destination.handleAsyncInteractorResult(result: result, for: request)
+    }
+
+    func asyncRequest<Destination: InteractorResultHandling>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async -> Result<Request.ResultData, Error> where Destination.InteractorType == InteractorType {
+        let request = ColorsRequest(action: actionType)
+        return await destination.performRequest(interactor: interactorType, request: request)
+    }
 }
 
 final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, DestinationTypes {
@@ -393,3 +413,43 @@ struct TestSplitView: NavigationSplitViewDestinationInterfacing, DestinationType
     
 }
 
+/// A datasource whose requests suspend until `openGate()` is called, allowing tests to deterministically
+/// cancel a sequence while one of its interactor requests is in progress. The gate deliberately ignores
+/// task cancellation so that the request always completes successfully, ensuring it is the sequence's own
+/// cancellation handling that fails the sequence rather than an error from the interactor.
+actor GatedColorsDatasource: AsyncInteractable {
+
+    typealias Request = ColorsRequest
+
+    var items: [ColorViewModel] = []
+
+    private var hasStarted = false
+    private var startContinuation: CheckedContinuation<Void, Never>?
+    private var gateContinuation: CheckedContinuation<Void, Never>?
+
+    /// Suspends until this datasource has begun performing a request.
+    func waitUntilRequestStarts() async {
+        if hasStarted { return }
+        await withCheckedContinuation { continuation in
+            startContinuation = continuation
+        }
+    }
+
+    /// Allows an in-progress request to complete.
+    func openGate() {
+        gateContinuation?.resume()
+        gateContinuation = nil
+    }
+
+    func perform(request: Request) async -> Result<ColorsRequest.ResultData, Error> {
+        hasStarted = true
+        startContinuation?.resume()
+        startContinuation = nil
+
+        await withCheckedContinuation { continuation in
+            gateContinuation = continuation
+        }
+
+        return .success(.colors(models: [ColorViewModel(colorID: UUID(), color: .red, name: "red")]))
+    }
+}

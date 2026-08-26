@@ -74,7 +74,7 @@ import UIKit
         
         let fromIndex = navController.viewControllers.firstIndex { $0 == fromVC }
         let toIndex = navController.viewControllers.firstIndex { $0 == toVC }
-        DestinationsSupport.logger.log("👋 handle movement from \(fromVC.self) - index \(fromIndex) to \(toVC.self) - index \(toIndex)", level: .verbose)
+        DestinationsSupport.logger.log("👋 handle movement from \(fromVC.self) - index \(String(describing: fromIndex)) to \(toVC.self) - index \(String(describing: toIndex))", level: .verbose)
 
         var isDescending = false
         if let fromIndex = fromIndex, let toIndex = toIndex {

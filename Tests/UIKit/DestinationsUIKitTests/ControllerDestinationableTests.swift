@@ -25,7 +25,7 @@ import UIKit
 
         
         let datasource = TestColorsDatasource(with: ColorsPresenter())
-        destination.assignInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(datasource, to: .colors)
         
         XCTAssertNotNil(destination.internalState.interactors[.colors])
     }

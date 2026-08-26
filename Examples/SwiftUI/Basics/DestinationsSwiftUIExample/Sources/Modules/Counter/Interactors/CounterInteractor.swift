@@ -30,57 +30,74 @@ actor CounterInteractor: AsyncInteractable {
 
     var requestResponses: [Request.ActionType: InteractorResponseClosure<Request>] = [:]
         
-    private var counter: Int = 0
+    var counter: Int = 0
     
     private(set) var isCounting = false
     
-    let (stream, continuation) = AsyncStream.makeStream(of: Int.self)
-
-    private var timer: Task<Void, Never>?
-    
+    var stream: AsyncStream<Int>?
+    var continuation: AsyncStream<Int>.Continuation?
+        
     deinit {
-        cleanupResources()
+        continuation?.finish()
     }
     
     nonisolated func cleanupResources() {
         Task { @MainActor [weak self] in
-            await self?.timer?.cancel()
-            self?.continuation.finish()
+            await self?.continuation?.finish()
         }
     }
     
     func perform(request: CounterRequest) async -> Result<CounterRequest.ResultData, Error> {
         switch request.action {
             case .startCount:
-                startStream()
-                return .success(.count(value: counter))
+                await startStream()
+                return .success(.count(value: counter, isFinished: false))
             case .stopCount:
                 stopStream()
-                return .success(.count(value: counter))
+                return .success(.count(value: counter, isFinished: true))
         }
     }
 
-    func startStream() {
+    func startStream() async {
         guard isCounting == false else { return }
+        isCounting = true
         print("starting stream")
         
-        timer = Task(priority: .utility) {
-            while !Task.isCancelled {
-                try? await Task.sleep(nanoseconds: UInt64(1_000_000_000))
-                
-                if isCounting {
-                    continuation.yield(1)
-                }
-            }
-        }
-    
-
-        isCounting = true
+        (stream, continuation) = makeStream()
+        
     }
 
     private func stopStream() {
         print("stopping stream")
-        timer?.cancel()
         isCounting = false
+        continuation?.finish()
+        stream = nil
+        
+    }
+    
+    func makeStream() -> (AsyncStream<Int>, AsyncStream<Int>.Continuation?) {
+        
+        var streamContinuation: AsyncStream<Int>.Continuation?
+        
+        let stream = AsyncStream { continuation in
+            streamContinuation = continuation
+            
+            let task = Task {
+                while !Task.isCancelled {
+                    try? await Task.sleep(for: .seconds(1))
+                    if isCounting {
+                        counter += 1
+                        continuation.yield(counter)
+                    }
+                }
+                print("Counter task cancelled!")
+            }
+
+            continuation.onTermination = { _ in
+                task.cancel()
+            }
+        }
+        
+        return (stream, streamContinuation)
     }
 }

@@ -49,7 +49,7 @@ struct ColorsListProvider: ControllerDestinationProviding, DestinationTypes {
         destination.assignAssociatedController(controller: controller)
 
         let datasource = ColorsDatasource()
-        destination.assignInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(datasource, to: .colors)
                 
          return destination
         

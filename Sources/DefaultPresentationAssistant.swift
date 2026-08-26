@@ -1,5 +1,5 @@
 //
-//  DefaultActionAssistant.swift
+//  DefaultPresentationAssistant.swift
 //  Destinations
 //
 //  Copyright © 2024 Poet & Mountain, LLC. All rights reserved.
@@ -9,8 +9,8 @@
 
 import Foundation
 
-/// A default assistant to be used to configure interface actions. This only adds the the current Destination's `id` as the `parentID` value.
-public final class DefaultActionAssistant<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: InterfaceActionConfiguring {
+/// A default assistant to be used to configure the presentation of Destination routes. This only adds the the current Destination's `id` as the `parentID` value.
+public final class DefaultPresentationAssistant<EventType: EventTypeable, DestinationType: RoutableDestinations, ContentType: ContentTypeable>: InterfaceActionConfiguring {
     
     /// The initializer.
     public init() {

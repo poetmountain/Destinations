@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents enums which define event types associated with a Destination.
-public protocol EventTypeable: Hashable, Equatable, CaseIterable {
+public protocol EventTypeable: Hashable, Equatable, CaseIterable, Sendable {
     /// The String representation of the enum type.
     var rawValue: String { get }
 }

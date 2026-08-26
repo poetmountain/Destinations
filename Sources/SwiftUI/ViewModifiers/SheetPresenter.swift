@@ -80,7 +80,7 @@ public extension View {
     /// Provides a `ViewModifier` which can present a Destination as a sheet.
     /// - Parameter presentation: The configuration object for a sheet presentation.
     /// - Returns: The `View` which provides the sheet presentation.
-    public func destinationSheet(presentation: SheetPresentation) -> some View {
+    func destinationSheet(presentation: SheetPresentation) -> some View {
         modifier(SheetPresenter(presentation: presentation))
     }
 

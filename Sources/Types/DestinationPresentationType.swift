@@ -89,7 +89,7 @@ public enum DestinationPresentationType<DestinationType: RoutableDestinations, C
                 return "replaceRoot"
             case .moveToNearest:
                 return "moveToNearest"
-            case .sheet(_):
+            case .sheet(_,_):
                 return "sheet"
             case .destinationPath(path: _):
                 return "destinationPath"

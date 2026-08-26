@@ -20,11 +20,12 @@ public struct DefaultInteractorAssistant<InteractorType: InteractorTypeable, Req
         self.interactorType = interactorType
     }
     
-    public func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where InteractorType == Destination.InteractorType {
-        
+    public func handleRequest<Destination>(destination: Destination, actionType: Request.ActionType, content: Request.ResultData?) where Destination : Destinationable, Request.ResultData == Destination.ContentType, InteractorType == Destination.InteractorType {
+
         let request = Request(action: actionType)
         destination.performRequest(interactor: interactorType, request: request)
-        
+
     }
+    
 
 }

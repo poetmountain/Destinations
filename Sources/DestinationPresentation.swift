@@ -270,10 +270,8 @@ import SwiftUI
 
                 if let destinationToPresent, let view = destinationToPresent.currentView(), let currentDestination {
                     
-                    let container = ContainerView {
-                        AnyView(view)
-                    }
-                    
+                    let container = ContainerView(view: AnyView(view))
+
                     let sheet = Sheet(destinationID: destinationToPresent.id, view: container, options: options?.swiftUI)
                     currentDestination.presentSheet(sheet: sheet)
                     
@@ -358,7 +356,7 @@ import SwiftUI
                         navDestination.removeChild(identifier: currentDestination.id, removeDestinationFromFlowClosure: nil)
                         completionClosure?(true)
                         
-                    } else if let navController = rootController as? UINavigationController, let currentDestination {
+                    } else if let navController = rootController as? UINavigationController, currentDestination != nil {
                         let shouldAnimate = navigationStackOptions?.shouldAnimate ?? true
                         navController.popViewController(animated: shouldAnimate)
                         completionClosure?(true)
@@ -375,7 +373,7 @@ import SwiftUI
                 
                 if let swiftUIContainer = splitViewDestination.currentDestination(for: column) as? any SwiftUIContainerDestinationable<DestinationType, ContentType, TabType> {
                     // only pass the presentation to the SwiftUI container if it contains a NavigationStack
-                    if let currentViewDestination = swiftUIContainer.viewFlow?.activeDestinations.last as? any ViewDestinationable, let currentNavDestination = swiftUIContainer.viewFlow?.findNavigatorInViewHierarchy(searchDestination: currentViewDestination) {
+                    if let currentViewDestination = swiftUIContainer.viewFlow?.activeDestinations.last as? any ViewDestinationable, swiftUIContainer.viewFlow?.findNavigatorInViewHierarchy(searchDestination: currentViewDestination) != nil {
                         swiftUIContainer.presentDestination(presentation: self)
                         completionClosure?(true)
 
@@ -459,7 +457,7 @@ import SwiftUI
                 completionClosure?(true)
                
         case .replaceRoot:
-                guard let destinationToPresent, let newController = destinationToPresent.currentController(), rootController != nil else {
+                guard let destinationToPresent, destinationToPresent.currentController() != nil, rootController != nil else {
                     completionClosure?(false)
                     return
                 }

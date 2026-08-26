@@ -29,6 +29,9 @@ public final class DestinationInternalState<EventType: EventTypeable, Destinatio
     public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
     public var interactorAssistants: [EventType: any InteractorAssisting<InteractorType, ContentType>] = [:]
 
+    /// Tasks for currently running action sequences, keyed by the id of the action sequence each is running. Used to support cancellation of in-progress sequences.
+    public var activeSequenceTasks: [UUID: Task<Result<ActionCollectionResults<ContentType>, any Error>, Never>] = [:]
+
     /// A weak reference to the associated navigator object, if this Destination was presented within a SwiftUI `NavigationStack` or a custom navigation object.
     /// - Note: This property is unused with UIKit navigation controllers.
     public weak var navigator: (any DestinationPathNavigating)?

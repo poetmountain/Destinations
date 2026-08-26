@@ -34,6 +34,8 @@ final class ColorsListState: ColorsListStateModeling {
     var items: [ColorViewModel] = []
 
     var selectedItem: ColorViewModel.ID?
+    
+    var tasks: [Task<Void, Never>] = []
 
     init(destination: Destination? = nil) {
         self.destination = destination
@@ -42,35 +44,32 @@ final class ColorsListState: ColorsListStateModeling {
     func handleEvent(_ type: EventType, content: ContentType? = nil) {
 
         switch type {
+            case .retrieveInitialColors, .moreButton:
+                
+                let task = Task {
+                    let result = await destination?.performAction(for: type, content: content)
+                    
+                    switch result {
+                        case .success(let content):
+                            if case .colors(models: let models) = content {
+                                items = models
+                            }
+                        case .failure(let error):
+                            DestinationsSupport.logger.log("error \(error.localizedDescription)", category: .error)
+                        case .none: break
+                    }
+                }
+                tasks.append(task)
+
             case .color:
                 destination?.handleThrowable(closure: { [weak destination] in
-                    try destination?.performAction(for: type, content: content)
-                })
-
-            case .moreButton:
-                destination?.handleThrowable { [weak destination] in
-                    try destination?.performAction(for: type)
-                }
-
-            case .retrieveInitialColors:
-                break
+                     try destination?.performAction(for: type, content: content)
+                 })
         }
     }
 
-    func handleAsyncInteractorResult<Request>(result: Result<Request.ResultData, any Error>, for request: Request) async where Request : InteractorRequestConfiguring {
-        switch result {
-            case .success(let content):
-                if case .colors(models: let models) = content as? AppContentType {
-                    items = models
-                }
-            case .failure(let error):
-                DestinationsSupport.logger.log("error \(error.localizedDescription)", category: .error)
-        }
-    }
 
     func prepareForPresentation() {
-        destination?.handleThrowable(closure: { [weak destination] in
-            try destination?.performAction(for: .retrieveInitialColors)
-        })
+        handleEvent(.retrieveInitialColors)
     }
 }

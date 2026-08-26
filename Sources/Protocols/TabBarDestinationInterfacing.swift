@@ -10,10 +10,7 @@
 import Foundation
 
 /// This protocol represents a `View` that manages a TabBar.
-@MainActor public protocol TabBarDestinationInterfacing: DestinationInterfacing {
-    
-    /// An enum which defines types of tabs in a tab bar.
-    associatedtype TabType: TabTypeable
-
+@MainActor public protocol TabBarDestinationInterfacing: DestinationInterfacing where TabType: TabTypeable {
+        
 }
 

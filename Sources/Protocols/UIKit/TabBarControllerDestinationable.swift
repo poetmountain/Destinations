@@ -116,7 +116,6 @@ public extension TabBarControllerDestinationable {
         } else {
             return childDestination
         }
-        return nil
     }
     
     func tab(destinationID: UUID) -> TabType? {
@@ -144,7 +143,7 @@ public extension TabBarControllerDestinationable {
         return nil
     }
 
-    public func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
+    func presentDestination(destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, in tab: TabType, shouldUpdateSelectedTab: Bool = true, presentationOptions: NavigationStackPresentationOptions? = nil, removeDestinationFromFlowClosure: RemoveDestinationFromFlowClosure? = nil) throws {
         DestinationsSupport.logger.log("Presenting tab controller \(destination.type) in tab \(tab).", level: .verbose)
 
         let currentTabDestination = rootDestination(for: tab)
@@ -176,7 +175,7 @@ public extension TabBarControllerDestinationable {
     
     func addChild(childDestination: any Destinationable<DestinationType, ContentType, TabType>, shouldSetDestinationAsCurrent: Bool? = true, shouldAnimate: Bool? = true) {
         
-        guard let childControllerDestination = childDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let childController = childControllerDestination.currentController() else { return }
+        guard let childControllerDestination = childDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, childControllerDestination.currentController() != nil else { return }
         
         groupInternalState.childDestinations.append(childDestination)
         childDestination.setParentID(id: id)
@@ -188,7 +187,7 @@ public extension TabBarControllerDestinationable {
 
         guard let newDestination = newDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType> else { return }
         
-        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let destinationToReplace = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable, let tabToReplace = tab(destinationID: currentID) else {
+        guard let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable != nil, let tabToReplace = tab(destinationID: currentID) else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))

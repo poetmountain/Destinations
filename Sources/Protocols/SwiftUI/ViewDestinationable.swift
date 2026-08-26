@@ -10,13 +10,11 @@
 import SwiftUI
 
 /// This protocol represents a Destination which is associated with a SwiftUI `View`.
-@MainActor public protocol ViewDestinationable<DestinationType, ContentType, TabType>: Destinationable {
+@MainActor public protocol ViewDestinationable<DestinationType, ContentType, TabType>: Destinationable where DestinationType: RoutableDestinations {
     
     /// The type of `View` associated with this Destination.
     associatedtype ViewType: ViewDestinationInterfacing
     
-    associatedtype DestinationType: RoutableDestinations
-
     /// The SwiftUI `View` associated with this Destination.
     var view: ViewType? { get set }
     
@@ -50,11 +48,18 @@ public extension ViewDestinationable {
         return view
     }
     
+    @available(*, deprecated, renamed: "assignInteractor(_:to:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `assignInteractor(_:to:)` method instead.")
     func assignInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType) {
     
         internalState.interactors[type] = interactor
 
         configureInteractor(interactor, type: type)
+        
+    }
+    
+    func assignInteractor<Request: InteractorRequestConfiguring>(_ interactor: any AbstractInteractable<Request>, to type: InteractorType) {
+        
+        internalState.interactors[type] = interactor
         
     }
     
@@ -74,7 +79,7 @@ public extension ViewDestinationable {
     
     func updateInterfaceActions(actions: [InterfaceAction<EventType, DestinationType, ContentType>]) {
         for action in actions {
-            if let eventType = action.eventType {
+            if action.eventType != nil {
                 handleThrowable { [weak self] in
                     try self?.addInterfaceAction(action: action)
                 }
@@ -85,7 +90,7 @@ public extension ViewDestinationable {
     
     func updateSystemNavigationActions(actions: [InterfaceAction<SystemNavigationType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let eventType = action.eventType {
+            if action.eventType != nil {
                 addSystemNavigationAction(action: action)
             }
         }
@@ -111,7 +116,7 @@ public extension ViewDestinationable {
             
             switch presentation.assistantType {
                 case .basic:
-                    assistant = DefaultActionAssistant<EventType, DestinationType, ContentType>()
+                    assistant = DefaultPresentationAssistant<EventType, DestinationType, ContentType>()
                 case .custom(let customAssistant):
                     if let customAssistant = customAssistant as? any InterfaceActionConfiguring<EventType, DestinationType, ContentType> {
                         assistant = customAssistant

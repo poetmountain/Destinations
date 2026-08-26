@@ -30,7 +30,9 @@ There's a few main conceptual types in Destinations:
 **Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.  
 **State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view.  
 **Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.  
-**Interactor:**  Provide an interface to perform a task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.  
+**Event:** Typically represents a user interface interaction, generally used to perform a Destination presentation or an Interactor request. Events are the foundation for decoupling the UI from the actions that the user interactions should trigger.
+**Interactor:** Represents an object that performs some work, typically by interfacing with an API, doing background processing, or some other self-contained work.
+**Action:**  A higher-level representation of an Interactor request. These can be used to build complex sequences of actions. 
 
 ## Presenting a Destination
 
@@ -75,24 +77,23 @@ final class NotesState: StateModeling {
 
     func prepareForAppearance(isVisible: Bool) {
         if isVisible {
-            destination?.handleThrowable { [weak destination] in
-                try destination?.performAction(for: .retrieveNotes)
-            }
+            Task { [weak destination] in
+                let result = await destination?.performAction(for: .retrieveNotes)
+                    
+                switch result {
+                    case .success(let response):
+                        switch response as? NotesRequest.ResultData {
+                            case .notes(models: let notes):
+                                self.items = notes
+                            default: break
+                        }
+                    case .failure(let error):
+                        ...
+                }
+            }
         }
     }
 
-    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
-        switch result {
-            case .success(let content):
-                switch content as? NotesRequest.ResultData {
-                    case .notes(models: let notes):
-                        self.items = notes
-                    default: break
-                }
-            case .failure(let error):
-                break
-        }
-    }
 }
 ```
 

@@ -36,6 +36,7 @@ import UIKit
 
 public extension ControllerDestinationable {
     
+    @available(*, deprecated, renamed: "assignInteractor(_:to:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `assignInteractor(_:to:)` method instead.")
     func assignInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType) {
     
         internalState.interactors[type] = interactor
@@ -44,13 +45,20 @@ public extension ControllerDestinationable {
 
     }
     
+    func assignInteractor<Request: InteractorRequestConfiguring>(_ interactor: any AbstractInteractable<Request>, to type: InteractorType) {
+        
+        internalState.interactors[type] = interactor
+        configureInteractor(interactor, type: type)
+        
+    }
+    
     func currentController() -> ControllerType? {
         return controller
     }
     
     func updateInterfaceActions(actions: [InterfaceAction<EventType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<EventType, DestinationType, ContentType>, let eventType = action.eventType {
+            if action.eventType != nil {
                 handleThrowable { [weak self] in
                     try self?.addInterfaceAction(action: action)
                 }
@@ -61,7 +69,7 @@ public extension ControllerDestinationable {
     
     func updateSystemNavigationActions(actions: [InterfaceAction<SystemNavigationType, DestinationType, ContentType>]) {
         for action in actions {
-            if let action = action as? InterfaceAction<SystemNavigationType, DestinationType, ContentType>, let eventType = action.eventType {
+            if action.eventType != nil {
                 addSystemNavigationAction(action: action)
             }
         }

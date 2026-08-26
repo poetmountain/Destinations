@@ -10,10 +10,9 @@
 import SwiftUI
 
 /// This protocol represents a Flow which coordinates routing and navigation as a user moves through a SwiftUI-based app.
-@MainActor public protocol ViewFlowable<DestinationType, ContentType, TabType>: Flowable where InterfaceCoordinator == DestinationSwiftUICoordinator {
+@MainActor public protocol ViewFlowable<DestinationType, ContentType, TabType>: Flowable where InterfaceCoordinator == DestinationSwiftUICoordinator, PresentationType == DestinationPresentationType<DestinationType, ContentType, TabType> {
     
     /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
     
     /// A dictionary of Destination providers whose keys are an enum of Destination types. The Destination type represents the type of Destination each provider can provide.
     var destinationProviders: [DestinationType: any ViewDestinationProviding] { get set }
@@ -152,7 +151,7 @@ public extension ViewFlowable {
             
             if let navigationStackDestination = parentDestination as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType>, let navigator = navigationStackDestination.navigator() {
                 
-                if let childDestinations = navigationStackDestination.childDestinations() as? [any ViewDestinationable<DestinationType, ContentType, TabType>], let target = childDestinations.last(where: { $0.type == type && $0.id != destination.id }) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
+                if let childDestinations = navigationStackDestination.childDestinations() as? [any ViewDestinationable<DestinationType, ContentType, TabType>], let target = childDestinations.last(where: { $0.type == type && $0.id != destination.id }) {
                     // target is within the same navigation stack as current Destination
                     
                     let removedElements = navigator.backToElement(identifier: target.id)
@@ -374,7 +373,7 @@ public extension ViewFlowable {
     /// A `ViewBuilder` that returns a strongly-typed `View` associated with the Flow's starting Destination.
     /// - Returns: A strongly-typed `View` associated with the Flow's starting Destination.
     @ViewBuilder func startingDestinationView() -> (some View)? {
-        if let destination = rootDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let view = destination.currentView() {
+        if let destination = rootDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, destination.currentView() != nil {
             let _ = DestinationsSupport.logger.log("Adding new root view \(destination.type) :: \(destination.id)", level: .verbose)
             
             destinationView(for: destination.id)

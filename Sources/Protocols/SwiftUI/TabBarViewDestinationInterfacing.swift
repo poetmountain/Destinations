@@ -12,8 +12,6 @@ import SwiftUI
 /// A protocol defining a SwiftUI `View` which handles a `TabView` and conforms to Destinations.
 @MainActor public protocol TabBarViewDestinationInterfacing<TabType>: View, TabBarDestinationInterfacing, ViewDestinationInterfacing where Destination: TabBarViewDestinationable {
     
-    associatedtype Destination: TabBarViewDestinationable
-    
     /// Replaces a `View` in the specified tab with a new one.
     /// - Parameters:
     ///   - view: The `View` to be replaced.
@@ -52,7 +50,7 @@ public extension TabBarViewDestinationInterfacing {
     }
     
     func replaceViews(in tab: TabType, with newDestinationID: UUID) {
-        guard destination().activeTabs.map { $0.type }.contains(tab) else {
+        guard destination().activeTabs.map({ $0.type }).contains(tab) else {
             DestinationsSupport.logger.log("Active tabs doesn't contain tab \(tab)", category: .error)
             return
         }

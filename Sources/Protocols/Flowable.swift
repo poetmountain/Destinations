@@ -195,7 +195,8 @@ public extension Flowable {
     func removeDestination(destinationID: UUID) {
 
         guard let destination = self.destination(for: destinationID) else { return }
-                
+
+        destination.cancelAllActionSequences()
         destination.cleanupResources()
         destination.removeAssociatedInterface()
 
@@ -273,7 +274,7 @@ public extension Flowable {
     
     func activateCompletionClosure(for destinationID: UUID, presentationID: UUID, didComplete: Bool, isSystemNavigationAction: Bool = false) {
         
-        if let destination = self.destination(for: destinationID) as? any Destinationable<DestinationType, ContentType, TabType> {
+        if let destination = self.destination(for: destinationID) {
             
             var presentation: DestinationPresentation<DestinationType, ContentType, TabType>?
             
@@ -295,7 +296,7 @@ public extension Flowable {
         if let destinationType = destination?.type {
             DestinationsSupport.logger.log("✅ New destination \(destinationType) was presented in \(configuration.presentationType).")
         } else if let currentDestination {
-            DestinationsSupport.logger.log("✅ Existing destination \(currentDestination.type) presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
+            DestinationsSupport.logger.log("✅ Existing destination \(currentDestination.type) presented with \(configuration.presentationType).")
         } else {
             DestinationsSupport.logger.log("✅ No destination presented with \(configuration.presentationType). Action type: \(configuration.actionType)")
         }

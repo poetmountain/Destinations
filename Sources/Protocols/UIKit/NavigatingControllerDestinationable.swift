@@ -113,7 +113,7 @@ public extension NavigatingControllerDestinationable {
     }
     
     func navigateBackInStack(presentationID: UUID? = nil) {
-        guard let controller = controller as? UINavigationController else { return }
+        guard let controller else { return }
         
         navigator()?.backToPreviousPathElement(previousPresentationID: presentationID)
 

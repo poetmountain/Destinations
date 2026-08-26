@@ -188,7 +188,7 @@ final class TestColorsListProvider: ControllerDestinationProviding, DestinationT
         destination.assignAssociatedController(controller: controller)
 
         let datasource = TestColorsDatasource(with: ColorsPresenter())
-        destination.assignInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(datasource, to: .colors)
 
          return destination
         

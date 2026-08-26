@@ -22,7 +22,7 @@ let package = Package(
             targets: ["Destinations"])
     ],
     dependencies: [
-            .package(url: "https://github.com/swiftlang/swift-syntax.git", "603.0.0"..<"605.0.0"),
+            .package(url: "https://github.com/swiftlang/swift-syntax.git", "600.0.0"..<"605.0.0"),
         ],
     targets: [
         .target(

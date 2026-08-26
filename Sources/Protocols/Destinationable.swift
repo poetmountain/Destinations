@@ -9,6 +9,44 @@
 
 import Foundation
 
+@MainActor
+public protocol InteractorResultHandling<InteractorType, ContentType>: Sendable, AnyObject {
+    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
+    associatedtype InteractorType: InteractorTypeable
+    associatedtype ContentType: ContentTypeable
+    
+    
+    /// Handles the result of an Interactor request in a synchronous context.
+    /// - Parameters:
+    ///    - result: The Result object containing data returned from the request.
+    ///    - request: The original request used in this Interactor operation.
+    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request)
+    
+    /// Handles the result of an async Interactor request.
+    /// - Parameters:
+    ///    - result: The Result object containing data returned from the request.
+    ///    - request: The original request used in this Interactor operation.
+    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
+    
+    /// Performs a request with the specified Interactor.
+    /// - Parameters:
+    ///   - interactor: The type of Interactor that should receive the request.
+    ///   - request: A model that defines the request.
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request)
+    
+    /// Performs a request with the specified Interactor asynchronously.
+    /// - Parameters:
+    ///   - interactor: The type of Interactor that should receive the request.
+    ///   - request: A model that defines the request.
+    /// - Returns: A `Result` containing an array of items.
+    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
+    
+    /// Returns an Interactor for the specified type.
+    /// - Parameter type: The enum type of an Interactor.
+    /// - Returns: An Interactor, if one was found.
+    func interactor(for type: InteractorType) -> (any AbstractInteractable)?
+}
+
 /// This protocol represents a Destination in the Destinations ecosystem.
 ///
 /// A Destination represents a unique area in an app which can be navigated to by the user. In SwiftUI this is typically a fullscreen `View` object, and in UIKit it's a `UIViewController` class or subclass, but it can also be a group of Destinations like a `TabBar` or a carousel. Destinations hold references to the UI element they're associated with, but they don't handle the particulars of laying out elements on the screen. Instead, the role of Destination objects in the ecosystem is to send and receive messages and datasource requests on behalf of their UI, such as passing on a message to trigger an action when a user taps a button.
@@ -16,17 +54,14 @@ import Foundation
 /// In most cases you should be able to use the provided `ViewDestination` or `ControllerDestination` classes for SwiftUI or UIKit apps respectively. They are customized to a particular Destination through generic arguments.  To handle presentation requests that require specialized configuration or need to handle content models, you can create custom assistants which conform to the `InterfaceActionConfiguring` protocol. To handle requests to an interactor, you can create assistants which conform to the `InteractorAssisting` protocol. There are more specific classes to support interfaces like TabBars, but you can also use your own Destination classes by conforming to `ViewDestinationable` or `ControllerDestinationable` if you should need custom functionality or just want to avoid using generics.
 ///
 /// There is a two-way connection between a Destination and its interface which is handled by a `DestinationStateable`-conforming object. Destinations comes with a `DestinationInterfaceState` object which can be used for this purpose, though you can create your own class if you'd like to store other state in it. When a Destination is removed from the ecosystem, cleanup is done internally to ensure no retain cycles occur.
-@MainActor public protocol Destinationable<DestinationType, ContentType, TabType>: AnyObject, Identifiable {
+@MainActor public protocol Destinationable<DestinationType, ContentType, TabType>: AnyObject, Identifiable, InteractorResultHandling, AssistantAssigning where InteractorType: InteractorTypeable, ContentType: ContentTypeable  {
     
     /// An enum which defines event types for this Destination's interface.
     associatedtype EventType: EventTypeable
     
     /// An enum which defines all routable Destinations in the app.
     associatedtype DestinationType: RoutableDestinations
-    
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    associatedtype InteractorType: InteractorTypeable
-    
+           
     /// An enum which defines types of tabs in a tab bar.
     associatedtype TabType: TabTypeable
     
@@ -34,7 +69,6 @@ import Foundation
     typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
     
     /// An enum which defines the types of content that are able to be sent through Destinations.
-    associatedtype ContentType: ContentTypeable
     
     /// A type of ``AppDestinationConfigurations`` which handles Destination presentation configurations.
     typealias DestinationConfigurations = AppDestinationConfigurations<EventType, DestinationType, ContentType, TabType>
@@ -59,6 +93,29 @@ import Foundation
     /// - Parameter eventType: The event type whose action should be run.
     /// - Parameter content: Optional content to use with the action.
     func performAction(for eventType: EventType, content: ContentType?) throws
+    
+    /// Asynchronously performs the action associated with the specified event type and returns a Result. Generally this would be used to perform an Interactor action instead of a Destination presentation.
+    /// - Parameter eventType: The event type whose action should be run.
+    /// - Parameter content: Optional content to use with the action.
+    func performAction(for eventType: EventType, content: ContentType?) async -> Result<ContentType, Error>
+    
+    /// Performs the action sequence associated with the specified event type, running each of its Interactor actions in order and passing the result of each action to the next one through its output conduit. The sequence will run until either all actions have completed, an action returns an error, or the sequence is cancelled.
+    /// - Parameter eventType: The event type corresponding to the action sequence to be run.
+    /// - Parameter content: Optional content to pass to the sequence. Each step in the sequence determines how this content should be used, but generally it should be passed in with the first action's Interactor request.
+    /// - Returns: A `Result` containing an ``ActionSequenceResults`` object which holds the results of each completed action, or an `Error` if the sequence could not be built or one of its actions failed. If the sequence was cancelled, the failure contains an ``ActionError/cancelled(partialResults:)`` error holding the results of any actions which completed before cancellation occurred.
+    func performActions(for eventType: EventType, content: ContentType?) async -> Result<ActionCollectionResults<ContentType>, any Error>
+    
+    /// Performs a custom action sequence using the provided configuration, running each of its Interactor actions in order and passing the result of each action to the next one through its output conduit. The sequence will run until either all actions have completed, an action returns an error, or the sequence is cancelled.
+    ///
+    /// Use this overload when you want to supply a sequence configuration directly rather than relying on one pre-registered with the event type.
+    /// > Important: Use of this method (and the lack of eventType to reference in ``cancelActionSequence(for:)-1z0z5`` means that the caller responsible for task cancellation by saving the Task wrapping this method to a property and calling `Task.cancel()` on it.
+    /// - Parameter configuration: An object conforming to ``ActionCollectionConfiguring`` which defines the sequence of Interactor actions to run.
+    /// - Parameter content: Optional content to pass to the sequence. Each step in the sequence determines how this content should be used, but generally it should be passed in with the first action's Interactor request.
+    /// - Returns: A `Result` containing an ``ActionSequenceResults`` object which holds the results of each completed action, or an `Error` if the sequence could not be built or one of its actions failed. If the sequence was cancelled, the failure contains an ``ActionError/cancelled(partialResults:)`` error holding the results of any actions which completed before cancellation occurred.
+    func performActions(configuration: any ActionCollectionConfiguring<InteractorType, ContentType>, content: ContentType?) async -> Result<ActionCollectionResults<ContentType>, any Error>
+
+    /// Cancels all in-progress action sequences on this Destination. This is called automatically by a Flow when this Destination is removed from it.
+    func cancelAllActionSequences()
     
     /// Performs the action associated with the specified event type.
     /// - Parameter eventType: The event type whose action should be run.
@@ -134,7 +191,14 @@ import Foundation
     /// - Parameters:
     ///   - interactor: The Interactor to add.
     ///   - type: Specifies the enum type of this Interactor. This type can be used to look up the Interactor.
+    @available(*, deprecated, renamed: "assignInteractor(_:to:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `assignInteractor(_:to:)` method instead.")
     func assignInteractor<Request: InteractorRequestConfiguring>(interactor: any AbstractInteractable<Request>, for type: InteractorType)
+    
+    /// Assigns an Interactor to this Destination. An Interactor handles specialized tasks and interactions with other APIs for the Destination.
+    /// - Parameters:
+    ///   - interactor: The Interactor to add.
+    ///   - type: Specifies the enum type of this Interactor. This type can be used to look up the Interactor.
+    func assignInteractor<Request: InteractorRequestConfiguring>(_ interactor: any AbstractInteractable<Request>, to type: InteractorType)
     
     /// Returns an Interactor for the specified type.
     /// - Parameter type: The enum type of an Interactor.
@@ -146,6 +210,9 @@ import Foundation
     ///   - interactor: The Interactor to configure requests for.
     ///   - type: The type of interactor.
     func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType)
+    
+    /// Configures all Interactors that are assigned to this Destination. This method is called internally by this Destination's Provider.
+    func configureInteractors()
     
     /// Adds an interface action.
     /// - Parameters:
@@ -195,18 +262,6 @@ import Foundation
     /// - Returns: A `Result` containing an array of items.
     func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
     
-    /// Handles the result of an Interactor request in a synchronous context.
-    /// - Parameters:
-    ///    - result: The Result object containing data returned from the request.
-    ///    - request: The original request used in this Interactor operation.
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request)
-    
-    /// Handles the result of an async Interactor request.
-    /// - Parameters:
-    ///    - result: The Result object containing data returned from the request.
-    ///    - request: The original request used in this Interactor operation.
-    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
-    
     /// Performs a system navigation action, executing the closure associated with the provided system navigation type.
     /// - Parameters:
     ///   - navigationType: The type of system navigation event to perform.
@@ -226,6 +281,7 @@ import Foundation
     func isSystemNavigating() -> Bool
     
     /// When this method is called, the Destination is about to be removed from the Flow. Any resource references should be removed and in-progress interactor tasks should be stopped.
+    /// > Note: In-progress action sequences do not need to be handled here; the Flow cancels them automatically when removing the Destination.
     func cleanupResources()
     
     /// Removes the associated interface from this Destination. This method is called automatically when a Destination is removed in order to avoid a retain cycle.
@@ -291,7 +347,7 @@ public extension Destinationable {
     }
     
     func presentation(for eventType: EventType) -> (DestinationPresentation<DestinationType, ContentType, TabType>)? {
-        return try internalState.destinationConfigurations?.configuration(for: eventType)
+        return internalState.destinationConfigurations?.configuration(for: eventType)
     }
     
     func configureInteractor(_ interactor: any AbstractInteractable, type: InteractorType) {
@@ -303,6 +359,13 @@ public extension Destinationable {
         }
 #endif
     }
+    
+    func configureInteractors() {
+        // now that we have a state model we can call configureInteractor, which will by default forward the call to the state model
+        for (type, interactor) in internalState.interactors {
+            configureInteractor(interactor, type: type)
+        }
+    }
 
     /// Fix for Swift 6.0 build failure. This internal forwarding method explicitly opens the existential via SE-0352 so the constraint chain resolves at the generic call site instead of on the existential.
     ///
@@ -312,7 +375,7 @@ public extension Destinationable {
     }
     
     func updatePresentation(presentation: DestinationPresentation<DestinationType, ContentType, TabType>) {
-        guard var destinationConfigurations = internalState.destinationConfigurations else { return }
+        guard let destinationConfigurations = internalState.destinationConfigurations else { return }
 
         for (type, configuration) in destinationConfigurations.configurations {
             
@@ -324,7 +387,7 @@ public extension Destinationable {
     }
     
     func updateSystemNavigationPresentation(presentation: DestinationPresentation<DestinationType, ContentType, TabType>) {
-        guard var systemNavigationConfigurations = internalState.systemNavigationConfigurations else { return }
+        guard let systemNavigationConfigurations = internalState.systemNavigationConfigurations else { return }
 
         for (type, configuration) in systemNavigationConfigurations.configurations {
             
@@ -355,7 +418,7 @@ public extension Destinationable {
         var container = InterfaceAction<EventType, DestinationType, ContentType>(function: { [weak self] (type: EventType, data: InterfaceActionData<DestinationType, ContentType>) in
             guard let strongSelf = self else { return }
             
-            if var configuration = strongSelf.internalState.destinationConfigurations?.configuration(for: type) {
+            if let configuration = strongSelf.internalState.destinationConfigurations?.configuration(for: type) {
                 if let parentID = data.parentID ?? strongSelf.internalState.parentDestinationID {
                     configuration.parentDestinationID = parentID
                 }
@@ -414,12 +477,12 @@ public extension Destinationable {
         var container = InterfaceAction<EventType, DestinationType, ContentType>(function: { [weak self] (type: EventType, data: InterfaceActionData<DestinationType, ContentType>) in
             guard let strongSelf = self else { return }
             
-            if let assistant = strongSelf.internalState.interactorAssistants[eventType], let configuration = strongSelf.internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? any InteractorConfiguring<InteractorType> {
+            if let assistant = strongSelf.internalState.interactorAssistants[eventType], let configuration = strongSelf.internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? any InteractorConfiguring<InteractorType>, let actionType = configuration.actionType {
                 switch assistant.requestMethod {
                     case .async:
                         Task {
                             if let asyncAssistant = assistant as? any AsyncInteractorAssisting<InteractorType, ContentType> {
-                                await asyncAssistant.handleAsyncRequest(destination: strongSelf, actionType: configuration.actionType, content: data.contentType)
+                                await asyncAssistant.handleAsyncRequest(destination: strongSelf, actionType: actionType, content: data.contentType)
                                 
                             } else {
                                 let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
@@ -428,7 +491,7 @@ public extension Destinationable {
                             }
                         }
                     case .sync:
-                        assistant.handleRequest(destination: strongSelf, actionType: configuration.actionType, content: data.contentType)
+                        assistant.handleRequest(destination: strongSelf, actionType: actionType, content: data.contentType)
                 }
                 
                 
@@ -452,9 +515,8 @@ public extension Destinationable {
 
         var containers: [InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = []
         for (type, configuration) in systemNavigationConfigurations.configurations {
-            if let container = buildSystemNavigationAction(presentationClosure: presentationClosure, configuration: configuration, navigationType: type) as? InterfaceAction<SystemNavigationType, DestinationType, ContentType> {
-                containers.append(container)
-            }
+            let container = buildSystemNavigationAction(presentationClosure: presentationClosure, configuration: configuration, navigationType: type)
+            containers.append(container)
         }
         
         updateSystemNavigationActions(actions: containers)
@@ -467,7 +529,7 @@ public extension Destinationable {
             guard let strongSelf = self else { return }
             
 
-            if var configuration = strongSelf.internalState.systemNavigationConfigurations?.configuration(for: type) {
+            if let configuration = strongSelf.internalState.systemNavigationConfigurations?.configuration(for: type) {
 
                 if let parentID = data.parentID ?? strongSelf.internalState.parentDestinationID {
                     configuration.parentDestinationID = parentID
@@ -503,6 +565,71 @@ public extension Destinationable {
         return container
     }
 
+    func performAction(for eventType: EventType, content: ContentType? = nil) async -> Result<ContentType, Error> {
+
+        if let presentation = internalState.destinationConfigurations?.configuration(for: eventType) {
+            
+            guard let interfaceAction = internalState.interfaceActions[eventType] else {
+                let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
+                let message = String(format: template, eventType.rawValue, type.rawValue)
+                
+                return .failure(DestinationsError.missingInterfaceAction(message: message))
+            }
+            
+            let assistant: (any InterfaceActionConfiguring<EventType, DestinationType, ContentType>)
+            
+            switch presentation.assistantType {
+                case .basic:
+                    assistant = DefaultPresentationAssistant<EventType, DestinationType, ContentType>()
+                case .custom(let customAssistant):
+                    if let customAssistant = customAssistant as? any InterfaceActionConfiguring<EventType, DestinationType, ContentType> {
+                        assistant = customAssistant
+                    } else {
+                        let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
+                        let message = String(format: template, self.type.rawValue)
+                        return .failure(DestinationsError.missingInterfaceActionAssistant(message: message))
+                    }
+            }
+            
+            let configuredAction = assistant.configure(interfaceAction: interfaceAction, eventType: eventType, destination: self, content: content)
+            configuredAction()
+            
+        } else if let configuration = internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? any InteractorConfiguring<InteractorType> {
+            
+            switch configuration.configurationType {
+                case .interactor:
+                    if let interactorType = configuration.interactorType, let actionType = configuration.actionType, let assistant = internalState.interactorAssistants[eventType] as? any AsyncInteractorAssisting<InteractorType, ContentType> {
+                        
+                        guard internalState.interactors[interactorType] as? any AsyncInteractable != nil else {
+                            let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
+                            let message = String(format: template, "\(String(describing: interactor))")
+                            
+                            return .failure(DestinationsError.interactorNotFound(message: message))
+                        }
+                        
+                        return await assistant.asyncRequest(destination: self, actionType: actionType, content: content)
+                    }
+                    
+                case .sequence, .group, .branch:
+                    break
+            }
+            
+
+        }
+        
+        // An interface action exists but no configuration was found for its event type, so
+        // the most likely problem is a missing interactor configuration
+        if internalState.interfaceActions[eventType] != nil {
+            let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
+            let message = String(format: template, eventType.rawValue)
+            return .failure(DestinationsError.interactorNotFound(message: message))
+        } else {
+            let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
+            let message = String(format: template, eventType.rawValue, type.rawValue)
+            return .failure(DestinationsError.missingInterfaceAction(message: message))
+        }
+    }
+    
     func performAction(for eventType: EventType, content: ContentType? = nil) throws {
         
         guard var interfaceAction = internalState.interfaceActions[eventType] else {
@@ -518,7 +645,7 @@ public extension Destinationable {
             
             switch presentation.assistantType {
                 case .basic:
-                    assistant = DefaultActionAssistant<EventType, DestinationType, ContentType>()
+                    assistant = DefaultPresentationAssistant<EventType, DestinationType, ContentType>()
                 case .custom(let customAssistant):
                     if let customAssistant = customAssistant as? any InterfaceActionConfiguring<EventType, DestinationType, ContentType> {
                         assistant = customAssistant
@@ -540,6 +667,129 @@ public extension Destinationable {
     }
     
     
+    func performActions(configuration: any ActionCollectionConfiguring<InteractorType, ContentType>, content: ContentType? = nil) async -> Result<ActionCollectionResults<ContentType>, any Error> {
+        return await buildAndRunActionCollection(configuration, content: content)
+    }
+
+    func performActions(for eventType: EventType, content: ContentType? = nil) async -> Result<ActionCollectionResults<ContentType>, any Error> {
+        guard let configuration = internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? ActionSequenceConfiguration<InteractorType, ContentType> else {
+            return .failure(DestinationsError.interactorNotFound(message: "No ActionSequence configuration found for \(eventType.rawValue)"))
+        }
+        
+        switch configuration.configurationType {
+            case .group, .sequence:
+                return await buildAndRunActionCollection(configuration, content: content)
+
+            case .branch, .interactor:
+                if let interactorType = configuration.interactorType, let actionType = configuration.actionType, let assistant = internalState.interactorAssistants[eventType] as? any AsyncInteractorAssisting<InteractorType, ContentType> {
+                    
+                    guard internalState.interactors[interactorType] as? any AsyncInteractable != nil else {
+                        let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
+                        let message = String(format: template, "\(String(describing: interactor))")
+                        
+                        return .failure(DestinationsError.interactorNotFound(message: message))
+                    }
+                    
+                    let result = await assistant.asyncRequest(destination: self, actionType: actionType, content: content)
+                    
+                    switch result {
+                        case .success(_):
+                            let actionResult = ActionResult(origin: .action(actionType), result: result)
+                            return .success(ActionCollectionResults(results: [actionResult]))
+                        case .failure(let error):
+                            return .failure(error)
+                    }
+                    
+                } else {
+                    return .failure(DestinationsError.missingInterfaceActionAssistant(message: "Expected assistant for event \(eventType)"))
+
+                }
+        }
+        
+    }
+
+    internal func buildAndRunActionCollection(_ configuration: any ActionCollectionConfiguring<InteractorType, ContentType>, content: ContentType?) async -> Result<ActionCollectionResults<ContentType>, any Error> {
+
+        guard configuration.actions.count > 0 else {
+            return .failure(ActionError<ContentType>.noActionsAvailable)
+        }
+
+        // run preflight checks to make sure all Interactors used in each action have been added to this Destination
+        let missingTypes = Set(
+            configuration.actions
+                .flatMap { collectRequiredInteractorTypes(from: $0) }
+                .filter { interactor(for: $0) == nil }
+        )
+        guard missingTypes.isEmpty else {
+            let names = missingTypes.map { "\($0)" }.sorted().joined(separator: ", ")
+            let errorMessage = "Action sequence references unregistered interactor type(s): \(names). Assign them via assignInteractor(_:to:) before calling performActions."
+            let template = DestinationsSupport.errorMessage(for: .unregisteredInteractor(message: errorMessage))
+            let message = String(format: template, names)
+            
+            return .failure(DestinationsError.unregisteredInteractor(message: message))
+        }
+
+        var collection: any ActionPerformableCollection<ContentType>
+        
+        switch configuration.configurationType {
+            case .sequence:
+                collection = ActionSequence<ContentType>(identifier: configuration.identifier, outputConduit: configuration.outputConduit, shouldEndParentTaskOnFailure: configuration.shouldEndParentTaskOnFailure, shouldSaveResult: configuration.shouldSaveResult)
+                
+            case .group:
+                guard let merger = configuration.merger else {
+                    return .failure(ActionError<ContentType>.invalidConfiguration)
+                }
+                collection = ActionGroup(merger: merger, identifier: configuration.identifier, outputConduit: configuration.outputConduit, shouldEndParentTaskOnFailure: configuration.shouldEndParentTaskOnFailure, shouldSaveResult: configuration.shouldSaveResult, shouldSaveChildResults: configuration.shouldSaveChildResults)
+                
+            case .branch, .interactor:
+                return .failure(ActionError<ContentType>.notActionConfiguration)
+        }
+        
+        for actionConfiguration in configuration.actions {
+            do {
+                let action = try actionConfiguration.buildAction(resultHandler: self)
+                try collection.add(action: action)
+            } catch {
+                return .failure(error)
+            }
+        }
+
+        // The sequence runs in an unstructured Task so it can be cancelled externally via `cancelActionSequence(for:)`, but cancellation of the caller's context still propagates to it.
+        let task = Task { [collection] in
+            await collection.perform(with: content, sequenceOutputs: ActionCollectionResults<ContentType>())
+        }
+        
+        internalState.activeSequenceTasks[collection.id] = task
+        defer { internalState.activeSequenceTasks[collection.id] = nil }
+        
+        return await withTaskCancellationHandler {
+            await task.value
+        } onCancel: {
+            task.cancel()
+        }
+    }
+
+    func cancelAllActionSequences() {
+        for task in internalState.activeSequenceTasks.values {
+            task.cancel()
+        }
+    }
+
+    /// Recursively collects all ``InteractorType`` values referenced by leaf ``ActionConfiguration`` nodes
+    /// in a configuration tree, walking into nested sequences, groups, and branch paths.
+    internal func collectRequiredInteractorTypes(from config: any ActionConfiguring<InteractorType, ContentType>) -> [InteractorType] {
+        if let branch = config as? ActionBranchConfiguration<InteractorType, ContentType> {
+            return branch.cases.flatMap { collectRequiredInteractorTypes(from: $0.actionConfig) }
+        }
+        if let collection = config as? any ActionCollectionConfiguring<InteractorType, ContentType> {
+            return collection.actions.flatMap { collectRequiredInteractorTypes(from: $0) }
+        }
+        if let type = config.interactorType {
+            return [type]
+        }
+        return []
+    }
+
     @available(*, deprecated, renamed: "performAction(for:content:)", message: "This method is deprecated and will be removed in a future version. Please migrate your code to use the `performAction(for:content:)` method instead.")
     func performInterfaceAction(eventType: EventType, content: ContentType? = nil) throws {
         try performAction(for: eventType, content: content)
@@ -679,6 +929,18 @@ public extension Destinationable {
     /// A description of this object.
     var description: String {
         return "\(Self.self) : \(type) : \(id)"
+    }
+    
+    // MARK: AssistantAssigning protocol conformance
+    
+    @discardableResult
+    func tryAssignInteractorAssistant(_ assistant: any Sendable, for eventType: any Hashable) -> Bool {
+        guard let assistant = assistant as? any InteractorAssisting<InteractorType, ContentType>,
+              let eventType = eventType as? EventType else {
+            return false
+        }
+        assignInteractorAssistant(assistant: assistant, for: eventType)
+        return true
     }
 }
 

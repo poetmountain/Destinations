@@ -104,7 +104,7 @@ public extension SplitViewControllerDestinationable {
             return
             
         }
-        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let currentController = currentDestination.currentController(), let currentColumn = column(containing: currentID) else {
+        guard let controller, let currentIndex = groupInternalState.childDestinations.firstIndex(where: { $0.id == currentID }), let currentDestination = groupInternalState.childDestinations[safe: currentIndex] as? any ControllerDestinationable<DestinationType, ContentType, TabType>, currentDestination.currentController() != nil, column(containing: currentID) != nil else {
             let template = DestinationsSupport.errorMessage(for: .childDestinationNotFound(message: ""))
             let message = String(format: template, self.type.rawValue)
             logError(error: DestinationsError.childDestinationNotFound(message: message))
@@ -120,7 +120,7 @@ public extension SplitViewControllerDestinationable {
         groupInternalState.childDestinations.insert(newDestination, at: currentIndex)
         newDestination.setParentID(id: id)
                
-        if let childColumn = self.column(containing: currentID), let root = self.rootDestination(for: childColumn) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
+        if let childColumn = self.column(containing: currentID), let root = self.rootDestination(for: childColumn) {
             if let navDestination = root as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType> {
                 // parent destination is a nav controller so tell it to remove the child
                 removeChild(identifier: currentID, removeDestinationFromFlowClosure: removeDestinationFromFlowClosure)
@@ -154,7 +154,7 @@ public extension SplitViewControllerDestinationable {
             groupedChild.removeAllChildren()
         }
         
-        if let activeDestination = currentDestination(for: childColumn), let parentID = activeDestination.parentDestinationID(), let rootDestination = self.rootDestination(for: childColumn) as? any ControllerDestinationable {
+        if let activeDestination = currentDestination(for: childColumn), activeDestination.parentDestinationID() != nil, let rootDestination = self.rootDestination(for: childColumn) {
             if let navController = rootDestination as? any NavigatingControllerDestinationable {
                 // parent destination is a nav controller so tell it to remove the child
                 navController.removeChild(identifier: identifier, removeDestinationFromFlowClosure: nil)
@@ -238,7 +238,7 @@ public extension SplitViewControllerDestinationable {
 
         guard let currentDestination = groupInternalState.currentChildDestination as? any ControllerDestinationable, let navController = currentDestination.currentController()?.navigationController as? UINavigationController else { return }
             
-        DestinationsSupport.logger.log("splitview current dest from group state \(groupInternalState.currentChildDestination?.type)")
+        DestinationsSupport.logger.log("splitview current dest from group state \(String(describing: groupInternalState.currentChildDestination?.type))")
 
         
         navController.popViewController(animated: true)

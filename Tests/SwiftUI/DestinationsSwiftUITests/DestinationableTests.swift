@@ -194,7 +194,7 @@ import Destinations
             expectation.fulfill()
         }
         
-        destination.assignInteractor(interactor: interactor, for: .test)
+        destination.assignInteractor(interactor, to: .test)
         interactor.assignResponseForAction(response: requestResponse, for: .increaseCount)
         
         let request = TestRequest(action: .increaseCount)

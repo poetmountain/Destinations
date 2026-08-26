@@ -10,5 +10,5 @@
 import Foundation
 
 /// This protocol represents an enum which defines Interactors in the app. It can be scoped to an individual Destination.
-public protocol InteractorTypeable: Hashable {
+public protocol InteractorTypeable: Hashable, Sendable {
 }

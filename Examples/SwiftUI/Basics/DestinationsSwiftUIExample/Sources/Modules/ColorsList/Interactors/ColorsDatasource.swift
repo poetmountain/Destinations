@@ -18,7 +18,6 @@ struct ColorsRequest: InteractorRequestConfiguring {
 
     typealias RequestContentType = AppContentType
     typealias ResultData = AppContentType
-    typealias Item = ColorViewModel
 
     let action: ActionType
 

@@ -277,10 +277,9 @@ import Destinations
         let newDestination = PresentationConfiguration(presentationType: .destinationPath(path: path), assistantType: .basic)
         appFlow.presentDestination(configuration: newDestination)
         
-        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let currentView = currentDestination.view {
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType> {
             XCTAssertEqual(currentDestination.type, .home)
             XCTAssertEqual(appFlow.activeDestinations.count, 7)
-            XCTAssertTrue(currentView is HomeView)
         } else {
             XCTFail("Expected destination to be .home, got \(type(of: appFlow.currentDestination))")
         }

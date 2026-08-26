@@ -10,11 +10,8 @@
 import UIKit
 
 /// This protocol represents a Flow which coordinates routing and navigation as a user moves through a UIKit-based app.
-@MainActor public protocol ControllerFlowable<DestinationType, ContentType, TabType>: Flowable where InterfaceCoordinator == DestinationUIKitCoordinator {
-    
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
-    
+@MainActor public protocol ControllerFlowable<DestinationType, ContentType, TabType>: Flowable where InterfaceCoordinator == DestinationUIKitCoordinator, PresentationType == DestinationPresentationType<DestinationType, ContentType, TabType> {
+        
     /// A dictionary of Destination providers whose keys are an enum of Destination types. The Destination type represents the type of Destination each provider can provide.
     var destinationProviders: [DestinationType: any ControllerDestinationProviding] { get set }
 
@@ -199,7 +196,7 @@ public extension ControllerFlowable {
     func removeParentDestination(for destination: any ControllerDestinationable<DestinationType, ContentType, TabType>, until type: DestinationType) {
         
         DestinationsSupport.logger.log("Removing parent destination \(destination.type) :: id \(destination.id)", level: .verbose)
-        DestinationsSupport.logger.log("parent id \(destination.parentDestinationID())", level: .verbose)
+        DestinationsSupport.logger.log("parent id \(String(describing: destination.parentDestinationID()))", level: .verbose)
 
         if let parentID = destination.parentDestinationID(), let parentDestination = self.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
             
@@ -341,7 +338,7 @@ public extension ControllerFlowable {
                 if let parentID = configuration.parentDestinationID, let targetDestination = strongSelf.destination(for: parentID) as? any ControllerDestinationable<DestinationType, ContentType, TabType> {
                     strongSelf.updateCurrentDestination(destination: targetDestination)
                     
-                    if let navigationDestination = strongSelf.findNearestNavigatorInViewHierarchy(currentDestination: sheetDestination) as? any NavigatingControllerDestinationable<DestinationType, ContentType, TabType>, let navController = navigationDestination.currentController() {
+                    if let navigationDestination = strongSelf.findNearestNavigatorInViewHierarchy(currentDestination: sheetDestination), let navController = navigationDestination.currentController() {
                                                 
                         var destinationsToRemove: [UUID] = []
                         for controller in navController.viewControllers {
@@ -400,7 +397,7 @@ public extension ControllerFlowable {
 
                 }
 
-                if let currentDestination = strongSelf.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, let navController = currentDestination.currentController() as? UINavigationController ?? currentDestination.currentController()?.navigationController {
+                if let currentDestination = strongSelf.currentDestination as? any ControllerDestinationable<DestinationType, ContentType, TabType>, currentDestination.currentController() as? UINavigationController ?? currentDestination.currentController()?.navigationController != nil {
                     
                     currentDestination.updateIsSystemNavigating(isNavigating: false)
 

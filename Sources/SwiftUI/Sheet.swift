@@ -36,6 +36,6 @@ public struct Sheet: Sheetable {
     }
 
     public var description: String {
-        return "\(Self.self) : \(id) : options: \(options)"
+        return "\(Self.self) : \(id) : options: \(String(describing: options))"
     }
 }

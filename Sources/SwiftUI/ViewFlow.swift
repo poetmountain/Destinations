@@ -107,7 +107,6 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             DestinationsSupport.logger.log("⤴️ Presenting destination \(destinationType) via \(configuration.presentationType)")
         }
 
-        var mutableConfiguration = configuration
         var parentOfCurrentDestination: (any ViewDestinationable)?
         
         if let parentID = currentDestination?.parentDestinationID(), let parent = self.destination(for: parentID) as? any ViewDestinationable<DestinationType, ContentType, TabType> {
@@ -127,11 +126,11 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             
             // assign the target ID of the destination to move to
             if let targetDestination {
-                mutableConfiguration.actionTargetID = targetDestination.id
+                configuration.actionTargetID = targetDestination.id
             }
         }
         
-        var newDestination = self.destination(for: mutableConfiguration)
+        let newDestination = self.destination(for: configuration)
 
         var currentViewDestination = currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>
         
@@ -148,21 +147,21 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
         }
         
         
-        if var newDestination = newDestination {
+        if let newDestination {
             
-            if let parentID = currentViewDestination?.parentDestinationID() ?? mutableConfiguration.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
+            if let parentID = currentViewDestination?.parentDestinationID() ?? configuration.parentDestinationID, let parent = self.destination(for: parentID) as? any ViewDestinationable {
                 parentOfCurrentDestination = parent
             }
             
             if let current = currentViewDestination, let tabDestination = findTabBarInViewHierarchy(searchDestination: current) {
-                mutableConfiguration.tabBarDestination = tabDestination
+                configuration.tabBarDestination = tabDestination
             }
             
             if rootDestination == nil {
                 rootDestination = newDestination
             }
             
-            if case DestinationPresentationType.navigationStack(type: .present) = mutableConfiguration.presentationType {
+            if case DestinationPresentationType.navigationStack(type: .present) = configuration.presentationType {
                 if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     parentOfCurrentDestination = navDestination
                     // assign the navigator presenting this Destination
@@ -170,7 +169,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 }
             }
             
-            if case DestinationPresentationType.tabBar(tab: let tab) = mutableConfiguration.presentationType {
+            if case DestinationPresentationType.tabBar(tab: _) = configuration.presentationType {
                 if let currentViewDestination, let navigator = findNavigatorInViewHierarchy(searchDestination: currentViewDestination), let navID = navigator.navigatorDestinationID, let navDestination = self.destination(for: navID) as? any NavigatingViewDestinationable<DestinationType, ContentType, TabType> {
                     parentOfCurrentDestination = navDestination
                     // assign the navigator presenting this Destination
@@ -179,7 +178,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             }
             
             // Called every time a Destination is newly presented (hence not when going back in a navigation stack)
-            if case DestinationPresentationType.navigationStack(type: let navigationType) = mutableConfiguration.presentationType {
+            if case DestinationPresentationType.navigationStack(type: let navigationType) = configuration.presentationType {
                 if navigationType == .present {
                     newDestination.prepareForPresentation()
                 }
@@ -187,7 +186,7 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
                 newDestination.prepareForPresentation()
             }
       
-            mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
+            configuration.completionClosure = self.presentationCompletionClosure(for: configuration, destination: newDestination)
 
             updateDestination(destination: newDestination)
             
@@ -198,19 +197,19 @@ public final class ViewFlow<DestinationType: RoutableDestinations, TabType: TabT
             }
         
 
-            uiCoordinator?.presentViewDestination(destination: newDestination, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: mutableConfiguration)
+            uiCoordinator?.presentViewDestination(destination: newDestination, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: configuration)
             
             return newDestination
             
         } else {
             
             if let current = currentViewDestination, let tabDestination = findTabBarInViewHierarchy(searchDestination: current) {
-                mutableConfiguration.tabBarDestination = tabDestination
+                configuration.tabBarDestination = tabDestination
             }
             
-            mutableConfiguration.completionClosure = self.presentationCompletionClosure(for: mutableConfiguration, destination: newDestination)
+            configuration.completionClosure = self.presentationCompletionClosure(for: configuration, destination: newDestination)
 
-            uiCoordinator?.presentViewDestination(destination: nil, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: mutableConfiguration)
+            uiCoordinator?.presentViewDestination(destination: nil, currentDestination: currentViewDestination, parentOfCurrentDestination: parentOfCurrentDestination, configuration: configuration)
             
             
         }

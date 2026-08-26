@@ -35,6 +35,9 @@ import Foundation
     /// A dictionary of interactor action configuration models, with their keys being the event type associated with each interactor action.
     var interactorsData: [Destination.EventType: any InteractorConfiguring<Destination.InteractorType>] { get set }
     
+    /// Event types that should be ignored by the preflight checks which enforce that all declared event types have an associated presentation or interactor request.
+    var preflightIgnoredEvents: [Destination.EventType] { get }
+    
     /// Generates Destination presentations associated with this provider.
     func buildPresentations() -> AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>?
     
@@ -49,9 +52,15 @@ import Foundation
     ///
     /// > Note: This method is automatically called by ``ViewFlow`` and ``ControllerFlow`` when instantiated.
     func prepareForProviding()
+    
 }
 
 public extension DestinationProviding {
+    
+    var preflightIgnoredEvents: [Destination.EventType] {
+        []
+    }
+    
     func buildPresentations() -> AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>? {
         
         let configurations = AppDestinationConfigurations<Destination.EventType, DestinationType, ContentType, TabType>()
@@ -59,16 +68,12 @@ public extension DestinationProviding {
         // add configurations for Destination presentations
         for (eventType, configuration) in presentationsData {
             let presentation = configuration.copy()
-            if let eventType = eventType as? Destination.EventType {
-                configurations.addConfiguration(configuration: presentation, for: eventType)
-            }
+            configurations.addConfiguration(configuration: presentation, for: eventType)
         }
         
         // add configurations for Interactor requests
         for (eventType, configuration) in interactorsData {
-            if let eventType = eventType as? Destination.EventType {
-                configurations.addInteractorConfiguration(configuration: configuration, for: eventType)
-            }
+            configurations.addInteractorConfiguration(configuration: configuration, for: eventType)
         }
         
         return configurations
@@ -94,7 +99,7 @@ public extension DestinationProviding {
 
     func assignInteractorAssistants(for destination: Destination) {
         for (eventType, configuration) in interactorsData {
-            configuration.assignInteractorAssistant(destination: destination, eventType: eventType)
+            configuration.assignInteractorAssistant(to: destination, eventType: eventType)
         }
     }
 }
@@ -113,14 +118,18 @@ public extension DestinationProviding {
     ///
     /// > Note: This is automatically called by ``prepareForProviding()``.
     /// - Returns: An optional `EventType` representing the first failing event found.
-    internal func presentationsPreflight() -> Destination.EventType? {
+    func presentationsPreflight() -> Destination.EventType? {
         
         let presentationKeys = Set(presentationsData.keys)
         let interactorKeys = Set(interactorsData.keys)
         let registeredTypes = presentationKeys.union(interactorKeys)
-        let allTypes = Destination.EventType.allCases
-        let missingKeys = Set(allTypes).subtracting(registeredTypes)
-        return missingKeys.first
+        let allTypes = Set(Destination.EventType.allCases)
+        let ignoredEvents = Set(preflightIgnoredEvents)
+        let eventsToCheck = allTypes.subtracting(ignoredEvents)
+
+        let missingEvents = eventsToCheck.subtracting(registeredTypes)
+
+        return missingEvents.first
 
     }
     

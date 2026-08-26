@@ -69,7 +69,7 @@ public extension View {
     ///   - navigationDestination: A Destination whose `View` contains a `NavigationStack`.
     ///   - action: An optional action to perform when the `View` disappears.
     /// - Returns: A `View` which runs the removal logic and optional action when it disappears.
-    public func onDestinationDisappear<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: (any NavigatingViewDestinationable)? = nil, action: (() -> Void)? = nil) -> some View {
+    func onDestinationDisappear<DestinationType: RoutableDestinations, ContentType: ContentTypeable, TabType: TabTypeable>(destination: any ViewDestinationable<DestinationType, ContentType, TabType>, navigationDestination: (any NavigatingViewDestinationable)? = nil, action: (() -> Void)? = nil) -> some View {
         modifier(DestinationDisappearModifier<DestinationType, ContentType, TabType>(destination: destination, navigationDestination: navigationDestination, action: action))
     }
 }

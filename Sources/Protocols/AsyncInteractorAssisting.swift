@@ -12,11 +12,15 @@ import Foundation
 /// This protocol represents an assistant which helps a Destination make requests of an Interactor which participates in async/await flows. Concrete assistants conforming to this protocol should handle requests for a specific Interactor type.
 @MainActor public protocol AsyncInteractorAssisting<InteractorType, ContentType>: InteractorAssisting {
     
-    /// Handles an async request to an Interactor.
+    /// Handles an async request to an Interactor, calling ``Destinationable.handleAsyncInteractorResult`` to return the result of the operation.
     /// - Parameter destination: The Destination which the Interactor is associated with. This reference is used to make requests to the Interactor.
     /// - Parameter content: An optional content model used to make a request to the Interactor.
     func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType
 
+    /// Handles a request to an Interactor in an asychronous context.
+    /// - Parameter destination: The Destination which the Interactor is associated with. This reference is used to make requests to the Interactor.
+    /// - Parameter content: An optional content model used to make a request to the Interactor.
+    func asyncRequest<Destination: InteractorResultHandling>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async -> Result<Request.ResultData, Error> where Destination.InteractorType == InteractorType
 }
 
 public extension AsyncInteractorAssisting {
@@ -24,16 +28,43 @@ public extension AsyncInteractorAssisting {
 
     func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType {}
 
+    func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async where Destination.InteractorType == InteractorType {
+
+        let template = DestinationsSupport.errorMessage(for: .missingAsyncRequestImplementation(message: "hey"))
+        let message = String(format: template, "\(actionType)")
+        destination.logError(error: DestinationsError.incompatibleType(message: message))
+
+    }
+    
     func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: any InteractorRequestActionTypeable, content: ContentType?) async where Destination.InteractorType == InteractorType {
-        
+
         guard let actionType = actionType as? Request.ActionType else {
             let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))
             let message = String(format: template, "\(actionType)")
             destination.logError(error: DestinationsError.childDestinationNotFound(message: message))
-            
+
             return
         }
-        
+
         await handleAsyncRequest(destination: destination, actionType: actionType, content: content)
     }
+
+    func asyncRequest<Destination: InteractorResultHandling>(destination: Destination, actionType: any InteractorRequestActionTypeable, content: ContentType?) async -> Result<ContentType, Error> where Destination.InteractorType == InteractorType {
+
+        guard let actionType = actionType as? Request.ActionType else {
+            let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))
+            let message = String(format: template, "\(actionType)")
+            return .failure(DestinationsError.incompatibleType(message: message))
+        }
+
+        return await asyncRequest(destination: destination, actionType: actionType, content: content)
+    }
+    
+    func asyncRequest<Destination: InteractorResultHandling>(destination: Destination, actionType: Request.ActionType, content: ContentType?) async -> Result<Request.ResultData, Error> where Destination.InteractorType == InteractorType {
+        
+        let template = DestinationsSupport.errorMessage(for: .missingAsyncRequestImplementation(message: "hey"))
+        let message = String(format: template, "\(actionType)")
+        return .failure(DestinationsError.incompatibleType(message: message))
+    }
+ 
 }

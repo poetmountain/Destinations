@@ -11,12 +11,15 @@ import Foundation
 
 /// This model is used to configure a specific action an Interactor should take.
 public struct InteractorConfiguration<InteractorType: InteractorTypeable, Interactor: AbstractInteractable>: InteractorConfiguring {
-    public typealias ActionType = Interactor.Request.ActionType
     
-    public let interactorType: InteractorType
-    public let actionType: ActionType
-    public let assistantType: InteractorAssistantType
+    public typealias ActionType = Interactor.Request.ActionType
+
+    public let interactorType: InteractorType?
+    public let actionType: (any InteractorRequestActionTypeable)?
+    public let assistantType: InteractorAssistantType?
         
+    public let configurationType: ActionConfigurationType = .interactor
+    
     /// The initializer.
     /// - Parameters:
     ///   - interactorType: The type of interactor.
@@ -27,22 +30,24 @@ public struct InteractorConfiguration<InteractorType: InteractorTypeable, Intera
         self.assistantType = assistantType
     }
     
-    public func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, eventType: Destination.EventType) where InteractorType == Destination.InteractorType {
+    public func assignInteractorAssistant(to assignable: any AssistantAssigning, eventType: any Hashable) {
+        guard let assistantType, let interactorType else { return }
         
         switch assistantType {
             case .basic:
-                var assistant = DefaultInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
-                destination.assignInteractorAssistant(assistant: assistant, for: eventType)
-                
+                let assistant = DefaultInteractorAssistant<InteractorType, Interactor.Request, Interactor.Request.ResultData>(interactorType: interactorType)
+                let assigned = assignable.tryAssignInteractorAssistant(assistant, for: eventType)
+                assert(assigned, "\(Self.self): destination's InteractorType/ContentType or EventType did not match this configuration's assistant for event \(eventType)")
+
             case .basicAsync:
-                var assistant = DefaultAsyncInteractorAssistant<Destination.InteractorType, Interactor.Request, Destination.ContentType>(interactorType: interactorType)
-                destination.assignInteractorAssistant(assistant: assistant, for: eventType)
-                
+                let assistant = DefaultAsyncInteractorAssistant<InteractorType, Interactor.Request, Interactor.Request.ResultData>(interactorType: interactorType)
+                let assigned = assignable.tryAssignInteractorAssistant(assistant, for: eventType)
+                assert(assigned, "\(Self.self): destination's InteractorType/ContentType or EventType did not match this configuration's assistant for event \(eventType)")
+
             case .custom(let assistant):
-                if var assistant = assistant as? any InteractorAssisting<Destination.InteractorType, Destination.ContentType> {
-                    destination.assignInteractorAssistant(assistant: assistant, for: eventType)
-                }
+                let assigned = assignable.tryAssignInteractorAssistant(assistant, for: eventType)
+                assert(assigned, "\(Self.self): destination's InteractorType/ContentType or EventType did not match this configuration's custom assistant for event \(eventType)")
         }
-    
+
     }
 }

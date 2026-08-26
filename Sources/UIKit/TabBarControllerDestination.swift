@@ -137,7 +137,7 @@ public final class TabBarControllerDestination<ControllerType: TabBarControllerD
     
     public func updateSelectedTab(type: TabType) throws {
         
-        if var tab = tab(for: type) {
+        if let tab = tab(for: type) {
             selectedTab = tab
             
             if let tabIndex = self.tabIndex(for: type) {

@@ -21,22 +21,29 @@ struct CounterInteractorAssistant: AsyncInteractorAssisting, DestinationTypes {
     func handleAsyncRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: AppContentType?) async where Destination.InteractorType == InteractorType {
         
         let request = CounterRequest(action: actionType)
-        _ = await destination.performRequest(interactor: interactorType, request: request)
         
         switch actionType {
             case .startCount:
                 if let interactor = destination.interactor(for: interactorType) as? CounterInteractor {
-                    print("starting count")
+
+                    guard await interactor.isCounting == false else { return }
+                    _ = await destination.performRequest(interactor: interactorType, request: request)
 
                     // handle the AsyncStream which provides counter updates
-                    for await count in interactor.stream {
-                        let countResult: Result<Request.ResultData, Error> = .success(.count(value: count))
-                        destination.handleInteractorResult(result: countResult, for: request)
+                    guard let stream = await interactor.stream else { return }
+                    
+                    for await count in stream {
+                        let countResult: Result<Request.ResultData, Error> = .success(.count(value: count, isFinished: false))
+                        await destination.handleAsyncInteractorResult(result: countResult, for: request)
                     }
                     
                 }
             case .stopCount:
-                break
+                _ = await destination.performRequest(interactor: interactorType, request: request)
+
+                if let interactor = destination.interactor(for: interactorType) as? CounterInteractor {
+                    await destination.handleAsyncInteractorResult(result: .success(.count(value: await interactor.counter, isFinished: true)), for: request)
+                }
         }
     }
     

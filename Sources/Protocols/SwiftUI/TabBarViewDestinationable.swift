@@ -118,7 +118,7 @@ public extension TabBarViewDestinationable {
     
     func updateSelectedTab(type: TabType) throws {
         
-        if var tab = tab(for: type) {
+        if let tab = tab(for: type) {
             selectedTab = tab
             
         } else {
@@ -149,7 +149,6 @@ public extension TabBarViewDestinationable {
         } else {
             return childDestination
         }
-        return nil
     }
     
     func assignPresentationClosure(closure: @escaping TabBarViewDestinationPresentationClosure<DestinationType, ContentType, TabType>) {

@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an assistant which helps a Destination make requests of an Interactor. Concrete assistants conforming to this protocol should handle requests for a specific Interactor type.
-@MainActor public protocol InteractorAssisting<InteractorType, ContentType> {
+@MainActor public protocol InteractorAssisting<InteractorType, ContentType>: Sendable where Request.ResultData == ContentType {
     
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
@@ -30,13 +30,13 @@ import Foundation
     /// Handles a request to an Interactor. Responses to the Interactor should be handled using the ``completionClosure`` closure.
     /// - Parameter destination: The Destination which the Interactor is associated with. This reference is used to make requests to the Interactor.
     /// - Parameter content: An optional content model used to make a request to the Interactor.
-    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType
+    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: Request.ActionType, content: ContentType?) where Destination.InteractorType == InteractorType, Destination.ContentType == ContentType
 }
 
 public extension InteractorAssisting {
     var requestMethod: InteractorRequestMethod { .sync }
 
-    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: any InteractorRequestActionTypeable, content: ContentType?) where Destination.InteractorType == InteractorType {
+    func handleRequest<Destination: Destinationable>(destination: Destination, actionType: any InteractorRequestActionTypeable, content: ContentType?) where Destination.InteractorType == InteractorType, Destination.ContentType == ContentType {
         
         guard let actionType = actionType as? Request.ActionType else {
             let template = DestinationsSupport.errorMessage(for: .incompatibleType(message: ""))

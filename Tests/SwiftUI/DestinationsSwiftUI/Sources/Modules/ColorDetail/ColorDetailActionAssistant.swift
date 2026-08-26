@@ -15,11 +15,9 @@ final class ColorDetailActionAssistant: InterfaceActionConfiguring, DestinationT
     func configure(interfaceAction: InterfaceAction<EventType, DestinationType, ContentType>, eventType: EventType, destination: any Destinationable, content: ContentType?) -> InterfaceAction<EventType, DestinationType, ContentType> {
         var closure = interfaceAction
         
-        var contentType: ContentType?
-
         closure.data.parentID = destination.parentDestinationID()
 
-        if let contentType = contentType {
+        if let contentType = content {
             closure.data.contentType = contentType
         }
         

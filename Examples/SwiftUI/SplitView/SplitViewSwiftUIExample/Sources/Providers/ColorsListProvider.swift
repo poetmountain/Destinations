@@ -27,7 +27,7 @@ struct ColorsListProvider: ViewDestinationProviding, AppDestinationTypes {
         destination.assignAssociatedView(view: listView)
 
         let datasource = ColorsDatasource()
-        destination.assignInteractor(interactor: datasource, for: .colors)
+        destination.assignInteractor(datasource, to: .colors)
 
          return destination
         

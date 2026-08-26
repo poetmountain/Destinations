@@ -24,18 +24,20 @@ final class CounterState: StateModeling {
     func handleEvent(_ type: EventType, content: ContentType? = nil) {
         switch type {
             case .start, .stop:
+
                 destination?.handleThrowable(closure: { [weak destination] in
                     try destination?.performAction(for: type)
                 })
         }
     }
     
-    func handleInteractorResult<Request>(result: Result<Request.ResultData, any Error>, for request: Request) where Request : InteractorRequestConfiguring {
+    func handleAsyncInteractorResult<Request>(result: Result<Request.ResultData, any Error>, for request: Request) async where Request : InteractorRequestConfiguring {
 
         switch result {
             case .success(let response):
-                if case .count(value: let increment) = response as? CounterRequest.ResultData {
-                    updateCount(increment: increment)
+                if case .count(value: let value, isFinished: let isFinished) = response as? CounterRequest.ResultData {
+                    print("counter value received: \(value) - finished? \(isFinished)")
+                    counter = value
                 }
             case .failure(let error):
                 print("error \(error)")
@@ -48,10 +50,6 @@ final class CounterState: StateModeling {
 
     func handleStopButtonTapped() {
         handleEvent(.stop, content: nil)
-    }
-
-    func updateCount(increment: Int) {
-        counter += increment
     }
 
     func cleanupResources() {

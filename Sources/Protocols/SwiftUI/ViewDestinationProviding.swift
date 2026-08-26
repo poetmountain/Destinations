@@ -10,11 +10,8 @@
 import Foundation
 
 /// This protocol represents objects which construct and provide ``ViewDestinationable`` objects, including their associated interface elements. Provider objects which conform to this protocol should build discrete Destinations based on their specific destination type.
-@MainActor public protocol ViewDestinationProviding<DestinationType, ContentType, TabType>: DestinationProviding {
-    
-    /// An enum which defines available Destination presentation types. Typically this is ``DestinationPresentationType``.
-    typealias PresentationType = DestinationPresentationType<DestinationType, ContentType, TabType>
-    
+@MainActor public protocol ViewDestinationProviding<DestinationType, ContentType, TabType>: DestinationProviding where PresentationType == DestinationPresentationType<DestinationType, ContentType, TabType> {
+        
     /// Builds and returns a new ``ViewDestinationable`` object based on the supplied configuration object.
     /// - Parameters:
     ///   - presentations: The Destination presentations associated with this provider.
@@ -36,6 +33,9 @@ public extension ViewDestinationProviding {
         
         if let destination {
             assignInteractorAssistants(for: destination)
+            
+            // now that we have a state model we can call configureInteractor(), which will by default forward the call to the state model
+            destination.configureInteractors()
         }
                 
         return destination

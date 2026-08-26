@@ -212,7 +212,6 @@ public extension NavigationSplitViewDestinationable {
         } else {
             return childDestination
         }
-        return nil
     }
     
     /// Updates multiple Destinations in the specified columns. This is used internally by Destinations.

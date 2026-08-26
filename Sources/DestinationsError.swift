@@ -32,15 +32,30 @@ public enum DestinationsError: Error, Hashable {
     /// - Parameter message: A message to be sent with the error.
     case unsupportedInteractorActionType(message: String)
     
+    /// An error type representing a missing interactor type.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case missingInteractorType(message: String)
+    
     /// An error type denoting that an appropriate ``InterfaceAction`` was not found.
     ///
     /// - Parameter message: A message to be sent with the error.
     case missingInterfaceAction(message: String)
     
+    /// An error type representing an unsupported Interactor assistant type for an interactor request.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case unsupportedInteractorAssistantType(message: String)
+    
     /// An error type denoting that an assistant for performing an ``InterfaceAction`` is missing.
     ///
     /// - Parameter message: A message to be sent with the error.
     case missingInterfaceActionAssistant(message: String)
+    
+    /// An error type denoting that an async assistant did not implement the `asyncRequest` method.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case missingAsyncRequestImplementation(message: String)
     
     /// An error type denoting that a Destination type was not supplied with a presentation type that requires one.
     ///
@@ -56,6 +71,11 @@ public enum DestinationsError: Error, Hashable {
     ///
     /// - Parameter message: A message to be sent with the error.
     case duplicateEventTypeUsed(message: String)
+    
+    /// An error type generated when an ActionConfiguration is sent to ``Destinationable/performActions(configuration:content:)-1nsw5`` that references an Interactor type that has not been registered with the Destination.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case unregisteredInteractor(message: String)
     
     /// An error type generated when an incompatible type was passed as a parameter, typically an incorrect sub-protocol.
     ///

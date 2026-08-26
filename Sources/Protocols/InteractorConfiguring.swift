@@ -9,30 +9,46 @@
 
 import Foundation
 
+/// Represents the type of action to be configured.
+public enum ActionConfigurationType {
+    case interactor
+    case sequence
+    case group
+    case branch
+}
+
 /// This protocol represents a configuration for a specific action an Interactor should take.
 @MainActor public protocol InteractorConfiguring<InteractorType> {
     
     /// An enum which represents types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable
-    
-    /// A class type of the Interactor to be configured.
-    associatedtype Interactor: AbstractInteractable
-    
-    /// An enum which defines types of actions for a particular Interactor.
-    associatedtype ActionType: InteractorRequestActionTypeable
-    
+
     /// An enum type representing the kind of interactor to be configured.
-    var interactorType: InteractorType { get }
-    
+    var interactorType: InteractorType? { get }
+
     /// An enum type representing the type of interactor request action.
-    var actionType: ActionType { get }
+    var actionType: (any InteractorRequestActionTypeable)? { get }
     
     /// The type of interactor assistant associated with the interactor to be configured.
-    var assistantType: InteractorAssistantType { get }
+    var assistantType: InteractorAssistantType? { get }
     
-    /// Assigns an interactor assistant to a Destination.
+    /// Represents the type of action this object should configure.
+    var configurationType: ActionConfigurationType { get }
+    
+    /// Assigns an interactor assistant to a Destination, dispatched through a type-erased channel.
+    ///
+    /// The destination performs a runtime check to ensure its `InteractorType`/`ContentType`
+    /// and `EventType` are compatible with this configuration's assistant before assignment.
     /// - Parameters:
-    ///   - destination: The Destination to apply this interactor assistant to.
+    ///   - assignable: The destination (as an erased `AssistantAssigning`) to apply this assistant to.
     ///   - eventType: The event type to associate this assistant with.
-    func assignInteractorAssistant<Destination: Destinationable>(destination: Destination, eventType: Destination.EventType) where InteractorType == Destination.InteractorType
+    func assignInteractorAssistant(to assignable: any AssistantAssigning, eventType: any Hashable)
+}
+
+public extension InteractorConfiguring {
+    var interactorType: InteractorType? { nil }
+    var actionType: (any InteractorRequestActionTypeable)? { nil }
+    var assistantType: InteractorAssistantType? { nil }
+    
+    func assignInteractorAssistant(to assignable: any AssistantAssigning, eventType: any Hashable) {}
 }
