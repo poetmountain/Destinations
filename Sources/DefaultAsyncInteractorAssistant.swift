@@ -35,11 +35,21 @@ public struct DefaultAsyncInteractorAssistant<InteractorType: InteractorTypeable
 
     }
     
+    #if swift(>=6.1)
     public func asyncRequest<Interactor: AsyncInteractable>(interactor: Interactor, actionType: Request.ActionType, content: ContentType?) async -> Result<Request.ResultData, Error> where Interactor.Request == Request {
-        
+
         let request = Request(action: actionType)
         return await interactor.perform(request: request)
 
     }
+    #else
+    // Prior to Swift 6.1, `AsyncInteractable.ResultData` is a standalone associated type rather than being defined as `Request.ResultData`, so `Interactor.Request == Request` doesn't imply the two match.
+    public func asyncRequest<Interactor: AsyncInteractable>(interactor: Interactor, actionType: Request.ActionType, content: ContentType?) async -> Result<Request.ResultData, Error> where Interactor.Request == Request, Interactor.ResultData == Request.ResultData {
+
+        let request = Request(action: actionType)
+        return await interactor.perform(request: request)
+
+    }
+    #endif
     
 }
