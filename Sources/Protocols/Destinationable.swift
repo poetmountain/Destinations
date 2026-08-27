@@ -9,44 +9,6 @@
 
 import Foundation
 
-@MainActor
-public protocol InteractorResultHandling<InteractorType, ContentType>: Sendable, AnyObject {
-    /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
-    associatedtype InteractorType: InteractorTypeable
-    associatedtype ContentType: ContentTypeable
-    
-    
-    /// Handles the result of an Interactor request in a synchronous context.
-    /// - Parameters:
-    ///    - result: The Result object containing data returned from the request.
-    ///    - request: The original request used in this Interactor operation.
-    func handleInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request)
-    
-    /// Handles the result of an async Interactor request.
-    /// - Parameters:
-    ///    - result: The Result object containing data returned from the request.
-    ///    - request: The original request used in this Interactor operation.
-    func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async
-    
-    /// Performs a request with the specified Interactor.
-    /// - Parameters:
-    ///   - interactor: The type of Interactor that should receive the request.
-    ///   - request: A model that defines the request.
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request)
-    
-    /// Performs a request with the specified Interactor asynchronously.
-    /// - Parameters:
-    ///   - interactor: The type of Interactor that should receive the request.
-    ///   - request: A model that defines the request.
-    /// - Returns: A `Result` containing an array of items.
-    func performRequest<Request: InteractorRequestConfiguring>(interactor: InteractorType, request: Request) async -> Result<Request.ResultData, Error>
-    
-    /// Returns an Interactor for the specified type.
-    /// - Parameter type: The enum type of an Interactor.
-    /// - Returns: An Interactor, if one was found.
-    func interactor(for type: InteractorType) -> (any AbstractInteractable)?
-}
-
 /// This protocol represents a Destination in the Destinations ecosystem.
 ///
 /// A Destination represents a unique area in an app which can be navigated to by the user. In SwiftUI this is typically a fullscreen `View` object, and in UIKit it's a `UIViewController` class or subclass, but it can also be a group of Destinations like a `TabBar` or a carousel. Destinations hold references to the UI element they're associated with, but they don't handle the particulars of laying out elements on the screen. Instead, the role of Destination objects in the ecosystem is to send and receive messages and datasource requests on behalf of their UI, such as passing on a message to trigger an action when a user taps a button.
