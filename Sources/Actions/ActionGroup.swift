@@ -111,7 +111,7 @@ public final class ActionGroup<ContentType: ContentTypeable>: ActionPerformableC
     ///
     /// - Parameter action: The action to add.
     /// - Throws: ``ActionError`` if the action cannot be added.
-    public func add(action: any ActionPerformable<ContentType>) throws(ActionError<ContentType>) {
+    public func add(action: any ActionPerformable<ContentType>) throws {
         actions.append(action)
     }
 

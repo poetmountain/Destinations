@@ -18,5 +18,8 @@ public protocol ActionPerformableCollection<ContentType>: ActionPerformable {
     ///
     /// - Parameter action: The ``ActionPerformable`` object to add to this collection.
     /// - Throws: ``ActionError/invalidConfiguration`` if the action is not compatible with this collection.
-    func add(action: any ActionPerformable<ContentType>) throws(ActionError<ContentType>)
+    ///
+    /// > Note: This uses untyped `throws` rather than `throws(ActionError<ContentType>)` because the typed throws
+    /// > combination with this existential might be causing issues with Swift 6.0 and 6.1 builds.
+    func add(action: any ActionPerformable<ContentType>) throws
 }

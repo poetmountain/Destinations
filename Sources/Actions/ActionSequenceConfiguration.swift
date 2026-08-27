@@ -68,12 +68,12 @@ public struct ActionSequenceConfiguration<InteractorType: InteractorTypeable, Co
     /// - Parameter step: A configuration object for the action this step should perform.
     /// - Returns: A copy of this configuration with the step appended, allowing calls to be chained.
     /// - Throws: ``ActionError/missingConduit`` if the last action in the sequence has no output conduit.
-    public func step(_ step: any ActionConfiguring<InteractorType, ContentType>) throws(ActionError<ContentType>) -> Self {
+    public func step(_ step: any ActionConfiguring<InteractorType, ContentType>) throws -> Self {
         var mutableSelf = self
         
         if let lastAction = mutableSelf.actions.last {
             guard lastAction.outputConduit != nil else {
-                throw .missingConduit
+                throw ActionError<ContentType>.missingConduit
             }
         }
         
@@ -85,11 +85,11 @@ public struct ActionSequenceConfiguration<InteractorType: InteractorTypeable, Co
     /// - Parameter conduit: The conduit that will carry output from the current step to the next.
     /// - Returns: A copy of this configuration with the conduit assigned to the last step, allowing calls to be chained.
     /// - Throws: ``ActionError/missingAction`` if no steps have been added yet.
-    public func output(using transformer: (any ContentTransformable<ContentType>)? = nil) throws(ActionError<ContentType>) -> Self {
+    public func output(using transformer: (any ContentTransformable<ContentType>)? = nil) throws -> Self {
         var mutableSelf = self
 
         guard var lastAction = mutableSelf.actions.popLast() else {
-            throw .missingAction
+            throw ActionError<ContentType>.missingAction
         }
         
         lastAction.outputConduit = ActionSequenceConduit<ContentType>(transformer: transformer)

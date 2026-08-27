@@ -83,11 +83,11 @@ import Foundation
     ///
     /// - Parameter action: The action to append as the next step in the sequence.
     /// - Throws: ``ActionError/missingConduit`` if the current last action has no output conduit.
-    public func add(action: any ActionPerformable<ContentType>) throws(ActionError<ContentType>) {
+    public func add(action: any ActionPerformable<ContentType>) throws {
                 
         if let lastAction = actions.last {
             guard lastAction.outputConduit != nil else {
-                throw .missingConduit
+                throw ActionError<ContentType>.missingConduit
             }
             
             lastAction.outputConduit?.outputAction = action
