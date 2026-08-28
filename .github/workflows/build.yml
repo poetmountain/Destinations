@@ -31,8 +31,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Ensure iOS platform is available
+        run: |
+          xcrun simctl list > /dev/null
+          xcodebuild -downloadPlatform iOS
+
       - name: Build for iOS
         run: |
           xcodebuild build \
             -scheme Destinations \
-            -destination 'generic/platform=iOS Simulator'
+            -destination 'generic/platform=iOS'
