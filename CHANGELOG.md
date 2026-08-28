@@ -1,3 +1,13 @@
+### 3.2.0
+#### Features
+* Added Action Sequences, a powerful way to encapsulate a complex series of async Interactor requests and perform them as a single action. You can either associate them with an Event type and call them similarly to normal Interactor requests, or build sequences at runtime for more control and flexibility. There's two collection types available, `ActionSequence` and `ActionGroup`. The former runs a series of actions in sequence, while the latter runs a series of actions in parallel. Because you can also nest sequences or groups in other groups, or groups in sequences, this provides tools to build really complex actions. `ActionBranch` provides a way to declare branching actions based on passed-in conditions. Please see the [Action Sequences Guide](Guides/ActionSequences.md) for more details.
+* Added `preflightIgnoredEvents` array to Providers. This property defines Events that should be ignored by Provider preflight checks. This is useful for scaffolding a Destination or using an Event internally without tying it to an explicit action within the Provider.
+* Implemented an async version of the `performAction` method on `Destinationable` and `asyncRequest` on `AsyncInteractorAssisting`.
+* Added a new ActionSequence example project.
+#### Fixes
+* Fixed `configureInteractor(:)` not being called on a state model if Interactors were added to the Destination before the View was attached in the Provider.
+* Fixed various library warnings.
+
 ### 3.1.1
 * Added a new convenience property `stateModel` on `DestinationInterfacing` to directly access your state model objects from a View or UIViewController. If you need add a Binding to a state model property from your View you can still use the full path `$destinationState.stateModel.someProperty`.
 * Updated example projects and tests.

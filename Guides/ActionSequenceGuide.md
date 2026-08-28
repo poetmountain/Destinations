@@ -1,10 +1,10 @@
 # Action Sequences
 
-Action sequences let you compose multiple Interactor requests into a single, declarative pipeline that participates in Swift's async/await concurrency environment. Where a single `InteractorConfiguration` maps one event to one request, action sequences describe a series of linear steps such as an API request, background processing, or other self-contained work as a graph that runs end-to-end in a managed Swift concurrency task. A sequence step can represent a single `Action`, a group of requests running in a TaskGroup with `ActionGroup`, or a branch that forks to one of several paths based on condition objects.
+Action sequences are a powerful way to encapsulate a complex series of async Interactor requests and perform them as a single action which participates in Swift's async/await concurrency environment. Where a single `InteractorConfiguration` maps one event to one request, action sequences describe a series of linear steps such as an API request, background processing, or other self-contained work as a graph that runs end-to-end in a managed Swift concurrency task. A sequence step can represent a single `Action`, a group of requests running in parallel in a TaskGroup with `ActionGroup`, or a branch that forks to one of several paths based on condition objects.
 
-What makes this especially powerful is that all sequence step types conform to `ActionPerformable`, and both `ActionSequence` and `ActionGroup` accept arrays of `ActionPerformable` objects. This means that you could have a sequence with several groups in series, a group of child sequences, or even a group of child groups, and nest them as much as you want to create complex and branching "recipes" of tasks.
+What makes this powerful is that all sequence step types conform to `ActionPerformable`, and both `ActionSequence` and `ActionGroup` accept arrays of `ActionPerformable` objects. This means that you could have a sequence with several groups in series, a group of child sequences, or even a group of child groups, and nest them as much as you want to create complex and branching "recipes" of tasks.
 
-There are four main building blocks:
+Instead of instantiating Action Sequence classes directly, you build the sequence declaratively using configuration object chains. There are four main building blocks when assembling a sequence configuration:
 
 **`ActionConfiguration`**: A step that handles a single Interactor action type.  
 **`ActionSequenceConfiguration`**: An ordered pipeline of steps that run one after the other.  
@@ -12,6 +12,10 @@ There are four main building blocks:
 **`ActionBranchConfiguration`**: A step that evaluates conditions at runtime and runs the first matching path.
 
 ## Building a Sequence
+
+This is the basic flow in an Action Sequence. Output conduits are the glue between each sequence step, passing the output from the previous Action and transforming it with a Transformer object to a format that the next sequence step expects, before passing it on.
+
+[Action] -> [Output Conduit] -> [Transformer] -> [Action]
 
 ### Sequence Steps
 
