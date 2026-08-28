@@ -34,6 +34,9 @@ jobs:
         with:
           xcode-version: ${{ matrix.xcode }}
 
+      - name: Ensure iOS platform is registered
+        run: sudo xcodebuild -downloadPlatform iOS
+
       - name: Build for iOS
         run: |
           xcodebuild build \
