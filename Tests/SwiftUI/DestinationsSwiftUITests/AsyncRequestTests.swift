@@ -139,14 +139,14 @@ import Destinations
         }
     }
 
-    func test_asyncRequest_with_mismatched_action_type_returns_incompatibleType_failure() async throws {
+    func test_asyncRequestForAction_with_mismatched_action_type_returns_incompatibleType_failure() async throws {
         let destination = try await buildColorsDestination(assistant: TestAsyncColorsInteractorAssistant())
         let assistant = TestAsyncColorsInteractorAssistant()
 
         // Pass an action type that doesn't match the assistant's Request.ActionType (ColorsRequest.ActionType).
         let mismatchedAction: any InteractorRequestActionTypeable = TestInteractorOptions.ActionType.increaseCount
 
-        let result = await assistant.asyncRequest(destination: destination, actionType: mismatchedAction, content: nil)
+        let result = await assistant.asyncRequestForAction(destination: destination, actionType: mismatchedAction, content: nil, resultTransformer: nil)
 
         switch result {
             case .success:
@@ -160,7 +160,7 @@ import Destinations
         }
     }
 
-    func test_asyncRequest_via_actionType_existential_returns_success() async throws {
+    func test_asyncRequestForAction_via_actionType_existential_returns_success() async throws {
         // Exercises the `AsyncInteractorAssisting` extension overload that takes
         // `actionType: any InteractorRequestActionTypeable` and casts to the assistant's
         // associated `Request.ActionType` before forwarding to the typed `asyncRequest`.
@@ -169,7 +169,7 @@ import Destinations
 
         let actionType: any InteractorRequestActionTypeable = ColorsRequest.ActionType.retrieve
 
-        let result = await assistant.asyncRequest(destination: destination, actionType: actionType, content: nil)
+        let result = await assistant.asyncRequestForAction(destination: destination, actionType: actionType, content: nil, resultTransformer: nil)
 
         switch result {
             case .success(let content):

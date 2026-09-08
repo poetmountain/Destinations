@@ -13,9 +13,9 @@ import Foundation
 public struct ActionSequenceConduit<ContentType: ContentTypeable>: ActionSequenceConduiting {
     
     public var outputAction: (any ActionPerformable<ContentType>)?
-    public var transformer: (any ContentTransformable<ContentType>)?
+    public var transformer: (any ContentTransformable<ContentType, ContentType>)?
 
-    public init(outputAction: (any ActionPerformable<ContentType>)? = nil, transformer: (any ContentTransformable<ContentType>)? = nil) {
+    public init(outputAction: (any ActionPerformable<ContentType>)? = nil, transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) {
         self.outputAction = outputAction
         self.transformer = transformer
     }

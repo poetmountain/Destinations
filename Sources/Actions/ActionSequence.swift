@@ -17,7 +17,7 @@ import Foundation
 ///
 /// ## Usage
 ///
-/// Build a sequence by composing ``ActionConfiguration`` steps inside an ``ActionSequenceConfiguration`` using the `.step(_:)` / `.conduit(_:)` builder API. Each step except the last must be followed by a conduit that transforms and forwards its output to the next step. 
+/// Build a sequence by composing ``ActionConfiguration`` steps inside an ``ActionSequenceConfiguration`` using the `.step(_:inputTransformer:)` builder API. Each call to `.step(_:)` automatically links the previous step's output to the new step; the optional `inputTransformer` converts that output before the new step receives it.
 ///
 /// ```swift
 /// // Step 1: retrieve data from an interactor.
@@ -34,11 +34,10 @@ import Foundation
 ///     assistant: .basicAsync,
 ///     identifier: ActionIdentifier.process)
 ///
-/// // Link the steps: retrievalStep's output flows through the output conduit into processStep.
-/// let filesSequence = try ActionSequenceConfiguration<InteractorType, ContentType>(identifier: ActionIdentifier.fileSequence)
+/// // Link the steps: retrievalStep's output is transformed and passed into processStep.
+/// let filesSequence = ActionSequenceConfiguration<InteractorType, ContentType>(identifier: ActionIdentifier.fileSequence)
 ///     .step(retrievalStep)
-///     .output(using: FileTransformer())
-///     .step(processStep)
+///     .step(processStep, inputTransformer: FileTransformer())
 ///
 /// // Run the actions and inspect the accumulated results.
 /// let result = await destination.performActions(configuration: filesSequence, content: nil)

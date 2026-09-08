@@ -23,9 +23,9 @@ import Foundation
     public let action: any ActionPerformable<ContentType>
 
     /// An optional transformer applied to the branch path's result before forwarding to the next sequence step. Use this when the path's output shape differs from what the downstream step expects.
-    public let transformer: (any ContentTransformable<ContentType>)?
+    public let transformer: (any ContentTransformable<ContentType, ContentType>)?
 
-    public init(condition: any BranchConditionable<ContentType>, action: any ActionPerformable<ContentType>, transformer: (any ContentTransformable<ContentType>)? = nil) {
+    public init(condition: any BranchConditionable<ContentType>, action: any ActionPerformable<ContentType>, transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) {
         self.condition = condition
         self.action = action
         self.transformer = transformer

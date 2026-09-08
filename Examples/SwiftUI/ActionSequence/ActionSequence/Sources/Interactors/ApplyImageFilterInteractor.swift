@@ -18,9 +18,13 @@ struct ApplyImageFilterRequest: InteractorRequestConfiguring {
     enum ActionType: InteractorRequestActionTypeable {
         case filter
     }
+    
+    enum FilterResultType: ContentTypeable {
+        case filteredImages(urls: [URL])
+    }
 
     typealias RequestContentType = AppContentType
-    typealias ResultData = AppContentType
+    typealias ResultData = FilterResultType
 
     let action: ActionType
 
@@ -34,6 +38,13 @@ struct ApplyImageFilterRequest: InteractorRequestConfiguring {
     init(action: ActionType, imageURLs: [URL]?) {
         self.action = action
         self.imageURLs = imageURLs
+    }
+
+    init(action: ActionType, content: AppContentType?) {
+        self.action = action
+        if case .savedFiles(let urls) = content {
+            imageURLs = urls
+        }
     }
 }
 
@@ -84,8 +95,18 @@ actor ApplyImageFilterInteractor: AsyncInteractable {
                     }
                 }
 
-                return .success(.savedFiles(urls: imageURLs))
+                return .success(.filteredImages(urls: imageURLs))
         }
     }
 
+}
+
+/// Converts the raw ``ApplyImageFilterRequest/FilterResultType`` value returned by ``ApplyImageFilterInteractor`` into the ``AppContentType`` used elsewhere in the sequence.
+struct ApplyImageFilterResultTransformer: ContentTransformable {
+    func transform(input: ApplyImageFilterRequest.FilterResultType) throws -> AppContentType {
+        switch input {
+            case .filteredImages(let urls):
+                return .savedFiles(urls: urls)
+        }
+    }
 }

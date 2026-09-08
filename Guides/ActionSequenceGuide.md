@@ -4,12 +4,12 @@ Action sequences are a powerful way to encapsulate a complex series of async Int
 
 What makes this powerful is that all sequence step types conform to `ActionPerformable`, and both `ActionSequence` and `ActionGroup` accept arrays of `ActionPerformable` objects. This means that you could have a sequence with several groups in series, a group of child sequences, or even a group of child groups, and nest them as much as you want to create complex and branching "recipes" of tasks.
 
-Instead of instantiating Action Sequence classes directly, you build the sequence declaratively using configuration object chains. There are four main building blocks when assembling a sequence configuration:
+Instead of instantiating Action Sequence classes directly, you build the sequence types declaratively using configuration object chains. There are four main building blocks when assembling a sequence configuration:
 
 **`ActionConfiguration`**: A step that handles a single Interactor action type.  
 **`ActionSequenceConfiguration`**: An ordered pipeline of steps that run one after the other.  
-**`ActionGroupConfiguration`**: A step that runs multiple child actions concurrently, then merges their results into one value.  
-**`ActionBranchConfiguration`**: A step that evaluates conditions at runtime and runs the first matching path.
+**`ActionGroupConfiguration`**: An action collection that runs multiple child actions concurrently, then merges their results into one value.  
+**`ActionBranchConfiguration`**: A special branching type that evaluates conditions at runtime and runs the first matching path.
 
 ## Building a Sequence
 
@@ -22,11 +22,11 @@ This is the basic flow in an Action Sequence. Output conduits are the glue betwe
 Each step in a sequence is represented by an `ActionConfiguration` object. It names the Interactor to call, the Interactor's action to perform, and the Interactor assistant to use.
 
 ```swift
-let fetchStep = ActionConfiguration<AppInteractorType, AppContentType, NotesDatasource>(
+let retrieveStep = ActionConfiguration<AppInteractorType, AppContentType, NotesDatasource>(
     interactorType: .notes,
     action: .retrieve,
     assistant: .basicAsync,
-    identifier: StepType.fetch)
+    identifier: StepType.retrieve)
 ```
 
 The `identifier` is optional but recommended when you want to look up a specific step's result afterward. It can be any type that conforms to `ActionIdentifying`, but an enum case is the recommended choice.
@@ -43,40 +43,40 @@ let saveStep = ActionConfiguration<AppInteractorType, AppContentType, NotesDatas
 
 ### Chaining Steps
 
-An action sequence is represented by an `ActionSequenceConfiguration` object. This object offers a chainable `.step()` method that allows you to attach step configuration objects, with the chain's sequence mirroring the order in which the sequence will run. 
-
-Attach a conduit by calling `.output()` immediately after the step it belongs to:
+An action sequence is represented by an `ActionSequenceConfiguration` object. This object offers a chainable `.step(_:inputTransformer:)` method that allows you to attach step configuration objects, with the chain's sequence mirroring the order in which the sequence will run:
 
 ```swift
-let config = try ActionSequenceConfiguration<AppInteractorType, AppContentType>()
-    .step(fetchStep)
-    .output()
+let config = ActionSequenceConfiguration<AppInteractorType, AppContentType>()
+    .step(retrieveStep)
     .step(processStep)
-    .output()
     .step(saveStep)
 ```
 
-The last step has no `.output()` call — there's nowhere to send its result.
+### Passing Results Between Steps
 
-## Passing Results Between Steps
-
-Every sequence step except the last must have an output conduit attached using the `.output()` chain method; `.step()` throws an `ActionError.missingConduit` error at build time if you try to append a step without one. The `.output()` method attaches an `ActionSequenceConduit` that forwards a step's output content directly to the next step. When the content shape needs to change between steps — say, a raw image download that needs to be wrapped in a file model before the save step can use it — supply a transformer:
+Each sequence step automatically creates an output conduit that forwards the preceding step's output content to the next step. You can also supply an optional transformer to transform the incoming content if the two steps have different content shapes. When the content type needs to change between steps, supply an `inputTransformer` on the step that should receive the transformed value. It converts the *previous* step's output before this step receives it:
 
 ```swift
-.output(using: ImageToFileTransformer())
+.step(retrieveImages)
+.step(saveImages, inputTransformer: ImageToFileTransformer())
 ```
 
-Transformers conform to `ContentTransformable`, which requires a single `transform(input:) throws -> ContentType` method:
+Note that `inputTransformer` has no effect on the first `.step()` call in a chain, since there's no previous step to transform from.
+
+Transformers conform to `ContentTransformable`, which requires a single `transform(input:) throws -> ContentType` method which takes an `Input` type and returns an `Output` type, both of which should conform to `ContentTypeable`.
 
 ```swift
 struct ImageToFileTransformer: ContentTransformable {
-    typealias ContentType = AppContentType
 
-    func transform(input: AppContentType) throws -> AppContentType {
-        guard case .image(let image) = input else {
+    func transform(input: ImageInteractorContent) throws -> AppContentType {
+        guard case .image(let model) = input else {
             throw SequenceError.unexpectedContent
         }
-        return .imageFile(ImageFile(data: image.pngData()!))
+        guard let data = model.image.pngData() else {
+            throw ExampleError.invalidImage
+        }
+
+        return .imageFile(ImageFile(data: data, url: model.url))
     }
 }
 ```
@@ -85,7 +85,7 @@ If the transformer throws, the sequence fails immediately with that error, propa
 
 ## Groups
 
-An `ActionGroup` is an `ActionPerformableCollection` conforming type which runs multiple child actions concurrently via a Swift `TaskGroup`. Because it conforms to `ActionPerformable` it may be used as a sequence step, inside another group, or act as a top-level action collection. You should not instantiate an `ActionGroup` directly. Instead you should create an ``ActionGroupConfiguration`` object to define it, and used in conjunction with ``Destinationable/performActions(configuration:content:)-1nsw5``.
+An `ActionGroup` is an `ActionPerformableCollection` conforming type which runs multiple child actions concurrently via a Swift `TaskGroup`. Because it conforms to `ActionPerformable` it may be used as a sequence step, inside another group, or act as a top-level action collection. You should not instantiate an `ActionGroup` directly. Instead you should create an `ActionGroupConfiguration` object to define it, and used in conjunction with `Destinationable`'s `performActions(configuration:content:)` method.
 
 ```swift
 let steps: [any ActionConfiguring<AppInteractorType, AppContentType>] = [stepA, stepB, stepC]
@@ -100,19 +100,17 @@ let group = ActionGroupConfiguration<AppInteractorType, AppContentType>(
 
 Each child's `shouldEndParentTaskOnFailure` flag controls what happens when that child fails:
 
- - **`true`**: The group immediately calls `cancelAll()` on its remaining siblings, builds a group-level ``ActionResult`` containing all results collected up to that point plus the failing child's failure result, and returns ``ActionError/cancelled(partialResults:)``. Siblings that had not yet completed are cancelled.
+ - **`true`**: The group immediately calls `cancelAll()` on its remaining siblings, builds a group-level `ActionResult` containing all results collected up to that point plus the failing child's failure result, and returns `ActionError.cancelled(partialResults:)`. Siblings that had not yet completed are cancelled.
 
- - **`false`**: The group records the failure and lets all remaining siblings run to completion. Once every child has finished, the group builds a single group-level ``ActionResult`` whose `origin` property includes child results for every task's success or failure, then returns ``ActionError/cancelled(partialResults:)``. The merger is not called because not all children succeeded.
+ - **`false`**: The group records the failure and lets all remaining siblings run to completion. Once every child has finished, the group builds a single group-level `ActionResult` whose `origin` property includes child results for every task's success or failure, then returns `ActionError.cancelled(partialResults:)`. The merger is not called because not all children succeeded.
  
 ### Passing the results
 
-When all of an `ActionGroup`'s children finish their actions, a merger object combines their individual results into a single content value that is passed to the next step. The group passes this content value and all of the group's child results via a single ``ActionResult``, and passes the merged value on through its output conduit. The merger conforms to `ActionResultsMerging`, which provides one method that receives an `ActionCollectionResults` containing the children's outputs and returns a single merged content value:
+When all of an `ActionGroup`'s children finish their actions, a merger object combines their individual results into a single content value that is passed to the next step. The group passes this content value and all of the group's child results via a single `ActionResult`, and passes the merged value on through its output conduit. Merger objects must conform to `ActionResultsMerging`, which provides one method that receives an array of `ActionResult`s containing the children's outputs, and returns a single merged content value:
 
 ```swift
 struct MyResultsMerger: ActionResultsMerging {
-    typealias ContentType = AppContentType
-
-    func merge(results: ActionCollectionResults<ContentType>) -> ContentType? {
+    func merge(results: [ActionResult<AppContentType>]) throws -> AppContentType {
         let allItems = results.results.compactMap { result -> [MyItem]? in
             guard case .items(let items) = result.content else { return nil }
             return items
@@ -126,7 +124,7 @@ struct MyResultsMerger: ActionResultsMerging {
 
 An `ActionBranch` is an `ActionPerformable` conforming type which selects and runs one of several actions based on provided conditions, evaluated against the current content and previous results in a sequence and runs the first path whose conditions return `true`. Branches are mainly only used as a step in an ``ActionSequence``.
 
-`ActionBranch` evaluates its ``BranchConditionable`` conditions in declaration order and runs the first path whose condition (or conditions, if a group condition like ``AllSatisfyCondition`` or ``AnySatisfyCondition`` is used) returns `true`. If no condition matches and there's no fallback action, the branch fails with ``ActionError/cancelled(partialResults:)``. To guarantee a fallback path, you can add on an `.otherwise` path at the end of the branch chain. After the selected path action completes, `ActionBranch` applies the path's optional transformer to the result and forwards the content through its own output conduit to the next sequence step, recording one ``ActionResult`` with origin ``ActionResponseOrigin/branch``.
+`ActionBranch` evaluates its `BranchConditionable` conditions in declaration order and runs the first path whose condition (or conditions, if a group condition like `AllSatisfyCondition` or `AnySatisfyCondition` is used) returns `true`. If no condition matches and there's no fallback action, the branch fails with `ActionError.cancelled(partialResults:)`. To guarantee a fallback path, you can add on an `.otherwise` path at the end of the branch chain. After the selected path action completes, `ActionBranch` applies the path's optional transformer to the result and forwards the content through its own output conduit to the next sequence step, recording one ``ActionResult`` with origin `ActionResponseOrigin.branch`.
 
 In the example below, if there are images passed-in from the previous step, it will process the images with a filter. If instead the content is text, it will render the text into an image. If neither was provided, it will choose the fallback action.
 
@@ -136,9 +134,8 @@ let branch = ActionBranchConfiguration<AppInteractorType, AppContentType>()
     .branch(when: HasTextCondition(),   action: renderTextStep)
     .otherwise(fallbackAction)
 
-let config = try ActionSequenceConfiguration<AppInteractorType, AppContentType>()
+let config = ActionSequenceConfiguration<AppInteractorType, AppContentType>()
     .step(branch)
-    .output()
     .step(nextStep)
 ```
 
@@ -205,10 +202,6 @@ struct HasImagesCondition: BranchConditionable {
 
 Like the built-in condition classes, your custom conditions automatically support `.negated()` and are composable with `AllSatisfyCondition` and `AnySatisfyCondition`.
 
-## Registering Interactors
-
-`ActionSequenceConfiguration` objects can be registered at Provider build-time and tied to a specific Event, just like regular Interactor requests, which allows the built-in preflight checks to verify that each Interactor used is attached to the Destination. However `ActionSequenceConfiguration`s can also be built at runtime and passed directly via `performActions(configuration: content:)` without an assigned Event. This means that they do not get the same safety check until they are run. If any are missing, `performActions(...)` returns `DestinationsError.interactorNotFound` immediately (before any steps are run), so you'll get an early fail rather than a mid-sequence failure. Still, calling action sequences at runtime is inherently less safe due to this, so be sure to assign the Interactors you want to use in the Provider.
-
 ## Running a Sequence
 
 There's two ways to run an action sequence. Both variants of the `performActions` method are `async` and returns a `Result` once the whole pipeline finishes (or fails). 
@@ -224,6 +217,10 @@ The second way is by creating an `ActionSequenceConfiguration` at runtime and pa
 ```swift
 let result = await destination.performActions(configuration: config, content: nil)
 ```
+
+### Safety checks
+
+Action sequences and groups can be registered at Provider build-time and tied to a specific Event, just like regular Interactor requests, which allows the built-in preflight checks to verify that each Interactor used is attached to the Destination. However their configuration objects can also be built at runtime and passed directly via `performActions(configuration: content:)` without an assigned Event. This means that they do not get the same safety check until they are run. If any of the Interactors their child actions use are missing, `performActions(...)` returns an `DestinationsError.unregisteredInteractor` error immediately (before any steps are run), so you'll get an early fail rather than a mid-sequence failure. Still, calling action sequences at runtime is inherently less safe due to this, so be sure to assign the Interactors you want to use in the Provider.
 
 ## Cancellation
 
@@ -265,7 +262,7 @@ if let saveResult = outputs.last(identifier: StepType.save) {
 To collect every result with a given identifier (useful when the same identifier appears across parallel group children):
 
 ```swift
-let allFetchResults = outputs.results(matching: StepType.fetch)
+let allRetrievalResults = outputs.results(matching: StepType.retrieve)
 ```
 
 ## Error Handling

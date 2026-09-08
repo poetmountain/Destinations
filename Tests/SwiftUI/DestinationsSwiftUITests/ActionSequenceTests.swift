@@ -20,14 +20,13 @@ import Destinations
     // MARK: - Destinationable.performActions(for:content:)
 
     func test_performActionSequence_returns_responses_for_all_steps() async throws {
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
                 assistant: .basicAsync,
                 identifier: nil)
             )
-            .output()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .paginate,
@@ -105,14 +104,13 @@ import Destinations
     // MARK: - Destinationable.performActions(configuration:)
 
     func test_performActionSequence_configuration_returns_responses_for_all_steps() async throws {
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
                 assistant: .basicAsync,
                 identifier: nil)
             )
-            .output()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .paginate,
@@ -147,14 +145,49 @@ import Destinations
         XCTAssertTrue(destination.internalState.activeSequenceTasks.isEmpty, "Expected the sequence's task to be removed from the internal state after completing")
     }
 
+    func test_performActionSequence_configuration_single_step_sequence_completes_with_no_output_conduit() async throws {
+        // A sequence with only one step should never have an output conduit built for it, since
+        // .step(_:inputTransformer:) only attaches a conduit to a previous step when a further step
+        // is chained on. With just one step there's no previous step to wire up, so the sequence should
+        // still complete successfully using that step's own terminal result.
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+            .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
+                interactorType: .colors,
+                action: .retrieve,
+                assistant: .basicAsync,
+                identifier: nil)
+            )
+
+        XCTAssertNil(sequenceConfiguration.actions.first?.outputConduit, "Expected the only step in a single-step sequence to have no output conduit")
+
+        let destination = buildInteractorDestination(interactor: ColorsDatasource())
+
+        let result = await destination.performActions(configuration: sequenceConfiguration)
+
+        switch result {
+            case .success(let responses):
+                XCTAssertEqual(responses.results.count, 1, "Expected a single response for the sequence's only step, got \(responses.results.count)")
+
+                if case .colors(models: let models) = responses.results.first?.content {
+                    XCTAssertGreaterThan(models.count, 0, "Expected the response to contain color models")
+                } else {
+                    XCTFail("Expected .colors content in the response, got \(String(describing: responses.results.first?.content))")
+                }
+
+            case .failure(let error):
+                XCTFail("Expected success result, got failure: \(error)")
+        }
+
+        XCTAssertTrue(destination.internalState.activeSequenceTasks.isEmpty, "Expected the sequence's task to be removed from the internal state after completing")
+    }
+
     func test_nonterminal_action_shouldSaveResult_false_excludes_from_results_but_still_forwards_content() async throws {
         // A non-terminal Action's shouldSaveResult: false should exclude its own result from the
         // sequence's outputs, but must not prevent its content from flowing to the next step.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
                 assistant: .custom(RedBranchAssistant()), identifier: nil, shouldSaveResult: false))
-            .output()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
                 assistant: .custom(EchoContentAssistant()), identifier: nil))
@@ -184,7 +217,7 @@ import Destinations
 
     func test_performActionSequence_configuration_returns_interactorNotFound_when_interactor_not_registered() async throws {
         // Sequence references the `.colors` interactor but no interactor is registered on the destination.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -220,7 +253,7 @@ import Destinations
                     identifier: nil)
             )
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = ColorsListView.Destination(destinationType: .colorsList)
@@ -259,7 +292,7 @@ import Destinations
 
     func test_performActionSequence_configuration_task_cancel_returns_cancelled_error_with_partial_responses() async throws {
         let datasource = GatedColorsDatasource()
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, GatedColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -295,42 +328,128 @@ import Destinations
 
     // MARK: - ActionSequenceConfiguration building
 
-    func test_step_throws_missingConduit_when_previous_step_has_no_conduit() {
-        // The first step has no output conduit, so a second step cannot be chained to it.
-        XCTAssertThrowsError(
-            try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
-                .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
-                    interactorType: .colors,
-                    action: .retrieve,
-                    assistant: .basicAsync,
-                    identifier: nil)
-                )
-                .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
-                    interactorType: .colors,
-                    action: .paginate,
-                    assistant: .basicAsync,
-                    identifier: nil)
-                )
-        ) { error in
-            if case ActionError<AppContentType>.missingConduit = error {
+    func test_step_automatically_attaches_conduit_to_previous_step() {
+        // Chaining a second step without an explicit conduit call should automatically wire the first
+        // step's output conduit, rather than requiring a separate output/conduit call in between.
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+            .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
+                interactorType: .colors,
+                action: .retrieve,
+                assistant: .basicAsync,
+                identifier: nil)
+            )
+            .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
+                interactorType: .colors,
+                action: .paginate,
+                assistant: .basicAsync,
+                identifier: nil)
+            )
+
+        XCTAssertNotNil(sequenceConfiguration.actions.first?.outputConduit, "Expected the first step to have an automatically-attached output conduit")
+    }
+
+    // MARK: - ActionConfiguration.buildAssistant() .basicAsync validation
+
+    func test_basicAsync_buildAssistant_succeeds_when_resultData_matches_contentType() {
+        // The common case: the Interactor's Request.ResultData is already the sequence's ContentType, so .basicAsync needs no transformer.
+        let config = ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
+            interactorType: .colors,
+            action: .retrieve,
+            assistant: .basicAsync,
+            identifier: nil)
+
+        XCTAssertNoThrow(try config.buildAssistant(), "Expected .basicAsync to build successfully when Request.ResultData matches ContentType")
+    }
+
+    func test_basicAsync_buildAssistant_throws_when_resultData_mismatches_contentType_and_no_transformer() {
+        // .basicAsync casts the Interactor's raw result directly to ContentType, so a mismatch with no
+        // resultTransformer to bridge it should be caught here rather than failing later, deep inside the step's request.
+        let config = ActionConfiguration<ColorsListView.InteractorType, AppContentType, MismatchedResultInteractor>(
+            interactorType: .colors,
+            action: .fetch,
+            assistant: .basicAsync,
+            identifier: nil)
+
+        XCTAssertThrowsError(try config.buildAssistant()) { error in
+            if case DestinationsError.unsupportedInteractorAssistantType = error {
                 // success
             } else {
-                XCTFail("Expected missingConduit error, got \(error)")
+                XCTFail("Expected unsupportedInteractorAssistantType error, got \(error)")
             }
         }
     }
 
-    func test_conduit_throws_missingAction_when_sequence_has_no_steps() {
-        // A conduit can only be attached to a previously added step.
-        XCTAssertThrowsError(
-            try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
-                .output()
-        ) { error in
-            if case ActionError<AppContentType>.missingAction = error {
-                // success
-            } else {
-                XCTFail("Expected missingAction error, got \(error)")
-            }
+    func test_basicAsync_buildAssistant_succeeds_when_resultData_mismatches_contentType_but_transformer_supplied() {
+        // A supplied resultTransformer bridges the Request.ResultData/ContentType mismatch, so .basicAsync should build successfully.
+        let config = ActionConfiguration<ColorsListView.InteractorType, AppContentType, MismatchedResultInteractor>(
+            interactorType: .colors,
+            action: .fetch,
+            assistant: .basicAsync,
+            identifier: nil,
+            resultTransformer: MismatchedResultTransformer())
+
+        XCTAssertNoThrow(try config.buildAssistant(), "Expected .basicAsync to build successfully when a resultTransformer bridges the mismatch")
+    }
+
+    // MARK: - .basicAsync content injection
+
+    func test_basicAsync_forwards_content_to_request_when_requestContentType_matches_contentType() async throws {
+        // DefaultAsyncInteractorAssistant should pass the incoming content into Request's init(action:content:)
+        // when RequestContentType matches ContentType.
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+            .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ContentCapturingInteractor>(
+                interactorType: .colors,
+                action: .capture,
+                assistant: .basicAsync,
+                identifier: nil)
+            )
+
+        let destination = ColorsListView.Destination(destinationType: .colorsList)
+        destination.assignInteractor(ContentCapturingInteractor(), to: .colors)
+
+        let seedContent = AppContentType.colors(models: [ColorViewModel(colorID: UUID(), color: .blue, name: "seed")])
+        let result = await destination.performActions(configuration: sequenceConfiguration, content: seedContent)
+
+        switch result {
+            case .success(let responses):
+                guard let finalResult = responses.results.first, case .colors(models: let models) = finalResult.content else {
+                    XCTFail("Expected .colors content echoed back from the captured request content")
+                    return
+                }
+                XCTAssertEqual(models.first?.name, "seed", "Expected .basicAsync to inject the seed content into the request via init(action:content:)")
+
+            case .failure(let error):
+                XCTFail("Expected success, got failure: \(error)")
+        }
+    }
+
+    func test_basicAsync_passes_nil_content_when_requestContentType_does_not_match_contentType() async throws {
+        // When a Request's RequestContentType differs from the sequence's ContentType, .basicAsync should safely
+        // fall back to nil content rather than leaking a mismatched value into the request.
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+            .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, MismatchedContentCapturingInteractor>(
+                interactorType: .colors,
+                action: .capture,
+                assistant: .basicAsync,
+                identifier: nil)
+            )
+
+        let destination = ColorsListView.Destination(destinationType: .colorsList)
+        destination.assignInteractor(MismatchedContentCapturingInteractor(), to: .colors)
+
+        let seedContent = AppContentType.colors(models: [ColorViewModel(colorID: UUID(), color: .blue, name: "seed")])
+        let result = await destination.performActions(configuration: sequenceConfiguration, content: seedContent)
+
+        switch result {
+            case .success(let responses):
+                guard let finalResult = responses.results.first, case .colors(models: let models) = finalResult.content else {
+                    XCTFail("Expected .colors content")
+                    return
+                }
+                XCTAssertEqual(models.first?.name, "correctly-nil", "Expected .basicAsync to pass nil content when RequestContentType doesn't match ContentType, got \(models.first?.name ?? "nil")")
+
+            case .failure(let error):
+                XCTFail("Expected success, got failure: \(error)")
         }
     }
 
@@ -345,7 +464,7 @@ import Destinations
             merger: ColorsGroupMerger(),
             identifier: GroupTestStep.retrieveGroup)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(group)
 
         let destination = buildSequenceDestination(sequenceConfiguration: sequenceConfiguration, interactor: ColorsDatasource())
@@ -407,7 +526,7 @@ import Destinations
             merger: ColorsGroupMerger(),
             identifier: nil)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(group)
 
         let destination = buildSequenceDestination(sequenceConfiguration: sequenceConfiguration, interactor: ColorsDatasource())
@@ -507,7 +626,7 @@ import Destinations
         let branchConfig = ActionBranchConfiguration<ColorsListView.InteractorType, AppContentType>()
             .branch(when: BooleanCondition(true), action: groupChild)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -548,10 +667,9 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -588,10 +706,9 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -629,10 +746,9 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -666,7 +782,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(BlueBranchAssistant()), identifier: nil))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -696,10 +812,9 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -725,10 +840,9 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil, shouldSaveResult: false))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -766,10 +880,9 @@ import Destinations
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
             .otherwise(.skip)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -786,8 +899,8 @@ import Destinations
 
     func test_otherwise_skip_forwards_content_to_next_step_when_branch_has_output_conduit() async throws {
         // For this test the branch condition doesn't match and so the .otherwise(.skip) runs. Because the branch has an output
-        // conduit (via `.output()`), the sequence should continue to the step after it, which should
-        // receive the same content that was passed into the branch, unchanged.
+        // conduit (automatically attached by the subsequent `.step()` call), the sequence should continue to the step after
+        // it, which should receive the same content that was passed into the branch, unchanged.
         // The branch itself will still contribute no result of its own to the outputs.
         let branchConfig = ActionBranchConfiguration<ColorsListView.InteractorType, AppContentType>()
             .branch(
@@ -797,13 +910,11 @@ import Destinations
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
             .otherwise(.skip)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
                 assistant: .custom(RedBranchAssistant()), identifier: nil))
-            .output()
             .step(branchConfig)
-            .output()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
                 assistant: .custom(EchoContentAssistant()), identifier: BranchTestStep.postSkipStep))
@@ -841,10 +952,9 @@ import Destinations
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath))
             .otherwise(.fail)
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -879,7 +989,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -916,7 +1026,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -953,7 +1063,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -990,7 +1100,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1029,7 +1139,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1066,7 +1176,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1105,7 +1215,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1142,7 +1252,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1180,7 +1290,7 @@ import Destinations
                     interactorType: .colors, action: .retrieve,
                     assistant: .custom(RedBranchAssistant()), identifier: BranchTestStep.redPath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1215,10 +1325,9 @@ import Destinations
                     assistant: .custom(BlueBranchAssistant()), identifier: BranchTestStep.bluePath),
                 transformer: GreenColorTransformer())
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil))
-            .output()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -1539,7 +1648,7 @@ import Destinations
 
     func test_task_cancel_returns_cancelled_error_with_partial_responses() async throws {
         let datasource = GatedColorsDatasource()
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, GatedColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -1597,7 +1706,7 @@ import Destinations
                 action: ActionConfiguration<ColorsListView.InteractorType, AppContentType, GatedColorsDatasource>(
                     interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: BranchTestStep.bluePath))
 
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(branchConfig)
 
         let destination = buildInteractorDestination(interactor: datasource)
@@ -1626,7 +1735,7 @@ import Destinations
 
     func test_cancelAllActionSequences_cancels_running_sequence() async throws {
         let datasource = GatedColorsDatasource()
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, GatedColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -1659,7 +1768,7 @@ import Destinations
     }
 
     func test_cancelAllActionSequences_with_no_running_sequence_has_no_effect() async throws {
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -1686,7 +1795,7 @@ import Destinations
 
     func test_action_step_failure_records_failure_result_in_partial_results() async throws {
         // A step that fails should record a failure ActionResult so callers can inspect what went wrong.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -1724,7 +1833,7 @@ import Destinations
 
     func test_action_step_failure_exposes_underlying_interactor_error() async throws {
         // The .failed error's `error` associated value should be the original error returned by the interactor.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
@@ -1749,15 +1858,14 @@ import Destinations
     }
 
     func test_output_transformer_applies_to_content_between_sequence_steps() async throws {
-        // A plain sequence-level .output(using:) transformer should transform content passed between steps, distinct from the branch-level and failure-path transformer tests elsewhere.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        // A step's inputTransformer should transform content passed between steps, distinct from the branch-level and failure-path transformer tests elsewhere.
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
                 assistant: .custom(RedBranchAssistant()), identifier: nil))
-            .output(using: GreenColorTransformer())
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors, action: .retrieve,
-                assistant: .custom(EchoContentAssistant()), identifier: nil))
+                assistant: .custom(EchoContentAssistant()), identifier: nil), inputTransformer: GreenColorTransformer())
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
 
@@ -1779,19 +1887,19 @@ import Destinations
 
     func test_conduit_transformer_failure_returns_failed_error_with_prior_step_results() async throws {
         // When a conduit's transformer throws the sequence should fail with .failed, carrying the partial results from the step that completed before the transformer ran.
-        let sequenceConfiguration = try ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
+        let sequenceConfiguration = ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>()
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .retrieve,
                 assistant: .basicAsync,
                 identifier: StepFailureIdentifier.successStep)
             )
-            .output(using: FailingTransformer())
             .step(ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(
                 interactorType: .colors,
                 action: .paginate,
                 assistant: .basicAsync,
-                identifier: StepFailureIdentifier.failingStep)
+                identifier: StepFailureIdentifier.failingStep),
+                inputTransformer: FailingTransformer()
             )
 
         let destination = buildInteractorDestination(interactor: ColorsDatasource())
@@ -2408,6 +2516,117 @@ private struct FailingColorAssistant: AsyncInteractorAssisting, DestinationTypes
 
 /// The error returned by `FailingColorAssistant`.
 private struct StepAssistantFailureError: Error {}
+
+/// A `ContentTypeable` result type deliberately distinct from `AppContentType`, used to verify that `ActionConfiguration.buildAssistant()` catches a `.basicAsync` Request.ResultData/ContentType mismatch.
+private enum MismatchedResultType: ContentTypeable {
+    case value(String)
+}
+
+/// A request whose `ResultData` is `MismatchedResultType` rather than `AppContentType`.
+private struct MismatchedResultRequest: InteractorRequestConfiguring {
+    enum ActionType: InteractorRequestActionTypeable {
+        case fetch
+    }
+
+    typealias RequestContentType = AppContentType
+    typealias ResultData = MismatchedResultType
+
+    let action: ActionType
+
+    init(action: ActionType) {
+        self.action = action
+    }
+}
+
+/// An Interactor whose result type doesn't match the sequence's `ContentType`, for `.basicAsync` mismatch tests.
+private actor MismatchedResultInteractor: AsyncInteractable {
+    typealias Request = MismatchedResultRequest
+
+    func perform(request: Request) async -> Result<Request.ResultData, Error> {
+        .success(.value("mismatched"))
+    }
+}
+
+/// Converts `MismatchedResultType` into `AppContentType`, used to verify `.basicAsync` accepts a supplied resultTransformer despite a Request.ResultData/ContentType mismatch.
+private struct MismatchedResultTransformer: ContentTransformable {
+    func transform(input: MismatchedResultType) throws -> AppContentType {
+        .colors(models: [])
+    }
+}
+
+/// A request whose `RequestContentType` matches `AppContentType` and which captures whatever content it's given, used to verify that `.basicAsync` threads the previous step's content into `init(action:content:)`.
+private struct ContentCapturingRequest: InteractorRequestConfiguring {
+    enum ActionType: InteractorRequestActionTypeable {
+        case capture
+    }
+
+    typealias RequestContentType = AppContentType
+    typealias ResultData = AppContentType
+
+    let action: ActionType
+    var capturedContent: AppContentType?
+
+    init(action: ActionType) {
+        self.action = action
+    }
+
+    init(action: ActionType, content: AppContentType?) {
+        self.action = action
+        self.capturedContent = content
+    }
+}
+
+/// The error returned by `ContentCapturingInteractor` when no content was captured, indicating `.basicAsync` failed to forward it.
+private struct ContentNotCapturedError: Error {}
+
+/// Echoes back the content captured on its request, or fails if none was captured.
+private actor ContentCapturingInteractor: AsyncInteractable {
+    typealias Request = ContentCapturingRequest
+
+    func perform(request: Request) async -> Result<Request.ResultData, Error> {
+        guard let captured = request.capturedContent else {
+            return .failure(ContentNotCapturedError())
+        }
+        return .success(captured)
+    }
+}
+
+/// A `ContentTypeable` type deliberately distinct from `AppContentType`, used as a request content type that should never actually arrive.
+private struct OtherContentType: ContentTypeable {
+    var tag: String = "other"
+}
+
+/// A request whose `RequestContentType` (`OtherContentType`) does not match the sequence's `ContentType` (`AppContentType`), used to verify `.basicAsync` safely passes `nil` rather than leaking a mismatched value.
+private struct MismatchedContentCapturingRequest: InteractorRequestConfiguring {
+    enum ActionType: InteractorRequestActionTypeable {
+        case capture
+    }
+
+    typealias RequestContentType = OtherContentType
+    typealias ResultData = AppContentType
+
+    let action: ActionType
+    var receivedNonNilContent: Bool = false
+
+    init(action: ActionType) {
+        self.action = action
+    }
+
+    init(action: ActionType, content: OtherContentType?) {
+        self.action = action
+        self.receivedNonNilContent = (content != nil)
+    }
+}
+
+/// Reports whether it received non-nil content, via its result content's name.
+private actor MismatchedContentCapturingInteractor: AsyncInteractable {
+    typealias Request = MismatchedContentCapturingRequest
+
+    func perform(request: Request) async -> Result<Request.ResultData, Error> {
+        let name = request.receivedNonNilContent ? "leaked-mismatched-content" : "correctly-nil"
+        return .success(.colors(models: [ColorViewModel(colorID: UUID(), color: .red, name: name)]))
+    }
+}
 
 /// Converts any content to a fixed green color model named "green-transformed", used to verify that a branch transformer ran.
 private struct GreenColorTransformer: ContentTransformable {

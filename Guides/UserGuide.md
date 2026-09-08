@@ -90,7 +90,7 @@ public func buildDestination(destinationPresentations: AppDestinationConfigurati
 
 One of the main responsibilities of Destinations is to handle the presentation of new views, typically triggered from a user interacting with a UI element. These Destination events are represented by `EventTypeable`-conforming enum cases which are scoped to an individual Destination.
 
-When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's `performAction(for:content:)` method to trigger the configured action. (Note that `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.)
+When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's `performAction(for:content:)` method to trigger the configured action. (Note that the non-async version of `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.)
 ```swift
 // In a state model
 func handleEvent(_ type: EventType, content: ContentType?) {
@@ -106,7 +106,7 @@ func handleEvent(_ type: EventType, content: ContentType?) {
 
 The `Flow` object is called by the Destination and given the action to run. When presenting a new view it will try to find an existing Destination associated with that view type, or if one is not found, builds a new one using a Destination provider assigned to its type. The Destination's interface is then presented in the view hierarchy using the presentation type assigned to the `DestinationPresentation`'s `presentationType` property.
 
-If the event type sent to the Destination via `performAction(for:)` instead associated with an Interactor request, the Destination retrieves the Interactor and sends the request.
+If the event type sent to the Destination via `performAction(for:content:)` instead associated with an Interactor request, the Destination retrieves the Interactor and sends the request.
 
 ## Destination
 
@@ -236,11 +236,11 @@ final class NotesState: StateModeling {
 }
 ```
 
-The main way to interact with the state model from your user interface is via the `handleEvent(_:content:)` method. Typically your custom state model should switch on the event type received and either handle it internally or call back to the Destination's `performAction(for:content:)` or `performActions(for:content:)` to trigger the presentation or action(s) associated with the event type, or even create a custom action sequence at runtime and pass it to `performActions(configuration:content:)`.
+The main way to interact with the state model from your user interface is via the `handleEvent(_:content:)` method. Typically your custom state model should switch on the event type received and either handle it internally or call back to the Destination's async/await `performAction(for:content:)` or `performActions(for:content:)` methods to trigger the presentation or action(s) associated with the event type, or even create a custom action sequence at runtime and pass it to `performActions(configuration:content:)`.
 
 Most of the lifecycle and event handling methods on `Destinationable` have matching methods on `StateModeling` which you can implement in your custom state. When the Destination receives one of these calls its default implementation forwards the call on to the state model. You can implement any of the following on your state class as needed:
 
-* `handleInteractorResult(result:for:)` and `handleAsyncInteractorResult(result:for:)` – Called when an Interactor returns a response a request in the form of a Result. If the request was successful, you can cast the `ResultData` of the content model to the ContentType you are expecting and update the state accordingly.
+* `handleInteractorResult(result:for:)` and `handleAsyncInteractorResult(result:for:)` – Called when an Interactor returns a response to a request made from a call to a Destination's `performAction(for:content:)` method. If the request was successful, you can cast the `ResultData` of the content model to the ContentType you are expecting and update the state accordingly. Generally, use of this method is discouraged in favor of the more modern async/await calls that return a Result directly.
 * `prepareForPresentation()` – Called once when the Destination is first presented by a Flow, before its UI is built. Use this for initial state setup that should only run once.
 * `prepareForAppearance(isVisible: Bool)` – Called each time the Destination's UI is about to become active. The `isVisible` parameter indicates whether this Destination will actually be on-screen, which is useful for skipping setup work in the middle of a deep-link path presentation.
 * `prepareForDisappearance(wasVisible: Bool)` – Called each time the Destination's UI is about to become inactive. Use this for teardown tasks.
@@ -375,7 +375,7 @@ struct NotesListProvider: ViewDestinationProviding {
 
  The concept of Interactors comes from [Clean Swift](https://clean-swift.com), used in its architecture as a way to move logic and datasource management out of view controllers. In Destinations, the `Interactable` and `AsyncInteractable` protocols represents Interactor objects which provide an interface to perform some task or data request, typically by interfacing with an backend API, interfacing with system frameworks, or some other self-contained work.
  
-Though requests to Interactors can be made using a Destination's `performRequest` method, in general one should use the `performAction` method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request. The recommended way is to assign an event type to your request and using an `InteractorAssisting`-conforming assistant to configure the request, leaving the Destination's interface free of associated business logic.
+Though requests to Interactors can be made using a Destination's `performRequest` method, in general one should use the Destination's `performAction(for:content:)` method. This abstracts the specific implementation details of an interactor away from the interface and lets it focus on making requests through a standardized request. The recommended way is to assign an event type to your request and using an `InteractorAssisting`-conforming assistant to configure the request, leaving the Destination's interface free of associated business logic.
 
  Interactors should be created by Providers and attached to the Destination when created with an associated interactor enum type. Like with interface presentation actions, Interactor requests are associated with a particular `InterfaceAction` object and are represented by an `InteractorConfiguration` model object, which is all stored in the Destination. Action types for each Interactor are defined as enums, keeping Interactor-specific knowledge out of the interface. 
 
@@ -391,9 +391,9 @@ let notesProvider = NotesProvider(interactorsData: [.moreButton: paginateAction]
 
 ### Interactor assistants
 
-Interactor assistants are conduits between a Destination and its Interactors. They create the actual Request model to be passed to the Interactor based on the interface action type passed to it, and for async assistants they also pass on the result of the Interactor's operation to the Destination. They are defined when creating an `InteractorConfiguration` and there are three types: `basic`, `basicAsync`, and `custom(assistant:)`. The first two are built-in, basic assistants to be used with synchronous and async Interactors respectively. If you don't need to pass any state with an Interactor request, these assistants are all you need. Otherwise you will need to create a custom assistant, conforming to either `InteractorAssisting` to assist `Interactable` Interactors, or `AsyncInteractorAssisting` to assist `AsyncInteractable` Interactors.
+Interactor assistants are conduits between a Destination and its Interactors. They create the actual Request model to be passed to the Interactor based on the interface action type passed to it, and for async assistants they also pass on the result of the Interactor's operation to the Destination. They are defined when creating an `InteractorConfiguration` and there are three types: `basic`, `basicAsync`, and `custom(assistant:)`. The first two are built-in assistants to be used with synchronous and async Interactors respectively.  If the content state passed in with a request is the same type as the Request's `ResultData` type, these assistant types are all you need. If you need to pass in content with the request, this type can also handle that automatically if the content's type is the same as the Request's `RequestContentType`. Otherwise, you will need to create a custom assistant which conforms to either `InteractorAssisting` to assist `Interactable` Interactors or `AsyncInteractorAssisting` to assist `AsyncInteractable` Interactors.
 
-Destination classes make requests of an Interactor assistant through the `handleAsyncRequest(destination:, content:)` method for assistants conforming to `AsyncInteractorAssisting`, and the `handleRequest(destination:, content:)` method for assistants conforming to `InteractorAssisting`. Custom assistants should create a Request object with the provided action type and any other configuration state, call `performRequest(...)` on the Interactor, and then pass back the result to the Destination. The Destination then forwards this on to the state model. You might also want to use a custom assistant to handle an Interactor which returns an ongoing sequence of values, for instance listening to Core Location updates or consuming updates from a real-time server subscription. You can see an example of this with the Counter tab in the SwiftUI basic example project, which consumes values from an AsyncStream.
+Destination classes can make async requests of an Interactor assistant through the `asyncRequest(destination:, actionType:, content:)` method and receive the Interactor's Result directly. Custom assistants should create a Request object with the provided action type and any other configuration state, call `performRequest(...)` on the Interactor, and then pass back the result to the Destination. The Destination then forwards this on to the state model. You might also want to use a custom assistant to handle an Interactor which returns an ongoing sequence of values, for instance listening to Core Location updates or consuming updates from a real-time server subscription. You can see an example of this with the Counter tab in the SwiftUI basic example project, which consumes values from an AsyncStream.
 
 Here's an example custom assistant implementation of `handleAsyncRequest()` where we're requesting the Interactor to add a Note. The Note model is passed via the `content` parameter and then added to the action type, which the assistant then passes in with the NoteRequest to the Interactor. After the operation is complete, the result is passed back and sent on to the Destination via the `handleAsyncInteractorResult()` method.
 ```swift
@@ -417,14 +417,15 @@ func handleAsyncRequest<Destination: Destinationable>(destination: Destination, 
 
 We've shown how to connect an Interactor action to an event request, but how do we handle the result of the operation?  
 
-For an Interactor that conforms to `AsyncInteractable`, the result is passed back to the Destination through to the state model's `handleAsyncInteractorResult()` method from your Interactor assistant. As a state model can be associated with a Destination that houses multiple Interactors, you'll need to cast the content to the `ResultData` type of the Request inside this method.
+When using an Interactor that conforms to `AsyncInteractable` and making a request via the Destination's `performAction(for:content:)` method, the Result is passed back directly via an await. If you are using a non-async Interactor, you can use the non-async version of `performAction(for:content:)` and receive the result via the state model's `handleAsyncInteractorResult` method and then cast the response's `ResultData`.
 ```swift
 // In a state model
-func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: Result<Request.ResultData, Error>, for request: Request) async {
+Task {
+    let result = await destination?.performAction(for: .retrieveNotes, content: content)
     
     switch result {
-        case .success(let content):
-            switch content as? NotesRequest.ResultData {
+        case .success(let response):
+            switch response as? NotesRequest.ResultData {
                 case .notes(models: let notes):
                     self.items = notes
                 default: break
@@ -436,7 +437,7 @@ func handleAsyncInteractorResult<Request: InteractorRequestConfiguring>(result: 
 }
 ```
 
-If you wish to forego passing off requests to the Destination (and thus bypassing the assistant as well) and instead deal with an Interactor directly, such as to chain async requests or using a TaskGroup, you can access the Interactor directly from the Destination. Unlike the normal `handleAsyncInteractorResult()` method which acts more like a delegate pattern, accessing the interactor directly provides true async/await concurrency, but at the cost of convenience and loss of abstraction of implementation details.
+If you wish to forego passing off requests to the Destination (and thus bypassing the assistant as well) and instead deal directly with an Interactor, such as using a TaskGroup to make multiple requests, you can access the Interactor from the Destination. Making requests of the interactor this way allows you to directly access the request's `ResultData` type in the response, but at the cost of a loss of abstraction of implementation details.
 ```swift
 guard let interactor = destination?.interactor(for: .notes) as? any AsyncInteractable<NotesRequest> else { return }
 Task {
@@ -450,11 +451,16 @@ Task {
 
 ## Action Sequences
 
-For workflows that involve more than one Interactor request, Destinations provides action sequences — a way to compose a pipeline of steps that run in order, pass their output downstream, execute in parallel, and branch on runtime conditions.
+For workflows that involve more than one Interactor request, Destinations provides Action Sequences. They're a powerful way to encapsulate a complex series of async Interactor requests and perform them as a single action which participates in Swift's async/await concurrency environment.
 
-A sequence is built from a few key types. `ActionConfiguration` represents a single Interactor request step. `ActionSequenceConfiguration` chains steps in order using a builder API, with each step connected to the next through an output conduit. `ActionGroupConfiguration` runs multiple steps concurrently as a single pipeline stage and merges their results. `ActionBranchConfiguration` evaluates runtime conditions in order and runs the first matching path, with an optional fallback.
+Instead of instantiating Action Sequence classes directly, you build the sequence types declaratively using configuration object chains. There are four main building blocks when assembling a sequence configuration:
 
-Here's a minimal example of a two-step sequence that fetches data and then saves it:
+**`ActionConfiguration`**: A step that handles a single Interactor action type.  
+**`ActionSequenceConfiguration`**: An ordered pipeline of steps that run one after the other.  
+**`ActionGroupConfiguration`**: An action collection that runs multiple child actions concurrently, then merges their results into one value.  
+**`ActionBranchConfiguration`**: A special branching type that evaluates conditions at runtime and runs the first matching path.
+
+Here's a minimal example of a two-step sequence that retrieves notes and then saves them. 
 
 ```swift
 let retrieveNotesAction = ActionConfiguration<AppInteractorType, AppContentType, NotesDatasource>(
@@ -469,15 +475,14 @@ let saveNotesAction = ActionConfiguration<AppInteractorType, AppContentType, Not
     assistant: .custom(NotesSaveAssistant()),
     identifier: StepType.save)
 
-let sequence = try ActionSequenceConfiguration<AppInteractorType, AppContentType>()
+let sequence = ActionSequenceConfiguration<AppInteractorType, AppContentType>()
     .step(retrieveNotesAction)
-    .output(transformer: NotesTransformer())
-    .step(saveNotesAction)
+    .step(saveNotesAction, inputTransformer: NotesTransformer())
 
 let result = await destination.performActions(configuration: sequence)
 ```
 
-Calling `.output()` between steps attaches a conduit that forwards the preceding step's output content to the next step. You can also supply a transformer to reshape the content in transit when the two steps expect different content shapes.
+Each step automatically creates an output conduit that forwards the preceding step's output content to the next step. You can also supply an optional transformer to transform the incoming content if the two steps have different content shapes.
 
 For a full walkthrough covering groups, branching, conditions, result handling, and cancellation, see the **[Action Sequence Guide](ActionSequenceGuide.md)**. Please also see the [ActionSequence](../Examples/SwiftUI/ActionSequence/) example project.
 

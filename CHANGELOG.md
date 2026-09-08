@@ -1,3 +1,13 @@
+### 3.2.1
+#### Features
+* Output conduits are now built automatically by the `.step()`, making the `.output()` chainable method unnecessary. Transformers are now passed into into the `.step()` directly via the `inputTransformer` parameter. Please note that as with the old `.output()` method, transformer objects passed into the `.step()` method should transform the output of the previous step to prepare for passing to the Action of the current step. The `.output()` method is now deprecated and will be removed in a future version.
+* The default assistants created for `.basic` and `.basicAsync` assistant types can now be used to pass content that is the same type as as the Interactor's Request's `RequestContentType` and `ResultData` types.
+* `InteractorRequestConfiguring` (the protocol which Interactor request objects conform to) now has an initializer which allows you to pass in a content model. This allows you to pass in state with the request model in a standardized way.
+* Added a preflight check for `.basic` and `.basicAsync` assistant types when building assistants for an `Action` to verify that the `ActionConfiguration`'s `ContentType` and its Interactor's `Request.ResultData` are the same types.
+* Actions can now support Interactors whose Request's `ResultData` is different than the Action's `ContentType`. When an Action has an Interactor with a different `ResultData` type, the custom assistant must be used to transform the `ResultData` into a `ContentType` type.
+#### Fixes
+* Fixed the state model's `configureInteractor()` callback method firing twice within a UIKit-based `ControllerDestination`.
+
 ### 3.2.0
 #### Features
 * Added Action Sequences, a powerful way to encapsulate a complex series of async Interactor requests and perform them as a single action. You can either associate them with an Event type and call them similarly to normal Interactor requests, or build sequences at runtime for more control and flexibility. There's two collection types available, `ActionSequence` and `ActionGroup`. The former runs a series of actions in sequence, while the latter runs a series of actions in parallel. Because you can also nest sequences or groups in other groups, or groups in sequences, this provides tools to build really complex actions. `ActionBranch` provides a way to declare branching actions based on passed-in conditions. Please see the [Action Sequences Guide](Guides/ActionSequences.md) for more details.

@@ -10,7 +10,7 @@
 import Foundation
 
 /// This protocol represents an assistant which helps a Destination make requests of an Interactor. Concrete assistants conforming to this protocol should handle requests for a specific Interactor type.
-@MainActor public protocol InteractorAssisting<InteractorType, ContentType>: Sendable where Request.ResultData == ContentType {
+@MainActor public protocol InteractorAssisting<InteractorType, ContentType>: Sendable {
     
     /// An enum which defines types of Interactors. Each Destination may have its own Interactor types.
     associatedtype InteractorType: InteractorTypeable

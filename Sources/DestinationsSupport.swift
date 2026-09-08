@@ -65,7 +65,7 @@ import Foundation
                 return "Error: Could not find child Destination of type %@."
                 
             case .unsupportedInteractorActionType(_):
-                return "Error: Unsupported interactor action type."
+                return "Error: Unsupported interactor action type %@."
                 
             case .missingInterfaceAction(_):
                 return "Error: No appropriate InterfaceAction was found while trying to perform a \"%@\" InterfaceAction from Destination %@."
@@ -74,7 +74,7 @@ import Foundation
                 return "Error: No appropriate InteractorTypeable type was found."
                 
             case .unsupportedInteractorAssistantType(_):
-                return "Error: Unsupported interactor assistant type."
+                return "Error: Unsupported interactor assistant for action %@."
                 
             case .missingInterfaceActionAssistant(_):
                 return "Error: No interactor assistant was found while constructing Interface action closure for type %@."

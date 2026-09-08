@@ -19,7 +19,7 @@ import Foundation
     var outputAction: (any ActionPerformable<ContentType>)? { get set }
 
     /// An optional transformer that converts the output of the current action sequence step before forwarding it to ``outputAction``.
-    var transformer: (any ContentTransformable<ContentType>)? { get set }
+    var transformer: (any ContentTransformable<ContentType, ContentType>)? { get set }
 
     /// Receives the current sequence step's output and forwards it to the next action in the sequence.
     ///

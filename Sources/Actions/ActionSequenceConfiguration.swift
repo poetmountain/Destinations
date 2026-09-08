@@ -9,13 +9,12 @@
 
 /// A configuration object that defines an ordered sequence of actions to be executed by an ``ActionSequence``.
 ///
-/// Sequence steps are added using ``step(_:)`` and linked together with ``conduit(_:)``, which passes the result of one step into the next action. Each step except the last must have an output conduit assigned before another step can be appended.
+/// Sequence steps are added using ``step(_:inputTransformer:)``. Each call automatically wires an output conduit from the previously added step to the new one; the optional `inputTransformer` converts the previous step's output before this new step receives it.
 ///
 /// ```swift
-/// let config = try ActionSequenceConfiguration<MyInteractor, MyContent>()
+/// let config = ActionSequenceConfiguration<MyInteractor, MyContent>()
 ///     .step(stepA)
-///     .conduit(myConduit)
-///     .step(stepB)
+///     .step(stepB, inputTransformer: myTransformer)
 /// ```
 ///
 /// - Note: `ActionSequenceConfiguration` is value-typed; each chained call returns a modified copy.
@@ -65,36 +64,41 @@ public struct ActionSequenceConfiguration<InteractorType: InteractorTypeable, Co
     }
 
     /// Adds a step representing an ``ActionPerformable`` object to the end of the sequence.
-    /// - Parameter step: A configuration object for the action this step should perform.
+    ///
+    /// If a previous step exists and doesn't already have an output conduit assigned (via a preceding, deprecated ``output(using:)`` call), this automatically attaches one, connecting that previous step's output to this new step.
+    /// - Parameters:
+    ///   - step: A configuration object for the action this step should perform.
+    ///   - inputTransformer: An optional transformer that converts the previous step's output before this new step receives it. The transformer is unused when this is the first step added, as there would be no previous step to transform from.
     /// - Returns: A copy of this configuration with the step appended, allowing calls to be chained.
-    /// - Throws: ``ActionError/missingConduit`` if the last action in the sequence has no output conduit.
-    public func step(_ step: any ActionConfiguring<InteractorType, ContentType>) throws -> Self {
+    public func step(_ step: any ActionConfiguring<InteractorType, ContentType>, inputTransformer: (any ContentTransformable<ContentType, ContentType>)? = nil) -> Self {
         var mutableSelf = self
-        
-        if let lastAction = mutableSelf.actions.last {
-            guard lastAction.outputConduit != nil else {
-                throw ActionError<ContentType>.missingConduit
+
+        if var previous = mutableSelf.actions.popLast() {
+            if previous.outputConduit == nil {
+                previous.outputConduit = ActionSequenceConduit<ContentType>(transformer: inputTransformer)
             }
+            mutableSelf.actions.append(previous)
         }
-        
+
         mutableSelf.actions.append(step)
         return mutableSelf
     }
-    
+
     /// Associates an output conduit with the most recently added step.
     /// - Parameter conduit: The conduit that will carry output from the current step to the next.
     /// - Returns: A copy of this configuration with the conduit assigned to the last step, allowing calls to be chained.
     /// - Throws: ``ActionError/missingAction`` if no steps have been added yet.
-    public func output(using transformer: (any ContentTransformable<ContentType>)? = nil) throws -> Self {
+    @available(*, deprecated, message: "This method is deprecated and will be removed in a future version. To migrate, instead pass a transformer directly to `step(_:inputTransformer:)` instead.")
+    public func output(using transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) throws -> Self {
         var mutableSelf = self
 
         guard var lastAction = mutableSelf.actions.popLast() else {
             throw ActionError<ContentType>.missingAction
         }
-        
+
         lastAction.outputConduit = ActionSequenceConduit<ContentType>(transformer: transformer)
         mutableSelf.actions.append(lastAction)
-        
+
         return mutableSelf
     }
     

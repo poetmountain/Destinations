@@ -21,9 +21,9 @@ import Foundation
     public let actionConfig: any ActionConfiguring<InteractorType, ContentType>
 
     /// An optional transformer applied to the branch path's output before forwarding it downstream.
-    public let transformer: (any ContentTransformable<ContentType>)?
+    public let transformer: (any ContentTransformable<ContentType, ContentType>)?
 
-    public init(condition: any BranchConditionable<ContentType>, actionConfig: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType>)? = nil) {
+    public init(condition: any BranchConditionable<ContentType>, actionConfig: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) {
         self.condition = condition
         self.actionConfig = actionConfig
         self.transformer = transformer

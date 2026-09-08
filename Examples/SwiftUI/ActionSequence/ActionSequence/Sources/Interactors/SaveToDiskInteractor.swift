@@ -32,6 +32,13 @@ struct SaveImageRequest: InteractorRequestConfiguring {
         self.action = action
         self.dataModels = dataToSave
     }
+
+    init(action: ActionType, content: AppContentType?) {
+        self.action = action
+        if case .imagesData(let models) = content {
+            dataModels = models
+        }
+    }
 }
 
 /// An Interactor which saves images to the app's Documents directory. This is the final step of the demo's ActionSequence, saving all of the images retrieved in parallel by the group step.

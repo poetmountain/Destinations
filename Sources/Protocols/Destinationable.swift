@@ -51,7 +51,7 @@ import Foundation
     /// A state model that handles business logic and view state for this Destination.
     var stateModel: (any StateModeling<Self>)? { get set }
 
-    /// Performs the action associated with the specified event type. This action could be a Destination presentation or a request to an Interactor.
+    /// Performs the action associated with the specified event type. This action could be a Destination presentation or a request to an Interactor. The response is returned with a delegate pattern in ``StateModeling/handleInteractorResult(result:for:)-4h9z7``.
     /// - Parameter eventType: The event type whose action should be run.
     /// - Parameter content: Optional content to use with the action.
     func performAction(for eventType: EventType, content: ContentType?) throws
@@ -569,7 +569,7 @@ public extension Destinationable {
                             return .failure(DestinationsError.interactorNotFound(message: message))
                         }
                         
-                        return await assistant.asyncRequest(destination: self, actionType: actionType, content: content)
+                        return await assistant.asyncRequestForAction(destination: self, actionType: actionType, content: content, resultTransformer: nil)
                     }
                     
                 case .sequence, .group, .branch:
@@ -652,7 +652,7 @@ public extension Destinationable {
                         return .failure(DestinationsError.interactorNotFound(message: message))
                     }
                     
-                    let result = await assistant.asyncRequest(destination: self, actionType: actionType, content: content)
+                    let result = await assistant.asyncRequestForAction(destination: self, actionType: actionType, content: content, resultTransformer: nil)
                     
                     switch result {
                         case .success(_):

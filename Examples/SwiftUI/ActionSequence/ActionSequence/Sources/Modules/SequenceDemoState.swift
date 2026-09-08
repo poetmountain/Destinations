@@ -41,16 +41,12 @@ final class SequenceDemoState: StateModeling {
 
         switch type {
             case .retrieveAndSaveImages:
-                do {
-                    try retrieveAndSaveImages()
-                } catch {
-                    print("sequence setup failed \(error)")
-                }
+                retrieveAndSaveImages()
         }
-        
+
     }
 
-    func retrieveAndSaveImages() throws {
+    func retrieveAndSaveImages() {
         
         guard isRunningSequence == false else { return }
         
@@ -68,7 +64,7 @@ final class SequenceDemoState: StateModeling {
         // If the `shouldFilterImages` property is true, the branch then filters the images, otherwise skips.
                  
         // Here we're building an array of action sequences. Each one will retrieve an image and save it to disk.
-        let retrieveImages: [any ActionConfiguring<InteractorType, ContentType>] = try (0..<photoCount).map { counter in
+        let retrieveImages: [any ActionConfiguring<InteractorType, ContentType>] = (0..<photoCount).map { counter in
             let retrieveImage = ActionConfiguration<InteractorType, ContentType, ImageRetrievalInteractor>(
                 interactorType: .imageRetrieval,
                 action: .retrieve(imageURL: URL(string: "https://picsum.photos/600/400")!),
@@ -78,15 +74,12 @@ final class SequenceDemoState: StateModeling {
             let imageSaver = ActionConfiguration<InteractorType, ContentType, SaveToDiskInteractor>(
                 interactorType: .imageSaver,
                 action: .save,
-                assistant: .custom(SaveToDiskInteractorAssistant()),
+                assistant: .basicAsync,
                 identifier: SequenceStepType.saveImage)
             
-            return try ActionSequenceConfiguration<InteractorType, ContentType>()
+            return ActionSequenceConfiguration<InteractorType, ContentType>()
                 .step(retrieveImage)
-                .output(using: ImageFileTransformer())
-                .step(imageSaver)
-  
-                
+                .step(imageSaver, inputTransformer: ImageFileTransformer())
         }
 
         // This is an ActionGroup whose actions are the image sequences we just built. These image retrievals will run in paralle and when complete, the `RetrievedImagesMerger` object will collate them into a content type containing an array of saved image URLs.
@@ -100,14 +93,14 @@ final class SequenceDemoState: StateModeling {
         let filterImages = ActionConfiguration<InteractorType, ContentType, ApplyImageFilterInteractor>(
             interactorType: .imageFilter,
             action: .filter,
-            assistant: .custom(ApplyImageFilterAssistant()),
-            identifier: SequenceStepType.filterImages)
+            assistant: .basicAsync,
+            identifier: SequenceStepType.filterImages,
+            resultTransformer: ApplyImageFilterResultTransformer())
         
         // And here's the parent sequence that will be performed, first running the group of image retrievals
         // and then branching on whether to filter them or not
-        let downloadAndSaveImages = try ActionSequenceConfiguration<InteractorType, ContentType>()
+        let downloadAndSaveImages = ActionSequenceConfiguration<InteractorType, ContentType>()
             .step(imageRetrievals)
-            .output()
             .step(
                 ActionBranchConfiguration(identifier: "shouldFilterBranch")
                 .branch(when: BooleanCondition(shouldFilterImages), action: filterImages, transformer: nil)

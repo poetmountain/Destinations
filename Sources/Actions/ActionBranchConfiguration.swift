@@ -64,7 +64,7 @@ import Foundation
     ///   - action: The action configuration to build and run when this branch path is selected.
     ///   - transformer: An optional transformer applied to the branch path's output before forwarding downstream. Required when the path's output shape differs from what the downstream step expects.
     /// - Returns: A copy of this configuration with the branch path appended.
-    public func branch(when condition: any BranchConditionable<ContentType>, action: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType>)? = nil) -> Self {
+    public func branch(when condition: any BranchConditionable<ContentType>, action: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) -> Self {
         var mutableSelf = self
         mutableSelf.cases.append(ActionBranchPathConfiguration(condition: condition, actionConfig: action, transformer: transformer))
         return mutableSelf
@@ -77,7 +77,7 @@ import Foundation
     ///   - action: The action configuration to build and run as the fallback.
     ///   - transformer: An optional transformer applied to the fallback branch path's output before forwarding downstream.
     /// - Returns: A copy of this configuration with the fallback branch path appended.
-    public func otherwise(_ action: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType>)? = nil) -> Self {
+    public func otherwise(_ action: any ActionConfiguring<InteractorType, ContentType>, transformer: (any ContentTransformable<ContentType, ContentType>)? = nil) -> Self {
         var mutableSelf = self
         mutableSelf.cases.append(ActionBranchPathConfiguration(condition: AlwaysTrueCondition(), actionConfig: action, transformer: transformer))
         return mutableSelf

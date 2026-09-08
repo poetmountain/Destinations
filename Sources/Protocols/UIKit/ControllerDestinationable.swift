@@ -48,7 +48,6 @@ public extension ControllerDestinationable {
     func assignInteractor<Request: InteractorRequestConfiguring>(_ interactor: any AbstractInteractable<Request>, to type: InteractorType) {
         
         internalState.interactors[type] = interactor
-        configureInteractor(interactor, type: type)
         
     }
     
