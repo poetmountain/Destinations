@@ -10,7 +10,7 @@ import SwiftUI
 import Destinations
 
 @Observable
-final class ColorDetailState: StateModeling {
+final class ColorDetailState: StateModeling, SheetPresenting {
     typealias Destination = ColorDetailView.Destination
     typealias EventType = ColorDetailView.EventType
     typealias InteractorType = Destination.InteractorType
@@ -19,6 +19,8 @@ final class ColorDetailState: StateModeling {
     weak var destination: Destination?
 
     var colorModel: ColorViewModel?
+
+    var sheetPresentation = SheetPresentation()
 
     var didAppear: Bool = false
     var didDisappear: Bool = false

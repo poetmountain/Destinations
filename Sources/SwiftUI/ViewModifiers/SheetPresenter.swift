@@ -10,7 +10,7 @@
 import SwiftUI
 
 /// A closure used internally by Destinations to trigger the system sheet dismissal.
-public typealias SheetDismissalClosure = () -> Void
+public typealias SheetDismissalClosure = @MainActor () -> Void
 
 /// This SwiftUI `ViewModifier` manages the presentation of a sheet.
 public struct SheetPresenter: ViewModifier {

@@ -48,7 +48,7 @@ final class ColorDetailInterfaceState: DestinationStateable, DestinationTypes {
     }
 }
 
-struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, DestinationTypes {
+struct ColorDetailView: ViewDestinationInterfacing, DestinationTypes {
 
     typealias Destination = ColorDetailInterfaceState.Destination
     typealias EventType = ColorDetailInterfaceState.Events
@@ -56,16 +56,8 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
 
     @State var destinationState: ColorDetailInterfaceState
 
-    @State var areDatasourcesSetup = false
-
-    @State var sheetPresentation = SheetPresentation()
-
     init(destination: Destination, state: ColorDetailState) {
         self.destinationState = ColorDetailInterfaceState(destination: destination, state: state)
-
-        sheetPresentation.dismissedClosure = {
-            print("custom dismissed!")
-        }
     }
 
     var body: some View {
@@ -82,7 +74,7 @@ struct ColorDetailView: ViewDestinationInterfacing, SheetPresenting, Destination
             })
 
         }
-        .destinationSheet(presentation: sheetPresentation)
+        .destinationSheet(presentation: stateModel.sheetPresentation)
 
     }
 

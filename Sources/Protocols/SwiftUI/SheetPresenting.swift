@@ -9,10 +9,10 @@
 
 import Foundation
 
-/// This protocol represents a `View` that supports presenting a SwiftUI sheet via its ``SheetPresenter`` object.
+/// This protocol represents a `StateModeling`-conforming object attached to a `View` that supports presenting a SwiftUI sheet via its ``SheetPresenter`` object.
 ///
-/// To present a sheet using Destinations, simply have your `View` adopt this protocol, add a `ViewModifier` for the ``sheetPresenter`` (`.modifier(sheetPresenter)`), and present a Destination with a `presentationType` of `.sheet(type: .present)`.
-@MainActor public protocol SheetPresenting: ViewDestinationInterfacing {
+/// To present a sheet using Destinations, simply have the `View`'s state model adopt this protocol, add the built-in `ViewModifier` `.destinationSheet(stateModel.sheetPresentation)`) to the `View`, and present a Destination with a `presentationType` of `.sheet(type: .present)`.
+@MainActor public protocol SheetPresenting: StateModeling where Destination: ViewDestinationable {
 
     /// The ``SheetPresenter`` object which handles the presentation of sheets.
     var sheetPresentation: SheetPresentation { get set }
@@ -35,7 +35,9 @@ public extension SheetPresenting {
     func presentSheet(sheet: any Sheetable) {
         DestinationsSupport.logger.log("Presenting sheet \(sheet.description)", level: .verbose)
 
-        sheetPresentation.systemDismissalClosure = sheetDismissalClosure(destination: destination())
+        if let destination {
+            sheetPresentation.systemDismissalClosure = sheetDismissalClosure(destination: destination)
+        }
         sheetPresentation.updateSheet(sheet)
 
     }
@@ -44,12 +46,12 @@ public extension SheetPresenting {
         
         if let sheetID = sheetPresentation.sheet?.destinationID {
             let options = SystemNavigationOptions(targetID: sheetID)
-            destination().performSystemNavigationAction(navigationType: .dismissSheet, options: options)
+            destination?.performSystemNavigationAction(navigationType: .dismissSheet, options: options)
         }
     }
     
     func sheetDismissalClosure<Destination: ViewDestinationable>(destination: Destination) -> SheetDismissalClosure {
-        let closure = { [weak destination, weak sheetPresentation] in
+        let closure = { @MainActor [weak destination, weak sheetPresentation] in
             if let sheetID = sheetPresentation?.sheet?.destinationID {
                 let options = SystemNavigationOptions(targetID: sheetID)
                 destination?.performSystemNavigationAction(navigationType: .dismissSheet, options: options)

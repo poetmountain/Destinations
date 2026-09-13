@@ -36,8 +36,8 @@ public protocol SheetPresentationConfiguring: Identifiable, Equatable {
     /// Specifies whether the user can interact with content behind the presented sheet.
     var backgroundInteractionMode: PresentationBackgroundInteraction { get set }
     
-    /// A closure to be run when a sheet is dismissed.
-    var dismissedClosure: (() -> Void)? { get set }
+    /// A closure to be run after a sheet has been dismissed.
+    var dismissedClosure: (@MainActor () -> Void)? { get set }
     
     /// A closure set by and used by Destinations internally to perform a sheet dismissal.
     var systemDismissalClosure: SheetDismissalClosure? { get set }

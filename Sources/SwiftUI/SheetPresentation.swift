@@ -19,7 +19,7 @@ public final class SheetPresentation: SheetPresentationConfiguring {
     
     public var systemDismissalClosure: SheetDismissalClosure?
     
-    public var dismissedClosure: (() -> Void)?
+    public var dismissedClosure: (@MainActor () -> Void)?
     
     public var shouldPresentSheet = false
     
@@ -37,7 +37,7 @@ public final class SheetPresentation: SheetPresentationConfiguring {
     /// - Parameters:
     ///   - sheet: The sheet model to present.
     ///   - dismissedClosure: A closure to be run when a sheet is dismissed.
-    public init(sheet: (any Sheetable)? = nil, dismissalClosure: (() -> Void)? = nil) {
+    public init(sheet: (any Sheetable)? = nil, dismissalClosure: (@MainActor () -> Void)? = nil) {
         if let sheet {
             self.sheet = sheet
         }
@@ -46,7 +46,7 @@ public final class SheetPresentation: SheetPresentationConfiguring {
     
     /// Provides a new sheet
     /// - Parameter sheet: A new sheet to be presented.
-    public func updateSheet(_ sheet: (any Sheetable)) {
+    public func updateSheet(_ sheet: (any Sheetable)) {        
         self.sheet = sheet
         if let options = sheet.options {
             presentationMode = options.presentationMode

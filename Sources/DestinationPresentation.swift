@@ -268,14 +268,14 @@ import SwiftUI
                 
             case .sheet(type: .present, options: let options):
 
-                if let destinationToPresent, let view = destinationToPresent.currentView(), let currentDestination {
-                    
+                if let destinationToPresent, let view = destinationToPresent.currentView(), let currentDestination = currentDestination {
+
                     let container = ContainerView(view: AnyView(view))
 
                     let sheet = Sheet(destinationID: destinationToPresent.id, view: container, options: options?.swiftUI)
-                    currentDestination.presentSheet(sheet: sheet)
-                    
-                    completionClosure?(true)
+                    let isPresenting = currentDestination.presentSheet(sheet: sheet)
+ 
+                    completionClosure?(isPresenting)
                     
                 } else {
                     completionClosure?(false)

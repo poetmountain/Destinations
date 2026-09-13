@@ -180,13 +180,11 @@ TabView(selection: $destinationState.destination.selectedTab) {
 .onDestinationDisappear(destination: destinationToBuild, navigationDestination: destination())
 ```
 
-* `SheetPresenter` manages the presentation of SwiftUI sheets. Used in conjunction with `SheetPresentation`, this `ViewModifier` automatically enables the presentations of Destinations in sheets which are presented from the Destination this modifier is applied to.
+* `SheetPresenter` manages the presentation of SwiftUI sheets. Used in conjunction with `SheetPresentation`, this `ViewModifier` automatically enables the presentations of Destinations in sheets which are presented from the Destination this modifier is applied to. Views which support sheet presentations should implement the `SheetPresenting` protocol on their state model. See the basic SwiftUI example project for an example of sheet support.
 
 ```swift
-@State var sheetPresentation = SheetPresentation()
-
 // Used on the View's body. Creates a SheetPresenter ViewModifier.
-.destinationSheet(presentation: sheetPresentation)
+.destinationSheet(presentation: stateModel.sheetPresentation)
 ```
 
 ## State Model

@@ -37,16 +37,6 @@ struct ColorDetailProvider: ViewDestinationProviding, DestinationTypes {
         let destination = Destination(destinationType: .colorDetail, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let view = ColorDetailView(destination: destination, state: state)
-
-        let sheetView = ContainerView {
-            AnyView(
-                ColorSheetView(colorModel: colorModel, dismissButtonClosure: { [weak sheetPresentation = view.sheetPresentation] in
-                    sheetPresentation?.dismissSheet()
-                })
-            )
-        }
-
-        state.sheetView = sheetView
         destination.assignAssociatedView(view: view)
 
         return destination

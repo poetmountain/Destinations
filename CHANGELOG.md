@@ -1,3 +1,8 @@
+### 3.2.2
+* Breaking: The protocol `SheetPresenting`, which enables sheets to be presented via Destinations, must now reside on state models instead of your Views. This change allows you to assign a custom `dismissedClosure` per sheet presentation from the state model. Please update all your sheet-presenting Destinations to conform their state models to `SheetPresenting`.
+* A runtime check has been added to prevent a sheet destination from being presented if a sheet is already currently presented by a Destination. App execution will continue, but Destinations will log an error.
+
+
 ### 3.2.1
 #### Features
 * Output conduits are now built automatically by the `.step()`, making the `.output()` chainable method unnecessary. Transformers are now passed into into the `.step()` directly via the `inputTransformer` parameter. Please note that as with the old `.output()` method, transformer objects passed into the `.step()` method should transform the output of the previous step to prepare for passing to the Action of the current step. The `.output()` method is now deprecated and will be removed in a future version.

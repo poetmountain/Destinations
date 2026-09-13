@@ -24,7 +24,8 @@ import SwiftUI
 
     /// Presents a sheet in the Destination's view.
     /// - Parameter sheet: The sheet model to configure the sheet presentation.
-    func presentSheet(sheet: any Sheetable)
+    /// - Returns: A boolean representing whether the sheet can successfully be presented.
+    func presentSheet(sheet: any Sheetable) -> Bool
     
     /// Dismisses the currently presented sheet.
     func dismissSheet()
@@ -63,17 +64,26 @@ public extension ViewDestinationable {
         
     }
     
-    func presentSheet(sheet: any Sheetable) {
+    func presentSheet(sheet: any Sheetable) -> Bool {
         
-        if let view = view as? any SheetPresenting {
-            view.presentSheet(sheet: sheet)
+        guard let stateModel = stateModel as? any SheetPresenting else {
+            DestinationsSupport.logger.log("Sheet presentation stopped. The state model attached to the Destination of type \(self.type) does not conform to the SheetPresenting protocol.", category: .error)
+            return false
         }
         
+        if stateModel.sheetPresentation.sheet == nil {
+            stateModel.presentSheet(sheet: sheet)
+            return true
+        }
+        
+        DestinationsSupport.logger.log("Sheet presentation stopped; an existing sheet \(String(describing: stateModel.sheetPresentation.sheet?.id.uuidString)) is already presented.", category: .error)
+
+        return false
     }
     
     func dismissSheet() {
-        if let view = view as? any SheetPresenting {
-            view.sheetPresentation.dismissSheet()
+        if let stateModel = stateModel as? any SheetPresenting {
+            stateModel.sheetPresentation.dismissSheet()
         }
     }
     

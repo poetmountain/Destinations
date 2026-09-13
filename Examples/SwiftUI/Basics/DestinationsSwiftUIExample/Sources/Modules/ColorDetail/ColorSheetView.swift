@@ -14,7 +14,7 @@ struct ColorSheetView: View {
     
     @State private var colorModel: ColorViewModel?
 
-    init(colorModel: ColorViewModel? = nil, dismissButtonClosure: @escaping () -> Void) {
+    init(colorModel: ColorViewModel? = nil, dismissButtonClosure: @escaping @MainActor () -> Void) {
         _dismissButtonClosure = State.init(initialValue: dismissButtonClosure)
         if let colorModel {
             _colorModel = State.init(initialValue: colorModel)
@@ -22,7 +22,6 @@ struct ColorSheetView: View {
 
     }
     
-
     var body: some View {
         GeometryReader { metrics in
             let rect = CGRect(origin: .zero, size: metrics.size)
@@ -39,9 +38,9 @@ struct ColorSheetView: View {
                         .foregroundStyle(.white)
                         .background(Color.blue)
                         .clipShape(Capsule())
-                        .padding(.trailing, 12)
                     }
                 }
+                .safeAreaPadding(EdgeInsets(top: 20, leading: 10, bottom: 6, trailing: 20))
                 .frame(width: rect.width)
                 .frame(maxHeight: 50)
                 .containerRelativeFrame(.horizontal, alignment: .trailing)
