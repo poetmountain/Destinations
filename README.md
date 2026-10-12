@@ -1,5 +1,5 @@
 # Destinations
-![Static Badge](https://img.shields.io/badge/Swift-6.0%20%7C%206.1%20%7C%206.2%20%7C%206.3-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
+![Static Badge](https://img.shields.io/badge/Swift-6.0%20%7C%206.1%20%7C%206.2%20%7C%206.3%20%7C%206.4-005AA5.svg) ![Static Badge](https://img.shields.io/badge/Platforms-iOS-005AA5.svg) ![License](https://img.shields.io/badge/License-MIT-005AA5.svg "License")
 
 Destinations is a Swift framework for UIKit and SwiftUI apps that is designed to truly decouple your UI and manage navigation flow. It is based on a philosophy that emphasizes clear separation of concerns, that each significant `View` or `UIViewController` in an app should not know about each other, and that UI and functionality should be able to be easily substituted as your needs change. Destinations enables your user interfaces to focus again on the user. It handles app routing, the plumbing between logic and UI, and significantly reduces boilerplate code in your apps.
 
