@@ -44,28 +44,36 @@ final class ColorsListState: ColorsListStateModeling {
     func handleEvent(_ type: EventType, content: ContentType? = nil) {
 
         switch type {
-            case .retrieveInitialColors, .moreButton:
-                
-                let task = Task {
-                    let result = await destination?.performAction(for: type, content: content)
-                    
-                    switch result {
-                        case .success(let content):
-                            if case .colors(models: let models) = content {
-                                items = models
-                            }
-                        case .failure(let error):
-                            DestinationsSupport.logger.log("error \(error.localizedDescription)", category: .error)
-                        case .none: break
-                    }
+            case .retrieveInitialColors:
+                Task {
+                    await requestColors(type: type, numColors: 3)
                 }
-                tasks.append(task)
-
+            case .moreButton:
+                Task {
+                    await requestColors(type: type, numColors: 5)
+                }
             case .color:
                 destination?.handleThrowable(closure: { [weak destination] in
                      try destination?.performAction(for: type, content: content)
                  })
         }
+    }
+    
+    private func requestColors(type: EventType, numColors: Int) async {
+        let requestModel: ColorsRequestContent = .numColorsToRetrieve(numColors)
+        let content: AppContentType = .colorsRequest(requestModel: requestModel)
+        let result = await destination?.performAction(for: type, content: content)
+        
+        switch result {
+            case .success(let content):
+                if case .colors(models: let models) = content {
+                    items = models
+                }
+            case .failure(let error):
+                DestinationsSupport.logger.log("error \(error.localizedDescription)", category: .error)
+            case .none: break
+        }
+        
     }
 
 

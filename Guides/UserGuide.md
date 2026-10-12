@@ -3,13 +3,13 @@
 Let's take a deeper look at how Destinations can help you reduce implementation time and free up your user interfaces to focus on surprising and delighting your users.
 
 There's a few main conceptual types in Destinations:  
-**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.
+**Flow:** Manages the creation, appearance, and removal of Destinations as a user navigates through the app.  
 **Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.  
 **State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view.  
 **Provider:** Builds and configures a Destination, its view, and the state model. Used by the Flow object to present new views.  
-**Event:** Typically represents a user interface interaction, generally used to perform a Destination presentation or an Interactor request. Events are the foundation for decoupling the UI from the actions that the user interactions should trigger.
-**Interactor:** Represents an object that performs some work, typically by interfacing with an API, doing background processing, or some other self-contained work.
-**Action:**  A higher-level representation of an Interactor request. These can be used to build complex sequences of actions.
+**Event:** Typically represents a user interface interaction, generally used to perform a Destination presentation or an Interactor request. Events are the foundation for decoupling the UI from the actions that the user interactions should trigger.  
+**Interactor:** Represents an object that performs some work, typically by interfacing with an API, doing background processing, or some other self-contained work.  
+**Action:**  A higher-level representation of an Interactor request. These can be used to build complex sequences of actions.  
 
 ## Flow
 
@@ -90,16 +90,15 @@ public func buildDestination(destinationPresentations: AppDestinationConfigurati
 
 One of the main responsibilities of Destinations is to handle the presentation of new views, typically triggered from a user interacting with a UI element. These Destination events are represented by `EventTypeable`-conforming enum cases which are scoped to an individual Destination.
 
-When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's `performAction(for:content:)` method to trigger the configured action. (Note that the non-async version of `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.)
+When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's async `performAction(for:content:)` method to trigger the configured action. (Note that the non-async version of `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.)
 ```swift
 // In a state model
 func handleEvent(_ type: EventType, content: ContentType?) {
     switch type {
         case .viewNote:
-            destination?.handleThrowable { [weak destination] in
-                try destination?.performAction(for: type, content: content)
+            Task { [weak destination] in
+                let result = await destination?.performAction(for: type, content: content)
             }
-        default: break
     }
 }
 ```
@@ -389,7 +388,37 @@ let notesProvider = NotesProvider(interactorsData: [.moreButton: paginateAction]
 
 ### Interactor assistants
 
-Interactor assistants are conduits between a Destination and its Interactors. They create the actual Request model to be passed to the Interactor based on the interface action type passed to it, and for async assistants they also pass on the result of the Interactor's operation to the Destination. They are defined when creating an `InteractorConfiguration` and there are three types: `basic`, `basicAsync`, and `custom(assistant:)`. The first two are built-in assistants to be used with synchronous and async Interactors respectively.  If the content state passed in with a request is the same type as the Request's `ResultData` type, these assistant types are all you need. If you need to pass in content with the request, this type can also handle that automatically if the content's type is the same as the Request's `RequestContentType`. Otherwise, you will need to create a custom assistant which conforms to either `InteractorAssisting` to assist `Interactable` Interactors or `AsyncInteractorAssisting` to assist `AsyncInteractable` Interactors.
+Interactor assistants are conduits between a Destination and its Interactors, mainly used in conjunction with the `performAction(for:content:)` method. They create the actual Request model to be passed to the Interactor based on the interface action type passed to it, and for async assistants they also pass on the result of the Interactor's operation to the Destination. They are defined when creating an `InteractorConfiguration` and there are four types: `basic`, `basicAsync`, `transformer(request:result:)`, and `custom(assistant:)`. The `basic` and `basicAsync` types represent built-in assistants to be used with synchronous and async Interactors respectively.  If the content state passed in with a request is the same type as the Request's `ResultData` type, these assistant types are all you need. If you need to pass in content with the request, this type can also handle that automatically if the content's type is the same as the Request's `RequestContentType`. Otherwise, you will need to use a `transformer` assistant type which bridges request and result content types using the given transformers when the Interactor's `Request.RequestContentType`/`Request.ResultData` differ from the Destination's `ContentType`. Only in cases where you need to supply custom logic or dynamic content state handling would you need to use the `custom` type with a custom assistant.
+
+
+#### Bridging content types with `transformer`
+
+If an async Interactor's `Request.RequestContentType` or `Request.ResultData` differ from the Destination's `ContentType`, you can use the `transformer(request:result:)` assistant type and supply `ContentTransformable` objects to do the conversion for you. These are the same transformer types that are used with ActionSequences, and can be used interchangeably.
+
+* `request` converts the Destination's `ContentType` into the Request's `RequestContentType` before a request is made. Pass `nil` if the Interactor doesn't need any content passed in, or if the two types are already the same.
+* `result` converts the Interactor's `Request.ResultData` into the Destination's `ContentType` after the request completes. Pass `nil` if the two types are already the same.
+
+Passing `nil` for both is valid, but is equivalent to just using `basicAsync`.
+
+```swift
+struct ColorsRequestTransformer: ContentTransformable {
+    func transform(input: AppContentType) throws -> ColorsRequestContent {
+        if case .colorsRequest(requestModel: let model) = input {
+            return model
+        }
+        return .numColorsToRetrieve(3)
+    }
+}
+
+struct ColorsResultTransformer: ContentTransformable {
+    func transform(input: ColorsResult) throws -> AppContentType {
+        switch input {
+            case .retrievedColors(let models):
+                return .colors(models: models)
+        }
+    }
+}
+```
 
 Destination classes can make async requests of an Interactor assistant through the `asyncRequest(destination:, actionType:, content:)` method and receive the Interactor's Result directly. Custom assistants should create a Request object with the provided action type and any other configuration state, call `performRequest(...)` on the Interactor, and then pass back the result to the Destination. The Destination then forwards this on to the state model. You might also want to use a custom assistant to handle an Interactor which returns an ongoing sequence of values, for instance listening to Core Location updates or consuming updates from a real-time server subscription. You can see an example of this with the Counter tab in the SwiftUI basic example project, which consumes values from an AsyncStream.
 

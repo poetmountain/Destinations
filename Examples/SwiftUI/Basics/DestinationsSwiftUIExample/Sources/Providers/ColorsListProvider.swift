@@ -24,15 +24,26 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
             presentationType: .navigationStack(type: .present),
             assistantType: .basic)
 
+        let requestTransformer = ColorsRequestTransformer()
+        let resultTransformer = ColorsResultTransformer()
+        
         // interactor actions
         let colorsListRetrieveAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(
             interactorType: .colors,
             actionType: .retrieve,
-            assistantType: .basicAsync)
+            assistantType: .transformer(
+                request: requestTransformer,
+                result: resultTransformer
+            )
+        )
         let colorsListMoreButtonAction = InteractorConfiguration<Destination.InteractorType, ColorsDatasource>(
             interactorType: .colors,
             actionType: .paginate,
-            assistantType: .basicAsync)
+            assistantType: .transformer(
+                request: requestTransformer,
+                result: resultTransformer
+            )
+        )
 
         presentationsData = [.color: colorSelection]
         interactorsData = [.moreButton: colorsListMoreButtonAction, .retrieveInitialColors: colorsListRetrieveAction]

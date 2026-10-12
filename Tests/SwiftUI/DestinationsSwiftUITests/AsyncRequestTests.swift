@@ -54,9 +54,7 @@ import Destinations
     }
 
     func test_performAction_async_returns_incompatibleType_when_assistant_does_not_implement_asyncRequest() async throws {
-        // ColorsInteractorAssistant only implements `handleAsyncRequest`. The default
-        // implementation of `asyncRequest` returns an `incompatibleType` failure, which
-        // is what we expect here.
+        // ColorsInteractorAssistant only implements handleAsyncRequest method. The default implementation of asyncRequest returns an `DestinationsError.incompatibleType` failure, which is what we expect here.
         let destination = try await buildColorsDestination(assistant: ColorsInteractorAssistant())
 
         let result = await destination.performAction(for: .retrieveInitialColors)
@@ -74,8 +72,7 @@ import Destinations
     }
 
     func test_performAction_async_returns_interactorNotFound_when_eventType_has_no_configuration() async {
-        // Construct a destination with an interface action wired up for an event type
-        // that has neither a presentation configuration nor an interactor configuration.
+        // Construct a destination with an interface action wired up for an event type that has neither a presentation configuration nor an interactor configuration.
         let configs = AppDestinationConfigurations<ColorsListView.EventType, DestinationType, ContentType, TabType>()
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>()
         let destination = ColorsListView.Destination(destinationType: .colorsList, destinationConfigurations: configs, navigationConfigurations: navigationConfigs, parentDestination: nil)
@@ -120,8 +117,7 @@ import Destinations
     }
 
     func test_asyncRequest_default_implementation_returns_incompatibleType_failure() async throws {
-        // ColorsInteractorAssistant does not override `asyncRequest`, so calling it
-        // should hit the default extension which returns `.incompatibleType`.
+        // ColorsInteractorAssistant does not override asyncRequest, so calling it should hit the default extension which returns `DestinationsError.incompatibleType`.
         let destination = try await buildColorsDestination(assistant: ColorsInteractorAssistant())
         let assistant = ColorsInteractorAssistant()
 
@@ -161,9 +157,7 @@ import Destinations
     }
 
     func test_asyncRequestForAction_via_actionType_existential_returns_success() async throws {
-        // Exercises the `AsyncInteractorAssisting` extension overload that takes
-        // `actionType: any InteractorRequestActionTypeable` and casts to the assistant's
-        // associated `Request.ActionType` before forwarding to the typed `asyncRequest`.
+        // The `AsyncInteractorAssisting` extension overload takes actionType and casts it to the assistant's associated `Request.ActionType` before forwarding to the typed asyncRequest.
         let destination = try await buildColorsDestination(assistant: TestAsyncColorsInteractorAssistant())
         let assistant = TestAsyncColorsInteractorAssistant()
 
@@ -183,7 +177,88 @@ import Destinations
         }
     }
 
+    // MARK: - InteractorAssistantType.transformer
+
+    func test_transformer_applies_both_request_and_result_transformers() async throws {
+        let destination = try await buildTransformAsyncDestination()
+
+        let result = await destination.performAction(for: .retrieveInitialColors, content: .counter(count: 5))
+
+        switch result {
+            case .success(let content):
+                if case .counter(count: let count) = content {
+                    XCTAssertEqual(count, 7, "Expected the result transformer to convert the raw count into .counter, got \(content)")
+                } else {
+                    XCTFail("Expected .counter content, got \(content)")
+                }
+            case .failure(let error):
+                XCTFail("Expected success result, got failure: \(error)")
+        }
+    }
+
+    func test_transformer_passes_request_transformed_content_to_the_interactor() async throws {
+        let datasource = TestTransformDatasource()
+        let destination = try await buildTransformAsyncDestination(datasource: datasource)
+
+        _ = await destination.performAction(for: .retrieveInitialColors, content: .counter(count: 5))
+
+        let receivedContent = await datasource.receivedContent
+        XCTAssertEqual(receivedContent, .flagPayload(true), "Expected the request transformer to convert .counter(count: 5) into .flagPayload(true)")
+    }
+
+    func test_transformer_with_no_transformers_falls_back_to_resultData_as_contentType() async throws {
+        let configs = AppDestinationConfigurations<ColorsListView.EventType, DestinationType, ContentType, TabType>()
+        // With both request and result transformers nil, ContentType defaults to the Interactor's Request.ResultData (ColorsDatasource's ResultData already equals AppContentType)
+        let config = InteractorConfiguration<ColorsListView.InteractorType, ColorsDatasource>(interactorType: .colors, actionType: .retrieve, assistantType: .transformer(request: nil, result: nil))
+        configs.addInteractorConfiguration(configuration: config, for: .retrieveInitialColors)
+
+        let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>()
+        let destination = ColorsListView.Destination(destinationType: .colorsList, destinationConfigurations: configs, navigationConfigurations: navigationConfigs, parentDestination: nil)
+
+        destination.assignInteractor(ColorsDatasource(), to: .colors)
+        config.assignInteractorAssistant(to: destination, eventType: ColorsListView.EventType.retrieveInitialColors)
+        destination.buildInteractorActions { _ in }
+
+        let result = await destination.performAction(for: .retrieveInitialColors)
+
+        switch result {
+            case .success(let content):
+                if case .colors(models: let models) = content {
+                    XCTAssertEqual(models.count, 3)
+                } else {
+                    XCTFail("Expected .colors content, got \(content)")
+                }
+            case .failure(let error):
+                XCTFail("Expected success result, got failure: \(error)")
+        }
+    }
+
     // MARK: - Helpers
+
+    /// Builds a `ColorsListView.Destination` wired up with `TestTransformDatasource` via
+    /// `InteractorAssistantType.transformer`, exercising `InteractorConfiguration.assignInteractorAssistant(to:eventType:)`'s
+    /// real existential-opening path rather than a hand-built assistant.
+    private func buildTransformAsyncDestination(datasource: TestTransformDatasource = TestTransformDatasource()) async throws -> ColorsListView.Destination {
+        let configs = AppDestinationConfigurations<ColorsListView.EventType, DestinationType, ContentType, TabType>()
+        let config = InteractorConfiguration<ColorsListView.InteractorType, TestTransformDatasource>(
+            interactorType: .colors,
+            actionType: .retrieve,
+            assistantType: .transformer(
+                request: TestTransformInputTransformer(),
+                result: TestTransformOutputTransformer()
+            )
+        )
+        configs.addInteractorConfiguration(configuration: config, for: .retrieveInitialColors)
+
+        let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>()
+        let destination = ColorsListView.Destination(destinationType: .colorsList, destinationConfigurations: configs, navigationConfigurations: navigationConfigs, parentDestination: nil)
+
+        destination.assignInteractor(datasource, to: .colors)
+        config.assignInteractorAssistant(to: destination, eventType: ColorsListView.EventType.retrieveInitialColors)
+        destination.buildInteractorActions { _ in }
+
+        return destination
+    }
 
     /// Builds a `ColorsListView.Destination` wired up manually (without going through `ViewFlow`),
     /// so tests have full control over what's registered and so the destination's `prepareForPresentation`

@@ -9,7 +9,7 @@
 import Foundation
 import Destinations
 
-public protocol DestinationTypes {
+protocol DestinationTypes {
 
     typealias EventType = GeneralAppInteractions
     typealias InteractorType = AppInteractorType

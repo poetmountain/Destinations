@@ -1,3 +1,8 @@
+### 3.2.3
+#### Features
+* Added a new `transformer(request:result:)` Interactor assistant type. It provides a basic async assistant that can bridge content types using the supplied transformers when the Interactor's `Request.RequestContentType` or `Request.ResultData` differ from the Destination's `ContentType`. Unless you need to provide custom logic or dynamic handling of content transformations, the `transformer` type can handle most interactor events without the need to create a custom assistant. These transformers conform to `ContentTransformable`, the same protocol as the transformers used in ActionSequences. As they are scoped to simple type transformations, you can reuse these as you see fit.
+ See [User Guide](Guides/UserGuide.md) for more details.
+
 ### 3.2.2
 * Breaking: The protocol `SheetPresenting`, which enables sheets to be presented via Destinations, must now reside on state models instead of your Views. This change allows you to assign a custom `dismissedClosure` per sheet presentation from the state model. Please update all your sheet-presenting Destinations to conform their state models to `SheetPresenting`.
 * A runtime check has been added to prevent a sheet destination from being presented if a sheet is already currently presented by a Destination. App execution will continue, but Destinations will log an error.

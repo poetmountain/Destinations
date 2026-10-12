@@ -65,6 +65,43 @@ public struct ActionConfiguration<InteractorType: InteractorTypeable, ContentTyp
                     throw DestinationsError.missingInterfaceActionAssistant(message: message)
                 }
                 return customAssistant
+
+            case .transformer(let request, let result):
+                guard let interactorType else {
+                    let template = DestinationsSupport.errorMessage(for: .missingInteractorType(message: ""))
+                    let message = String(format: template)
+                    throw DestinationsError.missingInteractorType(message: message)
+                }
+
+                var typedResult: (any ContentTransformable<Interactor.Request.ResultData, ContentType>)?
+                if let result {
+                    typedResult = result as? any ContentTransformable<Interactor.Request.ResultData, ContentType>
+                    guard typedResult != nil else {
+                        let template = DestinationsSupport.errorMessage(for: .unsupportedInteractorAssistantType(message: ""))
+                        let message = String(format: template, "\(actionType)")
+                        throw DestinationsError.unsupportedInteractorAssistantType(message: message)
+                    }
+                } else {
+                    // No result transformer supplied: same ResultData/ContentType match requirement as .basicAsync,
+                    // unless this step's own `resultTransformer` will bridge them instead.
+                    guard resultTransformer != nil || Interactor.Request.ResultData.self == ContentType.self else {
+                        let template = DestinationsSupport.errorMessage(for: .unsupportedInteractorAssistantType(message: ""))
+                        let message = String(format: template, "\(actionType)")
+                        throw DestinationsError.unsupportedInteractorAssistantType(message: message)
+                    }
+                }
+
+                var typedRequest: (any ContentTransformable<ContentType, Interactor.Request.RequestContentType>)?
+                if let request {
+                    typedRequest = request as? any ContentTransformable<ContentType, Interactor.Request.RequestContentType>
+                    guard typedRequest != nil else {
+                        let template = DestinationsSupport.errorMessage(for: .unsupportedInteractorAssistantType(message: ""))
+                        let message = String(format: template, "\(actionType)")
+                        throw DestinationsError.unsupportedInteractorAssistantType(message: message)
+                    }
+                }
+
+                return DefaultAsyncInteractorAssistant<InteractorType, Interactor.Request, ContentType>(interactorType: interactorType, inputTransformer: typedRequest, outputTransformer: typedResult)
         }
     }
 

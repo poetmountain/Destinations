@@ -10,11 +10,12 @@
 import SwiftUI
 import Destinations
 
-public enum AppContentType: ContentTypeable {
+enum AppContentType: ContentTypeable {
     case color(model: ColorViewModel)
     case colors(models: [ColorViewModel])
     case dynamicView(view: ContainerView<AnyView>)
     case count(value: Int, isFinished: Bool)
+    case colorsRequest(requestModel: ColorsRequestContent)
     
     public var rawValue: String {
         switch self {
@@ -26,6 +27,8 @@ public enum AppContentType: ContentTypeable {
                 return "dynamicView"
             case .count:
                 return "count"
+            case .colorsRequest:
+                return "colorsRequest"
         }
     }
 }

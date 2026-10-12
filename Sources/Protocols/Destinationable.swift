@@ -57,6 +57,8 @@ import Foundation
     func performAction(for eventType: EventType, content: ContentType?) throws
     
     /// Asynchronously performs the action associated with the specified event type and returns a Result. Generally this would be used to perform an Interactor action instead of a Destination presentation.
+    ///
+    /// If a result transformer is registered for this event type, it's used to convert the Interactor's `Request.ResultData` into `ContentType`. Otherwise a direct cast is attempted, which succeeds when the two types are the same.
     /// - Parameter eventType: The event type whose action should be run.
     /// - Parameter content: Optional content to use with the action.
     func performAction(for eventType: EventType, content: ContentType?) async -> Result<ContentType, Error>
@@ -569,16 +571,19 @@ public extension Destinationable {
                             return .failure(DestinationsError.interactorNotFound(message: message))
                         }
                         
-                        return await assistant.asyncRequestForAction(destination: self, actionType: actionType, content: content, resultTransformer: nil)
+                        let resultTransformer = internalState.resultTransformers[eventType]
+                        
+                        return await assistant.resolveAsyncRequest(destination: self, actionType: actionType, content: content, resultTransformer: resultTransformer)
+
                     }
-                    
+
                 case .sequence, .group, .branch:
                     break
             }
-            
+
 
         }
-        
+
         // An interface action exists but no configuration was found for its event type, so
         // the most likely problem is a missing interactor configuration
         if internalState.interfaceActions[eventType] != nil {
@@ -786,7 +791,7 @@ public extension Destinationable {
     func assignInteractorAssistant(assistant: any InteractorAssisting<InteractorType, ContentType>, for eventType: EventType) {
         internalState.interactorAssistants[eventType] = assistant
     }
-    
+
     func performSystemNavigationAction<T>(navigationType: SystemNavigationType, options: T?) {
         
         if var closure = internalState.systemNavigationActions[navigationType] {

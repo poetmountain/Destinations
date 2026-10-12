@@ -16,8 +16,8 @@ struct ColorsRequest: InteractorRequestConfiguring {
         case paginate
     }
 
-    typealias RequestContentType = AppContentType
-    typealias ResultData = AppContentType
+    typealias RequestContentType = ColorsRequestContent
+    typealias ResultData = ColorsResult
 
     let action: ActionType
 
@@ -27,11 +27,22 @@ struct ColorsRequest: InteractorRequestConfiguring {
         self.action = action
     }
 
-    init(action: ActionType, numColorsToRetrieve: Int) {
+    init(action: ActionType, content: RequestContentType?) {
         self.action = action
-        self.numColorsToRetrieve = numColorsToRetrieve
+        if case .numColorsToRetrieve(let numColors) = content {
+            self.numColorsToRetrieve = numColors
+        }
     }
+}
 
+/// The raw result produced by `ColorsDatasource`, deliberately distinct from `AppContentType`. `ColorsResultTransformer` converts this into `AppContentType` so it can be used with `Destinationable.performAction(for:content:)`; see `ColorsListProvider`, which supplies that transformer via `InteractorAssistantType.transformer(request:result:)`.
+enum ColorsResult: ContentTypeable {
+    case retrievedColors(models: [ColorViewModel])
+}
+
+/// `ColorsRequest`'s `RequestContentType`, deliberately distinct from `AppContentType` so that passing content into a paginate request genuinely needs `ColorsInputTransformer` to bridge the two, rather than succeeding via a trivial direct cast.
+enum ColorsRequestContent: ContentTypeable {
+    case numColorsToRetrieve(Int)
 }
 
 actor ColorsDatasource: AsyncInteractable {
@@ -48,7 +59,7 @@ actor ColorsDatasource: AsyncInteractable {
         }
     }
 
-    func retrieveColors(request: ColorsRequest) async -> Result<AppContentType, Error> {
+    func retrieveColors(request: ColorsRequest) async -> Result<ColorsResult, Error> {
         var allColors: [ColorModel] = []
 
         let range: Range<Int> = 0..<request.numColorsToRetrieve
@@ -67,7 +78,7 @@ actor ColorsDatasource: AsyncInteractable {
 
         let viewModels = colors.map { ColorViewModel(colorID: $0.colorID, color: $0.color, name: $0.name) }
         self.items.append(contentsOf: viewModels)
-        let result: Result<AppContentType, Error> = .success(.colors(models: items))
+        let result: Result<ColorsResult, Error> = .success(.retrievedColors(models: items))
 
         return result
     }

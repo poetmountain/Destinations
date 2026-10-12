@@ -30,9 +30,9 @@ There's a few main conceptual types in Destinations:
 **Destination:** Represents a distinct view in the app, and coordinates routing and requests. Generally not directly used.  
 **State Model:** Custom objects specific to each Destination which handle view state, business logic, and responds to events sent by the view.  
 **Provider:** Builds and configures a Destination, its view, and the state model. Used by Flow object to present new views.  
-**Event:** Typically represents a user interface interaction, generally used to perform a Destination presentation or an Interactor request. Events are the foundation for decoupling the UI from the actions that the user interactions should trigger.
-**Interactor:** Represents an object that performs some work, typically by interfacing with an API, doing background processing, or some other self-contained work.
-**Action:**  A higher-level representation of an Interactor request. These can be used to build complex sequences of actions. 
+**Event:** Typically represents a user interface interaction, generally used to perform a Destination presentation or an Interactor request. Events are the foundation for decoupling the UI from the actions that the user interactions should trigger.  
+**Interactor:** Represents an object that performs some work, typically by interfacing with an API, doing background processing, or some other self-contained work.  
+**Action:**  A higher-level representation of an Interactor request. These can be used to build complex sequences of actions.   
 
 ## Presenting a Destination
 

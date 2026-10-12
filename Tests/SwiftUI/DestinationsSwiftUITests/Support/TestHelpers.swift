@@ -168,6 +168,72 @@ struct TestAsyncColorsInteractorAssistant: AsyncInteractorAssisting, Destination
     }
 }
 
+/// A `ResultData` type deliberately distinct from `AppContentType`, used to test `InteractorAssistantType.transformer`.
+enum TestTransformResult: ContentTypeable {
+    case rawCount(Int)
+}
+
+/// A `RequestContentType` type deliberately distinct from `AppContentType`, used to test `InteractorAssistantType.transformer`'s request-side conversion.
+enum TestTransformRequestContent: ContentTypeable {
+    case flagPayload(Bool)
+}
+
+/// A request type whose `ResultData` and `RequestContentType` both differ from `AppContentType`, exercising both directions of `InteractorAssistantType.transformer`.
+struct TestTransformRequest: InteractorRequestConfiguring {
+
+    enum ActionType: InteractorRequestActionTypeable {
+        case retrieve
+    }
+
+    typealias RequestContentType = TestTransformRequestContent
+    typealias ResultData = TestTransformResult
+
+    let action: ActionType
+    var content: TestTransformRequestContent?
+
+    init(action: ActionType) {
+        self.action = action
+        self.content = nil
+    }
+
+    init(action: ActionType, content: TestTransformRequestContent?) {
+        self.action = action
+        self.content = content
+    }
+}
+
+/// Records the content it receives so tests can verify `transformer`'s request transformer actually ran.
+actor TestTransformDatasource: AsyncInteractable {
+    typealias Request = TestTransformRequest
+
+    var receivedContent: TestTransformRequestContent?
+
+    func perform(request: TestTransformRequest) async -> Result<TestTransformResult, Error> {
+        receivedContent = request.content
+        return .success(.rawCount(7))
+    }
+}
+
+/// Converts `TestTransformResult` into `AppContentType`'s `.counter` case.
+struct TestTransformOutputTransformer: ContentTransformable {
+    func transform(input: TestTransformResult) throws -> AppContentType {
+        switch input {
+            case .rawCount(let count):
+                return .counter(count: count)
+        }
+    }
+}
+
+/// Converts `AppContentType` into `TestTransformRequestContent`, used to verify `transformer`'s request-side conversion.
+struct TestTransformInputTransformer: ContentTransformable {
+    func transform(input: AppContentType) throws -> TestTransformRequestContent {
+        if case .counter(count: let count) = input {
+            return .flagPayload(count > 0)
+        }
+        return .flagPayload(false)
+    }
+}
+
 final class TestGroupDestination: ViewDestinationable, GroupedDestinationable, DestinationTypes {
     
     enum Events: EventTypeable {

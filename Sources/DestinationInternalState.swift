@@ -29,6 +29,8 @@ public final class DestinationInternalState<EventType: EventTypeable, Destinatio
     public var systemNavigationActions: [SystemNavigationType : InterfaceAction<SystemNavigationType, DestinationType, ContentType>] = [:]
     public var interactorAssistants: [EventType: any InteractorAssisting<InteractorType, ContentType>] = [:]
 
+    public var resultTransformers: [EventType: ContentTransformerWrapper<ContentType>] = [:]
+    
     /// Tasks for currently running action sequences, keyed by the id of the action sequence each is running. Used to support cancellation of in-progress sequences.
     public var activeSequenceTasks: [UUID: Task<Result<ActionCollectionResults<ContentType>, any Error>, Never>] = [:]
 
