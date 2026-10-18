@@ -70,14 +70,14 @@ Here's a simple example that creates a ViewDestination and NotesView, assigns a 
 ```swift
 public func buildDestination(destinationPresentations: AppDestinationConfigurations<Destination.EventType, Destination.DestinationType, Destination.ContentType, Destination.TabType>?, navigationPresentations: AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>?, configuration: DestinationPresentation<DestinationType, ContentType, TabType>, appFlow: some ViewFlowable<DestinationType, ContentType, TabType>) -> Destination? {
 
-    let destination = Destination(destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
+    let destination = Destination(destinationType: .notes, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
     let state = NotesState()
     let view = NotesView(destination: destination, state: state)
     destination.assignAssociatedView(view: view)
 
     let datasource = NotesDatasource()
-    destination.assignInteractor(interactor: datasource, for: .notes)
+    destination.assignInteractor(datasource, to: .notes)
             
     return destination
     
@@ -130,7 +130,7 @@ init(destination: Destination, state: NotesState) {
 
 * `ControllerDestination` can be used to represent most `UIViewController`s in your UIKit apps. 
 * `NavigationControllerDestination` can be used as a Destination for a `UINavigationController` class. 
-* `TabBarControllerDestination` can be used as a Destination for a `UITabBarController` class. In the associated `UITabBarController` class which conforms to the `TabBarControllerDestinationInterfacing` protocol, you should implement the `customizeTabItem(tab: navigationController:)`. This method passes a`TabModel` object which contains a `type` property you supply and can use to configure the tabs.
+* `TabBarControllerDestination` can be used as a Destination for a `UITabBarController` class. In the associated `UITabBarController` class which conforms to the `TabBarControllerDestinationInterfacing` protocol, you should implement the `customizeTabItem(for:controller:)` method. This method passes the tab's `TabType` value you supply, along with the `UIViewController` whose `tabBarItem` should be configured for that tab.
 * `SwiftUIContainerDestination` can be used as a Destination for a `SwiftUIContainerController`, which allows you to host SwiftUI content within UIKit via `UIHostingController` instance. The SwiftUI content is managed by a separate `ViewFlow` contained within the `SwiftUIContainerDestination`, and Destination presentation requests for new `View`s can even be sent from UIKit-based Destinations.
 
 ### SwiftUI
@@ -266,7 +266,6 @@ final class NotesInterfaceState: DestinationStateable {
     init(destination: Destination, state: NotesState) {
         self.destination = destination
         self.stateModel = state
-        self.destination.stateModel = state
     }
 }
 ```
@@ -322,7 +321,7 @@ Destinations has several built-in presentation types which `DestinationPresentat
 #### Interactor requests
 
 For Interactor requests, use `InteractorConfiguration` objects to define actions which can be requested from UI interactions.
-* The `interactorType` property defines the type of Interactor to request an action from. The association between a specific Interactor and an interactor type is made when calling the `assignInteractor(interactor: type:)` method on a Destination.
+* The `interactorType` property defines the type of Interactor to request an action from. The association between a specific Interactor and an interactor type is made when calling the `assignInteractor(_:to:)` method on a Destination.
 * The `actionType` property defines the specific action of the interactor to be requested, represented by an enum type of your choosing and is scoped to individual Interactors.
 * The `assistantType` property allows you to define an assistant which handles requests and responses to its Interactor.
 
