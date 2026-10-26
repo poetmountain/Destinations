@@ -25,7 +25,6 @@ struct SequenceDemoProvider: ViewDestinationProviding, DestinationTypes {
         let destination = Destination(destinationType: .sequenceDemo, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let state = SequenceDemoState(destination: destination)
-        destination.stateModel = state
 
         let view = SequenceDemoView(destination: destination, state: state)
         destination.assignAssociatedView(view: view)

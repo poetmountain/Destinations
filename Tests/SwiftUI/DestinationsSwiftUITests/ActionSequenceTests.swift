@@ -1396,6 +1396,69 @@ import Destinations
         XCTAssertTrue(destination.internalState.activeSequenceTasks.isEmpty, "Expected the group's task to be removed from the internal state after completing")
     }
 
+    func test_performActions_for_event_runs_group_configuration_registered_for_event() async throws {
+        let group = ActionGroupConfiguration<ColorsListView.InteractorType, AppContentType>(
+            actions: [
+                ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil),
+                ActionConfiguration<ColorsListView.InteractorType, AppContentType, ColorsDatasource>(interactorType: .colors, action: .retrieve, assistant: .basicAsync, identifier: nil)
+            ],
+            merger: ColorsGroupMerger(),
+            identifier: GroupTestStep.retrieveGroup)
+
+        let destination = buildSequenceDestination(sequenceConfiguration: group, interactor: ColorsDatasource())
+
+        let result = await destination.performActions(for: .retrieveInitialColors)
+
+        switch result {
+            case .success(let responses):
+                XCTAssertEqual(responses.results.count, 1, "Expected the group to contribute a single response, got \(responses.results.count)")
+
+                guard let groupResponse = responses.results.first else {
+                    XCTFail("Expected a group response")
+                    return
+                }
+
+                if case .group(results: let childResults) = groupResponse.origin {
+                    XCTAssertEqual(childResults?.count, 2, "Expected two child responses, got \(childResults?.count ?? 0)")
+                } else {
+                    XCTFail("Expected a group origin, got \(groupResponse.origin)")
+                }
+
+                if case .colors(models: let models) = groupResponse.content {
+                    XCTAssertGreaterThan(models.count, 0, "Expected the merged group content to contain color models")
+                } else {
+                    XCTFail("Expected merged .colors content, got \(groupResponse.content as Any)")
+                }
+
+            case .failure(let error):
+                XCTFail("Expected an ActionGroupConfiguration registered for an event to run via performActions(for:), got failure: \(error)")
+        }
+
+        XCTAssertTrue(destination.internalState.activeSequenceTasks.isEmpty, "Expected the group's task to be removed from the internal state after completing")
+    }
+
+    func test_performActions_for_event_returns_incompatibleType_for_single_interactor_configuration() async throws {
+        let configuration = InteractorConfiguration<ColorsListView.InteractorType, ColorsDatasource>(
+            interactorType: .colors,
+            actionType: .retrieve,
+            assistantType: .basicAsync)
+
+        let destination = buildSequenceDestination(sequenceConfiguration: configuration, interactor: ColorsDatasource())
+
+        let result = await destination.performActions(for: .retrieveInitialColors)
+
+        switch result {
+            case .success(let responses):
+                XCTFail("Expected a single InteractorConfiguration to be rejected by performActions(for:), got success: \(responses.results)")
+            case .failure(let error):
+                if case DestinationsError.incompatibleType = error {
+                    // success
+                } else {
+                    XCTFail("Expected incompatibleType failure, got \(error)")
+                }
+        }
+    }
+
     func test_performActions_group_configuration_terminal_safety_net_saves_result_despite_shouldSaveResult_false() async throws {
         // Even when the group's own shouldSaveResult is false, a group passed directly to performActions(configuration:) has no outputConduit (it's the last step) so its merged result is still recorded. Otherwise the merged content would be unrecoverable to the caller.
         let group = ActionGroupConfiguration<ColorsListView.InteractorType, AppContentType>(
@@ -2197,17 +2260,19 @@ import Destinations
         return destination
     }
 
-    /// Builds a `ColorsListView.Destination` with the supplied action sequence registered for the
+    /// Builds a `ColorsListView.Destination` with the supplied configuration registered for the
     /// `.retrieveInitialColors` event type, and the supplied datasource assigned as the `.colors` interactor.
-    private func buildSequenceDestination(sequenceConfiguration: ActionSequenceConfiguration<ColorsListView.InteractorType, AppContentType>, interactor: any AbstractInteractable<ColorsRequest>) -> ColorsListView.Destination {
+    /// The configuration's interactor assistant is assigned as a Provider would, which only affects single-interactor configurations.
+    private func buildSequenceDestination(sequenceConfiguration: any InteractorConfiguring<ColorsListView.InteractorType>, interactor: any AbstractInteractable<ColorsRequest>) -> ColorsListView.Destination {
 
         let configs = AppDestinationConfigurations<ColorsListView.EventType, DestinationType, ContentType, TabType>()
-        configs.addInteractorConfiguration(configuration: sequenceConfiguration, for: .retrieveInitialColors)
+        configs.addInteractorConfiguration(configuration: sequenceConfiguration, for: ColorsListView.EventType.retrieveInitialColors)
 
         let navigationConfigs = AppDestinationConfigurations<SystemNavigationType, DestinationType, ContentType, TabType>()
 
         let destination = ColorsListView.Destination(destinationType: .colorsList, destinationConfigurations: configs, navigationConfigurations: navigationConfigs, parentDestination: nil)
         destination.assignInteractor(interactor, to: .colors)
+        sequenceConfiguration.assignInteractorAssistant(to: destination, eventType: ColorsListView.EventType.retrieveInitialColors)
 
         return destination
     }

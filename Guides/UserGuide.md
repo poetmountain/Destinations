@@ -90,14 +90,14 @@ public func buildDestination(destinationPresentations: AppDestinationConfigurati
 
 One of the main responsibilities of Destinations is to handle the presentation of new views, typically triggered from a user interacting with a UI element. These Destination events are represented by `EventTypeable`-conforming enum cases which are scoped to an individual Destination.
 
-When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's async `performAction(for:content:)` method to trigger the configured action. (Note that the non-async version of `performAction` can throw and the Destination method `handleThrowable` automatically handles that for you, logging any errors to the console with the built-in Logger class.)
+When a user interaction triggers an event you have paired to it, the view should call `handleEvent(_:content:)` on the state model, passing in the event type and an optional content type. The state model decides what to do for each event type, but typically would end by calling back to the Destination's `performAction(for:content:)` method to trigger the configured action. For a presentation, use the non-async version of `performAction`. It can throw, and the Destination method `handleThrowable` handles that for you, logging any errors to the console with the built-in Logger class. For Interactor requests, use the async version.
 ```swift
 // In a state model
 func handleEvent(_ type: EventType, content: ContentType?) {
     switch type {
         case .viewNote:
-            Task { [weak destination] in
-                let result = await destination?.performAction(for: type, content: content)
+            destination?.handleThrowable { [weak destination] in
+                try destination?.performAction(for: type, content: content)
             }
     }
 }
@@ -233,7 +233,7 @@ final class NotesState: StateModeling {
 }
 ```
 
-The main way to interact with the state model from your user interface is via the `handleEvent(_:content:)` method. Typically your custom state model should switch on the event type received and either handle it internally or call back to the Destination's async/await `performAction(for:content:)` or `performActions(for:content:)` methods to trigger the presentation or action(s) associated with the event type, or even create a custom action sequence at runtime and pass it to `performActions(configuration:content:)`.
+The main way to interact with the state model from your user interface is via the `handleEvent(_:content:)` method. Typically your custom state model should switch on the event type received and either handle it internally or call back to the Destination to trigger the presentation or action(s) associated with the event type. Use the throwing `performAction(for:content:)` for presentations, and the async/await `performAction(for:content:)` or `performActions(for:content:)` methods for Interactor requests and action sequences. You can even create a custom action sequence at runtime and pass it to `performActions(configuration:content:)`.
 
 Most of the lifecycle and event handling methods on `Destinationable` have matching methods on `StateModeling` which you can implement in your custom state. When the Destination receives one of these calls its default implementation forwards the call on to the state model. You can implement any of the following on your state class as needed:
 

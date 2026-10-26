@@ -81,5 +81,12 @@ public enum DestinationsError: Error, Hashable {
     ///
     /// - Parameter message: A message to be sent with the error.
     case incompatibleType(message: String)
+
+    /// An error type returned by the async `performAction(for:content:)` method of ``Destinationable`` when the event type is bound to a Destination presentation.
+    ///
+    /// This error doesn't mean the presentation failed. The presentation is performed, but presentations have no result value to return, so this error is returned in place of one. Use the throwing, non-async `performAction(for:content:)` for presentation events. This behavior for presentations may change in a future version.
+    ///
+    /// - Parameter message: A message to be sent with the error.
+    case presentationResultNotSupported(message: String)
     
 }

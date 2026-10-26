@@ -54,7 +54,6 @@ struct ColorsListProvider: ViewDestinationProviding, DestinationTypes {
         let destination = Destination(destinationType: .colorsList, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let state = ColorsListState(destination: destination)
-        destination.stateModel = state
 
         let listView = ColorsListView(destination: destination, state: state)
         destination.assignAssociatedView(view: listView)

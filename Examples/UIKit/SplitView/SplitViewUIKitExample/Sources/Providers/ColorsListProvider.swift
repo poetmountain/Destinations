@@ -34,7 +34,6 @@ final class ColorsListProvider: ControllerDestinationProviding, AppDestinationTy
         let destination = Destination(destinationType: .colorsList, destinationConfigurations: destinationPresentations, navigationConfigurations: navigationPresentations, parentDestination: configuration.parentDestinationID)
 
         let state = ColorsListState(destination: destination)
-        destination.stateModel = state
 
         let controller = ColorsViewController(destination: destination, state: state)
         destination.assignAssociatedController(controller: controller)

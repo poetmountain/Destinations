@@ -52,18 +52,24 @@ import Foundation
     var stateModel: (any StateModeling<Self>)? { get set }
 
     /// Performs the action associated with the specified event type. This action could be a Destination presentation or a request to an Interactor. The response is returned with a delegate pattern in ``StateModeling/handleInteractorResult(result:for:)-4h9z7``.
+    ///
+    /// This is the method to use for Destination presentations.
     /// - Parameter eventType: The event type whose action should be run.
     /// - Parameter content: Optional content to use with the action.
     func performAction(for eventType: EventType, content: ContentType?) throws
-    
-    /// Asynchronously performs the action associated with the specified event type and returns a Result. Generally this would be used to perform an Interactor action instead of a Destination presentation.
+
+    /// Asynchronously performs the Interactor action associated with the specified event type and returns its Result.
     ///
     /// If a result transformer is registered for this event type, it's used to convert the Interactor's `Request.ResultData` into `ContentType`. Otherwise a direct cast is attempted, which succeeds when the two types are the same.
+    ///
+    /// > Important: Use this method for event types bound to an Interactor. If the event type is bound to a presentation, this method performs the presentation and then returns ``DestinationsError/presentationResultNotSupported(message:)``, because presentations have no result value to return. That error doesn't mean the presentation failed. The method also doesn't wait for the presented interface to appear on screen. Use the throwing `performAction(for:content:)` for presentation events. This behavior for presentations may change in a future version.
     /// - Parameter eventType: The event type whose action should be run.
     /// - Parameter content: Optional content to use with the action.
     func performAction(for eventType: EventType, content: ContentType?) async -> Result<ContentType, Error>
     
     /// Performs the action sequence associated with the specified event type, running each of its Interactor actions in order and passing the result of each action to the next one through its output conduit. The sequence will run until either all actions have completed, an action returns an error, or the sequence is cancelled.
+    ///
+    /// The event type should be associated with a configuration conforming to ``ActionCollectionConfiguring``, such as an ``ActionSequenceConfiguration`` or an ``ActionGroupConfiguration``. For an event associated with a single ``InteractorConfiguration``, use `performAction(for:content:)` instead; this method returns ``DestinationsError/incompatibleType(message:)`` for it.
     /// - Parameter eventType: The event type corresponding to the action sequence to be run.
     /// - Parameter content: Optional content to pass to the sequence. Each step in the sequence determines how this content should be used, but generally it should be passed in with the first action's Interactor request.
     /// - Returns: A `Result` containing an ``ActionSequenceResults`` object which holds the results of each completed action, or an `Error` if the sequence could not be built or one of its actions failed. If the sequence was cancelled, the failure contains an ``ActionError/cancelled(partialResults:)`` error holding the results of any actions which completed before cancellation occurred.
@@ -531,33 +537,21 @@ public extension Destinationable {
 
     func performAction(for eventType: EventType, content: ContentType? = nil) async -> Result<ContentType, Error> {
 
-        if let presentation = internalState.destinationConfigurations?.configuration(for: eventType) {
-            
-            guard let interfaceAction = internalState.interfaceActions[eventType] else {
-                let template = DestinationsSupport.errorMessage(for: .missingInterfaceAction(message: ""))
-                let message = String(format: template, eventType.rawValue, type.rawValue)
-                
-                return .failure(DestinationsError.missingInterfaceAction(message: message))
+        if internalState.destinationConfigurations?.configuration(for: eventType) != nil {
+
+            // A sync closure selects the throwing overload, which conforming types may specialize (e.g. goBack in ViewDestinationable).
+            let present: () throws -> Void = { try self.performAction(for: eventType, content: content) }
+            do {
+                try present()
+            } catch {
+                return .failure(error)
             }
-            
-            let assistant: (any InterfaceActionConfiguring<EventType, DestinationType, ContentType>)
-            
-            switch presentation.assistantType {
-                case .basic:
-                    assistant = DefaultPresentationAssistant<EventType, DestinationType, ContentType>()
-                case .custom(let customAssistant):
-                    if let customAssistant = customAssistant as? any InterfaceActionConfiguring<EventType, DestinationType, ContentType> {
-                        assistant = customAssistant
-                    } else {
-                        let template = DestinationsSupport.errorMessage(for: .missingInterfaceActionAssistant(message: ""))
-                        let message = String(format: template, self.type.rawValue)
-                        return .failure(DestinationsError.missingInterfaceActionAssistant(message: message))
-                    }
-            }
-            
-            let configuredAction = assistant.configure(interfaceAction: interfaceAction, eventType: eventType, destination: self, content: content)
-            configuredAction()
-            
+
+            // The presentation still runs for existing callers, but there's no result to return.
+            let template = DestinationsSupport.errorMessage(for: .presentationResultNotSupported(message: ""))
+            let message = String(format: template, eventType.rawValue)
+            return .failure(DestinationsError.presentationResultNotSupported(message: message))
+
         } else if let configuration = internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? any InteractorConfiguring<InteractorType> {
             
             switch configuration.configurationType {
@@ -639,40 +633,15 @@ public extension Destinationable {
     }
 
     func performActions(for eventType: EventType, content: ContentType? = nil) async -> Result<ActionCollectionResults<ContentType>, any Error> {
-        guard let configuration = internalState.destinationConfigurations?.interactorConfiguration(for: eventType) as? ActionSequenceConfiguration<InteractorType, ContentType> else {
-            return .failure(DestinationsError.interactorNotFound(message: "No ActionSequence configuration found for \(eventType.rawValue)"))
+        guard let configuration = internalState.destinationConfigurations?.interactorConfiguration(for: eventType) else {
+            return .failure(DestinationsError.interactorNotFound(message: "No action collection configuration found for \(eventType.rawValue)"))
         }
-        
-        switch configuration.configurationType {
-            case .group, .sequence:
-                return await buildAndRunActionCollection(configuration, content: content)
 
-            case .branch, .interactor:
-                if let interactorType = configuration.interactorType, let actionType = configuration.actionType, let assistant = internalState.interactorAssistants[eventType] as? any AsyncInteractorAssisting<InteractorType, ContentType> {
-                    
-                    guard internalState.interactors[interactorType] as? any AsyncInteractable != nil else {
-                        let template = DestinationsSupport.errorMessage(for: .interactorNotFound(message: ""))
-                        let message = String(format: template, "\(String(describing: interactor))")
-                        
-                        return .failure(DestinationsError.interactorNotFound(message: message))
-                    }
-                    
-                    let result = await assistant.asyncRequestForAction(destination: self, actionType: actionType, content: content, resultTransformer: nil)
-                    
-                    switch result {
-                        case .success(_):
-                            let actionResult = ActionResult(origin: .action(actionType), result: result)
-                            return .success(ActionCollectionResults(results: [actionResult]))
-                        case .failure(let error):
-                            return .failure(error)
-                    }
-                    
-                } else {
-                    return .failure(DestinationsError.missingInterfaceActionAssistant(message: "Expected assistant for event \(eventType)"))
-
-                }
+        guard let collection = configuration as? any ActionCollectionConfiguring<InteractorType, ContentType> else {
+            return .failure(DestinationsError.incompatibleType(message: "The configuration for event \(eventType.rawValue) is a \(Swift.type(of: configuration)), which doesn't conform to ActionCollectionConfiguring. Use performAction(for:content:) for single Interactor requests."))
         }
-        
+
+        return await buildAndRunActionCollection(collection, content: content)
     }
 
     internal func buildAndRunActionCollection(_ configuration: any ActionCollectionConfiguring<InteractorType, ContentType>, content: ContentType?) async -> Result<ActionCollectionResults<ContentType>, any Error> {

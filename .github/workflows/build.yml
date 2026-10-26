@@ -30,7 +30,7 @@ jobs:
             runner: macos-26
           - xcode: "Xcode_27.0"
             swift: "6.4"
-            runner: xcode-27-arm64
+            runner: xcode-27
     steps:
       - uses: actions/checkout@v4
 

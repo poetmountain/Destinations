@@ -134,6 +134,81 @@ import Destinations
         }
     }
     
+    func test_performAction_sync_with_presentation_event_presents_without_throwing() throws {
+        let startingDestination = PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant())))
+
+        guard let lastDestination = appFlow.activeDestinations.last as? ColorDetailView.Destination else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+            return
+        }
+
+        XCTAssertNoThrow(try lastDestination.performAction(for: .goBack))
+
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorsList, "Expected the goBack presentation to run")
+    }
+
+    func test_performAction_async_with_presentation_event_presents_and_returns_presentationResultNotSupported() async throws {
+        let startingDestination = PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+
+        appFlow.presentDestination(configuration: PresentationConfiguration(destinationType: .colorDetail, presentationType: .navigationStack(type: .present), assistantType: .custom(ChooseColorFromListActionAssistant())))
+
+        guard let lastDestination = appFlow.activeDestinations.last as? ColorDetailView.Destination else {
+            XCTFail("No last destination found, \(appFlow.activeDestinations.map { $0.type })")
+            return
+        }
+
+        let result = await lastDestination.performAction(for: .goBack)
+
+        switch result {
+            case .success(let content):
+                XCTFail("Expected presentationResultNotSupported failure for a presentation event, got success: \(content)")
+            case .failure(let error):
+                if case DestinationsError.presentationResultNotSupported(message: let message) = error {
+                    XCTAssertTrue(message.contains(ColorDetailView.Destination.EventType.goBack.rawValue), "Expected the error message to name the event, got: \(message)")
+                } else {
+                    XCTFail("Expected presentationResultNotSupported failure, got \(error)")
+                }
+        }
+
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorsList, "Expected the goBack presentation to still run when called through the async performAction")
+
+        if let currentDestination = appFlow.currentDestination as? any ViewDestinationable<DestinationType, ContentType, TabType>, let navigator = appFlow.findNavigatorInViewHierarchy(searchDestination: currentDestination) {
+            XCTAssertEqual(navigator.navigationPath.count, 0)
+        } else {
+            XCTFail("Expected to find the colors list navigator")
+        }
+    }
+
+    func test_performAction_async_with_navigation_present_event_presents_and_returns_presentationResultNotSupported() async throws {
+        let startingDestination = PresentationConfiguration(destinationType: .colorsList, presentationType: .replaceCurrent, assistantType: .basic)
+
+        let appFlow = TestHelpers.buildAppFlow(startingDestination: startingDestination)
+        appFlow.start()
+
+        guard let colorsListDestination = appFlow.currentDestination as? ColorsListView.Destination else {
+            XCTFail("Expected the colors list to be the current Destination, got \(String(describing: appFlow.currentDestination?.type))")
+            return
+        }
+
+        let result = await colorsListDestination.performAction(for: .color(model: nil), content: .color(model: ColorViewModel(color: .purple, name: "purple")))
+
+        if case .failure(let error) = result, case DestinationsError.presentationResultNotSupported = error {
+            // expected
+        } else {
+            XCTFail("Expected presentationResultNotSupported failure, got \(result)")
+        }
+
+        XCTAssertEqual(appFlow.currentDestination?.type, .colorDetail, "Expected the color detail presentation to still run when called through the async performAction")
+    }
+
     func test_moveToNearest() {
         
         let startingType: RouteDestinationType = .colorsList

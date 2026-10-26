@@ -1,3 +1,12 @@
+### 3.2.4
+#### Features
+* Added an agent skill which can be used in both Xcode's agent conversations and external tools. Destinations is a flexible framework, but there are preferred patterns and this skill can help focus agents on using those patterns and best practices when building app features. It also includes an additional `/new-destination <Name>` action that can scaffold barebones Destination modules (Provider, state model, and View). See the [skill README](skills/README.md) for installation instructions. Please note that despite the presence of this skill, the vast majority of the Destinations library is still written by a human, and I always expect that to be the case.
+#### Fixes
+* `performActions(for:content:)` now runs any action collection bound to an Event, including an `ActionGroupConfiguration`. Previously it incorrectly only accepted `ActionSequenceConfiguration`, so an `ActionGroupConfiguration` action assigned to an Event failed with `interactorNotFound`. Non-collection action configurations now return `incompatibleType`.
+* The async `performAction(for:content:)` now performs presentations through the non-async implementation, so `.navigationStack(type: .goBack)` presentations go back in the navigation stack as they do with the non-async version. Previously it returned a misleading `interactorNotFound` error for presentation Events.
+* The async `performAction(for:content:)` now returns a new `DestinationsError.presentationResultNotSupported` error for presentation events instead of a misleading interactorNotFound. The presentation is still performed, however it is encourage to use the non-async version of this method for Destination presentations.
+* Added additional tests.
+
 ### 3.2.3
 #### Features
 * Added a new `transformer(request:result:)` Interactor assistant type. It provides a basic async assistant that can bridge content types using the supplied transformers when the Interactor's `Request.RequestContentType` or `Request.ResultData` differ from the Destination's `ContentType`. Unless you need to provide custom logic or dynamic handling of content transformations, the `transformer` type can handle most interactor events without the need to create a custom assistant. These transformers conform to `ContentTransformable`, the same protocol as the transformers used in ActionSequences. As they are scoped to simple type transformations, you can reuse these as you see fit.

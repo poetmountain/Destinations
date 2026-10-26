@@ -96,6 +96,9 @@ import Foundation
                 
             case .unregisteredInteractor(message: _):
                 return "Action sequence references unregistered interactor type(s): %@. Assign them via assignInteractor(_:to:) before calling performActions."
+
+            case .presentationResultNotSupported(message: _):
+                return "Event %@ is bound to a presentation. The presentation was performed, but the async performAction(for:content:) doesn't return a result for presentations; use the throwing performAction(for:content:) for presentation events. This behavior may change in a future version."
         }
     }
 }

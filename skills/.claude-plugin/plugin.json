@@ -1,0 +1,14 @@
+{
+  "name": "destinations",
+  "displayName": "Destinations",
+  "version": "1.0.0",
+  "description": "Guidance for building Swift app features with the Destinations framework.",
+  "author": {
+    "name": "Brett Walker"
+  },
+  "homepage": "https://poetmountain.github.io/Destinations/",
+  "repository": "https://github.com/poetmountain/Destinations",
+  "license": "MIT",
+  "keywords": ["swiftui", "uikit", "navigation", "architecture", "ios"],
+  "skills": ["./", "./new-destination"]
+}

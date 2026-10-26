@@ -1,0 +1,14 @@
+{
+  "name": "poetmountain",
+  "owner": {
+    "name": "Brett Walker"
+  },
+  "description": "Agent skills for Poet & Mountain libraries.",
+  "plugins": [
+    {
+      "name": "destinations",
+      "source": "./skills",
+      "description": "Guidance for building Swift app features with the Destinations framework."
+    }
+  ]
+}
