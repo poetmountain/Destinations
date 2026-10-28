@@ -112,7 +112,7 @@ Here's an example of a protocol layer for our Notes state model:
 }
 ```
 
-## Making a Datasource Request
+## Making an Interactor Request
 
 Continuing our Notes example, let's hook up an **Interactor** so that we can provide Note models to the list `View`. Interactors house any kind of logic that we want to keep isolated from the UI, such as datasource retrievals, API requests, etc.
 
