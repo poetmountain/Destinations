@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TabBarDestinationInterfacing Protocol Reference</title>
+    <title>ActionPerformable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -11,16 +11,16 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/TabBarDestinationInterfacing" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Protocol/ActionPerformable" class="dashAnchor"></a>
 
-    <a title="TabBarDestinationInterfacing Protocol Reference"></a>
+    <a title="ActionPerformable Protocol Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="../index.html">
           Destinations Docs
         </a>
-         (96% documented)
+         (94% documented)
       </p>
     
     
@@ -38,7 +38,7 @@
       <img class="carat" src="../img/carat.png" alt=""/>
       <a class="breadcrumb" href="../Protocols.html">Protocols</a>
       <img class="carat" src="../img/carat.png" alt=""/>
-      TabBarDestinationInterfacing Protocol Reference
+      ActionPerformable Protocol Reference
     </p>
 
     <div class="content-wrapper">
@@ -47,6 +47,18 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ActionBranch.html">ActionBranch</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ActionGroup.html">ActionGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ActionSequence.html">ActionSequence</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/AppDestinationConfigurations.html">AppDestinationConfigurations</a>
               </li>
@@ -57,9 +69,6 @@
                 <a class="nav-group-task-link" href="../Classes/ControllerFlow.html">ControllerFlow</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DefaultActionAssistant.html">DefaultActionAssistant</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultDestinationState.html">DefaultDestinationState</a>
               </li>
               <li class="nav-group-task">
@@ -67,6 +76,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DefaultNavigationControllerDestination.html">DefaultNavigationControllerDestination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultPresentationAssistant.html">DefaultPresentationAssistant</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DestinationInterfaceState.html">DestinationInterfaceState</a>
@@ -149,6 +161,18 @@
                 <a class="nav-group-task-link" href="../Enums/ActionAssistantType.html">ActionAssistantType</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ActionConfigurationType.html">ActionConfigurationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ActionError.html">ActionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ActionResponseOrigin.html">ActionResponseOrigin</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BranchResultHandlingType.html">BranchResultHandlingType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DestinationActionType.html">DestinationActionType</a>
               </li>
               <li class="nav-group-task">
@@ -181,6 +205,9 @@
                 <a class="nav-group-task-link" href="../Extensions/CaseIterable.html">CaseIterable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions.html#/s:SS">String</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/ToolbarItemGroup.html">ToolbarItemGroup</a>
               </li>
               <li class="nav-group-task">
@@ -195,6 +222,30 @@
                 <a class="nav-group-task-link" href="../Protocols/AbstractInteractable.html">AbstractInteractable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionCollectionConfiguring.html">ActionCollectionConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionConfiguring.html">ActionConfiguring</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations17ActionIdentifyingP">ActionIdentifying</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionPerformable.html">ActionPerformable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionPerformableCollection.html">ActionPerformableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionResultsMerging.html">ActionResultsMerging</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ActionSequenceConduiting.html">ActionSequenceConduiting</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AssistantAssigning.html">AssistantAssigning</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncDatasourceable.html">AsyncDatasourceable</a>
               </li>
               <li class="nav-group-task">
@@ -205,6 +256,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AsyncInteractorAssisting.html">AsyncInteractorAssisting</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BranchConditionable.html">BranchConditionable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ContentTransformable.html">ContentTransformable</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a>
@@ -297,6 +354,9 @@
                 <a class="nav-group-task-link" href="../Protocols/InteractorRequestConfiguring.html">InteractorRequestConfiguring</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/InteractorResultHandling.html">InteractorResultHandling</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations18InteractorTypeableP">InteractorTypeable</a>
               </li>
               <li class="nav-group-task">
@@ -363,7 +423,7 @@
                 <a class="nav-group-task-link" href="../Protocols/TabBarControllerDestinationable.html">TabBarControllerDestinationable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/TabBarDestinationInterfacing.html">TabBarDestinationInterfacing</a>
+                <a class="nav-group-task-link" href="../Protocols.html#/s:12Destinations28TabBarDestinationInterfacingP">TabBarDestinationInterfacing</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/TabBarViewDestinationInterfacing.html">TabBarViewDestinationInterfacing</a>
@@ -392,13 +452,61 @@
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionBranchConfiguration.html">ActionBranchConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionBranchConfiguration/ActionBranchType.html">– ActionBranchType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionBranchPath.html">ActionBranchPath</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionBranchPathConfiguration.html">ActionBranchPathConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionCollectionResults.html">ActionCollectionResults</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionConfiguration.html">ActionConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionGroupConfiguration.html">ActionGroupConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionGroupConfiguration/GroupActionType.html">– GroupActionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionResult.html">ActionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionSequenceConduit.html">ActionSequenceConduit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionSequenceConfiguration.html">ActionSequenceConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ActionSequenceConfiguration/SequenceActionType.html">– SequenceActionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AllSatisfyCondition.html">AllSatisfyCondition</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AnySatisfyCondition.html">AnySatisfyCondition</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/BackNavigationModifier.html">BackNavigationModifier</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/BindableContainerView.html">BindableContainerView</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/BooleanCondition.html">BooleanCondition</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ContainerView.html">ContainerView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ContentTransformerWrapper.html">ContentTransformerWrapper</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ControllerSheetPresentationOptions.html">ControllerSheetPresentationOptions</a>
@@ -426,6 +534,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/NavigationStackPresentationOptions.html">NavigationStackPresentationOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/NegatedCondition.html">NegatedCondition</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Sheet.html">Sheet</a>
@@ -505,16 +616,18 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>TabBarDestinationInterfacing</h1>
+            <h1>ActionPerformable</h1>
               <div class="declaration">
                 <div class="language">
                   
                   <pre class="highlight swift"><code><span class="kd">@MainActor</span>
-<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TabBarDestinationInterfacing</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DestinationInterfacing.html">DestinationInterfacing</a></span></code></pre>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ActionPerformable</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt">Sendable</span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol represents a <code>View</code> that manages a TabBar.</p>
+            <p>A protocol that defines an object which can perform an action as part of an <code><a href="../Protocols/ActionPerformableCollection.html">ActionPerformableCollection</a></code> object. This action generally represents a single Interactor request.</p>
+
+<p>Conforming types represent discrete, async steps in a sequence or one of several parallel tasks in a group. Each step receives accumulated outputs from prior steps and returns an updated <code><a href="../Structs/ActionCollectionResults.html">ActionCollectionResults</a></code> object, enabling a chain of actions to build on each other&rsquo;s results.</p>
 
           </div>
         </section>
@@ -526,9 +639,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:12Destinations28TabBarDestinationInterfacingP0B4TypeQa"></a>
-                    <a name="//apple_ref/swift/Alias/TabType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12Destinations28TabBarDestinationInterfacingP0B4TypeQa">TabType</a>
+                    <a name="/s:12Destinations17ActionPerformableP11ContentTypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/ContentType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP11ContentTypeQa">ContentType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -536,16 +649,250 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An enum which defines types of tabs in a tab bar.</p>
+                        <p>The content type which is used to send a request to this action&rsquo;s Interactor.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">TabType</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ContentType</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations15ContentTypeableP">ContentTypeable</a></span></code></pre>
 
                         </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP2id10Foundation4UUIDVvp"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP2id10Foundation4UUIDVvp">id</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A UUID identifier associated with a particular action object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">UUID</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP13outputConduitAA0B18SequenceConduiting_p11ContentTypeQzAGRS_XPSgvp"></a>
+                    <a name="//apple_ref/swift/Property/outputConduit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP13outputConduitAA0B18SequenceConduiting_p11ContentTypeQzAGRS_XPSgvp">outputConduit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An optional conduit used to pass output from this action to a subsequent step in the sequence.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">outputConduit</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/ActionSequenceConduiting.html">ActionSequenceConduiting</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/ActionPerformable.html#/s:12Destinations17ActionPerformableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP10identifierAA0B11Identifying_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/identifier" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP10identifierAA0B11Identifying_pSgvp">identifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An optional identifier associated to this action.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">identifier</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations17ActionIdentifyingP">ActionIdentifying</a></span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP10actionTypeAA017InteractorRequestB8Typeable_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/actionType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP10actionTypeAA017InteractorRequestB8Typeable_pSgvp">actionType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An optional type describing the interactor request action this step performs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">actionType</span><span class="p">:</span> <span class="p">(</span><span class="kd">any</span> <span class="kt"><a href="../Protocols.html#/s:12Destinations31InteractorRequestActionTypeableP">InteractorRequestActionTypeable</a></span><span class="p">)?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP28shouldEndParentTaskOnFailureSbvp"></a>
+                    <a name="//apple_ref/swift/Property/shouldEndParentTaskOnFailure" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP28shouldEndParentTaskOnFailureSbvp">shouldEndParentTaskOnFailure</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>When <code>true</code>, a failure in this action will also cancel the parent task group running the sequence.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">shouldEndParentTaskOnFailure</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP16shouldSaveResultSbvp"></a>
+                    <a name="//apple_ref/swift/Property/shouldSaveResult" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP16shouldSaveResultSbvp">shouldSaveResult</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>When <code>true</code>, the result of this action is accumulated into the sequence&rsquo;s output collection.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="k">var</span> <span class="nv">shouldSaveResult</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:12Destinations17ActionPerformableP7perform4with15sequenceOutputss6ResultOyAA0B17CollectionResultsVy11ContentTypeQzGs5Error_pGALSg_AMtYaF"></a>
+                    <a name="//apple_ref/swift/Method/perform(with:sequenceOutputs:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:12Destinations17ActionPerformableP7perform4with15sequenceOutputss6ResultOyAA0B17CollectionResultsVy11ContentTypeQzGs5Error_pGALSg_AMtYaF">perform(with:<wbr>sequenceOutputs:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs the action, optionally using the provided optional content.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">func</span> <span class="nf">perform</span><span class="p">(</span><span class="n">with</span> <span class="nv">content</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ActionPerformable.html#/s:12Destinations17ActionPerformableP11ContentTypeQa">ContentType</a></span><span class="p">?,</span> <span class="nv">sequenceOutputs</span><span class="p">:</span> <span class="kt"><a href="../Structs/ActionCollectionResults.html">ActionCollectionResults</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/ActionPerformable.html#/s:12Destinations17ActionPerformableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/ActionCollectionResults.html">ActionCollectionResults</a></span><span class="o">&lt;</span><span class="kt"><a href="../Protocols/ActionPerformable.html#/s:12Destinations17ActionPerformableP11ContentTypeQa">ContentType</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="kd">any</span> <span class="kt">Error</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional content to use when performing the action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sequenceOutputs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The accumulated responses from previous steps in the sequence. This enables responses to be passed forward through the action sequence chain.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>Result</code> containing the updated <code>ActionSequenceResponses</code> on success, or an error on failure.</p>
                       </div>
                     </section>
                   </div>
@@ -558,8 +905,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>© 2025 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>© 2026 Poet &amp; Mountain, LLC. All rights reserved. Licensed under the MIT License.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>
